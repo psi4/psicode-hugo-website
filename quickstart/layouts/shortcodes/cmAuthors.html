@@ -1,0 +1,12 @@
+<ul class="cmAuthors">
+{{ $url := .Get "url" }}
+{{ $codemeta := getJSON $url }}
+{{ $authors := $codemeta.author }}
+{{ range $authors }}
+  <li>
+  {{ .givenName}} {{ .additionalName }} {{ .familyName }},
+  <a href="https://www.google.com/maps?q={{ .latitude }},{{ .longitude }}">{{ .affiliation }}</a>
+  </li>
+{{ end }}
+</ul>
+

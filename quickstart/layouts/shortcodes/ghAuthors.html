@@ -1,0 +1,16 @@
+<ul class="ghAuthors">
+  {{ $url := .Get "url" }}
+  {{ range getJSON $url }}
+    {{ $p := . }}
+    <li>
+      <a href="{{$p.html_url}}" target="_blank">
+        <img src="{{$p.avatar_url}}" alt="Avatar of {{$p.login}}" title="Avatar of {{$p.login}}">
+      </a>
+      <strong>{{ $p.login }}</strong>
+      <a href="{{ $p.html_url }}" target="_blank">{{ $p.full_name }}</a>
+      <br>
+      Contributions: {{$p.contributions}}<br>
+      <div class="clear"></div>
+    </li>
+    {{ end }}
+</ul>
