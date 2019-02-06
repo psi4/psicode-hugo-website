@@ -1,0 +1,54 @@
+{{"<!-- Fixed Navigation -->" | safeHTML}}
+<header id="navigation" class="navbar navigation">
+    <div class="container">
+
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: #1d2024;">
+            {{"<!-- logo -->" | safeHTML}}
+  <a class="navbar-brand logo" href="{{ .Site.BaseURL | absURL }}">
+                <img src="{{ .Site.Params.logo | absURL }}" alt="Logo" />
+            </a>
+            {{"<!-- /logo -->" | safeHTML}}
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent"data-scroll >
+        {{ if .IsHome }}        
+    <ul id="nav" class="navbar-nav mr-auto navigation-menu">
+      <li class="nav-item active">
+        <a class="nav-link" href="#body">{{ with $.Site.Params.home }}{{ . }}{{ end }}<span class="sr-only">(current)</span></a>
+      </li>
+      {{ range $.Site.Menus.nav }}
+      <li class="nav-item">
+        <a class="nav-link" data-scroll href="#{{ .URL }}">{{ .Name }}</a>
+      </li>
+      {{ end }}
+    </ul>
+        {{ else }}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a data-scroll class="nav-link" href="{{ $.Site.BaseURL }}#body">{{ with $.Site.Params.home }}{{ . }}{{ end }}<span class="sr-only">(current)</span></a>
+      </li>
+      {{ range $.Site.Menus.nav }}
+      <li class="nav-item">
+        <a data-scroll class="nav-link" href="{{ $.Site.BaseURL }}#{{ .URL }}">{{ .Name }}</a>
+      </li>
+      {{ end }}
+    </ul>
+        {{ end }}
+        {{"<!-- /main nav -->" | safeHTML}}
+
+
+<!--
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+-->
+  </div>
+</nav>
+
+    </div>
+</header>
+{{"<!-- End Fixed Navigation -->" | safeHTML}}
