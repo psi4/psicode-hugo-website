@@ -23,4 +23,4 @@ This is the temporary home to the new psicode website generated with Hugo. I pro
 * in another terminal window, `cd hugosite/quickstart/`
 * `hugo server -D`
 * view in browser at http://localhost:1313/
-* updates automatically when save files
+* updates automatically when save files (refresh browser if it gets stuck on the little square)
