@@ -1,7 +1,7 @@
 ---
 title: "History"
 date: 2019-02-03T02:17:19-05:00
-draft: true
+draft: false
 ---
 
 The Psi package originated in the group of Prof. Henry F. Schaefer while

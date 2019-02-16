@@ -1,7 +1,7 @@
 ---
 title: "Beta4 — Apr 2013"
 date: 2013-04-07
-draft: true
+draft: false
 ---
 
 * [Documentataion](psi4manual/4.0b4/index.html)

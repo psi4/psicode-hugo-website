@@ -1,7 +1,7 @@
 ---
 title: "Beta3 — Oct 2012"
 date: 2012-10-23
-draft: true
+draft: false
 ---
 
 * [Documentation](psi4manual/4.0b3/index.html)
