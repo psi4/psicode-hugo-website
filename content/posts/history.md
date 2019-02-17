@@ -81,29 +81,29 @@ approximations work very well in concert with Frozen Natural Orbitals
 (FNO's), a capability also released in 2013.
 
 In 2012-14, Alex Sokolov added several variants of density cumulant
-functional theory to PSI4. Ugur Bozkaya added several analytic gradient
+functional theory to {{< htmlpsi4 >}}. Ugur Bozkaya added several analytic gradient
 methods from 2012-15, including MP2, MP3, MP2.5, CEPA(0), and optimized
 orbital versions of all these. Density-fitted versions of MP2 (including
 UHF references) and optimized-orbital MP2 analytic gradients were also
 added. In 2015, Dr. Bozkaya added density-fitted CCSD analytic gradients.
 
-Lori Burns introduced numerous major generalizations of the PSI4 driver
+Lori Burns introduced numerous major generalizations of the {{< htmlpsi4 >}} driver
 from 2014-15, allowing it to call features from other programs like
 `CFOUR` and `MOLPRO` and perform basic combinations of these results with
-PSI4 results. This formed the basis of our current project to develop a
+{{< htmlpsi4 >}} results. This formed the basis of our current project to develop a
 Common Driver for Quantum Chemistry. In early 2016, Daniel Smith and Lori
 Burns changed the way information is passed from one module to another in
-PSI4, using the Wavefunction object. This new mechanism allowed orbitals
+{{< htmlpsi4 >}}, using the Wavefunction object. This new mechanism allowed orbitals
 to be passed between modules in a more flexible way, and it allowed
 operations like exporting natural orbitals to `Molden` for plotting, etc.
 Interfaces to additional external projects like libefp, GDMA, ChemPS2, and
 PCMSolver were added or extended. With these additions, the longstanding
-"Beta" tag was removed and PSI4 1.0 was released in July 2016, with both
+"Beta" tag was removed and {{< htmlpsi4 >}} 1.0 was released in July 2016, with both
 source code and pre-packaged binaries available for Linux and Mac.
 
 Substantial additional changes to the driver were made in 2016 by Lori
-Burns and Daniel Smith, allowing us to make PSI4 a full-fledged Python
-library (wrapping a C++ core). This allows users to call PSI4 from a
+Burns and Daniel Smith, allowing us to make {{< htmlpsi4 >}} a full-fledged Python
+library (wrapping a C++ core). This allows users to call {{< htmlpsi4 >}} from a
 Python script, and greatly simplifies interoperability with other Python
 modules. Also in 2016, the code attained analytic RHF CCSD(T) gradients,
 analytic RHF Hessians, and fragment-based, intramolecular, and open-shell
