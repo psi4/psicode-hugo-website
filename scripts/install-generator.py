@@ -93,7 +93,7 @@ def compute_download_button(os, py, pm, br):
         if py in installers_built[brvv]:
 
             return rf"""['<i class="fa fa-download" aria-hidden="true"></i> download psi4conda installer',
-                         '../psicode-download/psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
+                         'http://vergil.chemistry.gatech.edu/psicode-download/psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
                          'Psi4conda-latest-{pynn}-{osp4c}-x86_64.sh']"""
 
 
