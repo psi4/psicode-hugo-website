@@ -1,9 +1,9 @@
 ---
 title: "PsiCon 2018 — GaTech"
 date: 2018-11-09
-author: C. David Sherrill
+author: David Sherrill
 image: images/blog/psicon-2018-taqueria-1.jpg
-description : "This is meta description"
+description : "annual psi developers meeting 2019"
 ---
 
 # Meeting Time and Location
@@ -36,6 +36,8 @@ so that we can get a headcount for planning purposes.
 * NIH
 * Georgia Tech
 
+# [Talks and Report](https://github.com/psi4/psicon2018)
+
 # Agenda
 
 ### Thursday, November 8
@@ -51,15 +53,15 @@ Hacking session for core developers
 * 10:15-10:45 - 2018 Psi4 Ordnance Survey (part a, part b) - Lori Burns
 * 10:45-11:15 - Meta-Observations and Outlooks of Community Trends in Quantum Chemistry - Daniel Smith
 * 11:15-11:30 - Optimizer Interfaces and Interoperability - Alex Heide
-* 11:30- 1:00 - Lunch (provided)
-* 1:00- 1:30 - New Theoretical Methods for Excited States and Spectroscopy - Alex Sokolov
-* 1:30- 1:40 - The Psi4 User Forum - Jonathon Misiewicz
-* 1:40- 2:00 - Psi4 Survey Results - David Sherrill
-* 2:00- 3:00 - Breakout Session 1
-* 3:00- 3:30 - Coffee Break
-* 3:30- 4:30 - Breakout Session 2
-* 4:30- 5:00 - Breakout Reports
-* 5:00- 5:15 - Psi Community Awards
+* 11:30-1:00 - Lunch (provided)
+* 1:00-1:30 - New Theoretical Methods for Excited States and Spectroscopy - Alex Sokolov
+* 1:30-1:40 - The Psi4 User Forum - Jonathon Misiewicz
+* 1:40-2:00 - Psi4 Survey Results - David Sherrill
+* 2:00-3:00 - Breakout Session 1
+* 3:00-3:30 - Coffee Break
+* 3:30-4:30 - Breakout Session 2
+* 4:30-5:00 - Breakout Reports
+* 5:00-5:15 - Psi Community Awards
 
 Note: We have rooms 3201A, 4202A, the 4th floor atrium, and two research scientist offices in 4201 available for breakout groups. In addition to some planned breakout options, we also hope for some breakout groups to assemble groups/topics on the fly.
 
@@ -80,6 +82,3 @@ Note: We have rooms 3201A, 4202A, the 4th floor atrium, and two research scienti
 * Daniel Smith, MolSSI, The QCJSON Schema
 * Konrad Patkowski, Auburn, Integrals
 * 11:30-12:00 - Wrapup discussion
-
-> Design is not just what it looks like and feels like. Design is how it works.
-
