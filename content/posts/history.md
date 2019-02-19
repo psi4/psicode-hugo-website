@@ -1,6 +1,7 @@
 ---
 title: "History"
 date: 2019-02-03T02:17:19-05:00
+image: images/blog/psi-history-slide-c13.png
 draft: false
 ---
 
