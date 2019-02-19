@@ -1,6 +1,6 @@
-# hugosite
+# psicode-hugo-website
 
-This is the temporary home to the new psicode website generated with Hugo. I propose that the Git model here be everyone push with full privleges. Contact Lori for collaborator access.
+This is the temporary home to the new psicode website generated with Hugo. Committers to psi4/psi4 have push access (at least that was my intention). For now, I propose that the Git model be everyone push with full privileges. Contact Lori for collaborator access.
 
 ## getting started
 
@@ -11,16 +11,23 @@ This is the temporary home to the new psicode website generated with Hugo. I pro
 
 ##### get website
 
-* `git clone https://github.com/loriab/hugosite.git`
+* `git clone https://github.com/psi4/psicode-hugo-website.git`
 
 ##### get theme
 
-* `cd hugosite/quickstart/themes/`
-* `git clone https://github.com/loriab/meghna-hugo.git`
+* need to get GH:loriab/meghna-hugo at branch `bootstrap4`. It's a submodule, so I think it'll handle itself. If not, below is the approximate directions
+
+* `cd psicode-hugo-website/themes/`
+* `git submodule add https://github.com/loriab/meghna-hugo.git`
+* `git checkout bootstrap4`
 
 ##### start the site building locally
 
-* in another terminal window, `cd hugosite/quickstart/`
+* in another terminal window, `cd psicode-hugo-website`
 * `hugo server -D`
 * view in browser at http://localhost:1313/
 * updates automatically when save files (refresh browser if it gets stuck on the little square)
+
+##### deploy the website
+
+* push to `master` of this repo and `https://app.netlify.com/sites/admiring-tesla-08529a/deploys` will go to work. Should be up in a couple minutes.
