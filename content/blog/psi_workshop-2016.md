@@ -45,10 +45,10 @@ The meeting was held Friday and Saturday, Nov 4-5, at CCQC at UGA featuring part
 	* Daniel Crawford: Software Institute
 	* Kevin Hannon: Parallel MCSCF
 	* Mike Zott: Psi4 and OpenMM
-*1:30pm-1:45pm: Lori Burns: Psi Licensing
-*1:45pm-2:00pm: David Sherrill: Psi Management Structure
-*2:45pm-3:00pm: Coffee Break
-*3:00pm-5:00pm: Breakout Sessions
+* 1:30pm-1:45pm: Lori Burns: Psi Licensing
+* 1:45pm-2:00pm: David Sherrill: Psi Management Structure
+* 2:45pm-3:00pm: Coffee Break
+* 3:00pm-5:00pm: Breakout Sessions
 	* Ask an Expert
 	* Documentation Challenge
 	* Feature Requests
