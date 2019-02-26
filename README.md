@@ -11,11 +11,11 @@ This is the temporary home to the new psicode website generated with Hugo. Commi
 
 ##### get website
 
-* `git clone https://github.com/psi4/psicode-hugo-website.git`
+* `git clone --recursive https://github.com/psi4/psicode-hugo-website.git`
 
 ##### get theme
 
-* need to get GH:loriab/meghna-hugo at branch `bootstrap4`. It's a submodule, so I think it'll handle itself. If not, below is the approximate directions
+* need to get GH:loriab/meghna-hugo at branch `bootstrap4`. It's a submodule, so it'll handle itself with thte `recursive` above. If not, below is the approximate directions
 
 * `cd psicode-hugo-website/themes/`
 * `git submodule add https://github.com/loriab/meghna-hugo.git`
