@@ -65,16 +65,3 @@ The meeting was held Friday and Saturday, Nov 4-5, at CCQC at UGA featuring part
 	* Lori Burns: Versioning (see Then and Now talk for slides)
 * 10:45am-12:30pm: Additional Breakout Sessions/Hacking
 * 12:30pm: Meeting adjourned
-
-
-
-
-
-
-
-
-
-
-
-
-
