@@ -1,6 +1,5 @@
 ---
 title: "Psi4Education"
-image: images/blog/psi-history-slide-c13.png
 draft: true
 ---
 
