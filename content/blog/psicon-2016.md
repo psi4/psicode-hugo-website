@@ -1,18 +1,11 @@
 ---
-title: "Psi4 workshop 2016"
-date: 2018-11-04
-image: /images/blog/2016-11-04-03-PsiWorkshop.jpg
+title: "Psi Workshop 2016"
+date: 2016-11-04
+image: images/blog/psicon-2016-11-04-03.jpg
 description : "Psi4 Developers Meeting"
 ---
-# Friday Morning Talks
-
 
 # {{<htmlpsi4>}} Developers' Conference Nov 2016
-
-
-<img src="/images/blog/2016-11-04-01-PsiWorkshop.jpg" alt="/blog/2016-11-04-01-PsiWorkshop" width="730px"/>
-# Breakout Sessions
-
 
 # Meeting Summary
 The meeting was held Friday and Saturday, Nov 4-5, at CCQC at UGA featuring participants from 9 institutions.
@@ -26,6 +19,8 @@ The meeting was held Friday and Saturday, Nov 4-5, at CCQC at UGA featuring part
 * NIH
 * Bethel
 * OpenEye
+
+<img src="/images/blog/psicon-2016-11-04-01.jpg" alt="2016-11-04-01-PsiWorkshop" width="730px"/>
 
 # Agenda
 *Friday, Nov 4*
