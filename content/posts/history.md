@@ -62,7 +62,7 @@ toward adding distributed-parallel capabilities, PSI4 moved the code to a
 program module (integrals, SCF, etc.) was a separate executable program,
 with information passed by files.
 
-Other new features developed for PSI4 include a new ``plugin'' system,
+Other new features developed for PSI4 include a new "plugin" system,
 written by Justin Turney and Andy Simmonett, that allows developers to
 create a new feature for PSI4 in a standalone module that can be compiled
 separately and loaded at runtime. This helps decouple development of the
