@@ -1,6 +1,8 @@
 ---
 title: "Psi4Education"
-draft: true
+date: 2013-01-01
+image: 
+draft: false
 ---
 
 ## Psi4Education: Computational Labs Using Free Software 
