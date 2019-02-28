@@ -3,12 +3,20 @@
 <section id="counter" class="parallax-section bg-1 section overly" style='background: linear-gradient(rgba({{ .Site.Params.counter.bgTint }}), rgba({{ .Site.Params.counter.bgTint }})), url("{{ .Site.Params.counter.bgImage | absURL }}") center/cover;'>
     <div class="container">
         <div class="row">
+            {{ $ghapi := getJSON "https://api.github.com/repos/psi4/psi4" }}
             {{ range .Site.Params.counter.counterItem }}
             <div class="col-lg-3 col-md-6 col-12 text-center wow fadeInDown" data-wow-duration="500ms">
                 <div class="counters-item">
                     <i class="{{ .icon }}"></i>
-                    <span data-speed="3000" data-to="{{ .count }}">{{ .count }}</span>
-                    <h3>{{ .title }}</h3>
+                    {{ if eq .title "Positive feedback" }}
+                        <span data-speed="3000" data-to="{{ .count }}">{{ $ghapi.stargazers_count }}</span>
+                    {{ else if eq .title "Cups of Coffee" }}
+<!-- https://api.github.com/repos/psi4/psi4/compare/ef18f85a4218cc559631c444c518ca4845ed48cc...45315cbcf16a201d0059e4086d458fce35ca4331 -->
+                        <span data-speed="3000" data-to="{{ .count }}">{{ $ghapi.open_issues_count }}</span>
+                    {{ else }}
+                        <span data-speed="3000" data-to="{{ .count }}">{{ .count }}</span>
+                    {{ end }}
+                    <h3><a href={{ .URL }}>{{ .title }}</a></h3>
                 </div>
             </div>
             {{ end }}
