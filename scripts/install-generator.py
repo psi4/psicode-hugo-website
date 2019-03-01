@@ -89,12 +89,17 @@ def compute_download_button(os, py, pm, br):
     pynn = py.replace('.', '')
     brvv = brvvs[br]
 
-    if pm == 'installer' and br != 'brn':
-        if py in installers_built[brvv]:
-
+    if pm == 'installer' and br != 'brn' and (py in installers_built[brvv]):
             return rf"""['<i class="fa fa-download" aria-hidden="true"></i> download psi4conda installer',
                          'http://vergil.chemistry.gatech.edu/psicode-download/psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
-                         'Psi4conda-latest-{pynn}-{osp4c}-x86_64.sh']"""
+                         'Psi4conda-latest-{pynn}-{osp4c}-x86_64.sh',
+                         '/images/installs/conda_ovals.{pm}.jpeg']"""
+
+    else:
+        return rf"""['<i class="fa fa-link" aria-hidden="true"></i> goto miniconda installers',
+                     'https://conda.io/miniconda.html',
+                     '#',
+                     '/images/installs/conda_ovals.{pm}.jpeg']"""
 
 
 cmddict = {}
