@@ -65,7 +65,7 @@ def compute_command(os, py, pm, br):
         else:
             if py in installers_built[brvv]:
                 return rf"""'# download via button above  -OR-  following line' +
-                          brprompt + 'curl "http://vergil.chemistry.gatech.edu/psicode-download/psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh" -o Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh --keepalive-time 2' +
+                          brprompt + 'curl "http://vergil.chemistry.gatech.edu/psicode-download/Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh" -o Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh --keepalive-time 2' +
                           brprompt + 'bash Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh -b -p $HOME/psi4conda' +
                           bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbash}' +
                           tcsh + 'echo "source $HOME/psi4conda/etc/profile.d/conda.csh\\nconda activate" >> ~/.tcshrc' +
@@ -103,7 +103,7 @@ def compute_download_button(os, py, pm, br):
 
     if pm == 'installer' and br != 'brn' and (py in installers_built[brvv]):
             return rf"""['<i class="fa fa-download" aria-hidden="true"></i> download psi4conda installer',
-                         'http://vergil.chemistry.gatech.edu/psicode-download/psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
+                         'http://vergil.chemistry.gatech.edu/psicode-download/Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
                          'Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
                          '/images/installs/conda_ovals.{pm}.jpeg']"""
 
