@@ -3,20 +3,28 @@
 <section id="counter" class="parallax-section bg-1 section overly" style='background: linear-gradient(rgba({{ .Site.Params.counter.bgTint }}), rgba({{ .Site.Params.counter.bgTint }})), url("{{ .Site.Params.counter.bgImage | absURL }}") center/cover;'>
     <div class="container">
         <div class="row">
-            {{ $ghapi := getJSON "https://api.github.com/repos/psi4/psi4" }}
             {{ range .Site.Params.counter.counterItem }}
             <div class="col-lg-3 col-md-6 col-12 text-center wow fadeInDown" data-wow-duration="500ms">
                 <div class="counters-item">
                     <i class="{{ .icon }}"></i>
-                    {{ if eq .title "Positive feedback" }}
-                        <span data-speed="3000" data-to="{{ .count }}">{{ $ghapi.stargazers_count }}</span>
+                    {{ $title := .title }}
+                    {{ $count := .count }}
+                    {{ if eq .title "Positive Feedback" }}
+                        {{ $ghapi := getJSON "https://api.github.com/repos/psi4/psi4" }}
+                        {{ $count = $ghapi.stargazers_count }}
                     {{ else if eq .title "Cups of Coffee" }}
-<!-- https://api.github.com/repos/psi4/psi4/compare/ef18f85a4218cc559631c444c518ca4845ed48cc...45315cbcf16a201d0059e4086d458fce35ca4331 -->
-                        <span data-speed="3000" data-to="{{ .count }}">{{ $ghapi.open_issues_count }}</span>
-                    {{ else }}
-                        <span data-speed="3000" data-to="{{ .count }}">{{ .count }}</span>
+                        {{ $ghhead := getJSON "https://api.github.com/repos/psi4/psi4/git/refs/heads/master" }}
+                        {{ $ghdiffstr := printf "%s...%s" "ef18f85a4218cc559631c444c518ca4845ed48cc" $ghhead.object.sha }}
+                        {{ $ghdiffjson := getJSON (printf "https://api.github.com/repos/psi4/psi4/compare/%s" $ghdiffstr) }}
+                        {{ $count = add 1 $ghdiffjson.ahead_by }}
+                    {{ else if eq .title "Days Since Last Release" }}
+                        {{ $ghrel := getJSON "https://api.github.com/repos/psi4/psi4/releases/latest" }}
+                        {{ $title = printf "Days Since %s" $ghrel.tag_name }}
+                        {{ $ghcreated := $ghrel.created_at | time }}
+                        {{ $count = div (sub now.Unix $ghcreated.Unix) 86400 }}
                     {{ end }}
-                    <h3><a href={{ .URL }}>{{ .title }}</a></h3>
+                    <span data-speed="3000" data-to="{{ $count }}">{{ $count }}</span>
+                    <h3><a href={{ .URL }}>{{ $title }}</a></h3>
                 </div>
             </div>
             {{ end }}
