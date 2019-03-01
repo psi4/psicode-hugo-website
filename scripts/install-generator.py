@@ -6,7 +6,7 @@ import yaml
 #  * menu arrays below (should match menu in file above)
 #  * installers_built dict below (should be defined for all != brn)
 
-edition = 'v13rc2'
+edition = 'v13'
 
 pms = ['installer', 'conda', 'source']
 oss = ['linux', 'macos', 'windows wsl']
@@ -17,6 +17,12 @@ installers_built = {
     '1.2.1': ['py2.7', 'py3.5', 'py3.6'],
     '1.3rc2': ['py3.6', 'py3.7'],
     '1.3': ['py3.6', 'py3.7'],
+    False: [],
+}
+
+psi4rt = {
+    '1.2.1': '1.2',
+    '1.3': '1.3',
 }
 
 ## Outputs
@@ -59,8 +65,8 @@ def compute_command(os, py, pm, br):
         else:
             if py in installers_built[brvv]:
                 return rf"""'# download via button above  -OR-  following line' +
-                          brprompt + 'curl "http://vergil.chemistry.gatech.edu/psicode-download/psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh" -o Psi4conda-latest-{pynn}-{osp4c}-x86_64.sh --keepalive-time 2' +
-                          brprompt + 'bash Psi4conda-latest-{pynn}-{osp4c}-x86_64.sh -b -p $HOME/psi4conda' +
+                          brprompt + 'curl "http://vergil.chemistry.gatech.edu/psicode-download/Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh" -o Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh --keepalive-time 2' +
+                          brprompt + 'bash Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh -b -p $HOME/psi4conda' +
                           bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbash}' +
                           tcsh + 'echo "source $HOME/psi4conda/etc/profile.d/conda.csh\\nconda activate" >> ~/.tcshrc' +
                           '<br /># log out, log back in so conda and psi4 in path' +
@@ -69,7 +75,13 @@ def compute_command(os, py, pm, br):
                 return """'# installers not provided for this python version'"""
 
     elif pm == 'conda':
-        return f"""pprompt + 'conda install psi4 psi4-rt python={pyvv} {brchnl}'"""
+        if (br == 'brs' and 'rc' not in edition) or br == 'brn':
+            return f"""pprompt + 'conda install psi4 psi4-rt python={pyvv} {brchnl}'"""
+        else:
+            extras = ''
+            if os in ['linux', 'windows wsl'] and brvv == '1.2.1':
+                extras = ' libint=1.2.1=h87b9b30_4'
+            return f"""pprompt + 'conda install psi4={brvv} psi4-rt={psi4rt[brvv]}{extras} python={pyvv} {brchnl}'"""
 
     elif pm == 'source':
         if br == 'brn':
@@ -89,12 +101,17 @@ def compute_download_button(os, py, pm, br):
     pynn = py.replace('.', '')
     brvv = brvvs[br]
 
-    if pm == 'installer' and br != 'brn':
-        if py in installers_built[brvv]:
-
+    if pm == 'installer' and br != 'brn' and (py in installers_built[brvv]):
             return rf"""['<i class="fa fa-download" aria-hidden="true"></i> download psi4conda installer',
-                         'http://vergil.chemistry.gatech.edu/psicode-download/psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
-                         'Psi4conda-latest-{pynn}-{osp4c}-x86_64.sh']"""
+                         'http://vergil.chemistry.gatech.edu/psicode-download/Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
+                         'Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
+                         '/images/installs/conda_ovals.{pm}.jpeg']"""
+
+    else:
+        return rf"""['<i class="fa fa-link" aria-hidden="true"></i> goto miniconda installers',
+                     'https://conda.io/miniconda.html',
+                     '#',
+                     '/images/installs/conda_ovals.{pm}.jpeg']"""
 
 
 cmddict = {}
