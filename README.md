@@ -1,6 +1,6 @@
-# psicode-hugo-website
+# psicode-hugo-website [![Netlify Status](https://api.netlify.com/api/v1/badges/d7f8026f-8c6b-41a8-b266-747fd04a8804/deploy-status)](https://app.netlify.com/sites/admiring-tesla-08529a/deploys)
 
-This is the temporary home to the new psicode website generated with Hugo. Committers to psi4/psi4 have push access (at least that was my intention). For now, I propose that the Git model be everyone push with full privileges. Contact Lori for collaborator access.
+This is the home of the new psicode website generated with Hugo. Committers to psi4/psi4 have push access (at least that was my intention). There's nice build check and preview capabilites upon pull request, so contributions through PR preferred.
 
 ## getting started
 
@@ -14,6 +14,8 @@ This is the temporary home to the new psicode website generated with Hugo. Commi
 * `git clone --recursive https://github.com/psi4/psicode-hugo-website.git`
 
 ##### get theme
+
+**Skip unless `--recursive` above doesn't work.**
 
 * need to get GH:loriab/meghna-hugo at branch `bootstrap4`. It's a submodule, so it'll handle itself with thte `recursive` above. If not, below is the approximate directions
 
