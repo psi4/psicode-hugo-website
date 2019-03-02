@@ -2,6 +2,7 @@
 title: "Beta5 — July 2013"
 date: 2013-07-03
 draft: false
+categories: ["releases"]
 ---
 
 # [Documentation](psi4manual/4.0b5/index.html)

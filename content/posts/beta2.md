@@ -2,6 +2,7 @@
 title: "Beta2 — May 2012"
 date: 2012-05-06
 draft: false
+categories: ["releases"]
 ---
 
 # [Documentation](psi4manual/4.0b2/index.html)

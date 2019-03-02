@@ -4,6 +4,7 @@ date: 2018-11-09
 author: David Sherrill
 image: images/blog/psicon-2018-taqueria-1.jpg
 description : "annual psi developers meeting 2019"
+categories: ["events"]
 ---
 
 # Meeting Time and Location
