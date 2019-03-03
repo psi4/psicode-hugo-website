@@ -1,8 +1,11 @@
 ---
-title: "Psi Workshop 2016"
+title: "Developers' Conference 2016 — UGA"
 date: 2016-11-04
 image: images/blog/psicon-2016-11-04-03.jpg
 description : "Psi4 Developers Meeting"
+categories: ["events"]
+aliases:
+    - /workshop_nov_2016.php
 ---
 
 # {{<htmlpsi4>}} Developers' Conference Nov 2016

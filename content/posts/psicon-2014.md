@@ -1,9 +1,12 @@
 ---
-title: "Psi Developer Conference 2014 — GaTech"
+title: "Developers' Conference 2014 — GaTech"
 date: 2014-11-14
 author: David Sherrill
 image: images/blog/psicon-2014.jpg
 description : "annual psi developers meeting 2014"
+categories: ["events"]
+aliases:
+    - /workshop_nov_2014.php
 ---
 
 # Meeting Time and Location
