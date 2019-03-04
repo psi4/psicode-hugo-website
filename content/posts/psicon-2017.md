@@ -1,8 +1,11 @@
 ---
-title: "WWDC Virginia Tech 2017"
+title: "WWDC 2017 — Virginia Tech"
 date: 2017-11-03
-image: images/blog/psicon-2017.jpg 
+image: images/blog/psicon-2017.jpg
 description : "annual psi developers meeting 2017"
+categories: ["events"]
+aliases:
+    - /workshop_nov_2017.php
 ---
 
 # Meeting Time and Location

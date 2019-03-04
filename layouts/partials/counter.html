@@ -22,6 +22,13 @@
                         {{ $title = printf "Days Since %s" $ghrel.tag_name }}
                         {{ $ghcreated := $ghrel.created_at | time }}
                         {{ $count = div (sub now.Unix $ghcreated.Unix) 86400 }}
+                    {{ else if eq .title "Contributors" }}
+                        <!-- max per_page is 100 and we're at 91. so coordinate page number and addend -->
+                        {{ $ghapi := getJSON "https://api.github.com/repos/psi4/psi4/contributors?per_page=100&page=1" }}
+                        {{ $count = add (len $ghapi) 0 }}
+                        {{/* {{ range $ghapi }} {{ .login }} {{ end }} */}}
+                    {{ else if eq .title "Citing Papers" }}
+                        {{ $count = $.Site.Data.pubs.google_scholar_citations.psi41p1.citation_count }}
                     {{ end }}
                     <span data-speed="3000" data-to="{{ $count }}">{{ $count }}</span>
                     <h3><a href={{ .URL }}>{{ $title }}</a></h3>
