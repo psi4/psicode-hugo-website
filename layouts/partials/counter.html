@@ -28,7 +28,9 @@
                         {{ $count = add (len $ghapi) 0 }}
                         {{/* {{ range $ghapi }} {{ .login }} {{ end }} */}}
                     {{ else if eq .title "Citing Papers" }}
-                        {{ $count = $.Site.Data.pubs.google_scholar_citations.psi41p1.citation_count }}
+                        {{ $count1 := $.Site.Data.pubs.google_scholar_citations.psi41p1.citation_count }}
+                        {{ $count2 := $.Site.Data.pubs.google_scholar_citations.psi4.citation_count }}
+                        {{ $count = add $count1 $count2 }}
                     {{ end }}
                     <span data-speed="3000" data-to="{{ $count }}">{{ $count }}</span>
                     <h3><a href={{ .URL }}>{{ $title }}</a></h3>
