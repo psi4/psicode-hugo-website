@@ -11,7 +11,9 @@ This is the home of the new psicode website generated with Hugo. Committers to p
 
 ##### get website
 
-* `git clone --recursive https://github.com/psi4/psicode-hugo-website.git`
+* Fork this repo, then clone it locally
+* `git clone --recursive https://github.com/<USERNAME>/psicode-hugo-website.git`
+* `git remote add upstream https://github.com/psi4/psicode-hugo-website.git`
 
 ##### get theme
 
@@ -32,4 +34,4 @@ This is the home of the new psicode website generated with Hugo. Committers to p
 
 ##### deploy the website
 
-* push to `master` of this repo and `https://app.netlify.com/sites/admiring-tesla-08529a/deploys` will go to work. Should be up in a couple minutes.
+* push to a branch on your fork, submit a PR, and netlify will build a preview. Once merged to `master` of this repo, `https://app.netlify.com/sites/admiring-tesla-08529a/deploys` will go to work. Should be up in a couple minutes.
