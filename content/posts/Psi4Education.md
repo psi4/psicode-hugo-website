@@ -15,10 +15,10 @@ __[Installation and Setup Guide](https://docs.google.com/document/d/1bFqPYZidGyJ
 Instruction for installing WebMO and PSI4, along with information about creating and administering user accounts.
 
 __[Tutorial Lab](https://docs.google.com/document/d/1kZAGOTsjPRN_eoKvTxvnZ-V80fiXjjgib7V7uTj5xCM/edit?usp=sharing)__
-This introductory lab introduces the key features of WebMO and PSI4, including building molecules, setting up calculations, and visualizing results.
+This introductory lab introduces the key features of WebMO and Psi4, including building molecules, setting up calculations, and visualizing results.
 
-__[About PSI4Education Jupyter Labs]({{< ref "psi4jupyter_labs.md" >}})__
-Many of the PSI4 functions and features can be directly imported as python functions in any python interpreter.  Some of the labs below use these features imported in jupyter notebooks.  These labs assume some prerequisite knowledge of python.  See [this page]({{< ref "psi4jupyter_labs.md" >}}) for an explanation of these prerequisites.
+__[About Psi4Education Jupyter Labs]({{< ref "psi4jupyter_labs.md" >}})__
+Many of the Psi4 functions and features can be directly imported as python functions in any python interpreter.  Some of the labs below use these features imported in jupyter notebooks.  These labs assume some prerequisite knowledge of python.  See [this page]({{< ref "psi4jupyter_labs.md" >}}) for an explanation of these prerequisites.
 
 Many instructors wish to save the labs as PDF files to distribute to students or to post on course management websites. When you click on any of the Lab Handout links below, the page will load as a GoogleDoc. You do not have to sign in to Google to view, download, or print the labs. To save the file as a PDF, click File, then Download As, and choose PDF from the file format list. If you wish edit the the file, you can download it as a Microsoft Word file and then open it in Word. If you want to reload the document into your own Google Drive to make changes, then sign into your own Google account (the Sign In link is blue and in the upper right corner of the lab handout page), then click File, Make a copy. The lab will then reopen in a new tab within your own Google Drive and be editable.
 
@@ -31,6 +31,7 @@ __[What makes a molecule polar or non-polar?](https://docs.google.com/document/d
 This lab will teach students how to use a Lewis structure to determine the electronic geometry and molecular shape of a molecule.  The students will use WebMO to calculate the partial charges on atoms in a molecule.  From this information they will draw bond dipole vectors.  Using WebMO, the students can visualize a 3D representation of the molecule and determine whether the bond dipole vectors cancel or not.  
 
 ## Advanced Labs
+__[How do we calculate spectroscopic constants from a potential energy surface?](https://drive.google.com/file/d/1MAf1DwbFCbLoIxe1L02_jjwqvrLzucqW/view?usp=sharing)__ This lab uses psi4 functions imported into a Jupyter notebook to calculate the potential energy surfaces for diatomic molecules using psi4.  The students will graph the potential energy surfaces, study the affects of anharmonicity, and determine force constants. To download a fillable Jupyter notebook, right click and save. [Jupyter notebook](https://drive.google.com/open?id=1UQr1YlB0za0YocRhpFKr-69W-nKo1aoB)
 
 __[How do we calculate the most accurate energies for a boron atom?](https://docs.google.com/document/d/1e3FPPd5h68_x7FUtRuhYHrKsniiLujblAFq5uG_HDX0/edit?usp=sharing)__
 In order to gain a better understanding of how computational chemistry functions and what types of questions it answers, this lab uses the Boron atom as a means of communicating such information to the students. The students will see the patterns that emerge from the usage of basis sets as well as computational methods such as Hartree-Fock (HF/SCF), MP2/MP4, and CCSD/CCSD(T). Electron affinities and spin states are also discussed.
