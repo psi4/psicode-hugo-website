@@ -2,7 +2,7 @@
 title: "Developers' Conference 2015 — Emory"
 date: 2015-11-13
 author: David Sherrill
-image: images/blog/psicon-11-2015.jpg
+image: images/blog/psicon-2015-lowres.jpg
 description : "annual psi developers meeting 2015"
 categories: ["events"]
 aliases:
