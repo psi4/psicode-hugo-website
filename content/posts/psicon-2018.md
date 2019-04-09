@@ -2,7 +2,7 @@
 title: "PsiCon 2018 — GaTech"
 date: 2018-11-09
 author: David Sherrill
-image: images/blog/psicon-2018-taqueria-1.jpg
+image: images/blog/psicon-2018-taqueria-1-lowres.jpg
 description : "annual psi developers meeting 2018"
 categories: ["events"]
 aliases:

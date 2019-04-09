@@ -1,7 +1,7 @@
 ---
 title: "Developers' Conference 2016 — UGA"
 date: 2016-11-04
-image: images/blog/psicon-2016-11-04-03.jpg
+image: images/blog/psicon-2016-11-04-03-lowres.jpg
 description : "Psi4 Developers Meeting"
 categories: ["events"]
 aliases:
@@ -23,7 +23,7 @@ The meeting was held Friday and Saturday, Nov 4-5, at CCQC at UGA featuring part
 * Bethel
 * OpenEye
 
-<img src="/images/blog/psicon-2016-11-04-01.jpg" alt="2016-11-04-01-PsiWorkshop" width="730px"/>
+<img src="/images/blog/psicon-2016-11-04-01-lowres.jpg" alt="2016-11-04-01-PsiWorkshop" width="730px"/>
 
 # Agenda
 *Friday, Nov 4*

@@ -1,7 +1,7 @@
 ---
 title: "Developers"
 date: 2019-02-03T14:38:42-05:00
-image: images/blog/psi-coredev-slide.png
+image: images/blog/psi-coredev-slide-lowres.jpg
 draft: false
 ---
 
