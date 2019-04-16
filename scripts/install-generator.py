@@ -6,7 +6,7 @@ import yaml
 #  * menu arrays below (should match menu in file above)
 #  * installers_built dict below (should be defined for all != brn)
 
-edition = 'v13'
+edition = 'v131'
 
 pms = ['installer', 'conda', 'source']
 oss = ['linux', 'macos', 'windows wsl']
@@ -17,12 +17,14 @@ installers_built = {
     '1.2.1': ['py2.7', 'py3.5', 'py3.6'],
     '1.3rc2': ['py3.6', 'py3.7'],
     '1.3': ['py3.6', 'py3.7'],
+    '1.3.1': ['py3.6', 'py3.7'],
     False: [],
 }
 
 psi4rt = {
     '1.2.1': '1.2',
     '1.3': '1.3',
+    '1.3.1': '1.3.1',
 }
 
 ## Outputs
@@ -79,8 +81,8 @@ def compute_command(os, py, pm, br):
             return f"""pprompt + 'conda install psi4 psi4-rt python={pyvv} {brchnl}'"""
         else:
             extras = ''
-            if os in ['linux', 'windows wsl'] and brvv == '1.2.1':
-                extras = ' libint=1.2.1=h87b9b30_4'
+            #if os in ['linux', 'windows wsl'] and brvv == '1.2.1':
+            #    extras = ' libint=1.2.1=h87b9b30_4'
             return f"""pprompt + 'conda install psi4={brvv} psi4-rt={psi4rt[brvv]}{extras} python={pyvv} {brchnl}'"""
 
     elif pm == 'source':
