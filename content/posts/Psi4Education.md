@@ -63,7 +63,7 @@ Annotated instructors guides, including solutions, are available for all lab act
 
 * Prof. Ryan C. Fortenberry (Georgia Southern University)
 
-* Prof. Tricia D. Shepherd (St. Edward's University, Austin TX)
+* Prof. Tricia D. Shepherd (Franklin & Marshall College)
 
 * Prof. C. David Sherrill (Georgia Tech)
 
