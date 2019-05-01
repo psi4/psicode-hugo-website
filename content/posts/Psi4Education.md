@@ -3,6 +3,8 @@ title: "Psi4Education"
 date: 2019-03-22
 image: images/psi4banner_education.png
 draft: false
+aliases:
+    - /labs.php
 ---
 
 ## Psi4Education: Computational Labs Using Free Software
@@ -53,7 +55,7 @@ Symmetry is often a difficult concept for chemistry students to grasp without so
 
 ## Additional Information for Instructors
 
-Annotated instructors guides, including solutions, are available for all lab activities. If you would like to register with us and receive access to these materials, please [contact us](mailto:armcdona@calpoly.edu) with your name, university information, and a list of courses in which you might use the lab activities. Please use the subject line PSI4Education.
+Annotated instructors guides, including solutions, are available for all lab activities. If you would like to register with us and receive access to these materials, please [contact us](mailto:armcdona@calpoly.edu) with your name, university information, and a list of courses in which you might use the lab activities. Please use the subject line Psi4Education.
 
 ## Contributors
 
@@ -61,7 +63,7 @@ Annotated instructors guides, including solutions, are available for all lab act
 
 * Prof. Ryan C. Fortenberry (Georgia Southern University)
 
-* Prof. Tricia D. Shepherd (St. Edward's University, Austin TX)
+* Prof. Tricia D. Shepherd (Franklin & Marshall College)
 
 * Prof. C. David Sherrill (Georgia Tech)
 
