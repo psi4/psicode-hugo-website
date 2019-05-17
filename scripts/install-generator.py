@@ -6,7 +6,7 @@ import yaml
 #  * menu arrays below (should match menu in file above)
 #  * installers_built dict below (should be defined for all != brn)
 
-edition = 'v131'
+edition = 'v132'
 
 pms = ['installer', 'conda', 'source']
 oss = ['linux', 'macos', 'windows wsl']
@@ -18,6 +18,7 @@ installers_built = {
     '1.3rc2': ['py3.6', 'py3.7'],
     '1.3': ['py3.6', 'py3.7'],
     '1.3.1': ['py3.6', 'py3.7'],
+    '1.3.2': ['py3.6', 'py3.7'],
     False: [],
 }
 
@@ -25,6 +26,7 @@ psi4rt = {
     '1.2.1': '1.2',
     '1.3': '1.3',
     '1.3.1': '1.3.1',
+    '1.3.2': '1.3.2',
 }
 
 ## Outputs
