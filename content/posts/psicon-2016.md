@@ -61,5 +61,6 @@ The meeting was held Friday and Saturday, Nov 4-5, at CCQC at UGA featuring part
 	* Rollin King
 	* Justin Turney: New Directory Structure (see Then and Now talk for slides)
 	* Lori Burns: Versioning (see Then and Now talk for slides)
+	* Tianyuan (Sam) Zhang: Continuously Indexed Hash Set
 * 10:45am-12:30pm: Additional Breakout Sessions/Hacking
 * 12:30pm: Meeting adjourned
