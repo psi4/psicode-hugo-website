@@ -27,6 +27,7 @@ An option is available to attend the meeting via Zoom. A zoom link will be sent 
 
 # Participating Institutions
 
+* Auburn University
 * Belhaven University
 * Bristol-Myers Squibb
 * Cal Poly San Luis Obispo 
@@ -39,9 +40,14 @@ An option is available to attend the meeting via Zoom. A zoom link will be sent 
 * Hylleraas Centre for Quantum Molecular Sciences
 * Institute of Biophysics of the Czech Academy of Sciences
 * Khalifa University
+* McMaster University
 * Morehouse College
+* Open Force Field Initiative / MSKCC
+* OpenEye Scientific Software
 * Pontificia Universidad Católica de Chile
-* Purdue Unviersity
+* Purdue University
+* Universidad de Concepción 
+* University of California, Berkeley
 * University of Georgia
 * University of Mississippi
 * University of Oxford
