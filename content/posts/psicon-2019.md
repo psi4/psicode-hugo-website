@@ -68,8 +68,10 @@ Hacking session for core developers
 * 2:00-2:20 - External potentials/multipoles - Andrew Simmonett
 * 2:20-2:40 - Empirical Dispersion Corrections for Symmetry-Adapted Perturbation Theory - Dominic Sirianni
 * 3:00-3:30 - Coffee Break
-* 3:30-4:30 - Breakout Session
-* 4:30-5:00 - Breakout Reports
+* 3:30-4:30 - Lightning Talks
+  1. Integration of SAPT-related methods in drug discovery - Dan Cheney
+  1. Helpful Open-source Research TOol for N-electron systems (HORTON) - Paul Ayers
+* 4:30-5:00 - TBD
 
 Note: We have rooms Atwood 360 available for the symposium. Additional rooms will be availabe for breakout sessions. 
 
@@ -77,28 +79,46 @@ Note: We have rooms Atwood 360 available for the symposium. Additional rooms wil
 #### Atwood 360, Department of Chemistry, Emory University
 
 * 9:30-11:30 - Lightning Talks
+  1. ChemTools: Gaining Chemical Insight from Quantum Chemistry Calculations: Farnaz Heidar-Zadeh
+  - Using xtensor in Psi4. Why, how, pains, and tribulations - Roberto Di Remigio
+  - JK Builds in Psi - Joseph O'Brien
+  - SAPT2-F12 - Monika Kodrycka  
+  - PYREX: A python toolkit for intrinsic reactivity analysis utilizing PSI4 - Wallace Derricotte
+  - Psi4education: Computational chemistry lab activities using free software - Ashley McDonald  
+  - Tools and lessons from vibrational ROA investigations - Rollin King
+  - CrystaLattE: Automated Computation of Crystal Lattice Energies - Carlos Borca
+  - Quantum chemistry in SPARC-X - Phanish Suryanarayana
+
 * 11:30-12:00 - Wrapup discussion
 
 ### Talks/Lightning Talks (Time/Day TBD)
-
-- CrystaLattE: Automated Computation of Crystal Lattice Energies - Carlos Borca
-- Quantum chemistry in SPARC-X - Phanish Suryanarayana
-- JK Builds in Psi - Joseph O'Brien
-- Integration of SAPT-related methods in drug discovery - Dan Cheney
-- PYREX: A python toolkit for intrinsic reactivity analysis utilizing PSI4 - Wallace Derricotte
-- Psi4education: Computational chemistry lab activities using free software - Ashley McDonald 
 
 
 # Psi4Education Agenda
 
 ### Saturday, November 16
-#### Atwood 360, Department of Chemistry, Emory University
+#### Location TBD, Department of Chemistry, Emory University
 
-* TBD
+* 9:30-9:45:  Status of Psi4Education, Defining Goals for the Future - Ashley McDonald
+* 9:45-10:30: New lab presentations.  These are presentations about labs that are currently under development.  In the subsequent breakout sessions, you will choose one of these labs to help work on.  If you have a lab or even just a lab idea to present, let me know and I will add you to the schedule.  
+  - How does the Hartree-Fock Procedure work? - Ashley McDonald
+  - What thermodynamic quantities can be calculated from quantum chemistry calculations? - Ryan Fortenberry
+* 10:30-11:30:  Breakout session 1
+* 11:30-1:30:  Lunch (on your own)
+* 1:30-3:00:  Breakout session 2
+* 3:00-3:15:  Break
+* 3:15-3:30:  Share out: Share progress from first two breakout sessions, reassign breakout groups as needed
+* 3:30-5:00:  Breakout session 3
 
 ### Sunday, November 16
 #### Atwood 360, Department of Chemistry, Emory University
 
-* TBD
+* 9:30-9:45 am :  How to build a binder image for a lab - Ashley McDonald
+* 9:45-11:00 am :  Breakout session 4:  Building binder images for all new labs
+* 11:00-11:30 am : Share out:  Present completed new labs.  
+* 11:30 am -12:00 pm:  Planning/delegating work on additional labs
+* 12:00-1:00 pm:  Update website
+* 1:00 pm:  Meeting concludes
+
 
 # [Talks and Report (not yet available)](https://github.com/psi4/psicon2019)
