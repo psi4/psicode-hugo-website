@@ -75,18 +75,18 @@ Hacking session for core developers
 * 2:20-2:40 - Empirical Dispersion Corrections for Symmetry-Adapted Perturbation Theory - Dominic Sirianni
 * 3:00-3:30 - Coffee Break
 * 3:30-4:30 - Lightning Talks
+  1. Using xtensor in Psi4. Why, how, pains, and tribulations - Roberto Di Remigio
   1. Integration of SAPT-related methods in drug discovery - Dan Cheney
   1. Helpful Open-source Research TOol for N-electron systems (HORTON) - Paul Ayers
-* 4:30-5:00 - TBD
+* 4:30-5:00 - Discussion of future features of Psi4
 
 Note: We have rooms Atwood 360 available for the symposium. Additional rooms will be availabe for breakout sessions. 
 
 ### Saturday, November 16
 #### Atwood 360, Department of Chemistry, Emory University
 
-* 9:30-11:30 - Lightning Talks
+* 9:30-12:00 - Lightning Talks
   1. ChemTools: Gaining Chemical Insight from Quantum Chemistry Calculations: Farnaz Heidar-Zadeh
-  - Using xtensor in Psi4. Why, how, pains, and tribulations - Roberto Di Remigio
   - JK Builds in Psi - Joseph O'Brien
   - SAPT2-F12 - Monika Kodrycka  
   - PYREX: A python toolkit for intrinsic reactivity analysis utilizing PSI4 - Wallace Derricotte
@@ -94,8 +94,9 @@ Note: We have rooms Atwood 360 available for the symposium. Additional rooms wil
   - Tools and lessons from vibrational ROA investigations - Rollin King
   - CrystaLattE: Automated Computation of Crystal Lattice Energies - Carlos Borca
   - Quantum chemistry in SPARC-X - Phanish Suryanarayana
+  - Machine-Learning in Psi4 with Correlated Wavefunctions
 
-* 11:30-12:00 - Wrapup discussion
+* 12:00-12:30 - Wrapup discussion
 
 ### Talks/Lightning Talks (Time/Day TBD)
 
