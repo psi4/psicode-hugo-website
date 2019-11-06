@@ -86,11 +86,11 @@ Note: We have rooms Atwood 360 available for the symposium. Additional rooms wil
 #### Atwood 360, Department of Chemistry, Emory University
 
 * 9:30-12:00 - Lightning Talks
+  1. Status of Psi4Education, Defining Goals for the Future - Ashley McDonald
   1. ChemTools: Gaining Chemical Insight from Quantum Chemistry Calculations: Farnaz Heidar-Zadeh
   - JK Builds in Psi - Joseph O'Brien
   - SAPT2-F12 - Monika Kodrycka  
   - PYREX: A python toolkit for intrinsic reactivity analysis utilizing PSI4 - Wallace Derricotte
-  - Psi4education: Computational chemistry lab activities using free software - Ashley McDonald  
   - Tools and lessons from vibrational ROA investigations - Rollin King
   - CrystaLattE: Automated Computation of Crystal Lattice Energies - Carlos Borca
   - Quantum chemistry in SPARC-X - Phanish Suryanarayana
