@@ -89,7 +89,7 @@ Note: We have rooms Atwood 360 available for the symposium. Additional rooms wil
   1. Status of Psi4Education, Defining Goals for the Future - Ashley McDonald
   1. ChemTools: Gaining Chemical Insight from Quantum Chemistry Calculations: Farnaz Heidar-Zadeh
   - JK Builds in Psi - Joseph O'Brien
-  - SAPT2-F12 - Monika Kodrycka  
+  - SAPT-F12 - Monika Kodrycka  
   - PYREX: A python toolkit for intrinsic reactivity analysis utilizing PSI4 - Wallace Derricotte
   - Tools and lessons from vibrational ROA investigations - Rollin King
   - CrystaLattE: Automated Computation of Crystal Lattice Energies - Carlos Borca
