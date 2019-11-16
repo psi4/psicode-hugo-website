@@ -92,9 +92,8 @@ Note: We have rooms Atwood 360 available for the symposium. Additional rooms wil
   - SAPT-F12 - Monika Kodrycka  
   - PYREX: A python toolkit for intrinsic reactivity analysis utilizing PSI4 - Wallace Derricotte
   - Tools and lessons from vibrational ROA investigations - Rollin King
-  - CrystaLattE: Automated Computation of Crystal Lattice Energies - Carlos Borca
   - Quantum chemistry in SPARC-X - Phanish Suryanarayana
-  - Machine-Learning in Psi4 with Correlated Wavefunctions
+  - Machine-Learning in Psi4 with Correlated Wavefunctions - Ben Peyton
 
 * 12:00-12:30 - Wrapup discussion
 
