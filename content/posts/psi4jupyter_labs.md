@@ -17,4 +17,4 @@ image: images/psi4banner_education.png
 - print statements
 - graphing data with matplotlib pyplot
 
-If you need tutorials on these Python skills, we recommend [these lessons](https://molssi-education.github.io/python_scripting_cms/) from the [Molecular Sciences Software Institute](https://molssi.org/).
+If you need tutorials on these Python skills, we recommend [these lessons](https://molssi-education.github.io/python_scripting_cms/) from the [Molecular Sciences Software Institute](https://molssi.org/).  Completing lessons 1, 4, and 5 would help students develop all the required python prerequisite skills needed for the Psi4Education labs.
