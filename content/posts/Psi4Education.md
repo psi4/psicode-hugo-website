@@ -26,7 +26,7 @@ Annotated instructors guides, including solutions, are available for all lab act
 
 ## Lab Activities
 
-All of the lab activities can be found on the [Psi4Education GitHub repository](https://github.com/Psi4Education/psi4education) or downloaded from the links below. 
+All of the lab activities can be found on the [Psi4Education GitHub repository](https://github.com/Psi4Education/psi4education) or downloaded from the links below.
 
 __[Understanding the Iterative Nature of the Hartree-Fock Procedure](https://github.com/Psi4Education/psi4education/blob/master/labs/Hartree_Fock/HF_student.ipynb)__ This lab activity is intended to teach students the mechanics of the Hartree-Fock procedure, without getting into the details of calculating the 1 and 2 electron integrals, by using the machinery of the Psi4 quantum chemistry software package. The lab emphasizes understanding why HF is an iterative procedure and what you calculate in one iteration that goes into the next iteration. Dirac notation and the relevant linear algebra Einstein summation notation is taught within the lab.  \\
 [Right click to download](https://raw.githubusercontent.com/Psi4Education/psi4education/master/labs/Hartree_Fock/HF_student.ipynb) \\
@@ -94,6 +94,7 @@ Symmetry is often a difficult concept for chemistry students to grasp without so
 * Prof. Ryan C. Fortenberry, University of Mississippi
 * Prof. D. Brandon Magers, Belhaven University
 * Prof. Konrad Patkowski, Auburn University
+* Benjamin G. Peyton, Virginia Tech 
 * Dr. Tricia D. Shepherd, The POGIL Project
 * Prof. C. David Sherrill, Georgia Tech
 * Dr. Dominic Sirianni, University of Richmond
