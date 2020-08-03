@@ -10,14 +10,16 @@ Psi4Education is the education and outreach program of Psi4, the free, open-sour
 
 ## Getting Started
 
-__[Installation and Setup Guide](https://docs.google.com/document/d/1bFqPYZidGyJ_MBXkayVISjsjepDXhvDaJ5BencBgkOg/edit?usp=sharing)__
+__[Installing Psi4 and Jupyter notebook]({{< ref "psi4education_setup.md">}})__ Instructions for installing psi4 in a conda environment suitable for the Psi4Numpy Jupyter notebook labs.
+
+__[About Psi4Education Jupyter Labs]({{< ref "psi4jupyter_labs.md" >}})__
+Many of the lab activities use [Psi4Numpy](https://github.com/psi4/psi4numpy), the Psi4 Python API.  Psi4Numpy allows you to import and use Psi4 functions directly in Jupyter notebooks.  These labs assume some prerequisite knowledge of python.  See [this page]({{< ref "psi4jupyter_labs.md" >}}) for an explanation of these prerequisites.  If you need resources to learn these prerequisite skills, we recommend [these lessons](https://education.molssi.org/python_scripting_cms/) from the Molecular Sciences Software Institute.  Lessons 1, 4, and 5 cover all of the prerequisite skills needed.
+
+__[Installing Psi4 and WebMO](https://docs.google.com/document/d/1bFqPYZidGyJ_MBXkayVISjsjepDXhvDaJ5BencBgkOg/edit?usp=sharing)__
 Instruction for installing WebMO and Psi4, along with information about creating and administering user accounts.
 
 __[Tutorial Lab for using WebMO](https://docs.google.com/document/d/1kZAGOTsjPRN_eoKvTxvnZ-V80fiXjjgib7V7uTj5xCM/edit?usp=sharing)__
 This introductory lab introduces the key features of WebMO and Psi4, including building molecules, setting up calculations, and visualizing results.
-
-__[About Psi4Education Jupyter Labs]({{< ref "psi4jupyter_labs.md" >}})__
-Many of the lab activities use [Psi4Numpy](https://github.com/psi4/psi4numpy), the Psi4 Python API.  Psi4Numpy allows you to import and use Psi4 functions directly in Jupyter notebooks.  These labs assume some prerequisite knowledge of python.  See [this page]({{< ref "psi4jupyter_labs.md" >}}) for an explanation of these prerequisites.  If you need resources to learn these prerequisite skills, we recommend [these lessons](https://education.molssi.org/python_scripting_cms/) from the Molecular Sciences Software Institute.  Lessons 1, 4, and 5 cover all of the prerequisite skills needed.
 
 ## Resources for Instructors
 Lab activities are distributed as Jupyter notebooks or PDF files.  Editable Jupyter notebooks can be downloaded from the links below.  LaTeX source documents for the PDF files are available through GitHub to instructors who register with Psi4Education.
@@ -94,7 +96,7 @@ Symmetry is often a difficult concept for chemistry students to grasp without so
 * Prof. Ryan C. Fortenberry, University of Mississippi
 * Prof. D. Brandon Magers, Belhaven University
 * Prof. Konrad Patkowski, Auburn University
-* Benjamin G. Peyton, Virginia Tech 
+* Benjamin G. Peyton, Virginia Tech
 * Dr. Tricia D. Shepherd, The POGIL Project
 * Prof. C. David Sherrill, Georgia Tech
 * Dr. Dominic Sirianni, University of Richmond
