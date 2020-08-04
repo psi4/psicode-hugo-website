@@ -15,10 +15,10 @@ __[Installing Psi4 and Jupyter notebook]({{< ref "psi4education_setup.md">}})__ 
 __[About Psi4Education Jupyter Labs]({{< ref "psi4jupyter_labs.md" >}})__
 Many of the lab activities use [Psi4Numpy](https://github.com/psi4/psi4numpy), the Psi4 Python API.  Psi4Numpy allows you to import and use Psi4 functions directly in Jupyter notebooks.  These labs assume some prerequisite knowledge of python.  See [this page]({{< ref "psi4jupyter_labs.md" >}}) for an explanation of these prerequisites.  If you need resources to learn these prerequisite skills, we recommend [these lessons](https://education.molssi.org/python_scripting_cms/) from the Molecular Sciences Software Institute.  Lessons 1, 4, and 5 cover all of the prerequisite skills needed.
 
-__[Installing Psi4 and WebMO](https://docs.google.com/document/d/1bFqPYZidGyJ_MBXkayVISjsjepDXhvDaJ5BencBgkOg/edit?usp=sharing)__
+__[Installing Psi4 and WebMO](https://github.com/Psi4Education/psi4education/blob/master/labs/Getting_Started/WebMO_setup.pdf)__
 Instruction for installing WebMO and Psi4, along with information about creating and administering user accounts.
 
-__[Tutorial Lab for using WebMO](https://docs.google.com/document/d/1kZAGOTsjPRN_eoKvTxvnZ-V80fiXjjgib7V7uTj5xCM/edit?usp=sharing)__
+__[Tutorial Lab for using WebMO](https://github.com/Psi4Education/psi4education/blob/master/labs/Getting_Started/tutorial_student.pdf)__
 This introductory lab introduces the key features of WebMO and Psi4, including building molecules, setting up calculations, and visualizing results.
 
 ## Resources for Instructors
@@ -67,7 +67,7 @@ In order to gain a better understanding of how computational chemistry functions
 
 __[Can we visually predict binding energies?](https://github.com/Psi4Education/psi4education/blob/master/labs/CationPi/CationPi_student.pdf)__
 The role that visual depictions play in a student's understanding of abstract concepts can be quite substantial. This laboratory exercise depicts the density of the electron cloud around various aromatic systems. The students introduce a sodium cation into the system in a place that makes sense based on the location of the most electron density. The students are asked to make a semi-quantitative connection between what they are seeing in the electrostatic potential and the ultimate strength of the cationic binding energy. \\
-[Right click to downlaod](https://github.com/Psi4Education/psi4education/raw/master/labs/CationPi/CationPi_student.pdf) \\
+[Right click to download](https://github.com/Psi4Education/psi4education/raw/master/labs/CationPi/CationPi_student.pdf) \\
 *WebMO, physical chemistry, interaction energies*
 
 __[When does water become OH + H? (A study in molecular orbitals)](https://github.com/Psi4Education/psi4education/blob/master/labs/water_MO/waterMO_student.pdf)__
@@ -85,8 +85,9 @@ This is a lab to engage students in the search for a possible carrier of rotatio
 [Right click to download](https://github.com/Psi4Education/psi4education/raw/master/labs/Astrochem/CH3Spec_student.pdf) \\
 *WebMO, astrochemistry, computational chemistry*
 
-__[What is symmetry in chemistry?](https://docs.google.com/document/d/1zWjGSYxi8Jy96fo5ahLty0cbAgFamwNlcDrjPE6LK1I/edit?usp=sharing)__
+__[What is symmetry in chemistry?](https://github.com/Psi4Education/psi4education/blob/master/labs/Symmetry/Symmetry_student.pdf)__
 Symmetry is often a difficult concept for chemistry students to grasp without some type of visual or tangible tool. This laboratory aims to give students experience with immediate feedback in order to give them instantaneous and formative assessment of their skills. The students will perform designated tasks of assigning point group symmetries to given molecules as well as the converse where they must provide examples of molecules for certain point group symmetries. \\
+[Right click to download](https://github.com/Psi4Education/psi4education/raw/master/labs/Symmetry/Symmetry_student.pdf) \\
 *WebMO, quantum mechanics*
 
 ## Contributors
