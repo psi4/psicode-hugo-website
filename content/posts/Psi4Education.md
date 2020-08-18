@@ -15,6 +15,8 @@ __[Installing Psi4 and Jupyter notebook]({{< ref "psi4education_setup.md">}})__ 
 __[About Psi4Education Jupyter Labs]({{< ref "psi4jupyter_labs.md" >}})__
 Many of the lab activities use [Psi4Numpy](https://github.com/psi4/psi4numpy), the Psi4 Python API.  Psi4Numpy allows you to import and use Psi4 functions directly in Jupyter notebooks.  These labs assume some prerequisite knowledge of python.  See [this page]({{< ref "psi4jupyter_labs.md" >}}) for an explanation of these prerequisites.  If you need resources to learn these prerequisite skills, we recommend [these lessons](https://education.molssi.org/python_scripting_cms/) from the Molecular Sciences Software Institute.  Lessons 1, 4, and 5 cover all of the prerequisite skills needed.
 
+__[No Computing Resources? No Problem!]({{< ref "psi4edu_chemcompute.md" >}})__ Psi4Education has partnered with [ChemCompute](https://chemcompute.org/) to enable you to run Psi4Education Jupyter notebook labs using FREE compute resources through ChemCompute.  You do not have to install or configure any software on your own computer. It's easy to sign up and get started. [Learn more.]({{< ref "psi4edu_chemcompute.md" >}})
+
 __[Installing Psi4 and WebMO](https://github.com/Psi4Education/psi4education/blob/master/labs/Getting_Started/WebMO_setup.pdf)__
 Instruction for installing WebMO and Psi4, along with information about creating and administering user accounts.
 

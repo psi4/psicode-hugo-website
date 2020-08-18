@@ -57,3 +57,5 @@ jupyter notebook
 ```
 conda activate p4env
 ```
+
+[Back to Psi4Education home]({{< ref "Psi4Education.md" >}})
