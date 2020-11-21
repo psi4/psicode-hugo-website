@@ -1,0 +1,809 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SAPT: Symmetry-Adapted Perturbation Theory &mdash; PSI4 [beta5] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta5] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="ADC: Ab Initio Polarization Propagator" href="adc.html" />
+    <link rel="prev" title="CI: Configuration Interaction" href="detci.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adc.html" title="ADC: Ab Initio Polarization Propagator"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="detci.html" title="CI: Configuration Interaction"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="sapt-symmetry-adapted-perturbation-theory">
+<span id="sec-sapt"></span><span id="index-0"></span><h1>SAPT: Symmetry-Adapted Perturbation Theory<a class="headerlink" href="#sapt-symmetry-adapted-perturbation-theory" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Edward G. Hohenstein</em></p>
+<p><em>Section author: Edward G. Hohenstein</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__sapt.html#apdx-sapt"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__sapt.html#apdx-sapt-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="https://github.com/psi4/psi4release/blob/master/src/lib/libsapt_solver">LIBSAPT_SOLVER</a></p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In rare cases with systems having a high degree of symmetry,
+PSI4 gives (very obviously) wrong answers for SAPT computations
+when the specification is in Z-matrix format. Use a Cartesian representation
+to avoid this problem.</p>
+</div>
+<p>Symmetry-adapted perturbation theory (SAPT) provides a means of directly
+computing the noncovalent interaction between two molecules, that is, the
+interaction energy is determined without computing the total energy of the
+monomers or dimer. In addition, SAPT provides a decomposition of the
+interaction energy into physically meaningful components: <em>i.e.,</em>
+electrostatic, exchange, induction, and dispersion terms. In SAPT, the
+Hamiltonian of the dimer is partitioned into contributions from each
+monomer and the interaction.</p>
+<div class="math">
+<p><img src="_images/math/bb24974e55d56ed7b85bffe38cc5563888d5ee84.png" alt="H=F_A+W_A+F_B+W_B+V"/></p>
+</div><p>Here, the Hamiltonian is written as a sum of the usual monomer Fock
+operators, <img class="math" src="_images/math/a055f405829e64a3b70253ab67cb45ed6ed5bb29.png" alt="F" style="vertical-align: 0px"/>, the fluctuation potential of each monomer, <img class="math" src="_images/math/10cb764f88509fb1c8012366993fdbee98f31bc5.png" alt="W" style="vertical-align: 0px"/>, and the
+interaction potential, <img class="math" src="_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V" style="vertical-align: 0px"/>. The monomer Fock operators, <img class="math" src="_images/math/453da195944a63cac772d2f1f530807487b7f58c.png" alt="F_A+F_B" style="vertical-align: -3px"/>, are
+treated as the zeroth-order Hamiltonian and the interaction energy is
+evaluated through a perturbative expansion of <img class="math" src="_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V" style="vertical-align: 0px"/>, <img class="math" src="_images/math/d5d2a07e125c7dbcdc136b574f301b11f87bb4d7.png" alt="W_A" style="vertical-align: -3px"/>, and <img class="math" src="_images/math/f95f7647350a5785a90f486d2a457fd1ed6e8156.png" alt="W_B" style="vertical-align: -3px"/>.
+Through first-order in <img class="math" src="_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V" style="vertical-align: 0px"/>, electrostatic and exchange interactions are
+included; induction and dispersion first appear at second-order in <img class="math" src="_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V" style="vertical-align: 0px"/>. For
+a complete description of SAPT, the reader is referred to the excellent
+review by Jeziorski, Moszynski, and Szalewicz <a class="reference internal" href="bibliography.html#jeziorski-1994-1887">[Jeziorski:1994:1887]</a>.</p>
+<p>Several truncations of the SAPT expansion are available in the SAPT
+module of PSI4. The simplest truncation of SAPT is denoted SAPT0
+and defined in Eq. <a href="#equation-SAPT0">(1)</a>.</p>
+<div class="math" id="equation-SAPT0">
+<p><span class="eqno">(1)</span><img src="_images/math/ce7f8c04623decabc3124e8a2a40fe3d9646f459.png" alt="E_{SAPT0} = E_{elst}^{(10)} + E_{exch}^{(10)} + E_{ind,resp}^{(20)} +
+E_{exch-ind,resp}^{(20)} + E_{disp}^{(20)} + E_{exch-disp}^{(20)}"/></p>
+</div><p>In this notation, <img class="math" src="_images/math/646ed24b9cfb16ff80dcbb0d3aff5d027150c866.png" alt="E^{(vw)}" style="vertical-align: 0px"/> defines the order in <img class="math" src="_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V" style="vertical-align: 0px"/> and in <img class="math" src="_images/math/b319c98ff27a0b88de8578cb606a985fd180739b.png" alt="W_A+W_B" style="vertical-align: -3px"/>; the
+subscript, <img class="math" src="_images/math/4afe4e9b7ceb6896787ded09de550d26afff12e0.png" alt="resp" style="vertical-align: -4px"/>, indicates that orbital relaxation effects are included.</p>
+<div class="math" id="equation-SAPT2">
+<p><span class="eqno">(2)</span><img src="_images/math/d355e81cd3c2b05fbba5db75bb3efb9b445bbad6.png" alt="E_{SAPT2} = E_{SAPT0} + E_{elst,resp}^{(12)} + E_{exch}^{(11)} +
+E_{exch}^{(12)} +\/ ^{t}\!E_{ind}^{(22)} +\/ ^{t}\!E_{exch-ind}^{(22)}"/></p>
+</div><div class="math" id="equation-SAPT2p">
+<p><span class="eqno">(3)</span><img src="_images/math/219e5feb36a472a0ce4ab3b6d7429945db3e4d00.png" alt="E_{SAPT2+} = E_{SAPT2} + E_{disp}^{(21)} + E_{disp}^{(22)}"/></p>
+</div><div class="math" id="equation-SAPT2pparen3">
+<p><span class="eqno">(4)</span><img src="_images/math/b55b0399bd44ec9b7fb83baaa5614c02f39a70f6.png" alt="E_{SAPT2+(3)} = E_{SAPT2+} + E_{elst,resp}^{(13)} + E_{disp}^{(30)}"/></p>
+</div><div class="math" id="equation-SAPT2p3">
+<p><span class="eqno">(5)</span><img src="_images/math/e55c93ee30a6d717f78f1bb82b78afa269abe271.png" alt="E_{SAPT2+3} = E_{SAPT2+(3)}
++ E_{exch-disp}^{(30)} + E_{ind-disp}^{(30)} + E_{exch-ind-disp}^{(30)}"/></p>
+</div><p>A thorough analysis of the performance of these truncations of SAPT can be
+found in a review by Hohenstein and Sherrill <a class="reference internal" href="bibliography.html#hohenstein-2012-wires">[Hohenstein:2012:WIREs]</a>.</p>
+<p>The SAPT module relies entirely on the density-fitting approximation
+of the two-electron integrals. The factorization of the SAPT energy
+expressions, as implemented in PSI4, assumes the use of density-fitted
+two-electron integrals, therefore, the SAPT module cannot be run with
+exact integrals. In practice, we have found that the density-fitting
+approximation introduces negligible errors into the SAPT energy
+(often less than 0.01 kcal/mol for small dimers) and greatly
+improves efficiency.</p>
+<div class="section" id="a-first-example">
+<h2>A First Example<a class="headerlink" href="#a-first-example" title="Permalink to this headline">¶</a></h2>
+<p>The following is the simplest possible input that will perform all
+available SAPT computations (normally, you would pick one of these methods).</p>
+<div class="highlight-python"><pre>molecule water_dimer {
+     0 1
+     O  -1.551007  -0.114520   0.000000
+     H  -1.934259   0.762503   0.000000
+     H  -0.599677   0.040712   0.000000
+     --
+     0 1
+     O   1.350625   0.111469   0.000000
+     H   1.680398  -0.373741  -0.758561
+     H   1.680398  -0.373741   0.758561
+
+     units angstrom
+     no_reorient
+     symmetry c1
+}
+
+set globals {
+    basis         aug-cc-pvdz
+}
+
+energy('sapt0')
+energy('sapt2')
+energy('sapt2+')
+energy('sapt2+(3)')
+energy('sapt2+3')</pre>
+</div>
+<p>The SAPT module uses the standard PSI4 partitioning of the dimer
+into monomers. SAPT does not use spatial symmetry and needs the geometry
+of the system to remain fixed throughout monomer and dimer calculations.
+These requirements are imposed whenever a SAPT calculation is requested
+but can also be set explicitly with the <tt class="docutils literal"><span class="pre">no_reorient</span></tt> and <tt class="docutils literal"><span class="pre">symmetry</span>
+<span class="pre">c1</span></tt> molecule keywords, as in the example above. A final note is that the
+SAPT module is only capable of performing SAPT computations for
+interactions between closed-shell singlets.</p>
+<p>The example input shown above would not be used in practice.
+To exploit the efficiency of the density-fitted SAPT implementation in
+PSI4, the SCF computations should also be performed with density-fitted
+(DF) integrals.</p>
+<div class="highlight-python"><pre>set globals {
+    basis         aug-cc-pvdz
+    df_basis_scf  aug-cc-pvdz-jkfit
+    df_basis_sapt aug-cc-pvdz-ri
+    guess         sad
+    scf_type      df
+}
+
+set sapt {
+    print         1
+}</pre>
+</div>
+<p>These options will perform the SAPT computation with DF-HF and a
+superposition-of-atomic-densities guess. This is the preferred method of
+running the SAPT module.</p>
+</div>
+<div class="section" id="sapt0">
+<span id="index-1"></span><h2>SAPT0<a class="headerlink" href="#sapt0" title="Permalink to this headline">¶</a></h2>
+<p>Generally speaking, SAPT0 should be applied to large systems or large data
+sets. The performance of SAPT0 relies entirely on error cancellation, which
+seems to be optimal with a truncated aug-cc-pVDZ basis, namely,
+jun-cc-pVDZ (which we have referred to in previous work as
+aug-cc-pVDZ&#8217;).
+The SAPT module has been used to perform SAPT0 computations with over
+200 atoms and 2800 basis functions; this code should be scalable to 4000
+basis functions. Publications resulting from the use of the SAPT0 code
+should cite the following publications: <a class="reference internal" href="bibliography.html#hohenstein-2010-184111">[Hohenstein:2010:184111]</a> and
+<a class="reference internal" href="bibliography.html#hohenstein-2011-174107">[Hohenstein:2011:174107]</a>.</p>
+<div class="section" id="basic-sapt0-keywords">
+<h3>Basic SAPT0 Keywords<a class="headerlink" href="#basic-sapt0-keywords" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="sapt-level">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-sapt-level-sapt"><em class="xref std std-term">SAPT_LEVEL</em></a><a class="headerlink" href="#sapt-level" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The level of theory for SAPT</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: SAPT0, SAPT2, SAPT2+, SAPT2+3</li>
+<li><strong>Default</strong>: SAPT0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="basis">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-sapt"><em class="xref std std-term">BASIS</em></a><a class="headerlink" href="#basis" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Primary basis set, describes the monomer molecular orbitals</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><em>basis string</em></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="df-basis-sapt">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-sapt-sapt"><em class="xref std std-term">DF_BASIS_SAPT</em></a><a class="headerlink" href="#df-basis-sapt" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Auxiliary basis set for SAPT density fitting computations. <a class="reference internal" href="basissets_byfamily.html#apdx-basisfamily"><em>Defaults</em></a> to a RI basis.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><em>basis string</em></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="df-basis-elst">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-elst-sapt"><em class="xref std std-term">DF_BASIS_ELST</em></a><a class="headerlink" href="#df-basis-elst" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Auxiliary basis set for SAPT Elst10 and Exch10 density fitting computations, may be important if heavier elements are involved. Defaults to <a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-sapt-sapt"><em class="xref std std-term">DF_BASIS_SAPT</em></a></p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><em>basis string</em></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="freeze-core">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-freeze-core-sapt"><em class="xref std std-term">FREEZE_CORE</em></a><a class="headerlink" href="#freeze-core" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The scope of core orbitals to freeze in evaluation of SAPT <img class="math" src="_images/math/26fb09bdbd841c4fde6830c590383e48cab12483.png" alt="E_{disp}^{(20)}" style="vertical-align: -8px"/> and <img class="math" src="_images/math/5de45f1605fabe70d37877b34448dfb1834d5693.png" alt="E_{exch-disp}^{(20)}" style="vertical-align: -8px"/> terms. Recommended true for all SAPT computations</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: FALSE, TRUE</li>
+<li><strong>Default</strong>: FALSE</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="d-convergence">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-d-convergence-sapt"><em class="xref std std-term">D_CONVERGENCE</em></a><a class="headerlink" href="#d-convergence" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Convergence criterion for residual of the CPHF coefficients in the SAPT <img class="math" src="_images/math/557961cc53aa4c0eff9ee8df66366531b7065698.png" alt="E_{ind,resp}^{(20)}" style="vertical-align: -8px"/> term.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-8</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="e-convergence">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-sapt"><em class="xref std std-term">E_CONVERGENCE</em></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Convergence criterion for energy (change) in the SAPT <img class="math" src="_images/math/557961cc53aa4c0eff9ee8df66366531b7065698.png" alt="E_{ind,resp}^{(20)}" style="vertical-align: -8px"/> term during solution of the CPHF equations.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-10</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="maxiter">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-maxiter-sapt"><em class="xref std std-term">MAXITER</em></a><a class="headerlink" href="#maxiter" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Maxmum number of CPHF iterations</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 50</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="print">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-print-sapt"><em class="xref std std-term">PRINT</em></a><a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The amount of information to print to the output file for the sapt module. For 0, only the header and final results are printed. For 1, (recommended for large calculations) some intermediate quantities are also printed.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 1</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="advanced-sapt0-keywords">
+<h3>Advanced SAPT0 Keywords<a class="headerlink" href="#advanced-sapt0-keywords" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="aio-cphf">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-aio-cphf-sapt"><em class="xref std std-term">AIO_CPHF</em></a><a class="headerlink" href="#aio-cphf" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Do use asynchronous disk I/O in the solution of the CPHF equations? Use may speed up the computation slightly at the cost of spawning an additional thread.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="aio-df-ints">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-aio-df-ints-sapt"><em class="xref std std-term">AIO_DF_INTS</em></a><a class="headerlink" href="#aio-df-ints" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Do use asynchronous disk I/O in the formation of the DF integrals? Use may speed up the computation slightly at the cost of spawning an additional thread.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="no-response">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-no-response-sapt"><em class="xref std std-term">NO_RESPONSE</em></a><a class="headerlink" href="#no-response" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Don&#8217;t solve the CPHF equations? Evaluate <img class="math" src="_images/math/2407baf1767faebb1cb64b5047477b6bd2397196.png" alt="E_{ind}^{(20)}" style="vertical-align: -5px"/> and <img class="math" src="_images/math/2d6e232d1b9f70806a1b53a9b79fb8f5ebf730ed.png" alt="E_{exch-ind}^{(20)}" style="vertical-align: -5px"/> instead of their response-including coupterparts. Only turn on this option if the induction energy is not going to be used.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ints-tolerance">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-ints-tolerance-sapt"><em class="xref std std-term">INTS_TOLERANCE</em></a><a class="headerlink" href="#ints-tolerance" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Minimum absolute value below which all three-index DF integrals and those contributing to four-index integrals are neglected. The default is conservative, but there isn&#8217;t much to be gained from loosening it, especially for higher-order SAPT.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1.0e-12</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="denominator-delta">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-denominator-delta-sapt"><em class="xref std std-term">DENOMINATOR_DELTA</em></a><a class="headerlink" href="#denominator-delta" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Maximum error allowed (Max error norm in Delta tensor) in the approximate energy denominators employed for most of the <img class="math" src="_images/math/26fb09bdbd841c4fde6830c590383e48cab12483.png" alt="E_{disp}^{(20)}" style="vertical-align: -8px"/> and <img class="math" src="_images/math/5de45f1605fabe70d37877b34448dfb1834d5693.png" alt="E_{exch-disp}^{(20)}" style="vertical-align: -8px"/> evaluation.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.0e-6</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="denominator-algorithm">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-denominator-algorithm-sapt"><em class="xref std std-term">DENOMINATOR_ALGORITHM</em></a><a class="headerlink" href="#denominator-algorithm" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Denominator algorithm for PT methods. Laplace transformations are slightly more efficient.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: LAPLACE, CHOLESKY</li>
+<li><strong>Default</strong>: LAPLACE</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="sapt-os-scale">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-sapt-os-scale-sapt"><em class="xref std std-term">SAPT_OS_SCALE</em></a><a class="headerlink" href="#sapt-os-scale" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The scale factor used for opposite-spin pairs in SCS computations. SS/OS decomposition performed for <img class="math" src="_images/math/26fb09bdbd841c4fde6830c590383e48cab12483.png" alt="E_{disp}^{(20)}" style="vertical-align: -8px"/> and <img class="math" src="_images/math/5de45f1605fabe70d37877b34448dfb1834d5693.png" alt="E_{exch-disp}^{(20)}" style="vertical-align: -8px"/> terms.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 6.0/5.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="sapt-ss-scale">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-sapt-ss-scale-sapt"><em class="xref std std-term">SAPT_SS_SCALE</em></a><a class="headerlink" href="#sapt-ss-scale" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The scale factor used for same-spin pairs in SCS computations. SS/OS decomposition performed for <img class="math" src="_images/math/26fb09bdbd841c4fde6830c590383e48cab12483.png" alt="E_{disp}^{(20)}" style="vertical-align: -8px"/> and <img class="math" src="_images/math/5de45f1605fabe70d37877b34448dfb1834d5693.png" alt="E_{exch-disp}^{(20)}" style="vertical-align: -8px"/> terms.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.0/3.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="debug">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-debug-globals"><em class="xref std std-term">DEBUG</em></a><a class="headerlink" href="#debug" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The amount of information to print to the output file</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 0</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="higher-order-sapt">
+<span id="index-2"></span><h2>Higher-Order SAPT<a class="headerlink" href="#higher-order-sapt" title="Permalink to this headline">¶</a></h2>
+<p>For smaller systems (up to the size of a nucleic acid base pair), more
+accurate interaction energies can be obtained through higher-order SAPT
+computations. The SAPT module can perform density-fitted evaluations
+of SAPT2, SAPT2+, SAPT2+(3), and SAPT2+3 energies. Publications resulting
+from the use of the higher-order SAPT code should cite the following:
+<a class="reference internal" href="bibliography.html#hohenstein-2010-014101">[Hohenstein:2010:014101]</a>.</p>
+<p>A brief note on memory usage: the higher-order SAPT code assumes that
+certain quantities can be held in core. This code requires sufficient
+memory to hold <img class="math" src="_images/math/97b8e23d21f81e3b7c821fb53f241d182fa2ce89.png" alt="3o^2v^2+v^2N_{aux}" style="vertical-align: -3px"/> arrays in core. With this requirement
+computations on the adenine-thymine complex can be performed with an
+aug-cc-pVTZ basis in less than 64GB of memory.</p>
+<p>Higher-order SAPT is treated separately from the higly optimized SAPT0
+code, therefore, higher-order SAPT uses a separate set of keywords.
+The following keywords are relevant for higher-order SAPT.</p>
+<div class="section" id="basic-keywords-for-higher-order-sapt">
+<h3>Basic Keywords for Higher-order SAPT<a class="headerlink" href="#basic-keywords-for-higher-order-sapt" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-sapt"><em class="xref std std-term">BASIS</em></a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Primary basis set, describes the monomer molecular orbitals</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><em>basis string</em></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id7">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-sapt-sapt"><em class="xref std std-term">DF_BASIS_SAPT</em></a><a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Auxiliary basis set for SAPT density fitting computations. <a class="reference internal" href="basissets_byfamily.html#apdx-basisfamily"><em>Defaults</em></a> to a RI basis.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><em>basis string</em></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id8">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-freeze-core-globals"><em class="xref std std-term">FREEZE_CORE</em></a><a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Specifies how many core orbitals to freeze in correlated computations. <tt class="docutils literal"><span class="pre">TRUE</span></tt> will default to freezing the standard default number of core orbitals. For PSI, the standard number of core orbitals is the number of orbitals in the nearest previous noble gas atom. More precise control over the number of frozen orbitals can be attained by using the keywords <a class="reference internal" href="autodoc_glossary_options_c.html#term-num-frozen-docc-globals"><em class="xref std std-term">NUM_FROZEN_DOCC</em></a> (gives the total number of orbitals to freeze, program picks the lowest-energy orbitals) or <a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-docc-globals"><em class="xref std std-term">FROZEN_DOCC</em></a> (gives the number of orbitals to freeze per irreducible representation)</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: FALSE, TRUE</li>
+<li><strong>Default</strong>: FALSE</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id9">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-print-sapt"><em class="xref std std-term">PRINT</em></a><a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The amount of information to print to the output file for the sapt module. For 0, only the header and final results are printed. For 1, (recommended for large calculations) some intermediate quantities are also printed.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 1</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="advanced-keywords-for-higher-order-sapt">
+<h3>Advanced Keywords for Higher-order SAPT<a class="headerlink" href="#advanced-keywords-for-higher-order-sapt" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-ints-tolerance-sapt"><em class="xref std std-term">INTS_TOLERANCE</em></a><a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Minimum absolute value below which all three-index DF integrals and those contributing to four-index integrals are neglected. The default is conservative, but there isn&#8217;t much to be gained from loosening it, especially for higher-order SAPT.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1.0e-12</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="sapt-mem-check">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-sapt-mem-check-sapt"><em class="xref std std-term">SAPT_MEM_CHECK</em></a><a class="headerlink" href="#sapt-mem-check" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Do force SAPT2 and higher to die if it thinks there isn&#8217;t enough memory? Turning this off is ill-advised.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id11">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-debug-globals"><em class="xref std std-term">DEBUG</em></a><a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The amount of information to print to the output file</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 0</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="mp2-natural-orbitals">
+<h2>MP2 Natural Orbitals<a class="headerlink" href="#mp2-natural-orbitals" title="Permalink to this headline">¶</a></h2>
+<p>One of the unique features of the SAPT module is its ability to use
+MP2 natural orbitals (NOs) to speed up the evaluation of the triples
+contribution to disperison. By transforming to the MP2 NO basis, we can
+throw away virtual orbitals that are expected to contribute little to the
+dispersion energy. Speedups in excess of <img class="math" src="_images/math/a7de36655c35a9f3ffaeac5975de66364eb54f88.png" alt="50 \times" style="vertical-align: 0px"/> are possible. In
+practice, this approximation is very good and should always be applied.
+Publications resulting from the use of MP2 NO-based approximations should
+cite the following: <a class="reference internal" href="bibliography.html#hohenstein-2010-104107">[Hohenstein:2010:104107]</a>.</p>
+<div class="section" id="basic-keywords-controlling-mp2-no-approximations">
+<h3>Basic Keywords Controlling MP2 NO Approximations<a class="headerlink" href="#basic-keywords-controlling-mp2-no-approximations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nat-orbs-t2">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-nat-orbs-t2-sapt"><em class="xref std std-term">NAT_ORBS_T2</em></a><a class="headerlink" href="#nat-orbs-t2" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Do use MP2 natural orbital approximations for the <img class="math" src="_images/math/e4c416195db015c868cb80c04de69553f8cff62b.png" alt="v^4" style="vertical-align: 0px"/> block of two-electron integrals in the evaluation of second-order T2 amplitudes? Recommended true for all SAPT computations.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="occ-tolerance">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-occ-tolerance-sapt"><em class="xref std std-term">OCC_TOLERANCE</em></a><a class="headerlink" href="#occ-tolerance" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Minimum occupation (eigenvalues of the MP2 OPDM) below which virtual natural orbitals are discarded for in each of the above three truncations</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1.0e-6</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="advanced-keywords-controlling-mp2-no-approximations">
+<h3>Advanced Keywords Controlling MP2 NO Approximations<a class="headerlink" href="#advanced-keywords-controlling-mp2-no-approximations" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="charge-transfer-in-sapt">
+<span id="sec-saptct"></span><span id="index-3"></span><h2>Charge-Transfer in SAPT<a class="headerlink" href="#charge-transfer-in-sapt" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to obtain the stabilization energy of a complex due to
+charge-transfer effects from a SAPT computation. The charge-transfer energy
+can be computed with the SAPT module as described by Stone
+and Misquitta <a class="reference internal" href="bibliography.html#misquitta-2009-201">[Misquitta:2009:201]</a>.</p>
+<p>Charge-transfer energies can be obtained from the following calls to the
+energy function.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">energy</span><span class="p">(</span><span class="s">&#39;sapt0-ct&#39;</span><span class="p">)</span>
+<span class="n">energy</span><span class="p">(</span><span class="s">&#39;sapt2-ct&#39;</span><span class="p">)</span>
+<span class="n">energy</span><span class="p">(</span><span class="s">&#39;sapt2+-ct&#39;</span><span class="p">)</span>
+<span class="n">energy</span><span class="p">(</span><span class="s">&#39;sapt2+(3)-ct&#39;</span><span class="p">)</span>
+<span class="n">energy</span><span class="p">(</span><span class="s">&#39;sapt2+3-ct&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A SAPT charge-transfer analysis will perform 5 HF computations: the dimer
+in the dimer basis, monomer A in the dimer basis, monomer B in the dimer
+basis, monomer A in the monomer A basis, and monomer B in the monomer B
+basis. Next, it performs two SAPT computations, one in the dimer basis and
+one in the monomer basis. Finally, it will print a summary of the
+charge-transfer results:</p>
+<div class="highlight-python"><pre>  SAPT Charge Transfer Analysis
+-----------------------------------------------------------------------------
+  SAPT Induction (Dimer Basis)         -2.0970 mH       -1.3159 kcal mol^-1
+  SAPT Induction (Monomer Basis)       -1.1396 mH       -0.7151 kcal mol^-1
+  SAPT Charge Transfer                 -0.9574 mH       -0.6008 kcal mol^-1</pre>
+</div>
+<p>These results are for the water dimer geometry shown above computed with
+SAPT0/aug-cc-pVDZ.</p>
+</div>
+<div class="section" id="monomer-centered-basis-computations">
+<span id="index-4"></span><h2>Monomer-Centered Basis Computations<a class="headerlink" href="#monomer-centered-basis-computations" title="Permalink to this headline">¶</a></h2>
+<p>The charge-transfer analysis above is carried out by taking the
+difference between SAPT induction as calculated in the dimer-centered
+basis (i.e., each monomer sees the basis functions on both monomers)
+vs. the monomer-centered basis (i.e., each monomer utilizes only its
+own basis set).  It is also possible to run a SAPT computation at any
+level using only the monomer-centered basis.  To do this, simply add
+<tt class="docutils literal"><span class="pre">sapt_basis='monomer'</span></tt> to the energy function, such as</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">energy</span><span class="p">(</span><span class="s">&#39;sapt2&#39;</span><span class="p">,</span><span class="n">sapt_basis</span><span class="o">=</span><span class="s">&#39;monomer&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This procedure leads to faster compuations, but it converges more slowly
+towards the complete basis set limit than the default procedure, which uses
+the dimer-centered basis set.  Hence, monomer-centered basis SAPT
+computations are not recommended.</p>
+</div>
+<div class="section" id="interpreting-sapt-results">
+<h2>Interpreting SAPT Results<a class="headerlink" href="#interpreting-sapt-results" title="Permalink to this headline">¶</a></h2>
+<p>We will examine the results of a SAPT2+3/aug-cc-pVDZ computation on the
+water dimer. This computation can be performed with the following
+input:</p>
+<div class="highlight-python"><pre>molecule water_dimer {
+     0 1
+     O  -1.551007  -0.114520   0.000000
+     H  -1.934259   0.762503   0.000000
+     H  -0.599677   0.040712   0.000000
+     --
+     0 1
+     O   1.350625   0.111469   0.000000
+     H   1.680398  -0.373741  -0.758561
+     H   1.680398  -0.373741   0.758561
+     units angstrom
+}
+
+set globals {
+    basis          aug-cc-pvdz
+    guess          sad
+    scf_type       df
+}
+
+set sapt {
+    print          1
+    nat_orbs_t2    true
+    freeze_core    true
+}
+
+energy('sapt2+3')</pre>
+</div>
+<p>To reiterate some of the options mentioned above: the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-nat-orbs-t2-sapt"><em class="xref std std-term">NAT_ORBS_T2</em></a> option will compute MP2 natural orbitals and use
+them in the evaluation of the triples correction to dispersion, and the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-freeze-core-sapt"><em class="xref std std-term">FREEZE_CORE</em></a> option will freeze the core throughout the SAPT
+computation. This SAPT2+3/aug-cc-pVDZ computation produces the following
+results:</p>
+<div class="highlight-python"><pre>  SAPT Results
+--------------------------------------------------------------------------
+  Electrostatics            -13.06429805 mH      -8.19797114 kcal mol^-1
+    Elst10,r                -13.37543274 mH      -8.39321111 kcal mol^-1
+    Elst12,r                  0.04490253 mH       0.02817676 kcal mol^-1
+    Elst13,r                  0.26623216 mH       0.16706321 kcal mol^-1
+
+  Exchange                   13.41793548 mH       8.41988199 kcal mol^-1
+    Exch10                   11.21823471 mH       7.03954885 kcal mol^-1
+    Exch10(S^2)              11.13803867 mH       6.98922508 kcal mol^-1
+    Exch11(S^2)               0.04558910 mH       0.02860760 kcal mol^-1
+    Exch12(S^2)               2.15411167 mH       1.35172554 kcal mol^-1
+
+  Induction                  -3.91333155 mH      -2.45565272 kcal mol^-1
+    Ind20,r                  -4.57531220 mH      -2.87105187 kcal mol^-1
+    Ind30,r                  -4.91715479 mH      -3.08556135 kcal mol^-1
+    Ind22                    -0.83761074 mH      -0.52560870 kcal mol^-1
+    Exch-Ind20,r              2.47828867 mH       1.55514969 kcal mol^-1
+    Exch-Ind30,r              4.33916816 mH       2.72286924 kcal mol^-1
+    Exch-Ind22                0.45370482 mH       0.28470409 kcal mol^-1
+    delta HF,r (2)           -1.43240211 mH      -0.89884593 kcal mol^-1
+    delta HF,r (3)           -0.85441547 mH      -0.53615383 kcal mol^-1
+
+  Dispersion                 -3.62061213 mH      -2.27196851 kcal mol^-1
+    Disp20                   -3.54292109 mH      -2.22321664 kcal mol^-1
+    Disp30                    0.05959981 mH       0.03739945 kcal mol^-1
+    Disp21                    0.11216179 mH       0.07038259 kcal mol^-1
+    Disp22 (SDQ)             -0.17924270 mH      -0.11247650 kcal mol^-1
+    Disp22 (T)               -0.47692549 mH      -0.29927528 kcal mol^-1
+    Est. Disp22 (T)          -0.54385253 mH      -0.34127263 kcal mol^-1
+    Exch-Disp20               0.64545652 mH       0.40503010 kcal mol^-1
+    Exch-Disp30              -0.01823411 mH      -0.01144207 kcal mol^-1
+    Ind-Disp30               -0.91816995 mH      -0.57616037 kcal mol^-1
+    Exch-Ind-Disp30           0.76459013 mH       0.47978757 kcal mol^-1
+
+  Total HF                   -5.68662366 mH      -3.56841037 kcal mol^-1
+  Total SAPT0                -8.58408823 mH      -5.38659691 kcal mol^-1
+  Total SAPT2                -6.72339084 mH      -4.21899163 kcal mol^-1
+  Total SAPT2+               -7.26739725 mH      -4.56036082 kcal mol^-1
+  Total SAPT2+(3)            -6.94156528 mH      -4.35589816 kcal mol^-1
+  Total SAPT2+3              -7.11337921 mH      -4.46371303 kcal mol^-1</pre>
+</div>
+<p>At the bottom of this output are the total SAPT energies (defined above),
+they are composed of subsets of the individual terms printed above. The
+individual terms are grouped according to the component of the interaction
+to which they contribute. The total component energies (<em>i.e.,</em>
+electrostatics, exchange, induction, and dispersion) represent what we
+regard as the best estimate available at a given level of SAPT computed
+from a subset of the terms of that grouping. The groupings shown above are
+not unique and are certainly not rigorously defined. We regard the groupings
+used in PSI4 as a &#8220;chemist&#8217;s grouping&#8221; as opposed to a more
+mathematically based grouping, which would group all exchange terms
+(<em>i.e.</em> <img class="math" src="_images/math/9992eaf843f339e96893b2321aa60738f1b790e0.png" alt="E_{exch-ind,resp}^{(20)}" style="vertical-align: -8px"/>, <img class="math" src="_images/math/5de45f1605fabe70d37877b34448dfb1834d5693.png" alt="E_{exch-disp}^{(20)}" style="vertical-align: -8px"/>, <em>etc.</em> in
+the exchange component. A final note is that both <tt class="docutils literal"><span class="pre">Disp22(T)</span></tt>
+and <tt class="docutils literal"><span class="pre">Est.Disp22(T)</span></tt> results appear if MP2 natural orbitals are
+used to evaluate the triples correction to dispersion. The <tt class="docutils literal"><span class="pre">Disp22(T)</span></tt>
+result is the triples correction as computed in the truncated NO basis;
+<tt class="docutils literal"><span class="pre">Est.Disp22(T)</span></tt> is a scaled result that attempts to recover
+the effect of the truncated virtual space. The <tt class="docutils literal"><span class="pre">Est.Disp22(T)</span></tt>
+value used in the SAPT energy and dispersion component (see <a class="reference internal" href="bibliography.html#hohenstein-2010-104107">[Hohenstein:2010:104107]</a>
+for details).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SAPT: Symmetry-Adapted Perturbation Theory</a><ul>
+<li><a class="reference internal" href="#a-first-example">A First Example</a></li>
+<li><a class="reference internal" href="#sapt0">SAPT0</a><ul>
+<li><a class="reference internal" href="#basic-sapt0-keywords">Basic SAPT0 Keywords</a><ul>
+<li><a class="reference internal" href="#sapt-level"><tt class="docutils literal"><span class="pre">SAPT_LEVEL</span></tt></a></li>
+<li><a class="reference internal" href="#basis"><tt class="docutils literal"><span class="pre">BASIS</span></tt></a></li>
+<li><a class="reference internal" href="#df-basis-sapt"><tt class="docutils literal"><span class="pre">DF_BASIS_SAPT</span></tt></a></li>
+<li><a class="reference internal" href="#df-basis-elst"><tt class="docutils literal"><span class="pre">DF_BASIS_ELST</span></tt></a></li>
+<li><a class="reference internal" href="#freeze-core"><tt class="docutils literal"><span class="pre">FREEZE_CORE</span></tt></a></li>
+<li><a class="reference internal" href="#d-convergence"><tt class="docutils literal"><span class="pre">D_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#e-convergence"><tt class="docutils literal"><span class="pre">E_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#maxiter"><tt class="docutils literal"><span class="pre">MAXITER</span></tt></a></li>
+<li><a class="reference internal" href="#print"><tt class="docutils literal"><span class="pre">PRINT</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-sapt0-keywords">Advanced SAPT0 Keywords</a><ul>
+<li><a class="reference internal" href="#aio-cphf"><tt class="docutils literal"><span class="pre">AIO_CPHF</span></tt></a></li>
+<li><a class="reference internal" href="#aio-df-ints"><tt class="docutils literal"><span class="pre">AIO_DF_INTS</span></tt></a></li>
+<li><a class="reference internal" href="#no-response"><tt class="docutils literal"><span class="pre">NO_RESPONSE</span></tt></a></li>
+<li><a class="reference internal" href="#ints-tolerance"><tt class="docutils literal"><span class="pre">INTS_TOLERANCE</span></tt></a></li>
+<li><a class="reference internal" href="#denominator-delta"><tt class="docutils literal"><span class="pre">DENOMINATOR_DELTA</span></tt></a></li>
+<li><a class="reference internal" href="#denominator-algorithm"><tt class="docutils literal"><span class="pre">DENOMINATOR_ALGORITHM</span></tt></a></li>
+<li><a class="reference internal" href="#sapt-os-scale"><tt class="docutils literal"><span class="pre">SAPT_OS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#sapt-ss-scale"><tt class="docutils literal"><span class="pre">SAPT_SS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#debug"><tt class="docutils literal"><span class="pre">DEBUG</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#higher-order-sapt">Higher-Order SAPT</a><ul>
+<li><a class="reference internal" href="#basic-keywords-for-higher-order-sapt">Basic Keywords for Higher-order SAPT</a><ul>
+<li><a class="reference internal" href="#id6"><tt class="docutils literal"><span class="pre">BASIS</span></tt></a></li>
+<li><a class="reference internal" href="#id7"><tt class="docutils literal"><span class="pre">DF_BASIS_SAPT</span></tt></a></li>
+<li><a class="reference internal" href="#id8"><tt class="docutils literal"><span class="pre">FREEZE_CORE</span></tt></a></li>
+<li><a class="reference internal" href="#id9"><tt class="docutils literal"><span class="pre">PRINT</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-keywords-for-higher-order-sapt">Advanced Keywords for Higher-order SAPT</a><ul>
+<li><a class="reference internal" href="#id10"><tt class="docutils literal"><span class="pre">INTS_TOLERANCE</span></tt></a></li>
+<li><a class="reference internal" href="#sapt-mem-check"><tt class="docutils literal"><span class="pre">SAPT_MEM_CHECK</span></tt></a></li>
+<li><a class="reference internal" href="#id11"><tt class="docutils literal"><span class="pre">DEBUG</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mp2-natural-orbitals">MP2 Natural Orbitals</a><ul>
+<li><a class="reference internal" href="#basic-keywords-controlling-mp2-no-approximations">Basic Keywords Controlling MP2 NO Approximations</a><ul>
+<li><a class="reference internal" href="#nat-orbs-t2"><tt class="docutils literal"><span class="pre">NAT_ORBS_T2</span></tt></a></li>
+<li><a class="reference internal" href="#occ-tolerance"><tt class="docutils literal"><span class="pre">OCC_TOLERANCE</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-keywords-controlling-mp2-no-approximations">Advanced Keywords Controlling MP2 NO Approximations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#charge-transfer-in-sapt">Charge-Transfer in SAPT</a></li>
+<li><a class="reference internal" href="#monomer-centered-basis-computations">Monomer-Centered Basis Computations</a></li>
+<li><a class="reference internal" href="#interpreting-sapt-results">Interpreting SAPT Results</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="detci.html"
+                        title="previous chapter">CI: Configuration Interaction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="adc.html"
+                        title="next chapter">ADC: Ab Initio Polarization Propagator</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/sapt.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adc.html" title="ADC: Ab Initio Polarization Propagator"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="detci.html" title="CI: Configuration Interaction"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Jul 08, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

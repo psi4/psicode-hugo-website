@@ -1,0 +1,219 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Frequency &mdash; PSI4 [beta5] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta5] documentation" href="index.html" />
+    <link rel="up" title="Psithon Functions: Invoking a Calculation" href="psithonfunc.html" />
+    <link rel="next" title="Database" href="db.html" />
+    <link rel="prev" title="Optimize" href="opt.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="db.html" title="Database"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="opt.html" title="Optimize"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="frequency">
+<span id="func-freq"></span><h1>Frequency<a class="headerlink" href="#frequency" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="driver.frequency">
+<tt class="descname">frequency</tt><big>(</big><em>name</em><span class="optional">[</span>, <em>func</em>, <em>mode</em>, <em>dertype</em>, <em>irrep</em>, <em>molecule</em><span class="optional">]</span><big>)</big><a class="reference internal" href="_modules/driver.html#frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#driver.frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to compute harmonic vibrational frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Aliases :</th><td class="field-body">frequencies(), freq()</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>float</em>) Total electronic energy in Hartrees.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Analytic hessians are not available. Frequencies will proceed through
+finite differences according to availability of gradients or energies.</p>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>Some features are not yet implemented. Buy a developer a coffee.</p>
+<ul class="last simple">
+<li>Implement sow/reap mode for finite difference of gradients. Presently only for findif of energies.</li>
+</ul>
+</div>
+<table class="docutils field-list" frame="void" id="table-freq-gen" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; <p><tt class="docutils literal"><span class="pre">'scf'</span></tt> || <tt class="docutils literal"><span class="pre">'df-mp2'</span></tt> || <tt class="docutils literal"><span class="pre">'ci5'</span></tt> || etc.</p>
+<p>First argument, usually unlabeled. Indicates the computational method
+to be applied to the system.</p>
+</li>
+<li><strong>dertype</strong> (<a class="reference internal" href="notes_py.html#op-py-dertype"><em>dertype</em></a>) &#8211; <p><img class="math" src="_images/math/843622567e12d686e4e2f94ddfcb444e8ecde0d2.png" alt="\Rightarrow" style="vertical-align: -1px"/> <tt class="docutils literal"><span class="pre">'hessian'</span></tt> <img class="math" src="_images/math/d773375e7bd7f973b121cd9403ad90d3806d6996.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <tt class="docutils literal"><span class="pre">'gradient'</span></tt> || <tt class="docutils literal"><span class="pre">'energy'</span></tt></p>
+<p>Indicates whether analytic (if available- they&#8217;re not), finite
+difference of gradients (if available) or finite difference of
+energies is to be performed.</p>
+</li>
+<li><strong>mode</strong> (<em>string</em>) &#8211; <p><img class="math" src="_images/math/843622567e12d686e4e2f94ddfcb444e8ecde0d2.png" alt="\Rightarrow" style="vertical-align: -1px"/> <tt class="docutils literal"><span class="pre">'continuous'</span></tt> <img class="math" src="_images/math/d773375e7bd7f973b121cd9403ad90d3806d6996.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <tt class="docutils literal"><span class="pre">'sow'</span></tt> || <tt class="docutils literal"><span class="pre">'reap'</span></tt></p>
+<p>For a finite difference of energies or gradients frequency, indicates
+whether the calculations required to complet the frequency are to be run
+in one file (<tt class="docutils literal"><span class="pre">'continuous'</span></tt>) or are to be farmed out in an
+embarrassingly parallel fashion (<tt class="docutils literal"><span class="pre">'sow'</span></tt>/<tt class="docutils literal"><span class="pre">'reap'</span></tt>)/ For the latter,
+run an initial job with <tt class="docutils literal"><span class="pre">'sow'</span></tt> and follow instructions in its output file.</p>
+</li>
+<li><strong>irrep</strong> (<em>int or string</em>) &#8211; <p><img class="math" src="_images/math/843622567e12d686e4e2f94ddfcb444e8ecde0d2.png" alt="\Rightarrow" style="vertical-align: -1px"/> <tt class="docutils literal"><span class="pre">-1</span></tt> <img class="math" src="_images/math/d773375e7bd7f973b121cd9403ad90d3806d6996.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <tt class="docutils literal"><span class="pre">1</span></tt> || <tt class="docutils literal"><span class="pre">'b2'</span></tt> || <tt class="docutils literal"><span class="pre">'App'</span></tt> || etc.</p>
+<p>Indicates which symmetry block (<a class="reference internal" href="psithoninput.html#table-irrepordering"><em>Cotton</em></a> ordering) of vibrational
+frequencies to be computed. <tt class="docutils literal"><span class="pre">1</span></tt>, <tt class="docutils literal"><span class="pre">'1'</span></tt>, or <tt class="docutils literal"><span class="pre">'a1'</span></tt> represents
+<img class="math" src="_images/math/1ab39d761413804680d26d972381f028001562f5.png" alt="a_1" style="vertical-align: -4px"/>, requesting only the totally symmetric modes.
+<tt class="docutils literal"><span class="pre">-1</span></tt> indicates a full frequency calculation.</p>
+</li>
+<li><strong>molecule</strong> (<a class="reference internal" href="notes_py.html#op-py-molecule"><em>molecule</em></a>) &#8211; <p><tt class="docutils literal"><span class="pre">h2o</span></tt> || etc.</p>
+<p>The target molecule, if not the last molecule defined.</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># [1] &lt;example description&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="n">example</span> <span class="n">python</span> <span class="n">command</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># [2] Frequency calculation for b2 modes through finite difference of gradients</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span><span class="p">(</span><span class="s">&#39;scf&#39;</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">irrep</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="opt.html"
+                        title="previous chapter">Optimize</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="db.html"
+                        title="next chapter">Database</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/freq.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="db.html" title="Database"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="opt.html" title="Optimize"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Jul 08, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

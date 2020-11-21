@@ -1,0 +1,1000 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pcmgetkw &mdash; PSI4 [beta5] documentation</title>
+    
+    <link rel="stylesheet" href="../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'beta5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta5] documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for pcmgetkw</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c"># vim:syntax=python</span>
+<span class="c">#</span>
+<span class="c">## @package getkw.py</span>
+<span class="c">## @brief getkw -- a simple input parser for Fortran 95</span>
+<span class="c">#</span>
+<span class="c"># Written by Jonas Juselius &lt;jonas.juselius@chem.uit.no&gt; </span>
+<span class="c"># University of Tromsø, 2006</span>
+<span class="c">#</span>
+<span class="c"># TODO: </span>
+<span class="c">#       o general cleanup</span>
+<span class="c">#       o better python interface</span>
+<span class="c">#       o Pretty print inputs back to human readable form</span>
+<span class="c">#</span>
+<span class="c"># Known bugs: names with &#39;-&#39; mess things up...</span>
+<span class="c">#</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span><span class="nn">os</span><span class="o">,</span><span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyparsing</span> <span class="kn">import</span> \
+	<span class="n">Literal</span><span class="p">,</span> <span class="n">Word</span><span class="p">,</span> <span class="n">ZeroOrMore</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">removeQuotes</span><span class="p">,</span> \
+	<span class="n">printables</span><span class="p">,</span> <span class="n">ParseException</span><span class="p">,</span> <span class="n">restOfLine</span><span class="p">,</span> <span class="n">alphas</span><span class="p">,</span> <span class="n">alphanums</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> \
+	<span class="n">pythonStyleComment</span><span class="p">,</span> <span class="n">oneOf</span><span class="p">,</span> <span class="n">quotedString</span><span class="p">,</span> <span class="n">SkipTo</span><span class="p">,</span> <span class="n">Forward</span><span class="p">,</span> \
+	<span class="n">commaSeparatedList</span><span class="p">,</span> <span class="n">OneOrMore</span><span class="p">,</span> <span class="n">Combine</span><span class="p">,</span> <span class="n">srange</span><span class="p">,</span> <span class="n">delimitedList</span><span class="p">,</span> \
+	<span class="n">downcaseTokens</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">StringEnd</span><span class="p">,</span> <span class="n">Regex</span>
+
+<span class="n">verbose</span><span class="o">=</span><span class="bp">True</span>
+<span class="n">strict</span><span class="o">=</span><span class="bp">True</span>
+
+<div class="viewcode-block" id="Section"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section">[docs]</a><span class="k">class</span> <span class="nc">Section</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Section class</span>
+
+<span class="sd">	Placehoder for section objects</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">tag</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">req</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="o">=</span><span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="o">=</span><span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="o">=</span><span class="n">tag</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">req</span><span class="o">=</span><span class="n">req</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="bp">False</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">=</span><span class="n">callback</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fullname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+		<span class="k">if</span> <span class="n">tag</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fullname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fullname</span><span class="o">+</span><span class="s">&#39;&lt;&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="o">+</span><span class="s">&#39;&gt;&#39;</span>
+
+	<span class="k">def</span> <span class="nf">__cmp__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">cmp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+			<span class="n">foo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sect</span>
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+			<span class="n">foo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kw</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">None</span>
+		<span class="k">return</span> <span class="n">foo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Section</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">val</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Keyword</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">val</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&#39;Not a Section or Keyword&#39;</span>
+	
+<div class="viewcode-block" id="Section.get"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.get">[docs]</a>	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getitem__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Section.set"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.set">[docs]</a>	<span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">__setitem__</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">val</span><span class="p">)</span>
+</div>
+	<span class="k">def</span> <span class="nf">_split_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+		<span class="n">i</span><span class="o">=</span><span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s">&#39;&lt;&#39;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+			<span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+		<span class="n">j</span><span class="o">=</span><span class="n">string</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s">&#39;&gt;&#39;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="s">&#39;faulty tag spec&#39;</span>
+		<span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">i</span><span class="p">],</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">j</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="Section.is_set"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.is_set">[docs]</a>	<span class="k">def</span> <span class="nf">is_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
+		<span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_tag</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+			<span class="n">sects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">sects</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+				<span class="k">return</span> <span class="n">sects</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="s">&#39;missing key&#39;</span>
+		<span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Section.is_required"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.is_required">[docs]</a>	<span class="k">def</span> <span class="nf">is_required</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">req</span>
+</div>
+<div class="viewcode-block" id="Section.add_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.add_sect">[docs]</a>	<span class="k">def</span> <span class="nf">add_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sect</span><span class="p">,</span> <span class="nb">set</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sect</span>
+		<span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">sect</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">sect</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">sect</span><span class="o">.</span><span class="n">tag</span><span class="p">):</span>
+				<span class="k">print</span> <span class="s">&#39;Error: Section &quot;</span><span class="si">%s</span><span class="s">&quot; already defined!&#39;</span> <span class="o">%</span> \
+						<span class="p">(</span><span class="n">sect</span><span class="o">.</span><span class="n">fullname</span><span class="p">)</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+			<span class="n">s</span><span class="p">[</span><span class="n">sect</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="n">sect</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">=</span><span class="n">sect</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">s</span><span class="p">[</span><span class="n">sect</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="n">sect</span><span class="o">.</span><span class="n">tag</span> <span class="p">:</span> <span class="n">sect</span><span class="p">}</span>
+		<span class="n">sect</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="nb">set</span>
+</div>
+<div class="viewcode-block" id="Section.add_kwkw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.add_kwkw">[docs]</a>	<span class="k">def</span> <span class="nf">add_kwkw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kw</span><span class="p">,</span> <span class="nb">set</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">kw</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">kw</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">=</span><span class="n">kw</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;Error: Keyword &quot;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot; already defined!&#39;</span> <span class="o">%</span> \
+					<span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">kw</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">kw</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="nb">set</span>
+</div>
+<div class="viewcode-block" id="Section.add_kw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.add_kw">[docs]</a>	<span class="k">def</span> <span class="nf">add_kw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">req</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="nb">set</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+			<span class="k">print</span> <span class="s">&#39;Error: Keyword &quot;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot; already defined!&#39;</span> <span class="o">%</span> \
+					<span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">kw</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">kw</span><span class="o">=</span><span class="n">Keyword</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">typ</span><span class="p">,</span><span class="n">arg</span><span class="p">,</span><span class="n">req</span><span class="p">,</span><span class="n">callback</span><span class="p">)</span>
+		<span class="n">kw</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="nb">set</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">=</span><span class="n">kw</span>
+</div>
+<div class="viewcode-block" id="Section.fetch_kw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.fetch_kw">[docs]</a>	<span class="k">def</span> <span class="nf">fetch_kw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Section.find_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.find_sect">[docs]</a>	<span class="k">def</span> <span class="nf">find_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+		<span class="n">path</span><span class="o">=</span><span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">)</span>
+		<span class="n">name</span><span class="o">=</span><span class="bp">None</span>
+		<span class="n">tag</span><span class="o">=</span><span class="bp">None</span>
+		<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sect</span>
+		<span class="n">pname</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+			<span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_tag</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+			<span class="n">pname</span><span class="o">=</span><span class="n">pname</span><span class="o">+</span><span class="n">i</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+			<span class="k">except</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&#39;Invalid section: &#39;</span><span class="p">,</span> <span class="n">pname</span>
+				<span class="k">return</span> <span class="bp">None</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">pname</span><span class="o">=</span><span class="n">pname</span><span class="o">+</span><span class="s">&#39;.&#39;</span>
+		<span class="k">return</span> <span class="n">s</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Section.get_keyword"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.get_keyword">[docs]</a>	<span class="k">def</span> <span class="nf">get_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+		<span class="n">path</span><span class="o">=</span><span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">)</span>
+		<span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sect</span>
+		<span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kw</span>
+		<span class="n">pname</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="n">pname</span><span class="o">=</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">i</span><span class="o">=</span><span class="n">pname</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+				<span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_tag</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+				<span class="n">pname</span><span class="o">=</span><span class="n">pname</span><span class="o">+</span><span class="n">i</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+				<span class="k">except</span><span class="p">:</span>
+					<span class="nb">str</span><span class="o">=</span><span class="s">&#39;Invalid section: &#39;</span> <span class="o">+</span> <span class="n">pname</span>
+					<span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">,</span> <span class="nb">str</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">pname</span><span class="o">=</span><span class="n">pname</span><span class="o">+</span><span class="s">&#39;.&#39;</span>
+			<span class="n">pname</span><span class="o">=</span><span class="n">pname</span><span class="o">+</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:][</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">i</span><span class="o">=</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:][</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">k</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">kw</span>
+		<span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+			<span class="k">return</span> <span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+		<span class="nb">str</span><span class="o">=</span><span class="s">&#39;No such key: &#39;</span> <span class="o">+</span> <span class="n">pname</span>
+		<span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">,</span> <span class="nb">str</span>
+</div>
+<div class="viewcode-block" id="Section.getkw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.getkw">[docs]</a>	<span class="k">def</span> <span class="nf">getkw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+		<span class="n">kw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_keyword</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">kw</span><span class="o">.</span><span class="n">arg</span>
+</div>
+<div class="viewcode-block" id="Section.setkw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.setkw">[docs]</a>	<span class="k">def</span> <span class="nf">setkw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">setkw</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;Error: invalid kw: &#39;</span><span class="p">,</span> <span class="n">name</span>
+</div>
+<div class="viewcode-block" id="Section.fetch_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.fetch_sect">[docs]</a>	<span class="k">def</span> <span class="nf">fetch_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+		<span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_tag</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">tag</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Section.get_keys"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.get_keys">[docs]</a>	<span class="k">def</span> <span class="nf">get_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span>
+</div>
+<div class="viewcode-block" id="Section.get_sects"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.get_sects">[docs]</a>	<span class="k">def</span> <span class="nf">get_sects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span>
+</div>
+<div class="viewcode-block" id="Section.status"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.status">[docs]</a>	<span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span>
+	</div>
+<div class="viewcode-block" id="Section.set_status"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.set_status">[docs]</a>	<span class="k">def</span> <span class="nf">set_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">set</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="bp">True</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Section.sanitize"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.sanitize">[docs]</a>	<span class="k">def</span> <span class="nf">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">templ</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">equalize</span><span class="p">(</span><span class="n">templ</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">xvalidate</span><span class="p">(</span><span class="n">templ</span><span class="p">)</span>
+
+	<span class="c"># add missing keys</span></div>
+<div class="viewcode-block" id="Section.equalize"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.equalize">[docs]</a>	<span class="k">def</span> <span class="nf">equalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">templ</span><span class="p">):</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">templ</span><span class="o">.</span><span class="n">kw</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">templ</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">templ</span><span class="o">.</span><span class="n">sect</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="bp">None</span> <span class="p">:</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">templ</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">None</span><span class="p">])}</span>
+			<span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">equalize</span><span class="p">(</span><span class="n">templ</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">None</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="Section.run_callbacks"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.run_callbacks">[docs]</a>	<span class="k">def</span> <span class="nf">run_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">templ</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">templ</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">templ</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">templ</span><span class="o">.</span><span class="n">kw</span><span class="p">:</span>
+			<span class="n">cb</span><span class="o">=</span><span class="n">templ</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">cb</span><span class="o">.</span><span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="n">cb</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">templ</span><span class="o">.</span><span class="n">sect</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">run_callbacks</span><span class="p">(</span><span class="n">templ</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">None</span><span class="p">])</span>
+
+<span class="c">#verify!</span></div>
+<div class="viewcode-block" id="Section.sanity_check"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.sanity_check">[docs]</a>	<span class="k">def</span> <span class="nf">sanity_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="n">dlm</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+		<span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">path</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="o">+</span><span class="n">dlm</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+			<span class="n">dlm</span><span class="o">=</span><span class="s">&#39;.&#39;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">req</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;&gt;&gt;&gt; Required section not set: </span><span class="si">%s</span><span class="s"> </span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">:</span>
+			<span class="n">i</span><span class="o">.</span><span class="n">sanity_check</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+				<span class="n">j</span><span class="o">.</span><span class="n">sanity_check</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+	<span class="c">#cross-validate against a template</span></div>
+<div class="viewcode-block" id="Section.xvalidate"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.xvalidate">[docs]</a>	<span class="k">def</span> <span class="nf">xvalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">templ</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="n">dlm</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+		<span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">path</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="o">+</span><span class="n">dlm</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+			<span class="n">dlm</span><span class="o">=</span><span class="s">&#39;.&#39;</span>
+		<span class="k">if</span> <span class="n">templ</span><span class="o">.</span><span class="n">req</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;&gt;&gt;&gt; Required section not set: </span><span class="si">%s</span><span class="s"> </span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">path</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">:</span>
+			<span class="n">j</span><span class="o">=</span><span class="n">templ</span><span class="o">.</span><span class="n">fetch_kw</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> 
+			<span class="k">if</span> <span class="n">j</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&#39;&gt;&gt;&gt; Invalid keyword: </span><span class="si">%s</span><span class="s"> &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">dlm</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">xvalidate</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">path</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">:</span>
+			<span class="n">j</span><span class="o">=</span><span class="n">templ</span><span class="o">.</span><span class="n">fetch_sect</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> 
+			<span class="k">if</span> <span class="n">j</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&#39;&gt;&gt;&gt; Invalid section: </span><span class="si">%s</span><span class="s"> &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">dlm</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">xvalidate</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">path</span><span class="p">)</span>
+</div>
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">nsect</span><span class="o">=</span><span class="mi">0</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+				<span class="n">nsect</span><span class="o">=</span><span class="n">nsect</span><span class="o">+</span><span class="mi">1</span>
+		<span class="n">nkw</span><span class="o">=</span><span class="mi">0</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">:</span>
+			<span class="n">nkw</span><span class="o">=</span><span class="n">nkw</span><span class="o">+</span><span class="mi">1</span>
+		
+		<span class="n">s</span><span class="o">=</span><span class="s">&quot;SECT </span><span class="si">%s</span><span class="s"> </span><span class="si">%d</span><span class="s"> </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">nsect</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="o">+</span><span class="s">&quot;TAG T KW </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nkw</span><span class="p">)</span>
+			<span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="o">+</span><span class="s">&quot;TAG F KW </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nkw</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">:</span>
+			<span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kw</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+				<span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">tag</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">s</span>
+
+<div class="viewcode-block" id="Section.check_key"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Section.check_key">[docs]</a>	<span class="k">def</span> <span class="nf">check_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+		<span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_tag</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sect</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">tag</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;No such key: &#39;</span><span class="p">,</span> <span class="n">key</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+				<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">return</span> <span class="bp">False</span>
+
+		</div></div>
+<div class="viewcode-block" id="Keyword"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword">[docs]</a><span class="k">class</span> <span class="nc">Keyword</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Placehoder for keyword objects</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">req</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">=</span><span class="n">typ</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">req</span><span class="o">=</span><span class="n">req</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">nargs</span><span class="o">=</span><span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="o">=</span><span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">is_array</span><span class="o">=</span><span class="bp">False</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="o">=</span><span class="n">callback</span>
+		
+		<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&#39;_ARRAY&#39;</span><span class="p">,</span> <span class="n">typ</span><span class="p">)</span> <span class="ow">or</span> <span class="n">typ</span> <span class="o">==</span> <span class="s">&#39;DATA&#39;</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">is_array</span><span class="o">=</span><span class="bp">True</span>
+			<span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c"># unlimited arg length</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">nargs</span><span class="o">=-</span><span class="mi">1</span>
+			<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span> <span class="c"># number of elements in self.arg == arg</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">nargs</span><span class="o">=</span><span class="n">arg</span>  
+				<span class="n">arg</span><span class="o">=</span><span class="bp">None</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">nargs</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">nargs</span><span class="o">=</span><span class="mi">1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">setkw</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="bp">False</span> <span class="c"># reset the self.isset flag</span>
+
+	<span class="k">def</span> <span class="nf">__cmp__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">cmp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">IndexError</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">arg</span>
+	
+<div class="viewcode-block" id="Keyword.setkw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.setkw">[docs]</a>	<span class="k">def</span> <span class="nf">setkw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c"># init stage</span>
+			<span class="k">return</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_array</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">nargs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> 
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nargs</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&quot;keyword lenght mismatsh </span><span class="si">%s</span><span class="s">(</span><span class="si">%i</span><span class="s">): </span><span class="si">%i</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">nargs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="o">=</span><span class="n">arg</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="o">=</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">typecheck</span><span class="p">()</span>
+		<span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;Invalid argument:&#39;</span><span class="p">,</span> <span class="n">arg</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Keyword.get"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.get">[docs]</a>	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_array</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Keyword.set"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.set">[docs]</a>	<span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">setkw</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+	</div>
+<div class="viewcode-block" id="Keyword.sanity_check"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.sanity_check">[docs]</a>	<span class="k">def</span> <span class="nf">sanity_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="o">+</span><span class="s">&#39;.&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">req</span>  <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;&gt;&gt;&gt; Required key not set: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Keyword.xvalidate"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.xvalidate">[docs]</a>	<span class="k">def</span> <span class="nf">xvalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">templ</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">path</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+			<span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="o">+</span><span class="s">&#39;.&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+		<span class="k">if</span> <span class="n">templ</span><span class="o">.</span><span class="n">req</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;&gt;&gt;&gt; Required key not set: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">templ</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;INT&#39;</span><span class="p">:</span> 
+				<span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="o">=</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">=</span><span class="s">&#39;DBL&#39;</span>
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;INT_ARRAY&#39;</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="o">=</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">=</span><span class="s">&#39;DBL_ARRAY&#39;</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&#39;&gt;&gt;&gt; Invalid data type in: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span>
+				<span class="k">print</span> <span class="s">&#39; -&gt; wanted </span><span class="si">%s</span><span class="s">, got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">templ</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">templ</span><span class="o">.</span><span class="n">nargs</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="c">#  &lt; 0 == unlimited arg length</span>
+			<span class="k">if</span> <span class="n">templ</span><span class="o">.</span><span class="n">nargs</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">):</span>
+				<span class="k">print</span> <span class="s">&#39;&gt;&gt;&gt; Invalid data length in: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span>
+				<span class="k">print</span> <span class="s">&#39; -&gt; wanted </span><span class="si">%d</span><span class="s">, got </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">templ</span><span class="o">.</span><span class="n">nargs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">))</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">True</span>
+				</div>
+<div class="viewcode-block" id="Keyword.typecheck"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.typecheck">[docs]</a>	<span class="k">def</span> <span class="nf">typecheck</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;None&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;INT&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;INT_ARRAY&#39;</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">:</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">IntType</span><span class="p">:</span>
+					<span class="k">print</span> <span class="s">&#39;getkw: Not an integer: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span><span class="n">i</span>
+					<span class="k">raise</span> <span class="ne">TypeError</span>
+		<span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;DBL&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;DBL_ARRAY&#39;</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">)):</span>
+				<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="n">IntType</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="n">FloatType</span><span class="p">:</span>
+					<span class="k">print</span> <span class="s">&#39;getkw: Not a real: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+					<span class="k">raise</span> <span class="ne">TypeError</span>
+		<span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;BOOL&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;BOOL_ARRAY&#39;</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">:</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">BooleanType</span><span class="p">:</span>
+					<span class="k">print</span> <span class="s">&#39;getkw: Not a bool: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span><span class="n">i</span>
+					<span class="k">raise</span> <span class="ne">TypeError</span>
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;STR&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;STR_ARRAY&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;DATA&#39;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;getkw: Unknown type: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+			<span class="k">raise</span> <span class="ne">TypeError</span>
+		<span class="k">return</span> <span class="bp">True</span>
+	</div>
+<div class="viewcode-block" id="Keyword.is_type"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.is_type">[docs]</a>	<span class="k">def</span> <span class="nf">is_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Keyword.is_set"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.is_set">[docs]</a>	<span class="k">def</span> <span class="nf">is_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span>
+</div>
+<div class="viewcode-block" id="Keyword.is_required"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.is_required">[docs]</a>	<span class="k">def</span> <span class="nf">is_required</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">req</span>
+	</div>
+<div class="viewcode-block" id="Keyword.set_status"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Keyword.set_status">[docs]</a>	<span class="k">def</span> <span class="nf">set_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">set</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="bp">True</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="o">=</span><span class="bp">False</span>
+</div>
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="c">#        if self.type == &#39;STR&#39;: </span>
+<span class="c">#            print &#39;foo&#39;, self.name, self.arg</span>
+		<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#39;STR&#39;</span> <span class="ow">or</span> <span class="s">&#39;STR_ARRAY&#39;</span> <span class="ow">or</span> <span class="s">&#39;DATA&#39;</span><span class="p">)</span> <span class="ow">and</span> \
+				<span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span> <span class="o">==</span> <span class="s">&#39;&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span> <span class="o">==</span> <span class="bp">None</span><span class="p">):</span> <span class="c"># empty string</span>
+			<span class="n">nargs</span><span class="o">=-</span><span class="mi">1</span> <span class="c"># flags as empty for Fortran code</span>
+		<span class="k">else</span><span class="p">:</span> 
+			<span class="n">nargs</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span>
+			<span class="n">tmp</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg</span><span class="p">:</span>
+				<span class="n">tmp</span><span class="o">=</span><span class="n">tmp</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+		<span class="n">s</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%d</span><span class="s"> </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">nargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">isset</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">s</span><span class="o">+</span><span class="n">tmp</span>
+</div>
+<div class="viewcode-block" id="Getkw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw">[docs]</a><span class="k">class</span> <span class="nc">Getkw</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Unified interface to sections and keywords.</span>
+<span class="sd">	Implements a path stack.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">=</span><span class="n">top</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Getkw.get_active_section"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.get_active_section">[docs]</a>	<span class="k">def</span> <span class="nf">get_active_section</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span>
+</div>
+<div class="viewcode-block" id="Getkw.getkw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.getkw">[docs]</a>	<span class="k">def</span> <span class="nf">getkw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">getkw</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Getkw.get_keyword"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.get_keyword">[docs]</a>	<span class="k">def</span> <span class="nf">get_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+		<span class="n">retur</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">get_keyword</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">retur</span>
+</div>
+<div class="viewcode-block" id="Getkw.setkw"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.setkw">[docs]</a>	<span class="k">def</span> <span class="nf">setkw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">setkw</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Getkw.find_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.find_sect">[docs]</a>	<span class="k">def</span> <span class="nf">find_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">find_sect</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Getkw.sanitize"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.sanitize">[docs]</a>	<span class="k">def</span> <span class="nf">sanitize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">templ</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">sanitize</span><span class="p">(</span><span class="n">templ</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Getkw.run_callbacks"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.run_callbacks">[docs]</a>	<span class="k">def</span> <span class="nf">run_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">templ</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">run_callbacks</span><span class="p">(</span><span class="n">templ</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Getkw.push_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.push_sect">[docs]</a>	<span class="k">def</span> <span class="nf">push_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+		<span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">find_sect</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span>
+</div>
+<div class="viewcode-block" id="Getkw.pop_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.pop_sect">[docs]</a>	<span class="k">def</span> <span class="nf">pop_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span>
+</div>
+<div class="viewcode-block" id="Getkw.get_topsect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.Getkw.get_topsect">[docs]</a>	<span class="k">def</span> <span class="nf">get_topsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span>
+</div></div>
+<div class="viewcode-block" id="GetkwParser"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser">[docs]</a><span class="k">class</span> <span class="nc">GetkwParser</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Implements a class to do the actual parsing of input files and store</span>
+<span class="sd">	the results in Sections and Keywords. The parseFile() method returns a</span>
+<span class="sd">	Getkw object.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">bnf</span><span class="o">=</span><span class="bp">None</span>
+	<span class="n">caseless</span><span class="o">=</span><span class="bp">False</span>
+	<span class="n">yes</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;(1|yes|true|on)$&#39;</span><span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+	<span class="n">no</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;(0|no|false|off)$&#39;</span><span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">templ</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="o">=</span><span class="n">Section</span><span class="p">(</span><span class="s">&#39;toplevel&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">templ</span><span class="o">=</span><span class="n">templ</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="o">=</span><span class="bp">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="o">=</span><span class="bp">None</span>
+		<span class="k">if</span> <span class="n">templ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">templ</span><span class="p">]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">=</span><span class="bp">None</span>
+		<span class="k">if</span> <span class="n">GetkwParser</span><span class="o">.</span><span class="n">bnf</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">GetkwParser</span><span class="o">.</span><span class="n">bnf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">getkw_bnf</span><span class="p">()</span>
+<span class="c">#        self.parseString=self.bnf.parseString</span>
+<span class="c">#        GetkwParser.bnf.setDebug(True)</span>
+
+<div class="viewcode-block" id="GetkwParser.set_caseless"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.set_caseless">[docs]</a>	<span class="k">def</span> <span class="nf">set_caseless</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">caseless</span><span class="o">=</span><span class="bp">True</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">caseless</span><span class="o">=</span><span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.parseFile"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.parseFile">[docs]</a>	<span class="k">def</span> <span class="nf">parseFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fil</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bnf</span><span class="o">.</span><span class="n">parseFile</span><span class="p">(</span><span class="n">fil</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Getkw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.parseString"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.parseString">[docs]</a>	<span class="k">def</span> <span class="nf">parseString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">bnf</span><span class="o">.</span><span class="n">parseString</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Getkw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.add_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.add_sect">[docs]</a>	<span class="k">def</span> <span class="nf">add_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+		<span class="n">q</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">asList</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="o">=</span><span class="n">s</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="o">=</span><span class="n">l</span>
+		<span class="n">name</span><span class="o">=</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">tag</span><span class="o">=</span><span class="bp">None</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">tag</span><span class="o">=</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">caseless</span><span class="p">:</span>
+			<span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+		<span class="n">k</span><span class="o">=</span><span class="n">Section</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">add_sect</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">set</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  
+		<span class="bp">self</span><span class="o">.</span><span class="n">push_sect</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.push_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.push_sect">[docs]</a>	<span class="k">def</span> <span class="nf">push_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">k</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">templ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fetch_sect</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&quot;Invalid section on line </span><span class="si">%d</span><span class="s">: </span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+						<span class="n">lineno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">),</span> <span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">))</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.pop_sect"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.pop_sect">[docs]</a>	<span class="k">def</span> <span class="nf">pop_sect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">templ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>  
+			<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+	</div>
+<div class="viewcode-block" id="GetkwParser.store_key"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.store_key">[docs]</a>	<span class="k">def</span> <span class="nf">store_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+		<span class="n">q</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">asList</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="o">=</span><span class="n">s</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="o">=</span><span class="n">l</span>
+		<span class="n">name</span><span class="o">=</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">arg</span><span class="o">=</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">caseless</span><span class="p">:</span>
+			<span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">templ</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">argt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixate_type</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fetch_kw</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&quot;Unknown keyword &#39;</span><span class="si">%s</span><span class="s">&#39; line: </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> 
+						<span class="n">lineno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">))</span>
+				<span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
+					<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="n">argt</span><span class="o">=</span><span class="bp">None</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">argt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="n">k</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+		<span class="n">k</span><span class="o">=</span><span class="n">Keyword</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">argt</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">add_kwkw</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">set</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.store_vector"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.store_vector">[docs]</a>	<span class="k">def</span> <span class="nf">store_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+		<span class="n">q</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">asList</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="o">=</span><span class="n">s</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="o">=</span><span class="n">l</span>
+		<span class="n">name</span><span class="o">=</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">arg</span><span class="o">=</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">caseless</span><span class="p">:</span>
+			<span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">templ</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">argt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixate_type</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+			<span class="n">argt</span><span class="o">=</span><span class="n">argt</span><span class="o">+</span><span class="s">&#39;_ARRAY&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fetch_kw</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">print</span> <span class="s">&quot;Unknown keyword &#39;</span><span class="si">%s</span><span class="s">&#39;, line: </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> 
+						<span class="n">lineno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">))</span>
+				<span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
+					<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="n">argt</span><span class="o">=</span><span class="bp">None</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">nargs</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> 
+					<span class="k">pass</span>
+				<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">!=</span> <span class="n">k</span><span class="o">.</span><span class="n">nargs</span><span class="p">:</span>
+					<span class="k">print</span> <span class="s">&quot;Invalid number of elements for key &#39;</span><span class="si">%s</span><span class="s">&#39;,</span><span class="se">\</span>
+<span class="s">line: </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">name</span><span class="p">,</span> <span class="n">lineno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">))</span>
+					<span class="k">print</span> <span class="s">&quot;  -&gt; </span><span class="si">%d</span><span class="s"> required, </span><span class="si">%d</span><span class="s"> given.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">nargs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+					<span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
+						<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="n">argt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="n">k</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+		<span class="n">k</span><span class="o">=</span><span class="n">Keyword</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">argt</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">add_kwkw</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">set</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.store_data"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.store_data">[docs]</a>	<span class="k">def</span> <span class="nf">store_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+		<span class="n">name</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="o">=</span><span class="n">s</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="o">=</span><span class="n">l</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">caseless</span><span class="p">:</span>
+			<span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+		<span class="n">dat</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+		<span class="n">dat</span><span class="o">=</span><span class="n">dat</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c"># remove empty element at the end</span>
+		<span class="n">arg</span><span class="o">=</span><span class="p">[]</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dat</span><span class="p">:</span>
+			<span class="n">arg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+		<span class="n">k</span><span class="o">=</span><span class="n">Keyword</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s">&#39;DATA&#39;</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">add_kwkw</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="nb">set</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.check_type"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.check_type">[docs]</a>	<span class="k">def</span> <span class="nf">check_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">argt</span><span class="p">):</span>
+		<span class="k">print</span> <span class="s">&quot;You hit a bug! Yipeee!&quot;</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+			<span class="n">argt</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;_ARRAY&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">argt</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">argt</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">argt</span> <span class="o">==</span> <span class="s">&#39;INT&#39;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">ival</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+				<span class="k">print</span> <span class="s">&#39;Invalid type on line </span><span class="si">%d</span><span class="s">: Not an int: </span><span class="se">\n</span><span class="s"> -&gt; </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+						<span class="n">lineno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">),</span> <span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span>
+							<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">argt</span> <span class="o">==</span> <span class="s">&#39;DBL&#39;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">dval</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+				<span class="k">print</span> <span class="s">&#39;Invalid type on line </span><span class="si">%d</span><span class="s">: Not a float: </span><span class="se">\n</span><span class="s"> -&gt; </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+						<span class="n">lineno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">),</span> <span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span>
+							<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">argt</span> <span class="o">==</span> <span class="s">&#39;BOOL&#39;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">lval</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+				<span class="k">print</span> <span class="s">&#39;Invalid type on line </span><span class="si">%d</span><span class="s">: Not a bool: </span><span class="se">\n</span><span class="s"> -&gt; </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+						<span class="n">lineno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">),</span> <span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span>
+							<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">argt</span> <span class="o">!=</span> <span class="s">&#39;STR&#39;</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&#39;Invalid type on line </span><span class="si">%d</span><span class="s">: Not a </span><span class="si">%s</span><span class="s">: </span><span class="se">\n</span><span class="s"> -&gt; </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+					<span class="n">lineno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">),</span> <span class="n">argt</span><span class="p">,</span> <span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span>
+						<span class="bp">self</span><span class="o">.</span><span class="n">strg</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">argt</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.fixate_type"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.fixate_type">[docs]</a>	<span class="k">def</span> <span class="nf">fixate_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">arg</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+			<span class="k">return</span> <span class="s">&#39;BOOL&#39;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+			<span class="k">return</span> <span class="s">&#39;INT&#39;</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+			<span class="k">return</span> <span class="s">&#39;DBL&#39;</span>
+		<span class="k">return</span> <span class="s">&#39;STR&#39;</span>
+	</div>
+<div class="viewcode-block" id="GetkwParser.conv_ival"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.conv_ival">[docs]</a>	<span class="k">def</span> <span class="nf">conv_ival</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">toks</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">toks</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.conv_dval"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.conv_dval">[docs]</a>	<span class="k">def</span> <span class="nf">conv_dval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">toks</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">toks</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.conv_lval"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.conv_lval">[docs]</a>	<span class="k">def</span> <span class="nf">conv_lval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">toks</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">GetkwParser</span><span class="o">.</span><span class="n">yes</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">toks</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+			<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">elif</span> <span class="n">GetkwParser</span><span class="o">.</span><span class="n">no</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">toks</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+			<span class="k">return</span> <span class="bp">False</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">print</span> <span class="s">&quot;Dynga! Perkele.&quot;</span>
+		<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="GetkwParser.getkw_bnf"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.GetkwParser.getkw_bnf">[docs]</a>	<span class="k">def</span> <span class="nf">getkw_bnf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">sect_begin</span>   <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&quot;{&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">sect_end</span>   <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&quot;}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">array_begin</span>   <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&quot;[&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">array_end</span>   <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&quot;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">tag_begin</span>   <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&quot;&lt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">tag_end</span>   <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&quot;&gt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">eql</span>   <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&quot;=&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">dmark</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&#39;$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">end_data</span><span class="o">=</span><span class="n">Literal</span><span class="p">(</span><span class="s">&#39;$end&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span>
+		<span class="n">prtable</span> <span class="o">=</span> <span class="n">alphanums</span><span class="o">+</span><span class="s">r&#39;!$%&amp;*+-./&lt;&gt;?@^_|~&#39;</span>
+		<span class="n">ival</span><span class="o">=</span><span class="n">Regex</span><span class="p">(</span><span class="s">&#39;[-]?\d+&#39;</span><span class="p">)</span>
+		<span class="n">dval</span><span class="o">=</span><span class="n">Regex</span><span class="p">(</span><span class="s">&#39;-?\d+\.\d*([eE]?[+-]?\d+)?&#39;</span><span class="p">)</span>
+		<span class="n">lval</span><span class="o">=</span><span class="n">Regex</span><span class="p">(</span><span class="s">&#39;([Yy]es|[Nn]o|[Tt]rue|[Ff]alse|[Oo]n|[Oo]ff)&#39;</span><span class="p">)</span>
+	
+		<span class="c"># Helper definitions</span>
+
+		<span class="n">kstr</span><span class="o">=</span> <span class="n">quotedString</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">removeQuotes</span><span class="p">)</span> <span class="o">^</span> \
+				<span class="n">dval</span> <span class="o">^</span> <span class="n">ival</span> <span class="o">^</span> <span class="n">lval</span> <span class="o">^</span> <span class="n">Word</span><span class="p">(</span><span class="n">prtable</span><span class="p">)</span>
+		<span class="n">name</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="n">alphas</span><span class="o">+</span><span class="s">&quot;_&quot;</span><span class="p">,</span><span class="n">alphanums</span><span class="o">+</span><span class="s">&quot;_&quot;</span><span class="p">)</span>
+		<span class="n">vec</span><span class="o">=</span><span class="n">array_begin</span><span class="o">+</span><span class="n">delimitedList</span><span class="p">(</span><span class="n">dval</span> <span class="o">^</span> <span class="n">ival</span> <span class="o">^</span> <span class="n">lval</span> <span class="o">^</span> <span class="n">Word</span><span class="p">(</span><span class="n">prtable</span><span class="p">)</span> <span class="o">^</span> \
+				<span class="n">Literal</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">suppress</span><span class="p">()</span> <span class="o">^</span> \
+				<span class="n">quotedString</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">removeQuotes</span><span class="p">))</span><span class="o">+</span><span class="n">array_end</span>
+		<span class="n">sect</span><span class="o">=</span><span class="n">name</span><span class="o">+</span><span class="n">sect_begin</span>
+		<span class="n">tag_sect</span><span class="o">=</span><span class="n">name</span><span class="o">+</span><span class="n">Group</span><span class="p">(</span><span class="n">tag_begin</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="n">tag_end</span><span class="p">)</span><span class="o">+</span><span class="n">sect_begin</span>
+
+		<span class="c"># Grammar</span>
+		<span class="n">keyword</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="n">eql</span> <span class="o">+</span> <span class="n">kstr</span>
+		<span class="n">vector</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="n">eql</span> <span class="o">+</span> <span class="n">vec</span>
+		<span class="n">data</span><span class="o">=</span><span class="n">Combine</span><span class="p">(</span><span class="n">dmark</span><span class="o">+</span><span class="n">name</span><span class="p">)</span><span class="o">+</span><span class="n">SkipTo</span><span class="p">(</span><span class="n">end_data</span><span class="p">)</span><span class="o">+</span><span class="n">end_data</span>
+		<span class="n">section</span><span class="o">=</span><span class="n">Forward</span><span class="p">()</span>
+		<span class="n">sect_def</span><span class="o">=</span><span class="p">(</span><span class="n">sect</span> <span class="o">|</span> <span class="n">tag_sect</span> <span class="p">)</span> <span class="c">#| vec_sect)</span>
+		<span class="nb">input</span><span class="o">=</span><span class="n">section</span> <span class="o">|</span> <span class="n">data</span> <span class="o">|</span> <span class="n">vector</span> <span class="o">|</span> <span class="n">keyword</span> 
+		<span class="n">section</span> <span class="o">&lt;&lt;</span> <span class="n">sect_def</span><span class="o">+</span><span class="n">ZeroOrMore</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">+</span> <span class="n">sect_end</span>
+
+		<span class="c"># Parsing actions	</span>
+		<span class="n">ival</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv_ival</span><span class="p">)</span>
+		<span class="n">dval</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv_dval</span><span class="p">)</span>
+		<span class="n">lval</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv_lval</span><span class="p">)</span>
+		<span class="n">keyword</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_key</span><span class="p">)</span>
+		<span class="n">vector</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_vector</span><span class="p">)</span>
+		<span class="n">data</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_data</span><span class="p">)</span>
+		<span class="n">sect</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_sect</span><span class="p">)</span>
+		<span class="n">tag_sect</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_sect</span><span class="p">)</span>
+		<span class="n">sect_end</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_sect</span><span class="p">)</span>
+
+		<span class="n">bnf</span><span class="o">=</span><span class="n">ZeroOrMore</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">+</span> <span class="n">StringEnd</span><span class="p">()</span><span class="o">.</span><span class="n">setFailAction</span><span class="p">(</span><span class="n">parse_error</span><span class="p">)</span>
+		<span class="n">bnf</span><span class="o">.</span><span class="n">ignore</span><span class="p">(</span><span class="n">pythonStyleComment</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">bnf</span>
+</div></div>
+<div class="viewcode-block" id="parse_error"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.parse_error">[docs]</a><span class="k">def</span> <span class="nf">parse_error</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">err</span><span class="p">):</span>
+	<span class="k">print</span> <span class="s">&quot;Parse error, line </span><span class="si">%d</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>  <span class="p">(</span> <span class="n">lineno</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="n">err</span><span class="o">.</span><span class="n">pstr</span><span class="p">),</span> 
+			<span class="n">line</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span><span class="n">err</span><span class="o">.</span><span class="n">pstr</span><span class="p">))</span>
+	<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c">######## Convenience routines for callbacks ########</span>
+</div>
+<div class="viewcode-block" id="check_opt"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.check_opt">[docs]</a><span class="k">def</span> <span class="nf">check_opt</span><span class="p">(</span><span class="n">sect</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">k</span><span class="o">=</span><span class="n">sect</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+	<span class="k">except</span><span class="p">:</span>
+		<span class="k">print</span> <span class="s">&#39;You have a typo in the code for key&#39;</span><span class="p">,</span> <span class="n">key</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+			<span class="k">return</span> <span class="bp">True</span>
+	<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="check_required"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.check_required">[docs]</a><span class="k">def</span> <span class="nf">check_required</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">sect</span><span class="p">):</span>
+	<span class="n">err</span><span class="o">=</span><span class="s">&quot;Error: Required option &#39;</span><span class="si">%s</span><span class="s">&#39; not set in section &#39;</span><span class="si">%s%s</span><span class="s">&#39;!&quot;</span> 
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">:</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">check_opt</span><span class="p">(</span><span class="n">sect</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">sect</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">sect</span><span class="o">.</span><span class="n">tag</span> <span class="ow">or</span> <span class="n">sect</span><span class="o">.</span><span class="n">tag</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="k">print</span> <span class="n">err</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">sect</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">print</span> <span class="n">err</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">sect</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="n">sect</span><span class="o">.</span><span class="n">tag</span> <span class="o">+</span> <span class="s">&#39;&gt;&#39;</span><span class="p">)</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="check_ignored"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.check_ignored">[docs]</a><span class="k">def</span> <span class="nf">check_ignored</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">sect</span><span class="p">):</span>
+	<span class="n">warn</span><span class="o">=</span><span class="s">&quot;Warning: The &#39;</span><span class="si">%s</span><span class="s">&#39; option will be ignored in section &#39;</span><span class="si">%s%s</span><span class="s">&#39;.&quot;</span> 
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">check_opt</span><span class="p">(</span><span class="n">sect</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">sect</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">sect</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span>
+				<span class="k">print</span> <span class="n">warn</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">sect</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">print</span> <span class="n">warn</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">sect</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;&lt;&#39;</span> <span class="o">+</span> <span class="n">sect</span><span class="o">.</span><span class="n">tag</span> <span class="o">+</span> <span class="s">&#39;&gt;&#39;</span><span class="p">)</span>
+
+<span class="c">####################################################</span>
+</div>
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../autodoc_driver.html#pcmgetkw.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span> <span class="n">strng</span> <span class="p">):</span>
+	<span class="n">bnf</span> <span class="o">=</span> <span class="n">GetkwParser</span><span class="p">()</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">tokens</span><span class="o">=</span><span class="n">bnf</span><span class="o">.</span><span class="n">parseString</span><span class="p">(</span><span class="n">strng</span><span class="p">)</span>
+	<span class="k">except</span> <span class="n">ParseException</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span>
+		<span class="k">print</span> <span class="n">err</span><span class="o">.</span><span class="n">line</span>
+		<span class="k">print</span> <span class="s">&quot; &quot;</span><span class="o">*</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">column</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;^&quot;</span>
+		<span class="k">print</span> <span class="n">err</span>
+	<span class="k">return</span> <span class="n">tokens</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+	<span class="n">teststr</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">title = foo</span>
+<span class="s">string=&quot;fooo bar&quot;</span>
+
+<span class="s">defs {</span>
+<span class="s">foo=[1,2,3]</span>
+<span class="s">bar=99.0</span>
+<span class="s">}</span>
+
+<span class="s">defs&lt;apa&gt; { </span>
+<span class="s">foo=[1, 2, 3,</span>
+<span class="s">4,5, 6,7,8,9, </span>
+<span class="s">10] </span>
+<span class="s">bar=22.0</span>
+<span class="s">}</span>
+
+<span class="s">defs&lt;gorilla&gt; { </span>
+<span class="s">foo=[1, 2, 3,</span>
+<span class="s">4,5, 6,7,8,9, </span>
+<span class="s">10] </span>
+<span class="s">bar=22.0</span>
+<span class="s">}</span>
+
+<span class="s">verbose=False #(yes|true|on|1)</span>
+
+
+<span class="s">raboof {</span>
+<span class="s">    foo=1</span>
+<span class="s">    bar=1</span>
+
+<span class="s">	foobar&lt;gnat&gt;{</span>
+<span class="s">		foo=1</span>
+<span class="s">		bar=2</span>
+<span class="s">	        foobar&lt;gnu&gt;{</span>
+<span class="s">		        foo=1</span>
+<span class="s">		        bar=2</span>
+<span class="s">	        }</span>
+
+<span class="s">	}</span>
+
+<span class="s">    $COORD</span>
+<span class="s">      o 0.0 0.0 0.0</span>
+<span class="s">      h 1.0 1.0 0.0</span>
+<span class="s">      h -1.0 1.0 0.0</span>
+<span class="s">    $end</span>
+<span class="s">}</span>
+
+
+<span class="s">&quot;&quot;&quot;</span>
+<span class="c">#ini = test(teststr)</span>
+<span class="c">#print ini.top</span>
+<span class="c">#    foo=ini.get_keyword(&#39;raboof.foo&#39;)</span>
+<span class="c">#    print dir(foo)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Jul 08, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

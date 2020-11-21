@@ -1,0 +1,379 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DCFT: Density Cumulant Functional Theory &mdash; PSI4 [beta5] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta5] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory" href="dfmp2.html" />
+    <link rel="prev" title="DFT: Density Functional Theory" href="dft.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfmp2.html" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dft.html" title="DFT: Density Functional Theory"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="dcft-density-cumulant-functional-theory">
+<span id="sec-dcft"></span><span id="index-0"></span><h1>DCFT: Density Cumulant Functional Theory<a class="headerlink" href="#dcft-density-cumulant-functional-theory" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Alexander Yu. Sokolov and Andrew C. Simmonett</em></p>
+<p><em>Section author: Alexander Yu. Sokolov</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__dcft.html#apdx-dcft"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__dcft.html#apdx-dcft-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="https://github.com/psi4/psi4release/blob/master/src/bin/dcft">DCFT</a></p>
+<div class="section" id="theory">
+<span id="sec-dcfttheory"></span><h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<p>Density cumulant functional theory (DCFT) is a density-based <em>ab initio</em> theory
+that can compute electronic energies without the use of the wavefunction. The
+theory starts by writing the exact energy expression in terms of the one- and
+two-particle density matrices (OPDM and TPDM):</p>
+<div class="math">
+<p><img src="_images/math/eed9f2d6b06b5f76ad6357736fece3edf04faff2.png" alt="E &amp;= h_p^q \gamma_q^p + \frac{1}{2} g_{pq}^{rs} \gamma_{rs}^{pq}"/></p>
+</div><p>Here we used Einstein convention for the summation over the repeated indices,
+<img class="math" src="_images/math/e62e782bb8932bd78d573c913c179c524dc1ffab.png" alt="h_p^q" style="vertical-align: -8px"/> and <img class="math" src="_images/math/80dd1c1255204588f7f169585d065518414b4729.png" alt="g_{pq}^{rs}" style="vertical-align: -8px"/> are the standard one- and two-electron integrals,
+<img class="math" src="_images/math/f431a39e523f6801f4e5040e7c2fb6cf16bb9579.png" alt="\gamma_p^q" style="vertical-align: -8px"/> and <img class="math" src="_images/math/5f0b63930fc370fae64e8e77489eb50bddc0b2d3.png" alt="\gamma_{pq}^{rs}" style="vertical-align: -8px"/> are the elements of the OPDM and TPDM,
+respectively. Naively, one might expect that it is possible to minimize the
+energy functional in the equation above and obtain the exact energy. This is,
+however, not trivial, as the density matrix elements <img class="math" src="_images/math/f431a39e523f6801f4e5040e7c2fb6cf16bb9579.png" alt="\gamma_p^q" style="vertical-align: -8px"/> and
+<img class="math" src="_images/math/5f0b63930fc370fae64e8e77489eb50bddc0b2d3.png" alt="\gamma_{pq}^{rs}" style="vertical-align: -8px"/> cannot be varied arbitrarily, but must satisfy some
+conditions that make sure that the density matrices are N-representable, <em>i.e.</em>
+correspond to an antisymmetric N-electron wavefunction. Unfortunately, no
+simple set of necessary and sufficient N-representability conditions are known,
+and some of the known conditions are not easily imposed. In addition, the lack
+of separability of the density matrices may result in the loss of
+size-consistency and size-extensivity. In DCFT one takes a different route and
+replaces the TPDM in favor of its two-particle density cumulant:</p>
+<div class="math">
+<p><img src="_images/math/e2f334118c436683c569bd7d0690075ea13ee9d1.png" alt="\lambda_{pq}^{rs} = \gamma_{pq}^{rs} - \gamma_p^r \gamma_q^s + \gamma_p^s \gamma_q^r"/></p>
+</div><p>The one-particle density matrix is separated into its idempotent part
+<img class="math" src="_images/math/da61bb0fa48fe71269aebf9c8e56b39275813994.png" alt="\kappa" style="vertical-align: 0px"/> and a correction <img class="math" src="_images/math/1dc1c0119a604b91be9142370dc3159b6a9bbcb9.png" alt="\tau" style="vertical-align: 0px"/>:</p>
+<div class="math">
+<p><img src="_images/math/6709674553cfc02c2dd806a6e92bba18d39404eb.png" alt="\gamma_p^q = \kappa_p^q + \tau_p^q"/></p>
+</div><p>The idempotent part of the OPDM corresponds to a Hartree-Fock-like density of
+non-interacting electrons, while the non-idempotent correction <img class="math" src="_images/math/1dc1c0119a604b91be9142370dc3159b6a9bbcb9.png" alt="\tau" style="vertical-align: 0px"/>
+depends on the density cumulant and describes the electron correlation effects.
+Inserting the above two equations into the energy expression, we obtain:</p>
+<div class="math">
+<p><img src="_images/math/c81365a83a1637d972e88d916728c8979cd7c858.png" alt="E_{DCFT} &amp;= \frac{1}{2} \left( h_p^q + f_p^q \right) \gamma_q^p  + \frac{1}{4} \bar{g}_{pq}^{rs} \lambda_{rs}^{pq}"/></p>
+</div><p>where the antisymmetrized two-electron integrals and the generalized Fock operator
+matrix elements were defined as follows:</p>
+<div class="math">
+<p><img src="_images/math/a72f8b079c25bbef5596149270e2f553431af9c6.png" alt="\bar{g}_{pq}^{rs} = g_{pq}^{rs} - g_{pq}^{sr}"/></p>
+</div><div class="math">
+<p><img src="_images/math/f0d400fe48a5a5e86a1eeb76fd9981aaa6a0161a.png" alt="f_p^q = h_p^q + \bar{g}_{pr}^{qs} \gamma_{s}^{r}"/></p>
+</div><p>Energy functional <img class="math" src="_images/math/823215379803cb854438688edc5b5898cc7de0a1.png" alt="E_{DCFT}" style="vertical-align: -3px"/> has several important properties. First,
+the energy is now a function of two types of independent parameters, the
+idempotent part of OPDM <img class="math" src="_images/math/da61bb0fa48fe71269aebf9c8e56b39275813994.png" alt="\kappa" style="vertical-align: 0px"/> and the density cumulant
+<img class="math" src="_images/math/ce4588fd900d02afcbd260bc07f54cce49a7dc4a.png" alt="\lambda" style="vertical-align: 0px"/>. As a result, the energy functional is Hermitian,
+which is important for the evaluation of the molecular properties. The additive
+separability of the density cumulant guarantees that all of the DCFT methods
+are size-extensive and size-consistent. Furthermore, the N-representability
+problem is now greatly simplified, because the idempotent part of the OPDM is
+N-representable by construction. One only needs to worry about the
+N-representability of the density cumulant, which is a relatively small part of
+the TPDM.</p>
+<p>In order to obtain the DCFT energy, two conditions must be satisfied:</p>
+<p>1) The energy must be stationary with respect to the variation of the
+idempotent part of the one-particle density matrix <img class="math" src="_images/math/da61bb0fa48fe71269aebf9c8e56b39275813994.png" alt="\kappa" style="vertical-align: 0px"/>. This is
+achieved by the self-consistent diagonalization of the generalized Fock
+operator matrix defined above, which introduces the relaxation of the orbitals.</p>
+<p>2) The energy must be stationary with respect to the variation of the density
+cumulant <img class="math" src="_images/math/ce4588fd900d02afcbd260bc07f54cce49a7dc4a.png" alt="\lambda" style="vertical-align: 0px"/>, constrained to the N-representability conditions.</p>
+<p>Making the energy stationary requires the solution of the two sets of coupled
+equations for the orbital and cumulant updates, respectively (also known as
+residual equations). At the present moment three different algorithms for the
+solution of the system of coupled equations are available (see section
+<a class="reference internal" href="#sec-dcftalgorithms"><em>Iterative Algorithms</em></a> for details).</p>
+<p>Publications resulting from the use of the DCFT code should cite contributions
+listed <a class="reference internal" href="introduction.html#intro-dcftcitations"><em>here</em></a>.</p>
+</div>
+<div class="section" id="methods">
+<span id="sec-dcftmethods"></span><h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>Currently two DCFT methods (functionals) are available: DC-06 and DC-12. Both
+methods use approximate N-representability conditions derived from the
+second-order perturbation theory, but differ in the description of the
+correlated (non-idempotent) part <img class="math" src="_images/math/1dc1c0119a604b91be9142370dc3159b6a9bbcb9.png" alt="\tau" style="vertical-align: 0px"/> of the one-particle density
+matrix. While in the DC-06 method <img class="math" src="_images/math/1dc1c0119a604b91be9142370dc3159b6a9bbcb9.png" alt="\tau" style="vertical-align: 0px"/> is derived from the density cumulant
+in an approximate way, the DC-12 method derives this contribution exactly, and
+therefore takes full advantage of the N-representability conditions. Both DC-06
+and DC-12 methods have similar computational cost. However, the DC-12 method
+usually exhibits much better numerical stability and can be significantly
+cheaper than the DC-06 in the problematic cases as the result of the improved
+convergence. For the comparison of the quality of these methods we refer
+user to the <a class="reference internal" href="introduction.html#intro-dcftcitations"><em>recent publications</em></a>.</p>
+<p>The DCFT functional can be specified by the <a class="reference internal" href="autodoc_glossary_options_c.html#term-dcft-functional-dcft"><em class="xref std std-term">DCFT_FUNCTIONAL</em></a> option. The
+default choice is the DC-06 functional. In addition to the two methods listed
+above, <a class="reference internal" href="autodoc_glossary_options_c.html#term-dcft-functional-dcft"><em class="xref std std-term">DCFT_FUNCTIONAL</em></a> option can be set to CEPA0 (coupled electron
+pair approximation zero, equivalent to linearized coupled cluster doubles
+method, LCCD). CEPA0 can be considered as a particular case of the DC-06 and DC-12
+methods in the limit of zero non-idempotency of OPDM. This option has a limited
+functionality and should only be used for the test purposes.</p>
+<p>At the present moment DCFT computations can only be run with the unrestricted
+orbitals. If the <a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-scf"><em class="xref std std-term">REFERENCE</em></a> option is not specified in the input file,
+the PSI4 Python driver will conveniently set it to UHF for the DCFT
+computations.</p>
+</div>
+<div class="section" id="iterative-algorithms">
+<span id="sec-dcftalgorithms"></span><h2>Iterative Algorithms<a class="headerlink" href="#iterative-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>As explained in the <a class="reference internal" href="#sec-dcfttheory"><em>Theory</em></a> section, in order to obtain the DCFT energy one
+needs to solve the system of coupled equations for the orbitals and the density
+cumulant. At the present moment three iterative algorithms for the solution of the
+equations are available. The choice of the algorithm is controlled using the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-algorithm-dcft"><em class="xref std std-term">ALGORITHM</em></a> option.</p>
+<p>1) Two-step algorithm (can be invoked by setting <a class="reference internal" href="autodoc_glossary_options_c.html#term-algorithm-dcft"><em class="xref std std-term">ALGORITHM</em></a> option to
+TWOSTEP and is currently the default). In two-step algorithm the DCFT equations
+are solved in macroiterations. Each macroiteration consists of two sets of
+microiterations. In the first set the density cumulant equations are solved
+iteratively, while the orbitals are kept fixed. After the density cumulant is
+converged, the second set of microiterations is performed for the
+self-consistent update of the orbitals with the fixed density cumulant. Each
+macroiteration is completed by performing the orbital transformation of the
+integrals. The convergence of the two-step algorithm is accelerated using the
+DIIS extrapolation technique.</p>
+<p>2) Simultaneous algorithm (set <a class="reference internal" href="autodoc_glossary_options_c.html#term-algorithm-dcft"><em class="xref std std-term">ALGORITHM</em></a> to SIMULTANEOUS). In this algorithm
+each macroiteration consists of a single iteration of the cumulant update
+followed by a single iteration of the orbital update and orbital transformation
+of the integrals. The macroiterations are repeated until the simultaneous
+convergence of the cumulant and the orbitals is achieved. As in the two-step algorithm, the DIIS
+extrapolation is used to accelerate the convergence.</p>
+<p>3) Quadratically-convergent algorithm (set <a class="reference internal" href="autodoc_glossary_options_c.html#term-algorithm-dcft"><em class="xref std std-term">ALGORITHM</em></a> to QC). The
+orbital and cumulant update equations are solved using the Newton-Raphson
+method. Each macroiteration of the quadratically-convergent algorithm consists
+of a single Newton-Raphson update followed by the orbital transformation
+of the integrals. The solution of the Newton-Raphson equations is performed
+iteratively using the preconditioned conjugate gradients method, where only the
+product of the electronic Hessian with the step vector is computed for
+efficiency. The electronic Hessian is build for both the cumulant and orbital
+updates and both updates are performed simultaneously. By default the
+electronic Hessian also contains the matrix elements that couple the orbitals
+and the density cumulant. The computation of these coupling elements increases
+the cost of the macroiteration, but usually leads to faster convergence and is
+recommended for open-shell systems. If the computation of the coupling elements
+is not desired, it can be turned off by setting <a class="reference internal" href="autodoc_glossary_options_c.html#term-qc-coupling-dcft"><em class="xref std std-term">QC_COUPLING</em></a> to FALSE.
+It is important to note that the quadratically-convergent algorithm is not yet fully
+optimized and often converges slowly when the RMS of the cumulant or
+the orbital gradient is below <img class="math" src="_images/math/7c310994f508e9ec12cf977cf64d55ca215d8d23.png" alt="10^{-7}" style="vertical-align: -1px"/>.</p>
+<p>The choice of the iterative algorithm can significantly affect the cost of the
+energy computation. While the two-step algorithm requires a small number of
+disk-intensive <img class="math" src="_images/math/c0ba1636f4c95d072b1a79e498a9c1ae8f67f20f.png" alt="{\cal O}(N^5)" style="vertical-align: -4px"/> integral transformations, the simultaneous
+algorithm benefits from a smaller number of expensive <img class="math" src="_images/math/77f9f72498e678fef7d8bae6e70a2378a1640ca4.png" alt="{\cal O}(N^6)" style="vertical-align: -4px"/>
+cumulant updates. As a result, for the small closed-shell systems the two-step
+algorithm is usually preferred, while for the larger systems and the molecules with the
+open-shell character it is recommended to use the simultaneous algorithm. The
+efficiency of the simultaneous algorithm can be greatly increased by avoiding
+the transformation of the four-index virtual two-electron integrals
+<img class="math" src="_images/math/4b2bca426e84ac7a1fca35ebebd21ba2a874c38a.png" alt="(vv|vv)" style="vertical-align: -5px"/> and computing the terms that involve these integrals in the AO
+basis. In order to do that one needs to set the <a class="reference internal" href="autodoc_glossary_options_c.html#term-ao-basis-dcft"><em class="xref std std-term">AO_BASIS</em></a> option to
+DISK. For more recommendations on the choice of the algorithm see
+<a class="reference internal" href="#sec-dcftrecommend"><em>Recommendations</em></a> section.</p>
+</div>
+<div class="section" id="analytic-gradients">
+<span id="sec-dcftgradients"></span><h2>Analytic Gradients<a class="headerlink" href="#analytic-gradients" title="Permalink to this headline">¶</a></h2>
+<p>Analytic gradients are available for the DC-06 method. Gradients are only
+available if the <a class="reference internal" href="autodoc_glossary_options_c.html#term-algorithm-dcft"><em class="xref std std-term">ALGORITHM</em></a> option is set to TWOSTEP or SIMULTANEOUS for
+the energy computation. Evaluation of the analytic gradients requires the solution of the
+coupled response equations. Two algorithms are available for their iterative
+solution: two-step (default) and simultaneous. These algorithms are similar to those
+described for the orbital and cumulant updates in the <a class="reference internal" href="#sec-dcftalgorithms"><em>Iterative Algorithms</em></a>
+section and usually exhibit the similar efficiency. The choice of the algorithm can
+be made using the <a class="reference internal" href="autodoc_glossary_options_c.html#term-response-algorithm-dcft"><em class="xref std std-term">RESPONSE_ALGORITHM</em></a> option. For the DC-12 method the
+analytic gradients are not yet available, one has to use numerical gradients to
+perform the geometry optimizations.</p>
+</div>
+<div class="section" id="minimal-input">
+<span id="sec-dcftmininput"></span><h2>Minimal Input<a class="headerlink" href="#minimal-input" title="Permalink to this headline">¶</a></h2>
+<p>Minimal input for the DCFT single-point computation looks like this:</p>
+<div class="highlight-python"><pre>molecule {
+H
+H 1 1.0
+}
+
+set basis 3-21G
+
+energy('dcft')</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">energy('dcft')</span></tt> call to <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><tt class="xref py py-func docutils literal"><span class="pre">energy()</span></tt></a> executes the DCFT module, which will first call the SCF module and perform the SCF computation with UHF reference to obtain the guess for the DCFT orbitals. After the SCF is converged, the program will perform the energy computation using the DC-06 method. By default, the two-step algorithm will be used for the solution of the equations. Note that while the default value for the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-scf"><em class="xref std std-term">REFERENCE</em></a> is RHF, this option is set to UHF before the DCFT module is executed. For the DC-06 method one can also request to perform the geometry optimization following the example below:</p>
+<div class="highlight-python"><pre>molecule {
+H
+H 1 1.0
+}
+
+set basis 3-21G
+
+optimize('dcft')</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">optimize('dcft')</span></tt> call will first perform all of the procedures
+described above to obtain the DC-06 energy. After that the DC-06 analytic
+gradients code will be executed to perform the solution of the DCFT response
+equations, compute the analytic gradients of the DCFT energy and perform the
+geometry optimization.</p>
+</div>
+<div class="section" id="recommendations">
+<span id="sec-dcftrecommend"></span><h2>Recommendations<a class="headerlink" href="#recommendations" title="Permalink to this headline">¶</a></h2>
+<p>Here is the list of the recommendations for the DCFT module:</p>
+<ul class="simple">
+<li>For the computations of small systems (less than 150 basis
+functions and high symmetry) the use of the default parameters is recommended,
+including the choice of the two-step algorithm.</li>
+<li>For large systems (more than 150 basis functions) the simultaneous algorithm
+is preferred and can be significantly faster than two-step, as the result of
+smaller number of the expensive <img class="math" src="_images/math/77f9f72498e678fef7d8bae6e70a2378a1640ca4.png" alt="{\cal O}(N^6)" style="vertical-align: -4px"/> steps. In addition,
+significant savings can be achieved if one sets <a class="reference internal" href="autodoc_glossary_options_c.html#term-ao-basis-dcft"><em class="xref std std-term">AO_BASIS</em></a> option to
+DISK together with simultaneous algorithm.</li>
+<li>In the case when insufficient memory is available, set <a class="reference internal" href="autodoc_glossary_options_c.html#term-ao-basis-dcft"><em class="xref std std-term">AO_BASIS</em></a> option
+to DISK. This will significantly reduce the memory requirements. However, when
+used together with the two-step algorithm, this option can significantly
+increase the cost of the energy computation.</li>
+<li>In the case when the oscillatory convergence is observed before the DIIS
+extrapolation is initialized, it is recommended to increase the threshold for
+the RMS of the density cumulant or orbital update residual, below which the
+DIIS extrapolation starts. This can be done by setting
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-diis-start-convergence-dcft"><em class="xref std std-term">DIIS_START_CONVERGENCE</em></a> option to the value greater than
+<img class="math" src="_images/math/8f499799895502374ed1c7331071a0bc015bce99.png" alt="10^{-3}" style="vertical-align: -1px"/> by one or two orders of magnitude (e.g. <img class="math" src="_images/math/cd90d7672d820e5cd0efca5adc18d8641439a1de.png" alt="10^{-2}" style="vertical-align: -1px"/> or
+<img class="math" src="_images/math/fa0a382ce3d6bb1bb75ce59ed25bc26724c57450.png" alt="10^{-1}" style="vertical-align: -1px"/>).</li>
+<li>If the oscillatory convergence is observed for atoms or molecules with high
+symmetry, it is recommended to use quadratically-convergent algorithm.</li>
+<li>When using quadratically-convergent algorithm for closed-shell molecules, it
+is recommended to set <a class="reference internal" href="autodoc_glossary_options_c.html#term-qc-coupling-dcft"><em class="xref std std-term">QC_COUPLING</em></a> option to FALSE for efficiency
+reasons.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DCFT: Density Cumulant Functional Theory</a><ul>
+<li><a class="reference internal" href="#theory">Theory</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#iterative-algorithms">Iterative Algorithms</a></li>
+<li><a class="reference internal" href="#analytic-gradients">Analytic Gradients</a></li>
+<li><a class="reference internal" href="#minimal-input">Minimal Input</a></li>
+<li><a class="reference internal" href="#recommendations">Recommendations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dft.html"
+                        title="previous chapter">DFT: Density Functional Theory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dfmp2.html"
+                        title="next chapter">DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/dcft.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfmp2.html" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dft.html" title="DFT: Density Functional Theory"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Jul 08, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

@@ -1,0 +1,302 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ADC: Ab Initio Polarization Propagator &mdash; PSI4 [beta5] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta5] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="Geometry Optimization" href="optking.html" />
+    <link rel="prev" title="SAPT: Symmetry-Adapted Perturbation Theory" href="sapt.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optking.html" title="Geometry Optimization"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt.html" title="SAPT: Symmetry-Adapted Perturbation Theory"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<span class="target" id="index-0"></span><span class="target" id="index-1"></span><div class="section" id="adc-ab-initio-polarization-propagator">
+<span id="sec-adc"></span><span id="index-2"></span><h1>ADC: Ab Initio Polarization Propagator<a class="headerlink" href="#adc-ab-initio-polarization-propagator" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Masaaki Saitow</em></p>
+<p><em>Section author: Masaaki Saitow</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__adc.html#apdx-adc"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__adc.html#apdx-adc-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="https://github.com/psi4/psi4release/blob/master/src/bin/adc">ADC</a></p>
+<p>The ADC code seeks the pole structure of the polarization
+propagator, which is equivalent to the correlated excitation energy,
+in terms of the second order algebraic-diagrammatic construction
+(ADC(2)) scheme.  Originally, the ADC scheme was derived in purely
+the diagrammatic language by Schirmer <a class="reference internal" href="bibliography.html#schirmer-1982">[Schirmer:1982]</a> and later,
+a sophisticated algebraic scheme was developed <a class="reference internal" href="bibliography.html#trofimov-2006">[Trofimov:2006]</a>
+by Trofimov et al. In general by n-th order ADC theory, the
+excited state is treated at completely equivalent level to the
+Møller&#8211;Plesset perturbation expansion of the same order.
+Hence the ADC(2)
+can be described as MP2 theory for the excited state and the relation
+to such other response theories as CC2-LR, CIS(D) and CIS(D:math:<cite>_n</cite>) has
+been addressed <a class="reference internal" href="bibliography.html#haettig-2002">[Haettig:2002]</a> by Hattig et al.  In the ADC theory,
+the residue calculus of the propagator is translated into the eigenvalue
+problem with respect to the correlated response matrix, also known as the
+shifted-Hamiltonian. The σ-vectors (Hamiltonian-vector products)
+are constructed several times in the simultaneous expansion method (SEM)
+to solve the eigenvalue problem, and each σ-vector construction
+has a computational cost that scales as <img class="math" src="_images/math/c0ba1636f4c95d072b1a79e498a9c1ae8f67f20f.png" alt="{\cal O}(N^5)" style="vertical-align: -4px"/>. In addition,
+the tensorial form of the σ-vector resembles to that of the
+doubles correction in the CIS(D) energetic equation. As a consequence,
+the pre-factor in the polynomial scaling becomes far larger than that
+of the CIS(D) even though the quasi-degeneracy of the excited state is
+properly accounted for in the ADC(2) model.</p>
+<p>In PSI4 the quite efficient and flexible integral-transformation
+library named libtrans is newly equipped and utilized in the
+production level DCFT code. The ADC code is also based on
+libtrans, and it is also based on libdpd, a library to
+utilize molecular symmetry in the tensorial manipulations in framework
+of the direct-product decomposition algorithm. By this feature, the Ritz
+space and intermediate tensors are blocked according to the irreducible
+representations of the point group, and the excited states that belong
+to different symmetry are sought separately.</p>
+<p>In the output of ADC, the ADC(2) results may look as follows:</p>
+<div class="highlight-python"><pre>-&gt;  1 B1 state   :  0.2565095 (a.u.),  6.9799824 (eV)
+Non-iterative:  0.2565636 (a.u.),  6.9814532 (eV)
+         Occ Vir        Coefficient
+---------------------------------------------
+          3   0        -0.9017047264
+          3   2         0.3038332241
+          3   1         0.2907567119
+          3   5        -0.0790167706
+          3   4        -0.0425829926
+
+Converged in   4 iteration.
+Squared norm of the S component:  0.9315336
+The S vector is rotated up to  8.102 (deg.)</pre>
+</div>
+<p>in which the ADC(2) excitation energy is indicated with arrow symbol
+and the pseudo-perturbative value, which is calculated in very similar
+fashion to the CIS(D) energy, is also presented on the following line. In
+this implementation, the ADC(2) secular matrix is treated effectively
+by renormalization of the double excitation manifold into the single
+excitation manifold. So, the effective secular equation is solved for
+several times for the specific state due to the eigenvalue dependence of
+the effective response matrix. Only the S component of the transition
+amplitude is obtained explicitly and the squared norm of the S block
+and the rotation angle from the corresponding CIS vector are given
+below the element of the amplitude. The difference between the ADC(2)
+value and its non-iterative counterpart is mostly negligible if the
+mixture among the CIS excited states is small and the quasi-degeneracy
+in the excited state is tolerably weak. But if there is a significant
+discrepancy in these energies, or the rotation angle is visibly large,
+special care may have to be taken for the strong effects caused by the
+higher excited states.</p>
+<div class="section" id="partial-renormalization-scheme">
+<h2>Partial Renormalization Scheme<a class="headerlink" href="#partial-renormalization-scheme" title="Permalink to this headline">¶</a></h2>
+<p>The ADC code is capable of performing the partially-renormalized
+ADC(2) computation, termed PR-ADC(2). In the perturbative treatment of
+the singly-excited state, the doubly and triply excited configurations
+are accounted for as in the case of CIS(D). In the language of
+CIS(D), the former is regarded to introduce the orbital relaxation (OR)
+effect while the latter is argued to give rise to the differential
+correlation (DC) correction to the excited state. In the PR-ADC(2)
+scheme, the the DC term is corrected according to the ground state
+PR-MP2 correlation, in which the correlation between the electron pairs
+is accounted for in size-consistent and unitary-invariant fashion by
+modulating the MP1 amplitude. By utilizing the <a class="reference internal" href="autodoc_glossary_options_c.html#term-pr-adc"><em class="xref std std-term">PR</em></a> scheme, substantial
+resistance against quasi-degeneracy is readily granted as discussed
+in Ref. <a class="reference internal" href="bibliography.html#saitow-2012">[Saitow:2012]</a>.</p>
+</div>
+<div class="section" id="using-the-adc-2-code">
+<h2>Using the ADC(2) code<a class="headerlink" href="#using-the-adc-2-code" title="Permalink to this headline">¶</a></h2>
+<p>A complete list of keywords related to ADC(2) computations is provided in
+Appendix <a class="reference internal" href="autodir_options_c/module__adc.html#apdx-adc"><em>ADC</em></a>.  Some sample inputs are provided in
+<a class="reference external" href="https://github.com/psi4/psi4release/blob/master/samples">psi4/samples</a>, in directories starting with the name adc.  The most
+important keyword is <a class="reference internal" href="autodoc_glossary_options_c.html#term-roots-per-irrep-adc"><em class="xref std std-term">ROOTS_PER_IRREP</em></a>, which is an array
+giving the number of excited states desired for each irreducible
+representation.</p>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>Some very essential points are emphasized for understanding of the
+nature and the limitations of the theory. The ADC(2) response matrix,
+denoted as <img class="math" src="_images/math/f3e830722dede854af533bfa96d549c68ed5997f.png" alt="\mathbf{A}" style="vertical-align: -1px"/>, is expanded in the single (S) and double (D)
+excitation manifolds as</p>
+<div class="math">
+<p><img src="_images/math/ccfebb76ee3ff05f481395f0b52f1523454c73ec.png" alt="\begin{pmatrix}
+\mathbf{A_{SS}^{(2)}} &amp; \mathbf{A_{SD}^{(1)}}\\
+\mathbf{A_{DS}^{(1)}} &amp; \mathbf{A_{DD}^{(0)}}
+\end{pmatrix}
+\begin{pmatrix}
+\mathbf{X_S}\\
+\mathbf{X_D}
+\end{pmatrix}
+=\omega
+\begin{pmatrix}
+\mathbf{X_S}\\
+\mathbf{X_D}
+\end{pmatrix}"/></p>
+</div><p>where the superscript on each matrix block indicates the order of
+the fluctuation. Instead of solving the above equation explicitly,
+the large D manifold is treated effectively as</p>
+<div class="math">
+<p><img src="_images/math/43f60d46dec386f07c10675d48c74a9b519a9118.png" alt="[\mathbf{A_{SS}^{(2)}}+
+\mathbf{A_{SD}^{(1)}}^{\dagger}(\omega-
+\mathbf{A_{DD}^{(0)}})^{-1}\mathbf{A_{DS}^{(1)}}]\mathbf{X_{S}}=
+\omega\mathbf{X_{S}}."/></p>
+</div><p>This form of the ADC(2) equation requires 7 &#8211; 10 iterations for
+convergence on only one root. But thanks to Newton-Raphson
+acceleration,</p>
+<div class="math">
+<p><img src="_images/math/8e7372fe2174796d391d672a2354458511308273.png" alt="\omega^{n+1}=\omega^{n}-
+\frac{\omega^n-\mathbf{X_{S}}(\omega^n)^{\dagger}
+[\mathbf{A_{SS}^{(2)}}+
+\mathbf{A_{SD}^{(1)}}^{\dagger}(\omega^n-\mathbf{A_{DD}^{(0)}})^{-1}
+\mathbf{A_{DS}^{(1)}}]\mathbf{X_{S}}(\omega^n)}{1+\mathbf{X_{S}}
+(\omega^n)^{\dagger}[\mathbf{A_{SD}^{(1)}}^{\dagger}
+(\omega^n-\mathbf{A_{DD}^{(0)}})^{-2}\mathbf{A_{DS}^{(1)}}]\mathbf{X_{S}}
+(\omega^n)}"/></p>
+</div><p>the computational time reduces to shorter than half of the simple iterative
+procedure. Construction of the denominator of the second term in the above
+equation is less computationally expensive than contruction of one $sigma$-vector with respect to the effective response matrix. The non-iterative excitation energy stated above is calculated as a diagonal element of the Davidson mini-Hamiltonian matrix in the SEM as,</p>
+<div class="math">
+<p><img src="_images/math/716c909440287acb3cd981ea5508b65518663a9c.png" alt="\omega^{Non-Iterative}=
+\mathbf{X_{CIS}}^{\dagger}[\mathbf{A_{SS}^{(2)}}+
+\mathbf{A_{SD}^{(1)}}^{\dagger}(\omega^{CIS}-\mathbf{A_{DD}^{(0)}})^{-1}
+\mathbf{A_{DS}^{(1)}}]\mathbf{X_{CIS}}"/></p>
+</div><p>where <img class="math" src="_images/math/a3905bac7d4856887aedb8cc48ceb171b5980de2.png" alt="\omega^{CIS}" style="vertical-align: 0px"/> and <img class="math" src="_images/math/d7a509c933e903a3607637607f14bd136105ccb1.png" alt="\mathbf{X_{CIS}}" style="vertical-align: -4px"/> denote the CIS
+excitation energy and wave function, respectively. The explicit form of the
+σ-vector is provided in a note accompanying the source code,
+in the file <a class="reference external" href="https://github.com/psi4/psi4release/blob/master/src/bin/adc/sigma.pdf">psi4/src/bin/adc/sigma.pdf</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ADC: Ab Initio Polarization Propagator</a><ul>
+<li><a class="reference internal" href="#partial-renormalization-scheme">Partial Renormalization Scheme</a></li>
+<li><a class="reference internal" href="#using-the-adc-2-code">Using the ADC(2) code</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sapt.html"
+                        title="previous chapter">SAPT: Symmetry-Adapted Perturbation Theory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="optking.html"
+                        title="next chapter">Geometry Optimization</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/adc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optking.html" title="Geometry Optimization"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt.html" title="SAPT: Symmetry-Adapted Perturbation Theory"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Jul 08, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>
