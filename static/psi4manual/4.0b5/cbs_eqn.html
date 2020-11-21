@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; PSI4 [beta5] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta5] documentation" href="index.html" />
+    <link rel="up" title="Complete Basis Set" href="cbs.html" />
+    <link rel="next" title="Spectroscopic Constants for Diatomics" href="diatomic.html" />
+    <link rel="prev" title="Complete Basis Set" href="cbs.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="diatomic.html" title="Spectroscopic Constants for Diatomics"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cbs.html" title="Complete Basis Set"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li>
+          <li><a href="cbs.html" accesskey="U">Complete Basis Set</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="math" id="index-0">
+<p><img src="_images/math/e69f696de429778157284bfc3ee219f269a8c11e.png" alt="E_{total}^{\text{CBS}} = \mathcal{F}_{\textbf{scf\_scheme}} \left(E_{total,\; \text{SCF}}^{\textbf{scf\_basis}}\right) \; + \mathcal{F}_{\textbf{corl\_scheme}} \left(E_{corl,\; \textbf{corl\_wfn}}^{\textbf{corl\_basis}}\right) \; + \delta_{\textbf{delta\_wfn\_lesser}}^{\textbf{delta\_wfn}} \; + \delta_{\textbf{delta2\_wfn\_lesser}}^{\textbf{delta2\_wfn}} \; + \delta_{\textbf{delta3\_wfn\_lesser}}^{\textbf{delta3\_wfn}} \; + \delta_{\textbf{delta4\_wfn\_lesser}}^{\textbf{delta4\_wfn}} \; + \delta_{\textbf{delta5\_wfn\_lesser}}^{\textbf{delta5\_wfn}}"/></p>
+</div><p>Here, <img class="math" src="_images/math/7df6156885f7ecb884a812ae7155a0ad3ea33684.png" alt="\mathcal{F}" style="vertical-align: 0px"/> is an energy or energy extrapolation scheme, and the following also hold.</p>
+<div class="math">
+<p><img src="_images/math/42399ceb1a52adf15365b2af8997490e18e47f0e.png" alt="\delta_{\textbf{delta\_wfn\_lesser}}^{\textbf{delta\_wfn}} \; = \mathcal{F}_{\textbf{delta\_scheme}} \left(E_{corl,\; \textbf{delta\_wfn}}^{\textbf{delta\_basis}}\right) - \mathcal{F}_{\textbf{delta\_scheme}} \left(E_{corl,\; \textbf{delta\_wfn\_lesser}}^{\textbf{delta\_basis}}\right)"/></p>
+</div><div class="math">
+<p><img src="_images/math/ecb94ff0f829245a1e06d9c765f08f6375bbeda7.png" alt="\delta_{\textbf{delta2\_wfn\_lesser}}^{\textbf{delta2\_wfn}} \; = \mathcal{F}_{\textbf{delta2\_scheme}} \left(E_{corl,\; \textbf{delta2\_wfn}}^{\textbf{delta2\_basis}}\right) - \mathcal{F}_{\textbf{delta2\_scheme}} \left(E_{corl,\; \textbf{delta2\_wfn\_lesser}}^{\textbf{delta2\_basis}}\right)"/></p>
+</div><div class="math">
+<p><img src="_images/math/ca1dce9c5909a32e15d077851439848f80f114e9.png" alt="\delta_{\textbf{delta3\_wfn\_lesser}}^{\textbf{delta3\_wfn}} \; = \mathcal{F}_{\textbf{delta3\_scheme}} \left(E_{corl,\; \textbf{delta3\_wfn}}^{\textbf{delta3\_basis}}\right) - \mathcal{F}_{\textbf{delta3\_scheme}} \left(E_{corl,\; \textbf{delta3\_wfn\_lesser}}^{\textbf{delta3\_basis}}\right)"/></p>
+</div><div class="math">
+<p><img src="_images/math/e11e748d0c48c77b69165820b1b212a815038d24.png" alt="\delta_{\textbf{delta4\_wfn\_lesser}}^{\textbf{delta4\_wfn}} \; = \mathcal{F}_{\textbf{delta4\_scheme}} \left(E_{corl,\; \textbf{delta4\_wfn}}^{\textbf{delta4\_basis}}\right) - \mathcal{F}_{\textbf{delta4\_scheme}} \left(E_{corl,\; \textbf{delta4\_wfn\_lesser}}^{\textbf{delta4\_basis}}\right)"/></p>
+</div><div class="math">
+<p><img src="_images/math/635e10056785984f766aafea3678bcd9662b2911.png" alt="\delta_{\textbf{delta5\_wfn\_lesser}}^{\textbf{delta5\_wfn}} \; = \mathcal{F}_{\textbf{delta5\_scheme}} \left(E_{corl,\; \textbf{delta5\_wfn}}^{\textbf{delta5\_basis}}\right) - \mathcal{F}_{\textbf{delta5\_scheme}} \left(E_{corl,\; \textbf{delta5\_wfn\_lesser}}^{\textbf{delta5\_basis}}\right)"/></p>
+</div><p>A translation of this ungainly equation to example [5] below is as
+follows. In words, this is a double- and triple-zeta 2-point
+Helgaker-extrapolated CCSD(T) coupled-cluster correlation correction
+appended to a triple- and quadruple-zeta 2-point
+Helgaker-extrapolated MP2 correlation energy appended to a SCF/aug-cc-pVQZ
+reference energy.</p>
+<div class="math">
+<p><img src="_images/math/234e164ef6b8d98f1bd0cac104963a877b89a88f.png" alt="E_{total}^{\text{CBS}} = \mathcal{F}_{\text{highest\_1}} \left(E_{total,\; \text{SCF}}^{\text{aug-cc-pVQZ}}\right) \; + \mathcal{F}_{\text{corl\_xtpl\_helgaker\_2}} \left(E_{corl,\; \text{MP2}}^{\text{aug-cc-pV[TQ]Z}}\right) \; + \delta_{\text{MP2}}^{\text{CCSD(T)}}"/></p>
+</div><div class="math">
+<p><img src="_images/math/018cd7aadafa5dd49354fc8f39513fb7e73b54a4.png" alt="\delta_{\text{MP2}}^{\text{CCSD(T)}} \; = \mathcal{F}_{\text{corl\_xtpl\_helgaker\_2}} \left(E_{corl,\; \text{CCSD(T)}}^{\text{aug-cc-pV[DT]Z}}\right) - \mathcal{F}_{\text{corl\_xtpl\_helgaker\_2}} \left(E_{corl,\; \text{MP2}}^{\text{aug-cc-pV[DT]Z}}\right)"/></p>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cbs.html"
+                        title="previous chapter">Complete Basis Set</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="diatomic.html"
+                        title="next chapter">Spectroscopic Constants for Diatomics</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/cbs_eqn.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="diatomic.html" title="Spectroscopic Constants for Diatomics"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cbs.html" title="Complete Basis Set"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li>
+          <li><a href="cbs.html" >Complete Basis Set</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Jul 08, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>User-Defined Basis Sets &mdash; PSI4 [beta5] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta5] documentation" href="index.html" />
+    <link rel="up" title="Customization: Adding Simple Extensions" href="customizing.html" />
+    <link rel="next" title="Defining a Method Alias" href="quickaddalias.html" />
+    <link rel="prev" title="Customization: Adding Simple Extensions" href="customizing.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="quickaddalias.html" title="Defining a Method Alias"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="customizing.html" title="Customization: Adding Simple Extensions"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="customizing.html" accesskey="U">Customization: Adding Simple Extensions</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="admonition note" id="index-0">
+<p class="first admonition-title">Note</p>
+<p class="last">No recompile of the PSI program is necessary for changes made to
+files in <tt class="docutils literal"><span class="pre">$PSIDATADIR</span></tt>, including those described below.</p>
+</div>
+<div class="section" id="user-defined-basis-sets">
+<span id="sec-basisuserdefined"></span><h1>User-Defined Basis Sets<a class="headerlink" href="#user-defined-basis-sets" title="Permalink to this headline">¶</a></h1>
+<p>There are three routes by which a basis set in G94 format can be introduced to PSI4&#8217;s notice.</p>
+<p class="rubric">(1) Install new basis set file into PSI4 basis library.</p>
+<p>Copy the basis set definitions for all elements into a blank file. Exclamation points denote comments.
+As the first line of the file, add the word <tt class="docutils literal"><span class="pre">spherical</span></tt> or <tt class="docutils literal"><span class="pre">cartesian</span></tt> to indicate
+whether the basis set will run in (5D/7F) or (6D/10F).
+Name the file with the name of the basis set and a <tt class="docutils literal"><span class="pre">.gbs</span></tt> extension, after applying the following transformations.</p>
+<ul class="simple">
+<li>All letters lowercase</li>
+<li>Replace all <tt class="docutils literal"><span class="pre">*</span></tt> with <tt class="docutils literal"><span class="pre">s</span></tt></li>
+<li>Replace all <tt class="docutils literal"><span class="pre">+</span></tt> with <tt class="docutils literal"><span class="pre">p</span></tt></li>
+<li>Replace all <tt class="docutils literal"><span class="pre">(</span></tt> <tt class="docutils literal"><span class="pre">)</span></tt> <tt class="docutils literal"><span class="pre">,</span></tt> with <tt class="docutils literal"><span class="pre">_</span></tt> (underscores replace parentheses and commas)</li>
+</ul>
+<p>For example, basis 6-31++G** is stored in <a class="reference external" href="https://github.com/psi4/psi4release/blob/master/lib/basis/6-31ppgss.gbs">psi4/lib/basis/6-31ppgss.gbs</a>,
+and cc-pV(D+d)Z is stored in <a class="reference external" href="https://github.com/psi4/psi4release/blob/master/lib/basis/cc-pv_dpd_z.gbs">psi4/lib/basis/cc-pv_dpd_z.gbs</a>.
+Only one basis set may be specified per file.
+Copy the new basis set file into <a class="reference external" href="https://github.com/psi4/psi4release/blob/master/lib/basis">psi4/lib/basis</a>.
+Request the new basis set in an input file in the usual manner.</p>
+<div class="highlight-python"><pre>set basis new_basis_name</pre>
+</div>
+<p class="rubric">(2) Use new basis set file in arbitrary location.</p>
+<p>Copy the basis set definitions for all elements into a blank file. Exclamation points denote comments.
+As the first line of the file, add the basis set name in brackets.
+As the second line of the file, add the word <tt class="docutils literal"><span class="pre">spherical</span></tt> or <tt class="docutils literal"><span class="pre">cartesian</span></tt> to indicate
+whether the basis set will run in (5D/7F) or (6D/10F).
+The combination of <tt class="docutils literal"><span class="pre">[basis</span> <span class="pre">name]</span></tt>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><em class="xref std std-term">PUREAM</em></a> value, and element basis set specifications
+forms a section, like the one shown below.
+Multiple basis sets can be specified in the same file by adding additional sections to the file.
+Specify the location of the new basis set file in a PSI4 input file with the command
+<tt class="docutils literal"><span class="pre">basis</span> <span class="pre">file</span> <span class="pre">path/to/basis.file</span></tt>, where the path can be either relative or absolute.</p>
+<div class="highlight-python"><pre>[ sto-3g ]
+cartesian
+****
+H     0
+S   3   1.00
+      3.42525091             0.15432897
+      0.62391373             0.53532814
+      0.16885540             0.44463454
+****
+O     0
+S   3   1.00
+    130.7093200              0.15432897
+     23.8088610              0.53532814
+      6.4436083              0.44463454
+SP   3   1.00
+      5.0331513             -0.09996723             0.15591627
+      1.1695961              0.39951283             0.60768372
+      0.3803890              0.70011547             0.39195739
+****</pre>
+</div>
+<p>Request the new basis set in an input file in the usual manner.</p>
+<div class="highlight-python"><pre>set basis new_basis_name</pre>
+</div>
+<p class="rubric">(3) Include new basis set in input file.</p>
+<p>Construct for a basis set a section like the one above that includes
+<tt class="docutils literal"><span class="pre">[basis</span> <span class="pre">name]</span></tt>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><em class="xref std std-term">PUREAM</em></a>
+value, and element basis set specifications. Hash signs denote comments.
+Copy the section into a PSI4 input file and surround it with the command <tt class="docutils literal"><span class="pre">basis</span> <span class="pre">{...}</span></tt>,
+as shown below.
+Multiple basis sets can be specified by adding additional sections within the surrounding brackets.</p>
+<div class="highlight-python"><pre>basis {
+# basis set section like in snippet above goes here
+# additional basis set sections follow
+}</pre>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="customizing.html"
+                        title="previous chapter">Customization: Adding Simple Extensions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="quickaddalias.html"
+                        title="next chapter">Defining a Method Alias</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/quickaddbasis.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="quickaddalias.html" title="Defining a Method Alias"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="customizing.html" title="Customization: Adding Simple Extensions"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta5]</a> &raquo; </li>
+
+          <li><a href="customizing.html" >Customization: Adding Simple Extensions</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Jul 08, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>
