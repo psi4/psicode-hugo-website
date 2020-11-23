@@ -29,9 +29,11 @@ This is the home of the new psicode website generated with Hugo. Committers to p
 
 * in another terminal window, `cd psicode-hugo-website`
 * `hugo server -D`
+* if OSX balks on the many static docs with `socket: too many open files in system`, try *http://blog.mact.me/2014/10/22/yosemite-upgrade-changes-open-file-limit
 * view in browser at http://localhost:1313/
 * updates automatically when save files (refresh browser if it gets stuck on the little square)
 
 ##### deploy the website
 
 * push to a branch on your fork, submit a PR, and netlify will build a preview. Once merged to `master` of this repo, `https://app.netlify.com/sites/admiring-tesla-08529a/deploys` will go to work. Should be up in a couple minutes.
+* users with write access to this repo are free to merge their own PRs. otherwise, request a review.
