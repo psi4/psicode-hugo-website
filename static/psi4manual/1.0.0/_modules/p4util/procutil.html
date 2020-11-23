@@ -1,0 +1,551 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>p4util.procutil &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for p4util.procutil</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2016 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;Module with utility functions used by several Python functions.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">p4regex</span>
+
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="nb">basestring</span> <span class="o">=</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="kwargs_lower"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.kwargs_lower">[docs]</a><span class="k">def</span> <span class="nf">kwargs_lower</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to rebuild and return *kwargs* dictionary</span>
+<span class="sd">    with all keys made lowercase. Should be called by every</span>
+<span class="sd">    function that could be called directly by the user.</span>
+<span class="sd">    Also turns boolean-like values into actual booleans.</span>
+<span class="sd">    Also turns values lowercase if sensible.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">caseless_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># items() inefficient on Py2 but this is small dict</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="n">lkey</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">lkey</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;subset&#39;</span><span class="p">]:</span>  <span class="c1"># only kw for which case matters</span>
+            <span class="n">lvalue</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">lvalue</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">lvalue</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">if</span> <span class="n">lkey</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;irrep&#39;</span><span class="p">,</span> <span class="s1">&#39;check_bsse&#39;</span><span class="p">,</span> <span class="s1">&#39;linkage&#39;</span><span class="p">,</span> <span class="s1">&#39;bsse_type&#39;</span><span class="p">]:</span>
+            <span class="n">caseless_kwargs</span><span class="p">[</span><span class="n">lkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">lvalue</span>
+
+        <span class="k">elif</span> <span class="s1">&#39;dertype&#39;</span> <span class="ow">in</span> <span class="n">lkey</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p4regex</span><span class="o">.</span><span class="n">der0th</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lvalue</span><span class="p">)):</span>
+                <span class="n">caseless_kwargs</span><span class="p">[</span><span class="n">lkey</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">p4regex</span><span class="o">.</span><span class="n">der1st</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lvalue</span><span class="p">)):</span>
+                <span class="n">caseless_kwargs</span><span class="p">[</span><span class="n">lkey</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">p4regex</span><span class="o">.</span><span class="n">der2nd</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lvalue</span><span class="p">)):</span>
+                <span class="n">caseless_kwargs</span><span class="p">[</span><span class="n">lkey</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Derivative type key </span><span class="si">%s</span><span class="s1"> was not recognized&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="n">p4regex</span><span class="o">.</span><span class="n">yes</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lvalue</span><span class="p">)):</span>
+            <span class="n">caseless_kwargs</span><span class="p">[</span><span class="n">lkey</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">elif</span> <span class="n">p4regex</span><span class="o">.</span><span class="n">no</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lvalue</span><span class="p">)):</span>
+            <span class="n">caseless_kwargs</span><span class="p">[</span><span class="n">lkey</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">caseless_kwargs</span><span class="p">[</span><span class="n">lkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">lvalue</span>
+    <span class="k">return</span> <span class="n">caseless_kwargs</span></div>
+
+
+<div class="viewcode-block" id="get_psifile"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.get_psifile">[docs]</a><span class="k">def</span> <span class="nf">get_psifile</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="n">pidspace</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return the full path and filename for psi file</span>
+<span class="sd">    *fileno* (e.g., psi.32) in current namespace *pidspace*.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">psioh</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">IOManager</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span>
+    <span class="n">psio</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">psioh</span><span class="o">.</span><span class="n">get_file_path</span><span class="p">(</span><span class="n">fileno</span><span class="p">)</span>
+    <span class="n">namespace</span> <span class="o">=</span> <span class="n">psio</span><span class="o">.</span><span class="n">get_default_namespace</span><span class="p">()</span>
+    <span class="n">targetfile</span> <span class="o">=</span> <span class="n">filepath</span> <span class="o">+</span> <span class="s1">&#39;psi&#39;</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">pidspace</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">namespace</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fileno</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">targetfile</span></div>
+
+
+<div class="viewcode-block" id="format_molecule_for_input"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.format_molecule_for_input">[docs]</a><span class="k">def</span> <span class="nf">format_molecule_for_input</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">forcexyz</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return a string of the output of</span>
+<span class="sd">    :py:func:`inputparser.process_input` applied to the XYZ</span>
+<span class="sd">    format of molecule, passed as either fragmented</span>
+<span class="sd">    geometry string *mol* or molecule instance *mol*.</span>
+<span class="sd">    Used to capture molecule information from database</span>
+<span class="sd">    modules and for distributed (sow/reap) input files.</span>
+<span class="sd">    For the reverse, see :py:func:`molutil.geometry`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># when mol is already a string</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="n">mol_string</span> <span class="o">=</span> <span class="n">mol</span>
+        <span class="n">mol_name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="c1"># when mol is psi4.Molecule or qcdb.Molecule object</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># save_string_for_psi4 is the more detailed choice as it includes fragment</span>
+        <span class="c1">#   (and possibly no_com/no_reorient) info. but this is only available</span>
+        <span class="c1">#   for qcdb Molecules. Since save_string_xyz was added to libmints just</span>
+        <span class="c1">#   for the sow/reap purpose, may want to unify these fns sometime.</span>
+        <span class="c1"># the time for unification is nigh</span>
+        <span class="k">if</span> <span class="n">forcexyz</span><span class="p">:</span>
+            <span class="n">mol_string</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">save_string_xyz</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mol_string</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">create_psi4_string_from_molecule</span><span class="p">()</span>
+        <span class="n">mol_name</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="n">name</span>
+
+    <span class="n">commands</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\n</span><span class="s2">molecule </span><span class="si">%s</span><span class="s2"> {</span><span class="se">\n</span><span class="si">%s%s</span><span class="se">\n</span><span class="s2">}</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_string</span><span class="p">,</span>
+               <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">no_com</span><span class="se">\n</span><span class="s1">no_reorient&#39;</span> <span class="k">if</span> <span class="n">forcexyz</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">commands</span></div>
+
+
+<div class="viewcode-block" id="format_options_for_input"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.format_options_for_input">[docs]</a><span class="k">def</span> <span class="nf">format_options_for_input</span><span class="p">(</span><span class="n">molecule</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return a string of commands to replicate the</span>
+<span class="sd">    current state of user-modified options. Used to capture C++</span>
+<span class="sd">    options information for distributed (sow/reap) input files.</span>
+
+<span class="sd">    .. caution:: Some features are not yet implemented. Buy a developer a coffee.</span>
+
+<span class="sd">       - Does not cover local (as opposed to global) options.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">molecule</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">symmetry</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">find_point_group</span><span class="p">(</span><span class="mf">0.00001</span><span class="p">)</span><span class="o">.</span><span class="n">symbol</span><span class="p">()</span>
+    <span class="n">commands</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\n</span><span class="s2">psi4.set_memory(</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">psi4</span><span class="o">.</span><span class="n">get_memory</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">chgdopt</span> <span class="ow">in</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_global_option_list</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">psi4</span><span class="o">.</span><span class="n">has_global_option_changed</span><span class="p">(</span><span class="n">chgdopt</span><span class="p">):</span>
+            <span class="n">chgdoptval</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="n">chgdopt</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">molecule</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">chgdopt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">symmetry</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">chgdopt</span><span class="o">.</span><span class="n">lower</span><span class="p">()]:</span>
+                        <span class="n">chgdoptval</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">chgdopt</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="n">symmetry</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chgdoptval</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+                <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;psi4.set_global_option(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">chgdopt</span><span class="p">,</span> <span class="n">chgdoptval</span><span class="p">)</span>
+<span class="c1"># Next four lines were conflict between master and roa branches (TDC, 10/29/2014)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chgdoptval</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chgdoptval</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;psi4.set_global_option(&#39;</span><span class="si">%s</span><span class="s2">&#39;, </span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">chgdopt</span><span class="p">,</span> <span class="n">chgdoptval</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chgdoptval</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;psi4.set_global_option(&#39;</span><span class="si">%s</span><span class="s2">&#39;, </span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">chgdopt</span><span class="p">,</span> <span class="n">chgdoptval</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;psi4.set_global_option(&#39;</span><span class="si">%s</span><span class="s2">&#39;, </span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">chgdopt</span><span class="p">,</span> <span class="n">chgdoptval</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">commands</span></div>
+
+
+<div class="viewcode-block" id="format_kwargs_for_input"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.format_kwargs_for_input">[docs]</a><span class="k">def</span> <span class="nf">format_kwargs_for_input</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lmode</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to pickle to file *filename* the options dictionary</span>
+<span class="sd">    *kwargs*. Mode *lmode* =2 pickles appropriate settings for</span>
+<span class="sd">    reap mode. Used to capture Python options information for</span>
+<span class="sd">    distributed (sow/reap) input files.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">lmode</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;reap&#39;</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;linkage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span>
+    <span class="n">filename</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span><span class="se">\n</span><span class="s1">pickle_kw = (&quot;&quot;&quot;&#39;&#39;&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">filename</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;&quot;&quot;&quot;)</span><span class="se">\n</span><span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+    <span class="n">filename</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\n</span><span class="s2">kwargs = pickle.loads(pickle_kw)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">lmode</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;sow&#39;</span>
+        <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;linkage&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="drop_duplicates"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.drop_duplicates">[docs]</a><span class="k">def</span> <span class="nf">drop_duplicates</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function that given an array *seq*, returns an array without any duplicate</span>
+<span class="sd">    entries. There is no guarantee of which duplicate entry is dropped.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">noDupes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="p">[</span><span class="n">noDupes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">noDupes</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">noDupes</span></div>
+
+
+<div class="viewcode-block" id="all_casings"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.all_casings">[docs]</a><span class="k">def</span> <span class="nf">all_casings</span><span class="p">(</span><span class="n">input_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return a generator of all lettercase permutations</span>
+<span class="sd">    of *input_string*.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">input_string</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">input_string</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">first</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">first</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">sub_casing</span> <span class="ow">in</span> <span class="n">all_casings</span><span class="p">(</span><span class="n">input_string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                <span class="k">yield</span> <span class="n">first</span> <span class="o">+</span> <span class="n">sub_casing</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sub_casing</span> <span class="ow">in</span> <span class="n">all_casings</span><span class="p">(</span><span class="n">input_string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                <span class="k">yield</span> <span class="n">first</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="n">sub_casing</span>
+                <span class="k">yield</span> <span class="n">first</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">sub_casing</span></div>
+
+
+<div class="viewcode-block" id="getattr_ignorecase"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.getattr_ignorecase">[docs]</a><span class="k">def</span> <span class="nf">getattr_ignorecase</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to extract attribute *attr* from *module* if *attr*</span>
+<span class="sd">    is available in any possible lettercase permutation. Returns</span>
+<span class="sd">    attribute if available, None if not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">per</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">all_casings</span><span class="p">(</span><span class="n">attr</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">per</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">array</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">per</span><span class="p">)</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">array</span></div>
+
+
+<div class="viewcode-block" id="import_ignorecase"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.import_ignorecase">[docs]</a><span class="k">def</span> <span class="nf">import_ignorecase</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to import *module* in any possible lettercase</span>
+<span class="sd">    permutation. Returns module object if available, None if not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modobj</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">per</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">all_casings</span><span class="p">(</span><span class="n">module</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">modobj</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">per</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">modobj</span></div>
+
+
+<div class="viewcode-block" id="extract_sowreap_from_output"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.extract_sowreap_from_output">[docs]</a><span class="k">def</span> <span class="nf">extract_sowreap_from_output</span><span class="p">(</span><span class="n">sowout</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">sownum</span><span class="p">,</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">allvital</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;electronic energy&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to examine file *sowout* from a sow/reap distributed job</span>
+<span class="sd">    for formatted line with electronic energy information about index</span>
+<span class="sd">    *sownum* to be used for construction of *quantity* computations as</span>
+<span class="sd">    directed by master input file with *linkage* kwarg. When file *sowout*</span>
+<span class="sd">    is missing or incomplete files, function will either return zero</span>
+<span class="sd">    (*allvital* is ``False``) or terminate (*allvital* is ``True``) since</span>
+<span class="sd">    some sow/reap procedures can produce meaningful results (database)</span>
+<span class="sd">    from an incomplete set of sown files, while others cannot (gradient,</span>
+<span class="sd">    hessian).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">freagent</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.out&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sowout</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">allvital</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Aborting upon output file </span><span class="se">\&#39;</span><span class="si">%s</span><span class="s1">.out</span><span class="se">\&#39;</span><span class="s1"> not found.</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sowout</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Aborting upon output file </span><span class="se">\&#39;</span><span class="si">%s</span><span class="s1">.out</span><span class="se">\&#39;</span><span class="s1"> not found.</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sowout</span><span class="p">))</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">freagent</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">E</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">allvital</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Aborting upon output file </span><span class="se">\&#39;</span><span class="si">%s</span><span class="s1">.out</span><span class="se">\&#39;</span><span class="s1"> has no </span><span class="si">%s</span><span class="s1"> RESULT line.</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sowout</span><span class="p">,</span> <span class="n">quantity</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Aborting upon output file </span><span class="se">\&#39;</span><span class="si">%s</span><span class="s1">.out</span><span class="se">\&#39;</span><span class="s1"> has no </span><span class="si">%s</span><span class="s1"> RESULT line.</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sowout</span><span class="p">,</span> <span class="n">quantity</span><span class="p">))</span>
+                <span class="k">break</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="n">quantity</span><span class="p">,</span> <span class="s1">&#39;RESULT:&#39;</span><span class="p">,</span> <span class="s1">&#39;computation&#39;</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">!=</span> <span class="n">linkage</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Output file </span><span class="se">\&#39;</span><span class="si">%s</span><span class="s1">.out</span><span class="se">\&#39;</span><span class="s1"> has linkage </span><span class="si">%s</span><span class="s1"> incompatible with master.in linkage </span><span class="si">%s</span><span class="s1">.&#39;</span>
+                        <span class="o">%</span> <span class="p">(</span><span class="n">sowout</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">str</span><span class="p">(</span><span class="n">linkage</span><span class="p">)))</span>
+                <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sownum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Output file </span><span class="se">\&#39;</span><span class="si">%s</span><span class="s1">.out</span><span class="se">\&#39;</span><span class="s1"> has nominal affiliation </span><span class="si">%s</span><span class="s1"> incompatible with item </span><span class="si">%s</span><span class="s1">.&#39;</span>
+                        <span class="o">%</span> <span class="p">(</span><span class="n">sowout</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">sownum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+                <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;electronic energy&#39;</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;electronic&#39;</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">]:</span>
+                        <span class="n">E</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
+                        <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> RESULT: electronic energy = </span><span class="si">%20.12f</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">E</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;electronic gradient&#39;</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;electronic&#39;</span><span class="p">,</span> <span class="s1">&#39;gradient&#39;</span><span class="p">]:</span>
+                        <span class="n">E</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> RESULT: electronic gradient = </span><span class="si">%r</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">E</span><span class="p">))</span>
+        <span class="n">freagent</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">E</span></div>
+
+
+<div class="viewcode-block" id="prepare_options_for_modules"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.prepare_options_for_modules">[docs]</a><span class="k">def</span> <span class="nf">prepare_options_for_modules</span><span class="p">(</span><span class="n">changedOnly</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">commandsInsteadDict</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return a string of commands to replicate the</span>
+<span class="sd">    current state of user-modified options. Used to capture C++</span>
+<span class="sd">    options information for distributed (sow/reap) input files.</span>
+
+<span class="sd">    .. caution:: Some features are not yet implemented. Buy a developer a coffee.</span>
+
+<span class="sd">       - Need some option to get either all or changed</span>
+
+<span class="sd">       - Need some option to either get dict or set string or psimod command list</span>
+
+<span class="sd">       - command return doesn&#39;t revoke has_changed setting for unchanged with changedOnly=False</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modules</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c1"># PSI4 Modules</span>
+        <span class="s2">&quot;ADC&quot;</span><span class="p">,</span> <span class="s2">&quot;CCENERGY&quot;</span><span class="p">,</span> <span class="s2">&quot;CCEOM&quot;</span><span class="p">,</span> <span class="s2">&quot;CCDENSITY&quot;</span><span class="p">,</span> <span class="s2">&quot;CCLAMBDA&quot;</span><span class="p">,</span> <span class="s2">&quot;CCHBAR&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CCRESPONSE&quot;</span><span class="p">,</span> <span class="s2">&quot;CCSORT&quot;</span><span class="p">,</span> <span class="s2">&quot;CCTRIPLES&quot;</span><span class="p">,</span> <span class="s2">&quot;CLAG&quot;</span><span class="p">,</span> <span class="s2">&quot;CPHF&quot;</span><span class="p">,</span> <span class="s2">&quot;CIS&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DCFT&quot;</span><span class="p">,</span> <span class="s2">&quot;DETCI&quot;</span><span class="p">,</span> <span class="s2">&quot;DFMP2&quot;</span><span class="p">,</span> <span class="s2">&quot;DFTSAPT&quot;</span><span class="p">,</span> <span class="s2">&quot;FINDIF&quot;</span><span class="p">,</span> <span class="s2">&quot;FNOCC&quot;</span><span class="p">,</span> <span class="s2">&quot;LMP2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;MCSCF&quot;</span><span class="p">,</span> <span class="s2">&quot;MINTS&quot;</span><span class="p">,</span> <span class="s2">&quot;MRCC&quot;</span><span class="p">,</span> <span class="s2">&quot;OCC&quot;</span><span class="p">,</span> <span class="s2">&quot;OPTKING&quot;</span><span class="p">,</span> <span class="s2">&quot;PSIMRCC&quot;</span><span class="p">,</span> <span class="s2">&quot;RESPONSE&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;SAPT&quot;</span><span class="p">,</span> <span class="s2">&quot;SCF&quot;</span><span class="p">,</span> <span class="s2">&quot;STABILITY&quot;</span><span class="p">,</span> <span class="s2">&quot;THERMO&quot;</span><span class="p">,</span> <span class="s2">&quot;TRANSQT&quot;</span><span class="p">,</span> <span class="s2">&quot;TRANSQT2&quot;</span><span class="p">,</span>
+        <span class="c1"># External Modules</span>
+        <span class="s2">&quot;CFOUR&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="n">commands</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_global_option_list</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">psi4</span><span class="o">.</span><span class="n">has_global_option_changed</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">changedOnly</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span>
+            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="n">opt</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span>
+                                       <span class="s1">&#39;has_changed&#39;</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">has_global_option_changed</span><span class="p">(</span><span class="n">opt</span><span class="p">)}</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+                <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;psi4.set_global_option(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;psi4.set_global_option(&#39;</span><span class="si">%s</span><span class="s2">&#39;, </span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="c1">#if changedOnly:</span>
+            <span class="c1">#    print(&#39;Appending module %s option %s value %s has_changed %s.&#39; % \</span>
+            <span class="c1">#        (&#39;GLOBALS&#39;, opt, psi4.get_global_option(opt), psi4.has_global_option_changed(opt)))</span>
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">psi4</span><span class="o">.</span><span class="n">has_option_changed</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">opt</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">changedOnly</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                        <span class="n">options</span><span class="p">[</span><span class="n">module</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">opt</span><span class="p">)</span>
+                    <span class="n">options</span><span class="p">[</span><span class="n">module</span><span class="p">][</span><span class="n">opt</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span>
+                                            <span class="s1">&#39;has_changed&#39;</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">has_option_changed</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">opt</span><span class="p">)}</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+                        <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;psi4.set_local_option(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;psi4.set_local_option(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;, </span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+                    <span class="c1">#if changedOnly:</span>
+                    <span class="c1">#    print(&#39;Appending module %s option %s value %s has_changed %s.&#39; % \</span>
+                    <span class="c1">#        (module, opt, psi4.get_option(module, opt), psi4.has_option_changed(module, opt)))</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="n">commandsInsteadDict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">commands</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">options</span></div>
+
+
+<div class="viewcode-block" id="mat2arr"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.mat2arr">[docs]</a><span class="k">def</span> <span class="nf">mat2arr</span><span class="p">(</span><span class="n">mat</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to convert psi4.Matrix *mat* to Python array of arrays.</span>
+<span class="sd">    Expects psi4.Matrix to be flat with respect to symmetry.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">mat</span><span class="o">.</span><span class="n">rowdim</span><span class="p">()</span><span class="o">.</span><span class="n">n</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Cannot convert Matrix with symmetry.&#39;</span><span class="p">)</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">rowdim</span><span class="p">()[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">coldim</span><span class="p">()[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+        <span class="n">arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">arr</span></div>
+
+
+<div class="viewcode-block" id="format_currentstate_for_input"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.format_currentstate_for_input">[docs]</a><span class="k">def</span> <span class="nf">format_currentstate_for_input</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">allButMol</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return an input file in preprocessed psithon.</span>
+<span class="sd">    Captures memory, molecule, options, function, method, and kwargs.</span>
+<span class="sd">    Used to write distributed (sow/reap) input files.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">commands</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\n</span><span class="s2"># This is a psi4 input file auto-generated from the </span><span class="si">%s</span><span class="s2">() wrapper.</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;memory </span><span class="si">%d</span><span class="s2"> mb</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.000001</span> <span class="o">*</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_memory</span><span class="p">()))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">allButMol</span><span class="p">:</span>
+        <span class="n">molecule</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_active_molecule</span><span class="p">()</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+        <span class="n">commands</span> <span class="o">+=</span> <span class="n">format_molecule_for_input</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+        <span class="n">commands</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">commands</span> <span class="o">+=</span> <span class="n">prepare_options_for_modules</span><span class="p">(</span><span class="n">changedOnly</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">commandsInsteadDict</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2">(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">commands</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">, &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+    <span class="n">commands</span> <span class="o">+=</span> <span class="s1">&#39;)</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+    <span class="k">return</span> <span class="n">commands</span></div>
+
+
+<div class="viewcode-block" id="expand_psivars"><a class="viewcode-back" href="../../autodoc_driver.html#p4util.procutil.expand_psivars">[docs]</a><span class="k">def</span> <span class="nf">expand_psivars</span><span class="p">(</span><span class="n">pvdefs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Dictionary *pvdefs* has keys with names of PsiVariables to be</span>
+<span class="sd">    created and values with dictionary of two keys: &#39;args&#39;, the</span>
+<span class="sd">    PsiVariables that contribute to the key and &#39;func&#39;, a function (or</span>
+<span class="sd">    lambda) to combine them. This function builds those PsiVariables if</span>
+<span class="sd">    all the contributors are available. Helpful printing is available when</span>
+<span class="sd">    PRINT &gt; 2.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;PRINT&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">pvar</span><span class="p">,</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">pvdefs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;building </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pvar</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">50</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvar</span><span class="p">))),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">psivars</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variables</span><span class="p">()</span>
+        <span class="n">data_rich_args</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">pv</span> <span class="ow">in</span> <span class="n">action</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">pv</span> <span class="ow">in</span> <span class="n">psivars</span><span class="p">:</span>
+                    <span class="n">data_rich_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">psivars</span><span class="p">[</span><span class="n">pv</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;EMPTY, missing {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pv</span><span class="p">))</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data_rich_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pv</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s1">&#39;func&#39;</span><span class="p">](</span><span class="n">data_rich_args</span><span class="p">)</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">pvar</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SUCCESS&quot;&quot;&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

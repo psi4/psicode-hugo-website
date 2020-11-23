@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.psiutil &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.psiutil</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1">#@BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># PSI4: an ab initio quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1">#@END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">r&quot;&quot;&quot;Stuff stolen from psi. Should import or not as necessary</span>
+<span class="sd">or some better way. Apologies to the coders.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">from</span> <span class="nn">.vecutil</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="k">def</span> <span class="nf">_success</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to print a &#39;*label*...PASSED&#39; line to screen.</span>
+<span class="sd">    Used by :py:func:`util.compare_values` family when functions pass.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">{0:.&lt;66}PASSED&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="compare_values"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.compare_values">[docs]</a><span class="k">def</span> <span class="nf">compare_values</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">digits</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">exitonfail</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two values. Prints :py:func:`util.success`</span>
+<span class="sd">    when value *computed* matches value *expected* to number of *digits*</span>
+<span class="sd">    (or to *digits* itself when *digits* &gt; 1 e.g. digits=0.04). Performs</span>
+<span class="sd">    a system exit on failure unless *exitonfail* False, in which case</span>
+<span class="sd">    returns error message. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="n">digits</span> <span class="k">if</span> <span class="n">digits</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">digits</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">expected</span> <span class="o">-</span> <span class="n">computed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">thresh</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%f</span><span class="s2">) does not match (</span><span class="si">%f</span><span class="s2">) to </span><span class="si">%f</span><span class="s2"> digits.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">digits</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">exitonfail</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span>
+    <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">computed</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%f</span><span class="s2">) does not match (</span><span class="si">%f</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">probably because the computed value is nan.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exitonfail</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span>
+    <span class="n">_success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_integers"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.compare_integers">[docs]</a><span class="k">def</span> <span class="nf">compare_integers</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two integers. Prints :py:func:`util.success`</span>
+<span class="sd">    when value *computed* matches value *expected*.</span>
+<span class="sd">    Performs a system exit on failure. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">expected</span> <span class="o">!=</span> <span class="n">computed</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%d</span><span class="s2">) does not match (</span><span class="si">%d</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">_success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_strings"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.compare_strings">[docs]</a><span class="k">def</span> <span class="nf">compare_strings</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two strings. Prints :py:func:`util.success`</span>
+<span class="sd">    when string *computed* exactly matches string *expected*.</span>
+<span class="sd">    Performs a system exit on failure. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">expected</span> <span class="o">!=</span> <span class="n">computed</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%s</span><span class="s2">) does not match (</span><span class="si">%s</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">_success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_matrices"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.compare_matrices">[docs]</a><span class="k">def</span> <span class="nf">compare_matrices</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">digits</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two matrices. Prints :py:func:`util.success`</span>
+<span class="sd">    when elements of matrix *computed* match elements of matrix *expected* to</span>
+<span class="sd">    number of *digits*. Performs a system exit on failure to match symmetry</span>
+<span class="sd">    structure, dimensions, or element values. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">failed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">expected</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">computed</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">digits</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%s</span><span class="s2">) does not match (</span><span class="si">%s</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">expected</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">],</span> <span class="n">computed</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]))</span>
+                <span class="n">failed</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">failed</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The Failed Test Matrices</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">show</span><span class="p">(</span><span class="n">computed</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">show</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">_success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="query_yes_no"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.query_yes_no">[docs]</a><span class="k">def</span> <span class="nf">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ask a yes/no question via raw_input() and return their answer.</span>
+
+<span class="sd">    *question* is a string that is presented to the user.</span>
+<span class="sd">    *default* is the presumed answer if the user just hits &lt;Enter&gt;.</span>
+<span class="sd">    It must be yes (the default), no or None (meaning</span>
+<span class="sd">    an answer is required of the user).</span>
+
+<span class="sd">    The return value is one of True or False.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">yes</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^(y|yes|true|on|1)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+    <span class="n">no</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^(n|no|false|off|0)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">default</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot; [y/n] &quot;</span>
+    <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot; [Y/n] &quot;</span>
+    <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot; [y/N] &quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;invalid default answer: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">default</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">question</span> <span class="o">+</span> <span class="n">prompt</span><span class="p">)</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="k">elif</span> <span class="n">yes</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">choice</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">no</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">choice</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;    Please respond with &#39;yes&#39; or &#39;no&#39;.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">## {{{ http://code.activestate.com/recipes/52224/ (r1)</span>
+<div class="viewcode-block" id="search_file"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.search_file">[docs]</a><span class="k">def</span> <span class="nf">search_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">search_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given an os.pathsep divided *search_path*, find first occurance of</span>
+<span class="sd">    *filename*. Returns full path to file if found or None if unfound.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">file_found</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">search_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)):</span>
+            <span class="n">file_found</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">break</span>
+    <span class="k">if</span> <span class="n">file_found</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span></div>
+<span class="c1">## end of http://code.activestate.com/recipes/52224/ }}}</span>
+
+
+<div class="viewcode-block" id="drop_duplicates"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.drop_duplicates">[docs]</a><span class="k">def</span> <span class="nf">drop_duplicates</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function that given an array *seq*, returns an array without any duplicate</span>
+<span class="sd">    entries. There is no guarantee of which duplicate entry is dropped.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#noDupes = []</span>
+    <span class="c1">#[noDupes.append(i) for i in seq if not noDupes.count(i)]</span>
+    <span class="c1">#return noDupes</span>
+    <span class="n">noDupes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">seq2</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="p">[</span><span class="n">noDupes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq2</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">noDupes</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">noDupes</span></div>
+
+
+<div class="viewcode-block" id="all_casings"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.all_casings">[docs]</a><span class="k">def</span> <span class="nf">all_casings</span><span class="p">(</span><span class="n">input_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return a generator of all lettercase permutations</span>
+<span class="sd">    of *input_string*.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">input_string</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">input_string</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">first</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">first</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">sub_casing</span> <span class="ow">in</span> <span class="n">all_casings</span><span class="p">(</span><span class="n">input_string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                <span class="k">yield</span> <span class="n">first</span> <span class="o">+</span> <span class="n">sub_casing</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sub_casing</span> <span class="ow">in</span> <span class="n">all_casings</span><span class="p">(</span><span class="n">input_string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                <span class="k">yield</span> <span class="n">first</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="n">sub_casing</span>
+                <span class="k">yield</span> <span class="n">first</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">sub_casing</span></div>
+
+
+<div class="viewcode-block" id="getattr_ignorecase"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.getattr_ignorecase">[docs]</a><span class="k">def</span> <span class="nf">getattr_ignorecase</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to extract attribute *attr* from *module* if *attr*</span>
+<span class="sd">    is available in any possible lettercase permutation. Returns</span>
+<span class="sd">    attribute if available, None if not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">per</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">all_casings</span><span class="p">(</span><span class="n">attr</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">per</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">array</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">per</span><span class="p">)</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">array</span></div>
+
+
+<div class="viewcode-block" id="import_ignorecase"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.import_ignorecase">[docs]</a><span class="k">def</span> <span class="nf">import_ignorecase</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to import *module* in any possible lettercase</span>
+<span class="sd">    permutation. Returns module object if available, None if not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modobj</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">per</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">all_casings</span><span class="p">(</span><span class="n">module</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">modobj</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">per</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">modobj</span></div>
+
+<div class="viewcode-block" id="findfile_ignorecase"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psiutil.findfile_ignorecase">[docs]</a><span class="k">def</span> <span class="nf">findfile_ignorecase</span><span class="p">(</span><span class="n">fil</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to locate a file *pre* + *fil* + *post* in any possible </span>
+<span class="sd">    lettercase permutation of *fil*. Returns *pre* + *fil* + *post* if </span>
+<span class="sd">    available, None if not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">afil</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">per</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">all_casings</span><span class="p">(</span><span class="n">fil</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">pre</span> <span class="o">+</span> <span class="n">per</span> <span class="o">+</span> <span class="n">post</span><span class="p">):</span>
+            <span class="n">afil</span> <span class="o">=</span> <span class="n">pre</span> <span class="o">+</span> <span class="n">per</span> <span class="o">+</span> <span class="n">post</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">afil</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

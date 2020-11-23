@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Embarrassing Parallelism &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Psithon Functions: Invoking a Calculation" href="psithonfunc.html" />
+    <link rel="next" title="cubeprop() Generation of cube files" href="cubeprop.html" />
+    <link rel="prev" title="Function Intercalls" href="intercalls.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cubeprop.html" title="cubeprop() Generation of cube files"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="intercalls.html" title="Function Intercalls"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="embarrassing-parallelism">
+<span id="sec-sowreap"></span><h1>Embarrassing Parallelism<a class="headerlink" href="#embarrassing-parallelism" title="Permalink to this headline">¶</a></h1>
+<p>Many of the tasks automated by Python wrappers consist of a number of
+independent <span class="sc">Psi4</span> calculations and are thus suited to an embarrassingly
+parallel mode of operation. In Psithon, these have been dubbed sow/reap
+procedures and have the following general structure.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Prepare an input file, simply adding <code class="docutils literal"><span class="pre">mode='sow'</span></code> to the
+argument list of an available Python function. Run this quick job to
+produce input files for lengthier calculations.</li>
+<li>According to the instructions in the output file of the above step,
+run the generated input files in any order on any variety of computers
+and architectures. This is the time-intensive portion of the
+calculation.</li>
+<li>The &#8216;sow&#8217; stage also produces a <em>master</em> input file (with a
+<code class="docutils literal"><span class="pre">mode='reap'</span></code> directive). When all the jobs in the above step are
+completed, place their output files in the same location as the
+<em>master</em> input, and run this last, quick job to collect the results.</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>Sow/reap procedures are governed by the <strong>mode</strong> keyword, choices being
+<code class="docutils literal"><span class="pre">'continuous'</span></code>, <code class="docutils literal"><span class="pre">'sow'</span></code>, and <code class="docutils literal"><span class="pre">'reap'</span></code>. Only <code class="docutils literal"><span class="pre">'sow'</span></code> is likely to
+be used by the user, as <code class="docutils literal"><span class="pre">'continuous'</span></code> is always the default, and
+input files with <code class="docutils literal"><span class="pre">'reap'</span></code> are autogenerated.</li>
+<li>Embarrassingly parallel algorithm available at present for:<ul>
+<li><a class="reference internal" href="db.html#sec-db"><span>Database, database()</span></a></li>
+<li>finite difference operation of <a class="reference internal" href="opt.html#sec-opt"><span>Geometry Optimization, optimize() and gradient()</span></a></li>
+<li>finite difference of energies of <a class="reference internal" href="freq.html#sec-freq"><span>Harmonic Vibrational Analysis, frequency() and hessian()</span></a></li>
+<li>finite difference of gradients of <a class="reference internal" href="freq.html#sec-freq"><span>Harmonic Vibrational Analysis, frequency() and hessian()</span></a></li>
+</ul>
+</li>
+</ul>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>Some features are not yet implemented. Buy a developer a coffee.</p>
+<ul class="last simple">
+<li>Local options (e.g., <code class="docutils literal"><span class="pre">set</span> <span class="pre">scf</span> <span class="pre">e_convergence</span> <span class="pre">9</span></code>) will not get transmitted to the child jobs.</li>
+<li>Array options (e.g., <code class="docutils literal"><span class="pre">set</span> <span class="pre">states_per_irrep</span> <span class="pre">[2,</span> <span class="pre">1]</span></code>) will not get transmitted to the child jobs.</li>
+<li>Function intercalls (e.g., db(opt())) are not tested with sow/reap procedures.</li>
+</ul>
+</div>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intercalls.html"
+                        title="previous chapter">Function Intercalls</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cubeprop.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">cubeprop()</span></code> Generation of cube files</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sowreap.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cubeprop.html" title="cubeprop() Generation of cube files"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="intercalls.html" title="Function Intercalls"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

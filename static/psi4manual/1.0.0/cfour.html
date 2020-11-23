@@ -1,0 +1,1112 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to CFOUR by J. Stanton and J. Gauss &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" />
+    <link rel="next" title="Interface to CheMPS2 by S. Wouters" href="chemps2.html" />
+    <link rel="prev" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="chemps2.html" title="Interface to CheMPS2 by S. Wouters"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="interfacing.html" title="Interfaces: Enhancing Psi4 Capabilities"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="interface-to-cfour-by-j-stanton-and-j-gauss">
+<span id="sec-cfour"></span><span id="index-0"></span><h1>Interface to CFOUR by J. Stanton and J. Gauss<a class="headerlink" href="#interface-to-cfour-by-j-stanton-and-j-gauss" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Lori A. Burns</em></p>
+<p><em>Section author: Lori A. Burns</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__cfour.html#apdx-cfour"><span>Keywords</span></a>, <a class="reference internal" href="autodir_psivariables/module__cfour.html#apdx-cfour-psivar"><span>PSI Variables</span></a>, <a class="reference internal" href="autodoc_testsuite_cfour.html#apdx-testsuitecfour"><span>Samples</span></a></p>
+<p><span class="sc">Psi4</span> contains code to interface to the Cfour quantum chemistry suite of
+John F. Stanton (U. Texas, Austin) and Jürgen Gauss (U. Mainz),
+which is available after a license agreement from
+<a class="reference external" href="http://www.cfour.de/">http://www.cfour.de/</a>.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Follow the instructions provided with the Cfour download to install the
+executable or to build the source. To by used by <span class="sc">Psi4</span>, the program
+binary (<strong class="program">xcfour</strong>) must be found in your <span class="target" id="index-1"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a> or
+<span class="target" id="index-2"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a>.  The <code class="docutils literal"><span class="pre">GENBAS</span></code> file containing basis sets in Cfour
+format is not necessary for this interface, but if you prefer to access
+basis sets the &#8220;Cfour way&#8221; using a custom <code class="docutils literal"><span class="pre">GENBAS</span></code> file (the distributed
+one is included with the interface), it, too, must be in <span class="target" id="index-3"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a> or
+<span class="target" id="index-4"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a>. If <span class="sc">Psi4</span> is unable to execute the binary, an error
+will be reported.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">The p4c4 interface hasn&#8217;t been fully adapted for the new March 2014 version.</p>
+</div>
+</div>
+<div class="section" id="cfour-for-psifour-users">
+<h2>Cfour for <span class="sc">Psi4</span> Users<a class="headerlink" href="#cfour-for-psifour-users" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Set memory as usual</li>
+<li>Set molecule as usual</li>
+<li>Set basis set as usual (Cfour only cares about orbital basis, no fitting
+bases)</li>
+<li>Set the task as usual, indicating Cfour as the intended code by
+prepending &#8220;c4-&#8221; to the method argument. So <code class="docutils literal"><span class="pre">energy('scf')</span></code> becomes
+<code class="docutils literal"><span class="pre">energy('c4-scf')</span></code> and <code class="docutils literal"><span class="pre">optimize('ccsd(t)')</span></code> becomes
+<code class="docutils literal"><span class="pre">optimize('c4-ccsd(t)')</span></code>. Find available methods for
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a> at <a class="reference internal" href="energy.html#table-energy-cfour"><span>Energy (CFOUR)</span></a>
+and for <a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><code class="xref py py-func docutils literal"><span class="pre">optimize()</span></code></a> at <a class="reference internal" href="opt.html#table-grad-cfour"><span>Gradient (CFOUR)</span></a>.</li>
+<li>Generally, the p4c4 interface will handle best practices for path of
+execution: <code class="docutils literal"><span class="pre">vcc</span></code>/<code class="docutils literal"><span class="pre">ecc</span></code>, derivative type, <em>etc.</em> The user is still
+responsible for setting convergence, frozen core, guess, diis, <em>etc.</em>
+For the moment, so-called &#8220;best-practices&#8221; keywords are summarized at
+<a class="reference internal" href="#table-cfour-cc-program"><span>Best Practices</span></a>.</li>
+<li>For the type of computation intended, find appropriate options at
+<a class="reference internal" href="autodir_options_c/module__cfour.html#apdx-cfour"><span>Keywords</span></a>. These keyword summaries contain the same
+information as the <a class="reference external" href="http://slater.chemie.uni-mainz.de/cfour/index.php?n=Main.ListOfKeywordsInAlphabeticalOrder">proper CFOUR options list</a>
+plus notes on keyword relevance when run through <span class="sc">Psi4</span>.  Information
+at the <a class="reference external" href="http://slater.chemie.uni-mainz.de/cfour/index.php?n=Main.Manual">CFOUR manual</a> may
+also be useful, as may the many samples at <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour">psi4/samples/cfour</a>.</li>
+<li>Set Cfour keywords just like <span class="sc">Psi4</span> keywords. The names of keywords
+are unchanged beyond a prepended &#8220;cfour_&#8221;. (Though be aware that common
+abbreviations like CALC and REF must be fully spelled out as
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-calc-level-cfour"><span class="xref std std-term">CFOUR_CALC_LEVEL</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-reference-cfour"><span class="xref std std-term">CFOUR_REFERENCE</span></a> when used in
+<span class="sc">Psi4</span>.)</li>
+<li>In limited trial cases, keywords nominally directed at non-Cfour modules
+are translated into their Cfour counterparts. For example, setting
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-scf"><span class="xref std std-term">REFERENCE</span></a> will appropriately set <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-reference-cfour"><span class="xref std std-term">CFOUR_REFERENCE</span></a>. For a
+list of applicable keywords, see source of
+<a class="reference internal" href="autodoc_driver.html#qcdb.cfour.muster_psi4options" title="qcdb.cfour.muster_psi4options"><code class="xref py py-func docutils literal"><span class="pre">qcdb.cfour.muster_psi4options()</span></code></a>.</li>
+<li>Consult <a class="reference internal" href="#sec-cfourfunctionality"><span>Functionality</span></a> for information on what Cfour
+functionality is accessible through <span class="sc">Psi4</span>.</li>
+</ul>
+</div>
+<div class="section" id="psifour-for-cfour-users">
+<h2><span class="sc">Psi4</span> for Cfour Users<a class="headerlink" href="#psifour-for-cfour-users" title="Permalink to this headline">¶</a></h2>
+<p>In the simplest use of the Psi4/Cfour interface, a <span class="sc">Psi4</span> input file
+can simply &#8220;wrap&#8221; a <code class="docutils literal"><span class="pre">ZMAT</span></code> file and execute <strong class="program">xcfour</strong>. This is
+illustrated in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>cfour {
+UHF-SCF energy calculation
+N
+H 1 R
+H 1 R 2 A
+
+R=1.008
+A=105.0
+
+*ACES2(CALC=HF,BASIS=qz2p
+MULT=2,REF=UHF
+OCCUPATION=3-1-1-0/3-0-1-0
+SCF_CONV=12
+MEMORY=20000000)
+}
+
+energy(&#39;cfour&#39;)
+</pre></div>
+</div>
+<p>Here, the contents of the <code class="docutils literal"><span class="pre">cfour</span> <span class="pre">{...}</span></code> block are written directly to a
+<code class="docutils literal"><span class="pre">ZMAT</span></code> file. This is joined by a default <code class="docutils literal"><span class="pre">GENBAS</span></code> file
+(<a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/basis/GENBAS">psi4/share/basis/GENBAS</a>).  To preferentially use your own <code class="docutils literal"><span class="pre">GENBAS</span></code>,
+place it in <span class="target" id="index-5"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a> or <span class="target" id="index-6"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a>. The line calling
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a> with argument <code class="docutils literal"><span class="pre">'cfour'</span></code> invokes
+<strong class="program">xcfour</strong>.</p>
+<p>After execution of the <code class="docutils literal"><span class="pre">energy('cfour')</span></code> line completes, Cfour results
+are read back into <span class="sc">Psi4</span> format and are thereafter accessible for
+further processing in the input file. See <a class="reference internal" href="#sec-cfouroutput"><span>Output</span></a> for
+details. This storage of results in variables and arrays <em>in memory</em> for
+the duration of the <span class="sc">Psi4</span> instance (as opposed to solely <em>in files</em>)
+is the only advantage thus far incurred by the P4C4 interface. We&#8217;ll call
+this mode of basic utility the &#8220;sandwich&#8221; mode.</p>
+<p>Molecule specification in <span class="sc">Psi4</span> allows Cartesians, Z-matrices, mixed
+Cartesian/Z-matrix, negation of variables, delayed specification of
+variables, specification of fragments, etc., all in a whitespace-tolerant
+format. See <a class="reference internal" href="psithonmol.html#sec-moleculespecification"><span>Molecule and Geometry Specification</span></a> for details and
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/mints5/input.dat">cfour/mints5</a> for examples. When a <span class="sc">Psi4</span>-style molecule is
+supplied, its geometry is written to <code class="docutils literal"><span class="pre">ZMAT</span></code> in Cartesian form and the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-coordinates-cfour"><span class="xref std std-term">CFOUR_COORDINATES</span></a>=CARTESIAN, <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-units-cfour"><span class="xref std std-term">CFOUR_UNITS</span></a>=ANGSTROM,
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-charge-cfour"><span class="xref std std-term">CFOUR_CHARGE</span></a>, and <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-multiplicity-cfour"><span class="xref std std-term">CFOUR_MULTIPLICITY</span></a> keywords are set
+appropriately in the <code class="docutils literal"><span class="pre">*CFOUR(...)</span></code> directive.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">There exist molecules (<em>e.g.</em>, allene) where the
+inertial frame is not unique (planes along atoms or between
+atoms). The orientation reconciling machinery currently does not
+handle these cases and will fail with &#8220;Axis unreconcilable between
+QC programs&#8221;. I will get to this soon.</p>
+</div>
+<p>Whenever the molecule is supplied in <span class="sc">Psi4</span> format, the job control
+keywords must be too. All <a class="reference internal" href="autodir_options_c/module__cfour.html#apdx-cfour"><span>Cfour keywords</span></a> are the usual
+ones, prepended by <code class="docutils literal"><span class="pre">cfour_</span></code> to avoid any possible name conflicts.  As
+detailed in <a class="reference internal" href="psithoninput.html#sec-jobcontrol"><span>Job Control Keywords</span></a>, setting keywords is flexible in
+format. The previous example translates to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span># UHF-SCF energy calculation
+
+molecule {
+0 2                                          # multiplicity from the MULT keyword
+N
+H 1 R
+H 1 R 2 A
+
+R=1.008
+A=105.0
+}
+
+set {
+cfour_CALC_level=HF                          # only full keyword names allowed
+cfour_BASIS=qz2p
+#MULT=2                                      # now in molecule {...} block
+cfour_REFerence=UHF
+cfour_OCCUPATION [[3, 1, 1, 0], [3,0,1,0] ]  # arrays in python notation
+cfour_SCF_CONV=12
+cfour_MEMORY=20000000
+}
+
+energy(&#39;cfour&#39;)
+</pre></div>
+</div>
+<p>Here, note that none of capitalization, equals sign, or whitespace matter
+for the keyword commands. Specifcation of strings and integers requires no
+translation; <a class="reference internal" href="notes_c.html#op-c-boolean"><span>booleans</span></a> have extended freedom of
+format; arrays must be translated into Python-style (square-bracket
+bounded and comma delimited) of appropriate dimension. There are many
+sample inputs in <a class="reference external" href="https://github.com/psi4/psi4/blob/master/tests/cfour/">psi4/tests/cfour/</a> starting with <code class="docutils literal"><span class="pre">sp-</span></code> that take
+examples from the Cfour manual and first run them in sandwich mode and
+then run them as translated into <span class="sc">Psi4</span> format.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><span class="sc">Psi4</span> only recognizes keywords by their full name, so the common
+Cfour keyword abbreviations CALC, REF, etc. must be replaced by their
+proper names of <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-calc-level-cfour"><span class="xref std std-term">CFOUR_CALC_LEVEL</span></a>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-reference-cfour"><span class="xref std std-term">CFOUR_REFERENCE</span></a>, etc.</p>
+</div>
+<p>Whenever the molecule is supplied in <span class="sc">Psi4</span> format, it is possible to
+perform geometry optimizations where Cfour supplies the gradient and the
+<span class="sc">Psi4</span> module <a class="reference internal" href="optking.html#sec-optking"><span>optking</span></a> drives the structural
+changes. Because of the limitations on geometry specification for
+optimizations in Cfour, optking-driven optimizations are the <em>only</em>
+optimizations allowed in the P4C4 interface. (The exception is sandwich
+mode, which, of course, permits optimizations with the Cfour optimizer.)
+Below is an example of a geometry optimization:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>memory 200 mb
+
+molecule {
+O
+H 1 R
+H 1 R 2 A
+
+R=0.958
+A=104.5
+}
+
+set {
+
+cfour_CALC_level CCSD(T)
+cfour_BASIS      DZP
+cfour_CC_CONV    12
+cfour_LINEQ_CONV 12
+cfour_SCF_CONV   12
+g_convergence    cfour
+}
+
+optimize(&#39;cfour&#39;)
+</pre></div>
+</div>
+<p>Note that the primary change is the exchange of <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a>
+for <a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><code class="xref py py-func docutils literal"><span class="pre">optimize()</span></code></a> to trigger an optimization.  Setting
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-g-convergence-optking"><span class="xref std std-term">G_CONVERGENCE</span></a>=CFOUR provides a good imitation of Cfour
+default convergence criteria. Although Cfour produces gradients only in
+its standard orientation and atom ordering, these are transformed back to
+input orientation by the P4C4 interface. Several sample inputs in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/tests/cfour/">psi4/tests/cfour/</a> starting with <code class="docutils literal"><span class="pre">opt-</span></code> show basic geometry
+optimizations. <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/mints5-grad/input.dat">cfour/mints5-grad</a> shows optimizations from a
+variety of molecule input formats, and <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/psi-ghost-grad/input.dat">cfour/psi-ghost-grad</a>
+shows an optimization with ghosted atoms. To obtain a single gradient
+<em>sans</em> optimization, call instead <a class="reference internal" href="opt.html#driver.gradient" title="driver.gradient"><code class="xref py py-func docutils literal"><span class="pre">gradient()</span></code></a>.</p>
+<p>Note that it can be convenient to monitor the progress of a geometry
+optimization by grepping the tilde <code class="docutils literal"><span class="pre">~</span></code> character.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Measures of convergence in internal coordinates in au.
+Criteria marked as inactive (o), active &amp; met (*), and active &amp; unmet ( ).
+--------------------------------------------------------------------------------------------- ~
+ Step     Total Energy     Delta E     MAX Force     RMS Force      MAX Disp      RMS Disp    ~
+--------------------------------------------------------------------------------------------- ~
+  Convergence Criteria    1.00e-06 *    3.00e-04 *    1.00e-06 *    1.20e-03 *             o  ~
+--------------------------------------------------------------------------------------------- ~
+    1     -76.33224285   -7.63e+01      2.41e-03      1.60e-03      1.51e-02      8.82e-03 o  ~
+    2     -76.33226097   -1.81e-05      4.84e-04      4.03e-04      7.71e-04 *    7.04e-04 o  ~
+    3     -76.33226140   -4.39e-07 *    4.31e-05 *    3.58e-05      9.89e-05 *    8.93e-05 o  ~
+    4     -76.33226141   -4.26e-09 *    9.76e-07 *    6.58e-07 *    6.22e-06 *    3.71e-06 o  ~
+--------------------------------------------------------------------------------------------------------------- ~
+ Step         Total Energy             Delta E       MAX Force       RMS Force        MAX Disp        RMS Disp  ~
+--------------------------------------------------------------------------------------------------------------- ~
+    1     -76.332242848098    -76.332242848098      0.00241281      0.00160359      0.01507630      0.00881949  ~
+    2     -76.332260965382     -0.000018117284      0.00048446      0.00040256      0.00077146      0.00070447  ~
+    3     -76.332261404452     -0.000000439070      0.00004307      0.00003577      0.00009889      0.00008926  ~
+    4     -76.332261408714     -0.000000004262      0.00000098      0.00000066      0.00000622      0.00000371  ~
+--------------------------------------------------------------------------------------------------------------- ~
+</pre></div>
+</div>
+<p>The above example also shows the total memory for the computation being
+set in <span class="sc">Psi4</span> format. See <a class="reference internal" href="psithoninput.html#sec-memory"><span>Memory Specification</span></a> for details. When
+specified, the memory value is passed on to Cfour by setting keywords
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-memory-size-cfour"><span class="xref std std-term">CFOUR_MEMORY_SIZE</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-mem-unit-cfour"><span class="xref std std-term">CFOUR_MEM_UNIT</span></a>=MB.</p>
+<p><span class="sc">Psi4</span> has an extensive <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><span>basis set library</span></a> in
+Gaussian94 format. See <a class="reference internal" href="basissets.html#sec-basissets"><span>Basis Sets</span></a> for details.  Contrasts to
+Cfour basis handling include identifying basis sets by standard name
+(aug-cc-pVDZ instead of AUG-PVDZ), direct handles for
+diffuse-function-pruned sets (<em>e.g.</em>, jun-cc-pVDZ), case insensitivity,
+appropriate setting of spherical/Cartesian depending on basis set design,
+and syntax to set different basis sets to different classes of atoms
+without listing each atom. All of these features are available to Cfour by
+using the <a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-mints"><span class="xref std std-term">BASIS</span></a> keyword instead of <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-basis-cfour"><span class="xref std std-term">CFOUR_BASIS</span></a>
+(accompanied, of course, by specifying the molecule <span class="sc">Psi4</span>-style).
+Internally, <span class="sc">Psi4</span> processes the basis set as usual, then translates
+the basis set format and writes out a <code class="docutils literal"><span class="pre">GENBAS</span></code> file with an entry for
+each atom. The P4C4 interface sets keyword <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-basis-cfour"><span class="xref std std-term">CFOUR_BASIS</span></a>=SPECIAL
+and <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-spherical-cfour"><span class="xref std std-term">CFOUR_SPHERICAL</span></a> as appropriate, then writes the basis section
+necessary for SPECIAL below the <code class="docutils literal"><span class="pre">*CFOUR(...)</span></code> block. (I&#8217;m sorry that the
+name of the basis doesn&#8217;t appear in <code class="docutils literal"><span class="pre">ZMAT</span></code>, but the combination of the
+~14 character basis name limit and the absence of a comment line marker
+rather precludes that helpful label.)</p>
+<p>The input below employs a <span class="sc">Psi4</span> library basis set and also introduces
+the final stage of conversion toward <span class="sc">Psi4</span> format. Instead of the
+generic <code class="docutils literal"><span class="pre">'cfour'</span></code>, the computational method is specified as the first
+argument to the <a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><code class="xref py py-func docutils literal"><span class="pre">optimize()</span></code></a> call. In the computational
+command below, the string argument <code class="docutils literal"><span class="pre">'c4-ccsd(t)'</span></code> directs that a CCSD(T)
+computation be run using Cfour (as opposed to <code class="docutils literal"><span class="pre">'ccsd(t)'</span></code> which would
+call <span class="sc">Psi4</span> CC code). Specifying computational method in this manner
+sets <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-calc-level-cfour"><span class="xref std std-term">CFOUR_CALC_LEVEL</span></a> from the argument and
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-deriv-level-cfour"><span class="xref std std-term">CFOUR_DERIV_LEVEL</span></a> as appropriate from the function call:
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a>, <a class="reference internal" href="opt.html#driver.gradient" title="driver.gradient"><code class="xref py py-func docutils literal"><span class="pre">gradient()</span></code></a>, or
+<a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><code class="xref py py-func docutils literal"><span class="pre">optimize()</span></code></a>. If those keywords are also set explicitly to
+contradictory values, the interface will complain.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>memory 2 gb
+
+molecule CH2F2  {
+  units au
+  C     0.0000000000  -0.0000000000   1.0890958457
+  F     0.0000000000  -2.1223155812  -0.4598161475
+  F    -0.0000000000   2.1223155812  -0.4598161475
+  H     1.7084139850   0.0000000000   2.1841068002
+  H    -1.7084139850  -0.0000000000   2.1841068002
+}
+
+set basis aug-cc-pvdz
+set rms_force_g_convergence 6
+set cfour_abcdtype aobasis
+set cfour_scf_conv 12
+set cfour_cc_conv 12
+set cfour_lineq_conv 12
+
+optimize(&#39;c4-ccsd(t)&#39;)
+</pre></div>
+</div>
+<p>The utility of this method specification is that examination can be made
+of the reference, the derivative level, the excitation level, <em>etc.</em> and
+some options can be set according to best practices. Practically speaking,
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-cc-program-cfour"><span class="xref std std-term">CFOUR_CC_PROGRAM</span></a> (and eventually <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-abcdtype-cfour"><span class="xref std std-term">CFOUR_ABCDTYPE</span></a>) will
+always be set to the <a class="reference internal" href="#table-cfour-cc-program"><span>fastest safe value</span></a>.
+For example, the input above will run with <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-cc-program-cfour"><span class="xref std std-term">CFOUR_CC_PROGRAM</span></a>=ECC
+unless explicitly set to VCC.</p>
+<p>An advantage of <span class="sc">Psi4</span>&#8216;s Python driver is that any number of common
+work-up procedures can be automated and wrapped around the the
+conventional single-point and optimization procedures at the heart of all
+quantum chemistry codes. Three core &#8220;wrappers&#8221; available in <span class="sc">Psi4</span> are
+<a class="reference internal" href="nbody.html#driver_nbody._nbody_gufunc" title="driver_nbody._nbody_gufunc"><code class="xref py py-func docutils literal"><span class="pre">_nbody_gufunc()</span></code></a>,
+<a class="reference internal" href="db.html#wrapper_database.database" title="wrapper_database.database"><code class="xref py py-func docutils literal"><span class="pre">database()</span></code></a>, and
+<a class="reference internal" href="cbs.html#driver_cbs.complete_basis_set" title="driver_cbs.complete_basis_set"><code class="xref py py-func docutils literal"><span class="pre">complete_basis_set()</span></code></a>; read their respective sections
+for details, but an overview is provided here. <a class="reference internal" href="nbody.html#driver_nbody._nbody_gufunc" title="driver_nbody._nbody_gufunc"><code class="xref py py-func docutils literal"><span class="pre">_nbody_gufunc()</span></code></a>
+computes the interaction energy of a bimolecular complex (counterpoise-corrected,
+not, or both).</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule dimer {
+  Ne
+--
+  Ne 1 R
+  symmetry c1
+}
+
+Rvals=[2.5, 3.0, 4.0]
+set basis aug-cc-pVDZ
+
+for R in Rvals:
+  dimer.R = R
+  ecp = cp(&#39;c4-mp2&#39;)
+  print_stdout(&#39;R [A] = %.1f  IE [kcal/mol] = %.3f\n&#39; % (R, psi_hartree2kcalmol * ecp))
+</pre></div>
+</div>
+<p>yields</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>R [A] = 2.5  IE [kcal/mol] = 0.804
+R [A] = 3.0  IE [kcal/mol] = 0.030
+R [A] = 4.0  IE [kcal/mol] = -0.014
+</pre></div>
+</div>
+<p>Next, the <a class="reference internal" href="db.html#wrapper_database.database" title="wrapper_database.database"><code class="xref py py-func docutils literal"><span class="pre">database()</span></code></a> wrapper allows any computational
+model chemistry to be applied a predefined collection of molecules. Thus
+an input</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set {
+    basis jun-cc-pvdz
+    d_convergence 9
+}
+
+database(&#39;c4-mp2&#39;,&#39;nbc10&#39;,cp=&#39;on&#39;,subset=&#39;MeMe&#39;)
+</pre></div>
+</div>
+<p>yields the counterpoise-corrected interaction energy for several points
+along the dissociation curve of methane dimer, which is a member of the
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/databases/NBC10.py">NBC10</a> database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>//&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;//
+//       Database nbc10 Results      //
+//&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;//
+
+For each VARIABLE requested by tabulate, a &#39;Reaction Value&#39; will be formed from
+&#39;Reagent&#39; values according to weightings &#39;Wt&#39;, as for the REQUESTED ENERGY below.
+Depending on the nature of the variable, this may or may not make any physical sense.
+
+==&gt; Requested Energy &lt;==
+
+----------------------------------------------------------------------------------------------
+            Reaction     Reaction Energy      Error           Reagent 1           Reagent 2
+                            Ref     Calc [kcal/mol]              [H] Wt              [H] Wt
+----------------------------------------------------------------------------------------------
+       NBC1-MeMe-3.2     0.0690   1.1639     1.0949     -80.72700202  1     -40.36442840 -2
+       NBC1-MeMe-3.3    -0.2390   0.6709     0.9099     -80.72764911  1     -40.36435916 -2
+       NBC1-MeMe-3.4    -0.4170   0.3407     0.7577     -80.72806043  1     -40.36430165 -2
+       NBC1-MeMe-3.5    -0.5080   0.1244     0.6324     -80.72831099  1     -40.36425461 -2
+       NBC1-MeMe-3.6    -0.5410  -0.0129     0.5281     -80.72845373  1     -40.36421659 -2
+       NBC1-MeMe-3.7    -0.5390  -0.0961     0.4429     -80.72852567  1     -40.36418623 -2
+       NBC1-MeMe-3.8    -0.5150  -0.1430     0.3720     -80.72855247  1     -40.36416227 -2
+       NBC1-MeMe-3.9    -0.4800  -0.1659     0.3141     -80.72855167  1     -40.36414365 -2
+       NBC1-MeMe-4.0    -0.4390  -0.1733     0.2657     -80.72853498  1     -40.36412938 -2
+       NBC1-MeMe-4.1    -0.3960  -0.1712     0.2248     -80.72850993  1     -40.36411859 -2
+       NBC1-MeMe-4.2    -0.3540  -0.1633     0.1907     -80.72848118  1     -40.36411044 -2
+       NBC1-MeMe-4.3    -0.3150  -0.1525     0.1625     -80.72845143  1     -40.36410422 -2
+       NBC1-MeMe-4.4    -0.2790  -0.1403     0.1387     -80.72842215  1     -40.36409932 -2
+       NBC1-MeMe-4.6    -0.2170  -0.1155     0.1015     -80.72836761  1     -40.36409177 -2
+       NBC1-MeMe-4.8    -0.1680  -0.0933     0.0747     -80.72831991  1     -40.36408563 -2
+       NBC1-MeMe-5.0    -0.1300  -0.0747     0.0553     -80.72827951  1     -40.36408021 -2
+       NBC1-MeMe-5.4    -0.0800  -0.0479     0.0321     -80.72821875  1     -40.36407122 -2
+       NBC1-MeMe-5.8    -0.0500  -0.0312     0.0188     -80.72817678  1     -40.36406353 -2
+----------------------------------------------------------------------------------------------
+         Minimal Dev                         0.0188
+         Maximal Dev                         1.0949
+     Mean Signed Dev                         0.3509
+   Mean Absolute Dev                         0.3509
+             RMS Dev                         0.4676
+----------------------------------------------------------------------------------------------
+</pre></div>
+</div>
+<p>Thirdly, the <a class="reference internal" href="cbs.html#driver_cbs.complete_basis_set" title="driver_cbs.complete_basis_set"><code class="xref py py-func docutils literal"><span class="pre">complete_basis_set()</span></code></a> wrapper allows any
+compound computational method that can be expressed through <a class="reference internal" href="cbs_eqn.html#eq-cbs"><span>CBS</span></a> to be applied to a molecule while employing the minimum number
+of calculations. For example, the job below computes a
+triple-quadruple-zeta Helgaker extrapolation of the mp2 correlation energy
+atop a quadruple zeta reference to which is appended a double-triple-zeta
+Helgaker extrapolated ccsd(t) - mp2 delta correction. Since the mp2 has
+been requested through <span class="sc">Psi4</span> and the ccsd(t) through Cfour, the
+wrapper runs only MP2/cc-pVQZ (P4), CCSD(T)/cc-pVDZ (C4), and
+CCSD(T)/cc-pVTZ (C4) single-points.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule {
+H 0.0 0.0 0.0
+H 1.0 0.0 0.0
+}
+
+set mp2_type conv
+
+cbs(&#39;mp2&#39;, corl_basis=&#39;cc-pV[TQ]Z&#39;, delta_wfn=&#39;c4-ccsd(t)&#39;, delta_basis=&#39;cc-pV[DT]Z&#39;)
+</pre></div>
+</div>
+<p>This yields:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>==&gt; CBS &lt;==
+
+---------------------------------------------------------------------------------------------------------
+    Stage               Method / Basis                                Energy [H]   Scheme
+---------------------------------------------------------------------------------------------------------
+      scf                  scf / cc-pvqz                             -1.10245974   highest_1
+     corl                  mp2 / cc-pv[tq]z                          -0.03561890   corl_xtpl_helgaker_2
+    delta     c4-ccsd(t) - mp2 / cc-pv[dt]z                           0.03507767   corl_xtpl_helgaker_2
+    total                  CBS                                       -1.10300098
+---------------------------------------------------------------------------------------------------------
+</pre></div>
+</div>
+<p>Note that especially for <a class="reference internal" href="cbs.html#driver_cbs.complete_basis_set" title="driver_cbs.complete_basis_set"><code class="xref py py-func docutils literal"><span class="pre">complete_basis_set()</span></code></a>, the
+basis set needs to be specified through <a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-mints"><span class="xref std std-term">BASIS</span></a>, not
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-basis-cfour"><span class="xref std std-term">CFOUR_BASIS</span></a>.  Many of the wrappers can be used in combination to,
+for example, apply a compound method to every molecule in a database or to
+optimize a molecule with an extrapolated basis set (findif only for the
+moment- analytics coming).</p>
+<p>Finally, any number and combination of jobs can be run from a single
+<span class="sc">Psi4</span> input file.  Depending on the nature of preceeding or following
+jobs, it is prudent to separate them with the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>clean()            # removes Psi4 scratch files
+clean_variables()  # empties the PSI variables list
+cfour {}           # empties the cfour block
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Because p4c4 does not inspect the contents of the <code class="docutils literal"><span class="pre">cfour</span> <span class="pre">{...}</span></code>
+block, once the user specifies a <span class="sc">Psi4</span>-style molecule, the
+interface cannot judge whether a sandwich mode (drop the <span class="sc">Psi4</span> molecule
+and use the cfour block as the entirety of the <code class="docutils literal"><span class="pre">ZMAT</span></code>) or a standard mode
+(translate the <span class="sc">Psi4</span> molecule and append additional input from the
+cfour block) is intended. The latter is what actually occurs. If
+there is both a <span class="sc">Psi4</span> molecule and a molecule in the cfour block,
+<code class="docutils literal"><span class="pre">ZMAT</span></code> <em>will</em> end up with multiple molecules and multiple <code class="docutils literal"><span class="pre">*CFOUR(...)</span></code>
+blocks, and it <em>will not</em> run.  Therefore, if mixing sandwich and
+standard or pure-<span class="sc">Psi4</span> computations in an input file, place all
+the sandwich jobs at the beginning before declaring <span class="sc">Psi4</span>
+molecules. If necessary, clear the cfour block with <code class="docutils literal"><span class="pre">cfour</span> <span class="pre">{}</span></code> before
+commencing standard P4C4 jobs.</p>
+</div>
+</div>
+<div class="section" id="output">
+<span id="sec-cfouroutput"></span><h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>The output of <strong class="program">xcfour</strong> invoked from a <span class="sc">Psi4</span> input file is
+written to the <span class="sc">Psi4</span> output file as the computation progresses.  If a
+Cfour module terminates with a non-zero error code, the value will show up
+in <a class="reference internal" href="glossary_psivariables.html#psivar-CFOURERRORCODE"><code class="xref std std-psivar docutils literal"><span class="pre">CFOUR</span> <span class="pre">ERROR</span> <span class="pre">CODE</span></code></a>.</p>
+<p class="rubric">Energies &amp; Scalars</p>
+<p>After execution of <strong class="program">xcfour</strong> has completed, the output string is
+extensively parsed and appropriate results are stored in <a class="reference internal" href="autodir_psivariables/module__cfour.html#apdx-cfour-psivar"><span>PSI
+Variables</span></a>. All gleaned variables are printed in the
+Cfour output section of the <span class="sc">Psi4</span> output file, as shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>//&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;//
+//  Cfour c4-ccsd(t) Energy Results  //
+//&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;//
+
+
+Variable Map:
+----------------------------------------------------------------------------
+&quot;(T) CORRECTION ENERGY&quot;      =&gt;      -0.007263598030
+&quot;CCSD CORRELATION ENERGY&quot;    =&gt;      -0.275705492359
+&quot;CCSD TOTAL ENERGY&quot;          =&gt;     -76.338453952539
+&quot;CCSD(T) CORRELATION ENERGY&quot; =&gt;      -0.007263598030
+&quot;CCSD(T) TOTAL ENERGY&quot;       =&gt;     -76.345717550569
+&quot;CFOUR ERROR CODE&quot;           =&gt;       0.000000000000
+&quot;CURRENT CORRELATION ENERGY&quot; =&gt;      -0.007263598030
+&quot;CURRENT ENERGY&quot;             =&gt;     -76.345717550569
+&quot;CURRENT REFERENCE ENERGY&quot;   =&gt;     -76.062748460180
+&quot;MP2 CORRELATION ENERGY&quot;     =&gt;      -0.270191667755
+&quot;MP2 OPPOSITE-SPIN ENERGY&quot;   =&gt;      -0.204890356651
+&quot;MP2 SAME-SPIN ENERGY&quot;       =&gt;      -0.065301311104
+&quot;MP2 TOTAL ENERGY&quot;           =&gt;     -76.332940127935
+&quot;NUCLEAR REPULSION ENERGY&quot;   =&gt;       9.187331653300
+&quot;SCF TOTAL ENERGY&quot;           =&gt;     -76.062748460180
+</pre></div>
+</div>
+<p>The PSI Variables are also available from the input file for manipulation.
+For instance, to compute the MBPT 2 3/4 energy from MBPT 3 results, the
+following could be used.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;c4-mp3&#39;</span><span class="p">)</span>
+<span class="n">mp2p75_corl</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;mp3 correlation energy&#39;</span><span class="p">)</span> <span class="o">+</span> \
+              <span class="mf">0.25</span> <span class="o">*</span> <span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;MP2 correlation energy&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">mp2p75_corl</span> <span class="o">+</span> <span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;scf total energy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>Some features are not yet implemented. Buy a developer a coffee.</p>
+<ul class="simple">
+<li>No PSI Variables for properties: <em>e.g.</em>, <a class="reference internal" href="glossary_psivariables.html#psivar-SCFDIPOLEX"><code class="xref std std-psivar docutils literal"><span class="pre">SCF</span> <span class="pre">DIPOLE</span> <span class="pre">X</span></code></a></li>
+<li>No PSI Variables for excited state energies</li>
+</ul>
+<p class="last">The formation of further regexes for properties, excited states, etc.
+is one of the primary areas in which this interface requires further
+work.</p>
+</div>
+<p class="rubric">Gradients and Arrays</p>
+<p>In addition to parsing the output stream, results are collected from files
+written to the scratch directory. Presently, the <code class="docutils literal"><span class="pre">GRD</span></code> file is parsed
+and printed to the output file, as shown below. Also printed is the Cfour
+gradient after manipulation by the P4C4 interface and used by <span class="sc">Psi4</span>
+going forward. Manipulation is necessary because Cfour determinedly uses
+its own internal orientation and atom ordering while <span class="sc">Psi4</span> naturally
+expects the gradient to be aligned with the active molecule. The geometry
+in <code class="docutils literal"><span class="pre">GRD</span></code> and the geometry of <span class="sc">Psi4</span>&#8216;s active molecule are shifted,
+rotated, flipped, and otherwise badgered into coincidence, then the same
+manipulations are applied to the gradient in <code class="docutils literal"><span class="pre">GRD</span></code>, the result of which
+is printed below and passed on to Optking.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>//&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;//
+//   Cfour c4-scf Gradient Results   //
+//&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;//
+
+...
+
+Irrep: 1 Size: 4 x 3
+
+               1            2            3
+
+  1    0.0000000   -0.0122978    0.0000000
+  2   -0.0051192    0.0040993   -0.0088667
+  3   -0.0051192    0.0040993    0.0088667
+  4    0.0102384    0.0040993    0.0000000
+
+
+CFOUR scratch file GRD has been read
+  4        0.0000000000
+      7.0000000000       -0.0880964705        0.0000000000        0.0000000000
+      1.0000000000        0.4080144050       -0.9178691296       -1.5897959670
+      1.0000000000        0.4080144050       -0.9178691296        1.5897959670
+      1.0000000000        0.4080144050        1.8357382590        0.0000000001
+      7.0000000000       -0.0122978407        0.0000000000        0.0000000000
+      1.0000000000        0.0040992802       -0.0051191833       -0.0088666856
+      1.0000000000        0.0040992802       -0.0051191833        0.0088666856
+      1.0000000000        0.0040992802        0.0102383666        0.0000000000
+</pre></div>
+</div>
+<p>The gradient can also be accessed from the input file as a
+<a class="reference internal" href="autodoc_psimod.html#sec-psimod-matrix"><span>psi4.Matrix</span></a> object through
+<a class="reference internal" href="autodoc_psimod.html#psi4.get_gradient" title="psi4.get_gradient"><code class="xref py py-func docutils literal"><span class="pre">psi4.get_gradient()</span></code></a>.</p>
+<p class="rubric">Cfour Files</p>
+<p>The contents of all files associated with Cfour are accessible from the
+input file through the Python dictionary <code class="docutils literal"><span class="pre">P4C4_INFO</span></code>. That is,
+<code class="docutils literal"><span class="pre">P4C4_INFO['zmat']</span></code> returns a string of the input file sent to Cfour.
+Accessible arguments are <code class="docutils literal"><span class="pre">zmat</span></code>, <code class="docutils literal"><span class="pre">output</span></code>, and any that have been
+produced of <code class="docutils literal"><span class="pre">grd</span></code>. For example, to print to the screen if CC convergence
+is reached, the following could be placed in the <span class="sc">Psi4</span> input file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;c4-ccsd&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;miracle?&#39;</span><span class="p">,</span> <span class="s1">&#39;miracle&#39;</span> <span class="ow">in</span> <span class="n">P4C4_INFO</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p class="rubric">Scratch Files</p>
+<p>By default, a separate subdirectory for each Cfour call is created within
+the job&#8217;s scratch directory. To explicitly specify the location of the the
+Cfour scratch, execute with, for example, <code class="docutils literal"><span class="pre">energy('cfour',</span>
+<span class="pre">path='/full/path/to/cfour/scratch')</span></code>. Regardless of whether the location
+is specified or default, whether to preserve the scratch directory after
+the computation can be specified with <code class="docutils literal"><span class="pre">energy('cfour',</span> <span class="pre">keep=True)</span></code> or
+(the default) <code class="docutils literal"><span class="pre">energy('cfour',</span> <span class="pre">keep=False)</span></code>. <em>path</em> and <em>keep</em> are
+keyword arguments that get interpreted by the
+<a class="reference internal" href="#procedures.interface_cfour.run_cfour" title="procedures.interface_cfour.run_cfour"><code class="xref py py-func docutils literal"><span class="pre">run_cfour()</span></code></a> function documented below.</p>
+<dl class="function">
+<dt id="procedures.interface_cfour.run_cfour">
+<code class="descname">run_cfour</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>keep</em>, <em>path</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/procedures/interface_cfour.html#run_cfour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procedures.interface_cfour.run_cfour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that prepares environment and input files
+for a calculation calling Stanton and Gauss&#8217;s CFOUR code.
+Also processes results back into Psi4 format.</p>
+<p>This function is not called directly but is instead called by
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a> or <a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><code class="xref py py-func docutils literal"><span class="pre">optimize()</span></code></a> when a Cfour
+method is requested (through <em>name</em> argument). In order to function
+correctly, the Cfour executable <code class="docutils literal"><span class="pre">xcfour</span></code> must be present in
+<span class="target" id="index-7"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a> or <span class="target" id="index-8"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a>.</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li>Many <a class="reference internal" href="autodir_psivariables/module__cfour.html#apdx-cfour-psivar"><span>PSI Variables</span></a> extracted from the Cfour output</li>
+<li>Python dictionary of associated file constants accessible as <code class="docutils literal"><span class="pre">P4C4_INFO['zmat']</span></code>, <code class="docutils literal"><span class="pre">P4C4_INFO['output']</span></code>, <code class="docutils literal"><span class="pre">P4C4_INFO['grd']</span></code>, <em>etc.</em></li>
+</ul>
+</td></tr></table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; <p><code class="docutils literal"><span class="pre">'c4-scf'</span></code> || <code class="docutils literal"><span class="pre">'c4-ccsd(t)'</span></code> || <code class="docutils literal"><span class="pre">'cfour'</span></code> || etc.</p>
+<p>First argument, usually unlabeled. Indicates the computational
+method to be applied to the system.</p>
+</li>
+<li><strong>keep</strong> (<a class="reference internal" href="notes_py.html#op-py-boolean"><span>boolean</span></a>) &#8211; <p><code class="docutils literal"><span class="pre">'on'</span></code> || <img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">'off'</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/></p>
+<p>Indicates whether to delete the Cfour scratch directory upon
+completion of the Cfour job.</p>
+</li>
+<li><strong>path</strong> (<em>string</em>) &#8211; <p>Indicates path to Cfour scratch directory (with respect to Psi4
+scratch directory). Otherwise, the default is a subdirectory
+within the Psi4 scratch directory.</p>
+<p>If specified, GENBAS and/or ZMAT within will be used.</p>
+</li>
+<li><strong>genbas</strong> (<em>string</em>) &#8211; Indicates that contents should be used for GENBAS file.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>GENBAS is a complicated topic. It is quite unnecessary if the
+molecule is from a molecule {...} block and basis is set through
+<span class="sc">Psi4</span>&#8216;s BASIS keyword. In that case, a GENBAS is written from
+LibMints and all is well. Otherwise, a GENBAS is looked for in
+the usual places: PSIPATH, PATH, PSIDATADIR/basis. If path kwarg is
+specified, also looks there preferentially for a GENBAS. Can
+also specify GENBAS within an input file through a string and
+setting the genbas kwarg. Note that due to the input parser&#8217;s
+aggression, blank lines need to be replaced by the text blankline.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="functionality">
+<span id="sec-cfourfunctionality"></span><h2>Functionality<a class="headerlink" href="#functionality" title="Permalink to this headline">¶</a></h2>
+<p>Through clever use of the <code class="docutils literal"><span class="pre">cfour</span> <span class="pre">{...}</span></code> block, one could run most any
+Cfour computation through the P4C4 interface.  In contrast, enumerated
+below are tested functionalities where results from Cfour are collected
+into <span class="sc">Psi4</span> data objects.</p>
+<p class="rubric">Implemented</p>
+<ul class="simple">
+<li>Single-point <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a> commands for <a class="reference internal" href="energy.html#table-energy-cfour"><span>ground state
+methods</span></a>. Examples:
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/sp-rhf-ccsd_t_-ao-ecc/input.dat">cfour/sp-rhf-ccsd_t_-ao-ecc</a>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/scf4/input.dat">cfour/scf4</a>,
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/mints5/input.dat">cfour/mints5</a>.</li>
+<li>Analytic <a class="reference internal" href="opt.html#driver.gradient" title="driver.gradient"><code class="xref py py-func docutils literal"><span class="pre">gradient()</span></code></a> and <a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><code class="xref py py-func docutils literal"><span class="pre">optimize()</span></code></a>
+commands for <a class="reference internal" href="opt.html#table-grad-cfour"><span>ground state methods</span></a>. Real and
+Ghost atoms permitted (though the latter will naturally collapse after
+several cycles). Examples: <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/opt-rhf-ccsd_t_/input.dat">cfour/opt-rhf-ccsd_t_</a>,
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/mp2-1/input.dat">cfour/mp2-1</a>, and <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/mints5-grad/input.dat">cfour/mints5-grad</a>.</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">There exist molecules (<em>e.g.</em>, allene) where the
+inertial frame is not unique (planes along atoms or between
+atoms). The orientation reconciling machinery currently does not
+handle these cases and will fail with &#8220;Axis unreconcilable between
+QC programs&#8221;. I will get to this soon.</p>
+</div>
+<ul class="simple">
+<li>Finite difference of energy <a class="reference internal" href="opt.html#driver.gradient" title="driver.gradient"><code class="xref py py-func docutils literal"><span class="pre">gradient()</span></code></a> and
+<a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><code class="xref py py-func docutils literal"><span class="pre">optimize()</span></code></a> for <a class="reference internal" href="energy.html#table-energy-cfour"><span>methods</span></a>.
+Force with <code class="docutils literal"><span class="pre">gradient('name',</span> <span class="pre">dertype=0)</span></code>, <em>etc.</em>.</li>
+<li><a class="reference internal" href="nbody.html#driver_nbody._nbody_gufunc" title="driver_nbody._nbody_gufunc"><code class="xref py py-func docutils literal"><span class="pre">_nbody_gufunc()</span></code></a> for computation of interaction energies with or
+without counterpoise correction. Example: <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/dfmp2-1/input.dat">cfour/dfmp2-1</a>.</li>
+<li><a class="reference internal" href="db.html#wrapper_database.database" title="wrapper_database.database"><code class="xref py py-func docutils literal"><span class="pre">database()</span></code></a> for computation of a collection of molecules in a
+single input, with summarization of results. Examples:
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/pywrap-db1/input.dat">cfour/pywrap-db1</a> and <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/psi-a24-grad/input.dat">cfour/psi-a24-grad</a>.</li>
+<li><a class="reference internal" href="cbs.html#driver_cbs.complete_basis_set" title="driver_cbs.complete_basis_set"><code class="xref py py-func docutils literal"><span class="pre">complete_basis_set()</span></code></a> for computation of compound methods involving
+basis set extrapolations and/or delta corrections with any combination
+of <span class="sc">Psi4</span> and Cfour computational methods and <span class="sc">Psi4</span> basis sets.
+Example: <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/cfour/pywrap-cbs1/input.dat">cfour/pywrap-cbs1</a>.</li>
+</ul>
+<p class="rubric">Not Yet Implemented</p>
+<ul class="simple">
+<li>Ground state CI energies and optimizations</li>
+<li>Excited state energies and optimizations</li>
+<li>Properties are not yet regex-ed, transformed into input frame, and
+stowed in PSI Variables.</li>
+<li>Property calls that required extra computation not yet translated into
+<a class="reference internal" href="prop.html#driver.property" title="driver.property"><code class="xref py py-func docutils literal"><span class="pre">property()</span></code></a> computation command</li>
+<li>Frequencies</li>
+</ul>
+<p>Energy methods available through P4C4 interface</p>
+<blockquote id="table-energy-cfour">
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method in Stanton and Gauss&#8217;s CFOUR program <a class="reference internal" href="#sec-cfour"><span>[manual]</span></a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>c4-scf</td>
+<td>Hartree&#8211;Fock (HF)</td>
+</tr>
+<tr class="row-odd"><td>c4-mp2</td>
+<td>2nd-order Moller-Plesset perturbation theory (non-density-fitting) (MP2)</td>
+</tr>
+<tr class="row-even"><td>c4-mp3</td>
+<td>3rd-order Moller-Plesset perturbation theory (MP3)</td>
+</tr>
+<tr class="row-odd"><td>c4-mp4(sdq)</td>
+<td>4th-order MP perturbation theory (MP4) less triples</td>
+</tr>
+<tr class="row-even"><td>c4-mp4</td>
+<td>full MP4</td>
+</tr>
+<tr class="row-odd"><td>c4-cc2</td>
+<td>approximate coupled cluster singles and doubles (CC2)</td>
+</tr>
+<tr class="row-even"><td>c4-ccsd</td>
+<td>coupled cluster singles and doubles (CCSD)</td>
+</tr>
+<tr class="row-odd"><td>c4-cc3</td>
+<td>approximate CC singles, doubles, and triples (CC3)</td>
+</tr>
+<tr class="row-even"><td>c4-ccsd(t)</td>
+<td>CCSD with perturbative triples (CCSD(T))</td>
+</tr>
+<tr class="row-odd"><td>c4-ccsdt</td>
+<td>coupled cluster singles, doubles, and triples (CCSDT)</td>
+</tr>
+<tr class="row-even"><td>cfour</td>
+<td><strong>expert</strong> full control over cfour program</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Gradient methods available through P4C4 interface</p>
+<blockquote id="table-grad-cfour">
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method in Stanton and Gauss&#8217;s CFOUR program <a class="reference internal" href="#sec-cfour"><span>[manual]</span></a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>c4-scf</td>
+<td>Hartree&#8211;Fock (HF)</td>
+</tr>
+<tr class="row-odd"><td>c4-mp2</td>
+<td>2nd-order Moller-Plesset perturbation theory (non-density-fitting) (MP2)</td>
+</tr>
+<tr class="row-even"><td>c4-mp3</td>
+<td>3rd-order Moller-Plesset perturbation theory (MP3)</td>
+</tr>
+<tr class="row-odd"><td>c4-mp4(sdq)</td>
+<td>4th-order MP perturbation theory (MP4) less triples</td>
+</tr>
+<tr class="row-even"><td>c4-mp4</td>
+<td>full MP4</td>
+</tr>
+<tr class="row-odd"><td>c4-cc2</td>
+<td>approximate coupled cluster singles and doubles (CC2)</td>
+</tr>
+<tr class="row-even"><td>c4-ccsd</td>
+<td>coupled cluster singles and doubles (CCSD)</td>
+</tr>
+<tr class="row-odd"><td>c4-cc3</td>
+<td>approximate CC singles, doubles, and triples (CC3)</td>
+</tr>
+<tr class="row-even"><td>c4-ccsd(t)</td>
+<td>CCSD with perturbative triples (CCSD(T))</td>
+</tr>
+<tr class="row-odd"><td>c4-ccsdt</td>
+<td>coupled cluster singles, doubles, and triples (CCSDT)</td>
+</tr>
+<tr class="row-even"><td>cfour</td>
+<td><strong>expert</strong> full control over cfour program</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<span class="target" id="table-cfour-cc-program"></span></div>
+<div class="section" id="specification-details">
+<h2>Specification Details<a class="headerlink" href="#specification-details" title="Permalink to this headline">¶</a></h2>
+<p>The above narrative introduction to the P4C4 interface should be
+sufficient to get started. Issues of competition between <span class="sc">Psi4</span> and
+Cfour specification format are generally resolved behind the scenes:
+not according to a <em>simple</em> rule but according to sensible, sometimes
+intricate, rules governed by user intent (and integration of Cfour to
+behave like a <span class="sc">Psi4</span> module). Much can be gleaned by just running
+inputs and inspecting the <code class="docutils literal"><span class="pre">ZMAT</span></code> passed to Cfour, but when questions
+arise, here are the specifics, the governing laws.</p>
+<ul>
+<li><p class="first">Specifying a piece of input in <span class="sc">Psi4</span> format is entering into
+a contract that you mean it. In particular this applies to
+molecule (including charge/multiplicity through <code class="samp docutils literal"><span class="pre">molecule</span>
+<em><span class="pre">optional_molecule_name</span></em> <span class="pre">{...}</span></code>), memory (through <code class="samp docutils literal"><span class="pre">memory</span>
+<em><span class="pre">value</span></em> <em><span class="pre">unit</span></em></code>), computational method (through . If Cfour keywords
+are specified with values that contradict the <span class="sc">Psi4</span> input,
+execution is halted.</p>
+<p>As an example, the input below is set up to fail in four ways:
+contradictory specification of memory, multiplicity, computational
+method, and derivative level. Note, though, that the <code class="docutils literal"><span class="pre">cfour_units</span>
+<span class="pre">angstrom</span></code> setting is permissible, since it concurs with the value
+implied in the molecule block.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>memory 300 mb
+
+molecule {
+H
+H 1 0.7
+}
+
+set basis 6-31g
+set cfour_multiplicity 3         # clash with implicit singlet in molecule {} above
+set cfour_units angstrom         # no problem, consistent with molecule {} above
+set cfour_memory_size 100000000  # clash with 300 mb above
+set cfour_calc_level ccsd        # clash with &#39;c4-scf&#39; below
+set cfour_deriv_level first      # clash with energy() below (use gradient(&#39;c4-scf&#39;) to achieve this)
+
+energy(&#39;c4-scf&#39;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">Specifying anything in <span class="sc">Psi4</span> format (molecule, basis, options,
+method call) starts building a <code class="docutils literal"><span class="pre">*CFOUR(...)</span></code> directive for the
+<code class="docutils literal"><span class="pre">ZMAT</span></code> file. Since the contents of the <code class="docutils literal"><span class="pre">cfour</span> <span class="pre">{...}</span></code> block are
+blindly appended to any input interpreted from <span class="sc">Psi4</span> format, mixing
+of <span class="sc">Psi4</span> and Cfour input formats likely <em>will</em> give rise to multiple
+<code class="docutils literal"><span class="pre">*CFOUR(...)</span></code> directives in the prospective <code class="docutils literal"><span class="pre">ZMAT</span></code>, execution of
+which <em>will</em> be trapped and halted.  Proper uses for the <code class="docutils literal"><span class="pre">cfour</span> <span class="pre">{...}</span></code>
+block are for the sandwich mode, where the entire <code class="docutils literal"><span class="pre">ZMAT</span></code> is enclosed,
+or for extra directives like <code class="docutils literal"><span class="pre">%excite*</span></code>, which presently have no other
+specification route.</p>
+</li>
+<li><p class="first">Specifying the basis is perhaps the regulated piece of input. Since
+basis set names differ between <span class="sc">Psi4</span> and Cfour and it&#8217;s not
+practical to compare exponent-to-exponent, any input file with both
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-mints"><span class="xref std std-term">BASIS</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-basis-cfour"><span class="xref std std-term">CFOUR_BASIS</span></a> keywords present will halt. Once
+a basis set has been requested through <a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-mints"><span class="xref std std-term">BASIS</span></a>, overriding the
+default spherical/Cartesian setting must be done through
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><span class="xref std std-term">PUREAM</span></a> (as opposed to <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-spherical-cfour"><span class="xref std std-term">CFOUR_SPHERICAL</span></a>).</p>
+</li>
+<li><p class="first">Specifying keywords that control geometry optimization is
+straightforward. Unless the optimization is invoked in sandwich mode,
+all Cfour optimization keywords (<em>e.g.</em>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-geo-maxcyc-cfour"><span class="xref std std-term">CFOUR_GEO_MAXCYC</span></a>) are
+ineffective, as the Cfour optimizer is never invoked. <span class="sc">Psi4</span>
+optimization keywords (<em>e.g.</em>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-geom-maxiter-optking"><span class="xref std std-term">GEOM_MAXITER</span></a>) instead fill
+these roles.</p>
+</li>
+<li><p class="first">Specifying the computational method (through, for instance,
+<code class="docutils literal"><span class="pre">energy('c4-ccsd')</span></code> instead of <code class="docutils literal"><span class="pre">energy('cfour')</span></code>) often
+sets additional keywords consistent with best practices (<em>e.g.</em>,
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-cc-program-cfour"><span class="xref std std-term">CFOUR_CC_PROGRAM</span></a>). Since those settings are implicit, any
+explicit setting of those those keywords, whether contradicting or
+concurring, takes priority (halts never generated). The following are
+some concrete examples. For the moment, click the source button at
+<a class="reference internal" href="autodoc_driver.html#qcdb.cfour.muster_modelchem" title="qcdb.cfour.muster_modelchem"><code class="xref py py-func docutils literal"><span class="pre">qcdb.cfour.muster_modelchem()</span></code></a> for details of what keywords
+get set.</p>
+<ul>
+<li><p class="first">runs in vcc since that&#8217;s Cfour&#8217;s default for cc_program</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set cfour_calc_level ccsd
+energy(&#39;cfour&#39;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">runs in ecc since Cfour&#8217;s default overwritten by keyword</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set cfour_calc_level ccsd
+set cfour_cc_program ecc
+energy(&#39;cfour&#39;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">runs in ecc since that&#8217;s best practice for the requested ccsd</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;c4-ccsd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">runs in vcc since <em>hidden</em> default overwritten by keyword</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set cfour_cc_program vcc
+energy(&#39;c4-ccsd&#39;)
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">Specifying certain keywords that are nominally applicable for pure-<span class="sc">Psi4</span> modules directs them to fulfil analogous roles
+in the Cfour program (<em>e.g.</em>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-maxiter-scf"><span class="xref std std-term">MAXITER</span></a> is used to set
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-scf-maxcyc-cfour"><span class="xref std std-term">CFOUR_SCF_MAXCYC</span></a>). This keyword translation only takes place
+if the keywords are explicitly set in the input file (part of that
+contract that you mean it), meaning that <span class="sc">Psi4</span>&#8216;s defaults don&#8217;t
+get imposed on Cfour. Also, in the case where a translatable pure-<span class="sc">Psi4</span> keyword and its translation Cfour keyword are both set,
+the value attached to the latter is always used. Below are a few
+clarifying examples.</p>
+<ul>
+<li><p class="first">uses <img class="math" src="_images/math/663fdd1d2c79aac108d5921116f266c9e2739433.png" alt="10^{-7}" style="vertical-align: -1px"/> SCF conv crit since that&#8217;s Cfour&#8217;s default
+for <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-scf-conv-cfour"><span class="xref std std-term">CFOUR_SCF_CONV</span></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;c4-scf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">uses <img class="math" src="_images/math/f16328f480e51a424f08cc9b7e124436dfeaf1d0.png" alt="10^{-6}" style="vertical-align: -1px"/> SCF conv crit since default overwritten by
+keyword</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set cfour_scf_conv 6
+energy(&#39;c4-scf&#39;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">uses <img class="math" src="_images/math/a9d1ae46c35618599e5b72d2528a32826a15031c.png" alt="10^{-5}" style="vertical-align: -1px"/> SCF conv crit since default overwritten by
+<a class="reference internal" href="autodir_options_c/module__scf.html#apdx-scf"><span>SCF module</span></a> keyword</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set d_convergence 5
+energy(&#39;c4-scf&#39;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">uses <img class="math" src="_images/math/f16328f480e51a424f08cc9b7e124436dfeaf1d0.png" alt="10^{-6}" style="vertical-align: -1px"/> SCF conv crit since default overwritten by
+<a class="reference internal" href="autodir_options_c/module__scf.html#apdx-scf"><span>SCF module</span></a> keyword (local scope works, too) where
+the <span class="sc">Psi4</span>&#8216;s more flexible float input has been rounded down to
+the integer required by Cfour</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set scf d_convergence 5e-6
+energy(&#39;c4-scf&#39;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">uses <img class="math" src="_images/math/f16328f480e51a424f08cc9b7e124436dfeaf1d0.png" alt="10^{-6}" style="vertical-align: -1px"/> SCF conv crit since default overwritten
+and Cfour module keyword trumps <span class="sc">Psi4</span> SCF module keyword</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set cfour_scf_conv 6
+set d_convergence 8
+energy(&#39;c4-scf&#39;)
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The keyword translation feature is still in the proof-of-principle
+stage, so only a handful (found here) of keywords participate.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Longtime Cfour users who may consider this keyword
+translation a flaw rather than a feature can avoid it entirely by
+confining keywords to the <a class="reference internal" href="autodir_options_c/module__cfour.html#apdx-cfour"><span>Cfour module</span></a> along with
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-mints"><span class="xref std std-term">BASIS</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><span class="xref std std-term">PUREAM</span></a> (opt, too?)</p>
+</div>
+</div>
+<div class="section" id="misc-running">
+<h2>Misc. Running<a class="headerlink" href="#misc-running" title="Permalink to this headline">¶</a></h2>
+<p>Naturally, in <span class="sc">Psi4</span> multiple jobs can be run in succession from the input file.</p>
+<p>Control optimizations with optking keywords HERE. Cfour <code class="docutils literal"><span class="pre">GRD</span></code> file is
+written to <span class="sc">Psi4</span> output file. Gradient transformed back into the frame
+in which it was shipped off to Cfour is also written to the <span class="sc">Psi4</span>
+output file and is available from input as <a class="reference internal" href="autodoc_psimod.html#psi4.get_gradient" title="psi4.get_gradient"><code class="xref py py-func docutils literal"><span class="pre">get_gradient()</span></code></a>.</p>
+<p>sandwich mode := molecule and cfour list within
+Naturally, additional jobs can follow in the input file.
+Depending on the nature of preceeding or following jobs, it is prudent to
+separate them with the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>clean()            # removes Psi4 scratch files
+clean_variables()  # empties the PSI variables list
+cfour {}           # empties
+</pre></div>
+</div>
+<p>In this scheme, the contents of the <code class="docutils literal"><span class="pre">cfour</span> <span class="pre">{...}</span></code> block are tacked onto
+the end of the <code class="docutils literal"><span class="pre">ZMAT</span></code> file that is otherwise written from psi style
+format. It is by this route that, for example <code class="docutils literal"><span class="pre">%excite*</span></code> sections can at
+present be spcified.</p>
+<p>The execution of <strong class="program">xcfour</strong> can be modified by a few parameters.  Setting
+the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-cfour-omp-num-threads-cfour"><span class="xref std std-term">CFOUR_OMP_NUM_THREADS</span></a> sets the environment variable
+<span class="target" id="index-9"></span><a class="reference internal" href="external.html#envvar-OMP_NUM_THREADS"><code class="xref std std-envvar docutils literal"><span class="pre">OMP_NUM_THREADS</span></code></a> for only the duration of the Cfour computation.
+That is, portions of an input file that run <span class="sc">Psi4</span> modules are
+unaffected.  Additionally, there are a few arguments to the function
+<a class="reference internal" href="#procedures.interface_cfour.run_cfour" title="procedures.interface_cfour.run_cfour"><code class="xref py py-func docutils literal"><span class="pre">run_cfour()</span></code></a> that control the Cfour scratch
+directory.</p>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface to CFOUR by J. Stanton and J. Gauss</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#cfour-for-psifour-users">Cfour for <span class="sc">Psi4</span> Users</a></li>
+<li><a class="reference internal" href="#psifour-for-cfour-users"><span class="sc">Psi4</span> for Cfour Users</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+<li><a class="reference internal" href="#functionality">Functionality</a></li>
+<li><a class="reference internal" href="#specification-details">Specification Details</a></li>
+<li><a class="reference internal" href="#misc-running">Misc. Running</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="interfacing.html"
+                        title="previous chapter">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="chemps2.html"
+                        title="next chapter">Interface to CheMPS2 by S. Wouters</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cfour.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="chemps2.html" title="Interface to CheMPS2 by S. Wouters"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="interfacing.html" title="Interfaces: Enhancing Psi4 Capabilities"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

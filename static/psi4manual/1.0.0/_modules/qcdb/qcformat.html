@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.qcformat &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.qcformat</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1">#@BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># PSI4: an ab initio quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1">#@END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;Parent classes for quantum chemistry program input and output file</span>
+<span class="sd">formats.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<div class="viewcode-block" id="InputFormat"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.qcformat.InputFormat">[docs]</a><span class="k">class</span> <span class="nc">InputFormat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mem</span><span class="p">,</span> <span class="n">mtd</span><span class="p">,</span> <span class="n">bas</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">sys</span><span class="p">,</span> <span class="n">cast</span><span class="p">):</span>
+
+        <span class="c1"># total job memory in MB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">mem</span>
+        <span class="c1"># computational method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">mtd</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="c1"># qcdb.Molecule object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span> <span class="o">=</span> <span class="n">mol</span>
+        <span class="c1"># database member index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">sys</span>
+        <span class="c1"># orbital basis set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="n">bas</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="c1"># do cast up from sto-3g basis?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">castup</span> <span class="o">=</span> <span class="n">cast</span>
+
+<div class="viewcode-block" id="InputFormat.corresponding_aux_basis"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.qcformat.InputFormat.corresponding_aux_basis">[docs]</a>    <span class="k">def</span> <span class="nf">corresponding_aux_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For Dunning basis sets, returns strings from which auxiliary</span>
+<span class="sd">        basis sets and heavy-aug can be constructed. Note that</span>
+<span class="sd">        valence/core-valence/etc. is conserved and X-zeta/(X+d)zeta is</span>
+<span class="sd">        not, since this is the usual aux basis pattern.</span>
+<span class="sd">        *augbasis* is round up to the nearest aug-cc-pVXZ</span>
+<span class="sd">        *rootbasis* is round down to the nearest cc-pVXZ</span>
+<span class="sd">        *auxbasis* is round up to the nearest cc-pVXZ or aug-cc-pVXZ</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Dunmatch</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^(.*cc-)(pv|pcv|pwcv).*?([dtq56]).*z$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Dunmatch</span><span class="p">:</span>
+            <span class="n">rootbas</span> <span class="o">=</span> <span class="s1">&#39;cc-&#39;</span> <span class="o">+</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;z&#39;</span>
+            <span class="n">augbas</span> <span class="o">=</span> <span class="s1">&#39;aug-cc-&#39;</span> <span class="o">+</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;z&#39;</span>
+            <span class="k">if</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;cc-&#39;</span><span class="p">:</span>
+                <span class="n">auxbas</span> <span class="o">=</span> <span class="n">rootbas</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">auxbas</span> <span class="o">=</span> <span class="n">augbas</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rootbas</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">augbas</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">auxbas</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">rootbas</span><span class="p">,</span> <span class="n">augbas</span><span class="p">,</span> <span class="n">auxbas</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="InputFormat2"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.qcformat.InputFormat2">[docs]</a><span class="k">class</span> <span class="nc">InputFormat2</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mem</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">mtd</span><span class="p">,</span> <span class="n">der</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+
+        <span class="c1"># total job memory in MB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">mem</span>
+        <span class="c1"># qcdb.Molecule object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span> <span class="o">=</span> <span class="n">mol</span>
+        <span class="c1"># computational method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">mtd</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="c1"># computational derivative level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dertype</span> <span class="o">=</span> <span class="n">der</span>
+        <span class="c1"># options dictionary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">opt</span>
+        <span class="c1"># orbital basis set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="n">opt</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;BASIS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="c1"># do cast up from sto-3g basis?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">castup</span> <span class="o">=</span> <span class="n">opt</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;BASIS_GUESS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="InputFormat2.corresponding_aux_basis"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.qcformat.InputFormat2.corresponding_aux_basis">[docs]</a>    <span class="k">def</span> <span class="nf">corresponding_aux_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For Dunning basis sets, returns strings from which auxiliary</span>
+<span class="sd">        basis sets and heavy-aug can be constructed. Note that</span>
+<span class="sd">        valence/core-valence/etc. is conserved and X-zeta/(X+d)zeta is</span>
+<span class="sd">        not, since this is the usual aux basis pattern.</span>
+<span class="sd">        *augbasis* is round up to the nearest aug-cc-pVXZ</span>
+<span class="sd">        *rootbasis* is round down to the nearest cc-pVXZ</span>
+<span class="sd">        *auxbasis* is round up to the nearest cc-pVXZ or aug-cc-pVXZ</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Dunmatch</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^(.*cc-)(pv|pcv|pwcv).*?([dtq56]).*z$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Dunmatch</span><span class="p">:</span>
+            <span class="n">rootbas</span> <span class="o">=</span> <span class="s1">&#39;cc-&#39;</span> <span class="o">+</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;z&#39;</span>
+            <span class="n">augbas</span> <span class="o">=</span> <span class="s1">&#39;aug-cc-&#39;</span> <span class="o">+</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;z&#39;</span>
+            <span class="k">if</span> <span class="n">Dunmatch</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;cc-&#39;</span><span class="p">:</span>
+                <span class="n">auxbas</span> <span class="o">=</span> <span class="n">rootbas</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">auxbas</span> <span class="o">=</span> <span class="n">augbas</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rootbas</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">augbas</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">auxbas</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">rootbas</span><span class="p">,</span> <span class="n">augbas</span><span class="p">,</span> <span class="n">auxbas</span><span class="p">]</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

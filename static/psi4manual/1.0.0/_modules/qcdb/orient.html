@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.orient &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.orient</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1">#@BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># PSI4: an ab initio quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1">#@END LICENSE</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="c1">#import os</span>
+<span class="c1">#import re</span>
+<span class="c1">#import math</span>
+<span class="c1">#import copy</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">.molecule</span> <span class="kn">import</span> <span class="n">Molecule</span>
+<span class="c1">#from periodictable import *</span>
+<span class="c1">#from physconst import *</span>
+<span class="kn">from</span> <span class="nn">.vecutil</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1">#LINEAR_A_TOL = 1.0E-2  # When sin(a) is below this, we consider the angle to be linear</span>
+<span class="c1">#DEFAULT_SYM_TOL = 1.0E-8</span>
+<span class="c1">#FULL_PG_TOL = 1.0e-8</span>
+<span class="c1">#ZERO = 1.0E-14</span>
+<span class="n">NOISY_ZERO</span> <span class="o">=</span> <span class="mf">1.0E-8</span>
+<span class="n">COORD_ZERO</span> <span class="o">=</span> <span class="mf">1.0E-5</span>  <span class="c1"># tolerance in coordinate alignment btwn qc programs</span>
+
+
+<div class="viewcode-block" id="OrientMols"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orient.OrientMols">[docs]</a><span class="k">class</span> <span class="nc">OrientMols</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to encode a transformation between two molecular coordinate</span>
+<span class="sd">    systems. After initializing with two qcdb.Molecule objects at the</span>
+<span class="sd">    same geometry in possible different frames and orderings, class</span>
+<span class="sd">    can apply the appropriate transformations to coordinate, gradient,</span>
+<span class="sd">    Hessian, etc. arrays.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molPermanent</span><span class="p">,</span> <span class="n">molChangeable</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Stores the shift, rotation, axis exchange, axis inversion,</span>
+<span class="sd">        and atom remapping necessary to bring the geometry of</span>
+<span class="sd">        *molChangeable* into coincidence with the geometry of</span>
+<span class="sd">        *molPermanent*. *molPermanent* and *molChangeable* must be</span>
+<span class="sd">        :py:class:`qcdb.Molecule` and represent the same geometry.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># &lt;&lt;&lt; Permanent (Psi4) &gt;&gt;&gt;</span>
+
+        <span class="c1"># Molecule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span> <span class="o">=</span> <span class="n">molPermanent</span>
+        <span class="c1"># Vector to shift Pmol to center of mass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Pshift</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Matrix to rotate Pmol to inertial frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Protate</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># &lt;&lt;&lt; Changeable (Cfour) &gt;&gt;&gt;</span>
+
+        <span class="c1"># Molecule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span> <span class="o">=</span> <span class="n">molChangeable</span>
+        <span class="c1"># Vector to shift Cmol to center of mass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Cshift</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Matrix to rotate Cmol to inertial frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Crotate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Matrix to rotate Cmol to axis representation of Pmol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Cexchflip</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Vector to map Cmol to atom ordering of Pmol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Catommap</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">nallatom</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span><span class="o">.</span><span class="n">nallatom</span><span class="p">())</span> <span class="ow">and</span> \
+               <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mf">1.0e-3</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_orientation_from_molecules</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;qcdb.orient.__init__ debug info&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;natom&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">natom</span><span class="p">(),</span> <span class="s1">&#39;NRE&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">(),</span> <span class="s1">&#39;rotor&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">rotor_type</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;natom&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span><span class="o">.</span><span class="n">natom</span><span class="p">(),</span> <span class="s1">&#39;NRE&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">(),</span> <span class="s1">&#39;rotor&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span><span class="o">.</span><span class="n">rotor_type</span><span class="p">())</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;OrientMols Molecule arguments differ fatally.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;OrientMols must be instantiated with two qcdb.Molecule objects.&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;  ==&gt; qcdb OrientMols &lt;==</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;   natom:     </span><span class="si">%d</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">natom</span><span class="p">())</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;   PNRE:       </span><span class="si">%16.8f</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">())</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;   Pshift:    </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pshift</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;   Protate:   </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Protate</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\n</span><span class="s2">   CNRE:       </span><span class="si">%16.8f</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Cmol</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">())</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;   Cshift:    </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Cshift</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;   Crotate:   </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Crotate</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;   Cexchflip: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Cexchflip</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;   Catommap:  </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Catommap</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">text</span>
+
+<div class="viewcode-block" id="OrientMols.create_orientation_from_molecules"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orient.OrientMols.create_orientation_from_molecules">[docs]</a>    <span class="k">def</span> <span class="nf">create_orientation_from_molecules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Pmol</span><span class="p">,</span> <span class="n">Cmol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Finds the shift, rotation, axis exchange, axis inversion,</span>
+<span class="sd">        and atom remapping necessary to bring the geometry of *Cmol*</span>
+<span class="sd">        into coincidence with the geometry of *Pmol*. *Pmol* and *Cmol*</span>
+<span class="sd">        must be :py:class:`qcdb.Molecule` and represent the same</span>
+<span class="sd">        geometry. Presently catches some errors of orientation that</span>
+<span class="sd">        Cfour as *Cmol* should properly fulfill. These are unnecessary</span>
+<span class="sd">        restrictions and can be relaxed later.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">p4mol</span> <span class="o">=</span> <span class="n">Pmol</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">c4mol</span> <span class="o">=</span> <span class="n">Cmol</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">Nat</span> <span class="o">=</span> <span class="n">p4mol</span><span class="o">.</span><span class="n">natom</span><span class="p">()</span>
+        <span class="n">eye3</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
+
+        <span class="c1"># Find translation to CoM, straightforward</span>
+<span class="c1">#        com = [ x if abs(x) &gt; NOISY_ZERO else 0.0 for x in com]</span>
+        <span class="n">com</span> <span class="o">=</span> <span class="n">p4mol</span><span class="o">.</span><span class="n">center_of_charge</span><span class="p">()</span>  <span class="c1"># avoids trouble of ghost atoms w/center_of_mass</span>
+        <span class="n">p4mol</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">scale</span><span class="p">(</span><span class="n">com</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Pshift</span> <span class="o">=</span> <span class="n">com</span>
+
+        <span class="n">com</span> <span class="o">=</span> <span class="n">c4mol</span><span class="o">.</span><span class="n">center_of_charge</span><span class="p">()</span>
+        <span class="n">c4mol</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">scale</span><span class="p">(</span><span class="n">com</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Cshift</span> <span class="o">=</span> <span class="n">com</span>
+
+        <span class="c1"># Find rotation to MoI frame, straightforward</span>
+<span class="c1">#        frame = [[ x if abs(x) &gt; NOISY_ZERO else 0.0 for x in ax] for ax in frame]</span>
+        <span class="n">moi</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">p4mol</span><span class="o">.</span><span class="n">inertial_system</span><span class="p">(</span><span class="n">masswt</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">zero</span><span class="o">=</span><span class="n">NOISY_ZERO</span><span class="p">)</span>  <span class="c1"># avoids trouble of ghost atoms w/masswt&#39;d</span>
+        <span class="n">Psort</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">moi</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+        <span class="n">p4mol</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Protate</span> <span class="o">=</span> <span class="n">frame</span>
+
+        <span class="n">moi</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">c4mol</span><span class="o">.</span><span class="n">inertial_system</span><span class="p">(</span><span class="n">masswt</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">zero</span><span class="o">=</span><span class="n">NOISY_ZERO</span><span class="p">)</span>
+        <span class="n">Csort</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">moi</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+        <span class="n">c4mol</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Crotate</span> <span class="o">=</span> <span class="n">frame</span>
+
+        <span class="c1"># Find degrees of freedom among axis exchanges</span>
+        <span class="n">rotor</span> <span class="o">=</span> <span class="n">p4mol</span><span class="o">.</span><span class="n">rotor_type</span><span class="p">()</span>
+<span class="c1">#        if rotor != c4mol.rotor_type():</span>
+<span class="c1">#            raise ValidationError(&quot;&quot;&quot;molPermanent (%s) and molChangeable (%s) of different rotor types.&quot;&quot;&quot; % \</span>
+<span class="c1">#                (rotor, c4mol.rotor_type()))</span>
+        <span class="c1"># TODO: is this safe? differences in masses of ghost atoms can cause different rotor types</span>
+        <span class="k">if</span> <span class="n">rotor</span> <span class="o">==</span> <span class="s1">&#39;RT_ATOM&#39;</span><span class="p">:</span>
+            <span class="n">freebytop</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="n">rotor</span> <span class="o">==</span> <span class="s1">&#39;RT_LINEAR&#39;</span><span class="p">:</span>                 <span class="c1"># 0  &lt;  IB == IC      inf &gt; B == C</span>
+            <span class="n">freebytop</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">rotor</span> <span class="o">==</span> <span class="s1">&#39;RT_SPHERICAL_TOP&#39;</span><span class="p">:</span>          <span class="c1"># IA == IB == IC       A == B == C</span>
+            <span class="n">freebytop</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">rotor</span> <span class="o">==</span> <span class="s1">&#39;RT_PROLATE_SYMMETRIC_TOP&#39;</span><span class="p">:</span>  <span class="c1"># IA &lt;  IB == IC       A &gt;  B == C</span>
+            <span class="n">freebytop</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">rotor</span> <span class="o">==</span> <span class="s1">&#39;RT_OBLATE_SYMMETRIC_TOP&#39;</span><span class="p">:</span>   <span class="c1"># IA == IB &lt;  IC       A == B &gt;  C</span>
+            <span class="n">freebytop</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">rotor</span> <span class="o">==</span> <span class="s1">&#39;RT_ASYMMETRIC_TOP&#39;</span><span class="p">:</span>         <span class="c1"># IA &lt;  IB &lt;  IC       A &gt;  B &gt;  C</span>
+            <span class="n">freebytop</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Find possible mappings of axis exchange and flipping that brings Cgeom into coincidence with Pgeom</span>
+        <span class="n">axExch</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[],</span> <span class="p">[]]</span>
+        <span class="n">axPhse</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[],</span> <span class="p">[]]</span>
+
+        <span class="n">Pgeom</span> <span class="o">=</span> <span class="n">p4mol</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+        <span class="n">Cgeom</span> <span class="o">=</span> <span class="n">c4mol</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">Paxs</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">allowed</span> <span class="o">=</span> <span class="n">freebytop</span> <span class="k">if</span> <span class="n">Paxs</span> <span class="ow">in</span> <span class="n">freebytop</span> <span class="k">else</span> <span class="p">[</span><span class="n">Paxs</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">Caxs</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
+                <span class="n">PcolS</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">Psort</span><span class="p">[</span><span class="n">Paxs</span><span class="p">]]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">Pgeom</span><span class="p">])</span>
+                <span class="n">CcolS</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">Csort</span><span class="p">[</span><span class="n">Caxs</span><span class="p">]]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">Cgeom</span><span class="p">])</span>
+                <span class="n">CcolMS</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="n">Csort</span><span class="p">[</span><span class="n">Caxs</span><span class="p">]]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">Cgeom</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">CcolS</span><span class="p">[</span><span class="n">at</span><span class="p">]</span> <span class="o">-</span> <span class="n">PcolS</span><span class="p">[</span><span class="n">at</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">COORD_ZERO</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">)]):</span>
+                    <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">CcolS</span><span class="p">[</span><span class="n">at</span><span class="p">]</span> <span class="o">-</span> <span class="n">CcolMS</span><span class="p">[</span><span class="n">at</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">COORD_ZERO</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">)]):</span>
+                        <span class="n">axPhse</span><span class="p">[</span><span class="n">Psort</span><span class="p">[</span><span class="n">Paxs</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Indeterminate when symm P4 col == C4 col</span>
+                        <span class="n">axExch</span><span class="p">[</span><span class="n">Psort</span><span class="p">[</span><span class="n">Paxs</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Csort</span><span class="p">[</span><span class="n">Caxs</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">axPhse</span><span class="p">[</span><span class="n">Psort</span><span class="p">[</span><span class="n">Paxs</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Pos when asym P4 col == C4 col</span>
+                        <span class="n">axExch</span><span class="p">[</span><span class="n">Psort</span><span class="p">[</span><span class="n">Paxs</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Csort</span><span class="p">[</span><span class="n">Caxs</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">CcolMS</span><span class="p">[</span><span class="n">at</span><span class="p">]</span> <span class="o">-</span> <span class="n">PcolS</span><span class="p">[</span><span class="n">at</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">COORD_ZERO</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">)]):</span>
+                    <span class="n">axPhse</span><span class="p">[</span><span class="n">Psort</span><span class="p">[</span><span class="n">Paxs</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Neg when P4 col == -C4 col</span>
+                    <span class="n">axExch</span><span class="p">[</span><span class="n">Psort</span><span class="p">[</span><span class="n">Paxs</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Csort</span><span class="p">[</span><span class="n">Caxs</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">axPhse</span><span class="p">[</span><span class="n">Psort</span><span class="p">[</span><span class="n">Paxs</span><span class="p">]])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;qcdb.orient.create_orientation_from_molecules debug info&#39;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">rotor&#39;</span><span class="p">,</span> <span class="n">rotor</span><span class="p">,</span> <span class="s1">&#39;Paxs&#39;</span><span class="p">,</span> <span class="n">Paxs</span><span class="p">,</span> <span class="s1">&#39;Caxs&#39;</span><span class="p">,</span> <span class="n">Caxs</span><span class="p">,</span> \
+                    <span class="s1">&#39;allowed&#39;</span><span class="p">,</span> <span class="n">allowed</span><span class="p">,</span> <span class="s1">&#39;P(axs)&#39;</span><span class="p">,</span> <span class="n">Psort</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">Paxs</span><span class="p">),</span> <span class="s1">&#39;C(Caxs)&#39;</span><span class="p">,</span> <span class="n">Csort</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">Caxs</span><span class="p">),</span> \
+                    <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">PcolS: &#39;</span><span class="p">,</span> <span class="n">PcolS</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">CcolS: &#39;</span><span class="p">,</span> <span class="n">CcolS</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">CcolMS: &#39;</span><span class="p">,</span> <span class="n">CcolMS</span><span class="p">,</span> \
+                    <span class="s1">&#39;axExch&#39;</span><span class="p">,</span> <span class="n">axExch</span><span class="p">,</span> <span class="s1">&#39;axPhse&#39;</span><span class="p">,</span> <span class="n">axPhse</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Pgeom: &#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">Pgeom</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;       </span><span class="si">%16.8f</span><span class="s1"> </span><span class="si">%16.8f</span><span class="s1"> </span><span class="si">%16.8f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Cgeom: &#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">Cgeom</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;       </span><span class="si">%16.8f</span><span class="s1"> </span><span class="si">%16.8f</span><span class="s1"> </span><span class="si">%16.8f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Axis unreconcilable between QC programs.&quot;&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">allowedExchflip</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">lee</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">axExch</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">lpp</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">axPhse</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">lee</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="n">zero</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                        <span class="n">temp</span><span class="p">[</span><span class="n">lee</span><span class="p">[</span><span class="n">ax</span><span class="p">]][</span><span class="n">ax</span><span class="p">]</span> <span class="o">=</span> <span class="n">lpp</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>
+                    <span class="n">allowedExchflip</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+        <span class="c1"># Find mapping of atom exchange that brings Cgeom into coincidence with Pgeom</span>
+        <span class="k">for</span> <span class="n">exfp</span> <span class="ow">in</span> <span class="n">allowedExchflip</span><span class="p">:</span>
+            <span class="n">Cgeom</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">c4mol</span><span class="o">.</span><span class="n">geometry</span><span class="p">(),</span> <span class="n">exfp</span><span class="p">)</span>
+
+            <span class="n">mapMat</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">Nat</span>
+            <span class="n">Pwhite</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">))</span>
+            <span class="n">Cwhite</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">))</span>
+
+<span class="c1">#            print &#39;\nPgeom: &#39;</span>
+<span class="c1">#            for item in Pgeom:</span>
+<span class="c1">#                print &#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2])</span>
+<span class="c1">#            print &#39;\nCgeom: &#39;</span>
+<span class="c1">#            for item in Cgeom:</span>
+<span class="c1">#                print &#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2])</span>
+
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">Pwhite</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">Patm</span> <span class="o">=</span> <span class="n">Pwhite</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">sameElem</span> <span class="o">=</span> <span class="p">[</span><span class="n">at</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">)</span> <span class="k">if</span> <span class="p">((</span><span class="n">c4mol</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">at</span><span class="p">)</span> <span class="o">==</span> <span class="n">p4mol</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">Patm</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">c4mol</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">at</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;GH&#39;</span><span class="p">))]</span>
+                <span class="n">allowed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sameElem</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">Cwhite</span><span class="p">))</span>
+
+                <span class="k">for</span> <span class="n">Catm</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">Cgeom</span><span class="p">[</span><span class="n">Catm</span><span class="p">][</span><span class="n">ax</span><span class="p">]</span> <span class="o">-</span> <span class="n">Pgeom</span><span class="p">[</span><span class="n">Patm</span><span class="p">][</span><span class="n">ax</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">COORD_ZERO</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]):</span>
+                        <span class="n">mapMat</span><span class="p">[</span><span class="n">Patm</span><span class="p">]</span> <span class="o">=</span> <span class="n">Catm</span>
+                        <span class="n">Pwhite</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">Patm</span><span class="p">)</span>
+                        <span class="n">Cwhite</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">Catm</span><span class="p">)</span>
+<span class="c1">#                        print &#39;matchd on atom&#39;, &#39;Patm&#39;, Patm, &#39;Catm&#39;, Catm</span>
+                        <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+<span class="c1">#                    print &#39;failed on atom&#39;, &#39;Patm&#39;, Patm, &#39;rejecting&#39;, exfp</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+<span class="c1">#                print &#39;accept exchflp&#39;, exfp, &#39;with map&#39;, mapMat</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;else of for&#39;</span><span class="p">,</span> <span class="n">exfp</span><span class="p">,</span> <span class="n">mapMat</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;qcdb.orient.create_orientation_from_molecules debug info&#39;</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Patm&#39;</span><span class="p">,</span> <span class="n">Patm</span><span class="p">,</span> <span class="s1">&#39;Catm&#39;</span><span class="p">,</span> <span class="n">Catm</span><span class="p">,</span> <span class="s1">&#39;Pwhite&#39;</span><span class="p">,</span> <span class="n">Pwhite</span><span class="p">,</span> \
+                <span class="s1">&#39;Cwhite&#39;</span><span class="p">,</span> <span class="n">Cwhite</span><span class="p">,</span> <span class="s1">&#39;sameElem&#39;</span><span class="p">,</span> <span class="n">sameElem</span><span class="p">,</span> <span class="s1">&#39;allowed&#39;</span><span class="p">,</span> <span class="n">allowed</span><span class="p">,</span> \
+                <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Cgeom[Catm]: &#39;</span><span class="p">,</span> <span class="n">Cgeom</span><span class="p">[</span><span class="n">Catm</span><span class="p">],</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Pgeom[Patm]: &#39;</span><span class="p">,</span> <span class="n">Pgeom</span><span class="p">[</span><span class="n">Patm</span><span class="p">],</span> \
+                <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">mapMat&#39;</span><span class="p">,</span> <span class="n">mapMat</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Pgeom: &#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">Pgeom</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;       </span><span class="si">%16.8f</span><span class="s1"> </span><span class="si">%16.8f</span><span class="s1"> </span><span class="si">%16.8f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Cgeom: &#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">Cgeom</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;       </span><span class="si">%16.8f</span><span class="s1"> </span><span class="si">%16.8f</span><span class="s1"> </span><span class="si">%16.8f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Atom unreconcilable between QC programs.&quot;&quot;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Cexchflip</span> <span class="o">=</span> <span class="n">exfp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Catommap</span> <span class="o">=</span> <span class="n">mapMat</span>
+        <span class="c1"># Note that this is resetting the geom but not the atoms, so c4mol.print_out() is deceptive</span>
+        <span class="n">c4mol</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">exfp</span><span class="p">)</span>
+        <span class="n">new_geom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">):</span>
+            <span class="n">new_geom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Cgeom</span><span class="p">[</span><span class="n">mapMat</span><span class="p">[</span><span class="n">at</span><span class="p">]])</span>
+        <span class="n">c4mol</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">new_geom</span><span class="p">)</span>
+
+        <span class="c1"># One last check that p4mol and c4mol align</span>
+        <span class="n">Pgeom</span> <span class="o">=</span> <span class="n">p4mol</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+        <span class="n">Cgeom</span> <span class="o">=</span> <span class="n">c4mol</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">all</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">Cgeom</span><span class="p">[</span><span class="n">at</span><span class="p">][</span><span class="n">ax</span><span class="p">]</span> <span class="o">-</span> <span class="n">Pgeom</span><span class="p">[</span><span class="n">at</span><span class="p">][</span><span class="n">ax</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">COORD_ZERO</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">)]):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Geometries unreconcilable between QC programs:</span><span class="se">\n</span><span class="s2">  P4 </span><span class="si">%s</span><span class="se">\n</span><span class="s2">  C4 </span><span class="si">%s</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Pgeom</span><span class="p">,</span> <span class="n">Cgeom</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="OrientMols.transform_coordinates"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orient.OrientMols.transform_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">transform_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#print self</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Original&quot;</span><span class="p">)</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+        <span class="n">coord</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Cshift</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Shift&quot;</span><span class="p">)</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+        <span class="n">coord</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Crotate</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Rotate&quot;</span><span class="p">)</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+        <span class="n">coord</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Cexchflip</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;ExchFlip&quot;</span><span class="p">)</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+        <span class="n">new_geom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coord</span><span class="o">.</span><span class="n">natom</span><span class="p">()):</span>
+            <span class="n">new_geom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geom</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Catommap</span><span class="p">[</span><span class="n">at</span><span class="p">]])</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">new_geom</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;AtomMap&quot;</span><span class="p">)</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+        <span class="n">coord</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Protate</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;P4 Rotate&quot;</span><span class="p">)</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+        <span class="n">coord</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pshift</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;P4 Shift&quot;</span><span class="p">)</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="OrientMols.transform_coordinates2"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orient.OrientMols.transform_coordinates2">[docs]</a>    <span class="k">def</span> <span class="nf">transform_coordinates2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+
+<span class="c1">#        print self</span>
+<span class="c1">#        print &quot;Original&quot;</span>
+<span class="c1">#        for item in geom:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="c1"># ?????</span>
+        <span class="c1">#coord.translate(scale(self.Cshift, -1.0))</span>
+        <span class="n">geom2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">geom</span><span class="p">:</span>
+            <span class="n">geom2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cshift</span><span class="p">))</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom2</span>
+<span class="c1">#        print &quot;Shift&quot;</span>
+<span class="c1">#        for item in geom:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="c1">#coord.rotate(self.Crotate)</span>
+        <span class="n">geom2</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Crotate</span><span class="p">)</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom2</span>
+<span class="c1">#        print &quot;Rotate&quot;</span>
+<span class="c1">#        for item in geom:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="c1">#coord.rotate(self.Cexchflip)</span>
+        <span class="n">geom2</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cexchflip</span><span class="p">)</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom2</span>
+ <span class="c1">#       print &quot;ExchFlip&quot;</span>
+ <span class="c1">#       for item in geom:</span>
+ <span class="c1">#           print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="n">geom2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coord</span><span class="o">.</span><span class="n">natom</span><span class="p">()):</span>
+            <span class="n">geom2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geom</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Catommap</span><span class="p">[</span><span class="n">at</span><span class="p">]])</span>
+        <span class="n">coord</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">geom2</span><span class="p">)</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom2</span>
+<span class="c1">#        print &quot;AtomMap&quot;</span>
+<span class="c1">#        for item in geom:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="c1">#coord.rotate(transpose(self.Protate))</span>
+        <span class="n">geom2</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Protate</span><span class="p">))</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom2</span>
+<span class="c1">#        print &quot;P4 Rotate&quot;</span>
+<span class="c1">#        for item in geom:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="n">geom2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">geom</span><span class="p">:</span>
+            <span class="n">geom2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Pshift</span><span class="p">))</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom2</span>
+<span class="c1">#        print &quot;P4 Shift&quot;</span>
+<span class="c1">#        for item in geom:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="n">Pgeom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+        <span class="n">Cgeom</span> <span class="o">=</span> <span class="n">geom</span>
+        <span class="n">Nat</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">all</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">Cgeom</span><span class="p">[</span><span class="n">at</span><span class="p">][</span><span class="n">ax</span><span class="p">]</span> <span class="o">-</span> <span class="n">Pgeom</span><span class="p">[</span><span class="n">at</span><span class="p">][</span><span class="n">ax</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">COORD_ZERO</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nat</span><span class="p">)]):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Geometries unreconcilable between QC programs:</span><span class="se">\n</span><span class="s2">  P4 </span><span class="si">%s</span><span class="se">\n</span><span class="s2">  C4 </span><span class="si">%s</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Pgeom</span><span class="p">,</span> <span class="n">Cgeom</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">geom</span></div>
+
+<div class="viewcode-block" id="OrientMols.transform_gradient"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orient.OrientMols.transform_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">transform_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Applies to *arr* the transformation appropriate to bring a</span>
+<span class="sd">        gradient in *molChangeable* orientation into *molPermanent*</span>
+<span class="sd">        orientation. In particular, applies a rotation to place it</span>
+<span class="sd">        in the inertial frame, a column exchange and phasing to place</span>
+<span class="sd">        it in the axis system, a row exchange to place it in the atom</span>
+<span class="sd">        ordering, and a rotation to remove it from the inertial frame.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Crotate</span><span class="p">)</span>
+<span class="c1">#        print &quot;Rotate&quot;</span>
+<span class="c1">#        for item in arr:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cexchflip</span><span class="p">)</span>
+<span class="c1">#        print &quot;ExchFlip&quot;</span>
+<span class="c1">#        for item in arr:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="n">arr2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)):</span>
+            <span class="n">arr2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Catommap</span><span class="p">[</span><span class="n">at</span><span class="p">]])</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">arr2</span>
+<span class="c1">#        print &quot;AtomMap&quot;</span>
+<span class="c1">#        for item in arr:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Protate</span><span class="p">))</span>
+<span class="c1">#        print &quot;P4 Rotate&quot;</span>
+<span class="c1">#        for item in arr:</span>
+<span class="c1">#            print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="k">return</span> <span class="n">arr</span></div>
+
+<div class="viewcode-block" id="OrientMols.transform_elementlist"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orient.OrientMols.transform_elementlist">[docs]</a>    <span class="k">def</span> <span class="nf">transform_elementlist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elem</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Applies to *elem* the transformation appropriate to bring a</span>
+<span class="sd">        list of atomic numbers in *molChangeable* orientation into</span>
+<span class="sd">        *molPermanent* orientation. In particular, applies a row exchange</span>
+<span class="sd">        to place it in the atom ordering.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">elem2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pmol</span><span class="o">.</span><span class="n">natom</span><span class="p">()):</span>
+            <span class="n">elem2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Catommap</span><span class="p">[</span><span class="n">at</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">elem2</span></div>
+
+<div class="viewcode-block" id="OrientMols.transform_vector"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orient.OrientMols.transform_vector">[docs]</a>    <span class="k">def</span> <span class="nf">transform_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Applies to *vec* the transformation appropriate to bring a</span>
+<span class="sd">        vector in *molChangeable* orientation into *molPermanent*</span>
+<span class="sd">        orientation. In particular, applies a rotation to place it</span>
+<span class="sd">        in the inertial frame, a column exchange and phasing to place</span>
+<span class="sd">        it in the axis system, and a rotation to remove it from the</span>
+<span class="sd">        inertial frame.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="p">[</span><span class="n">vec</span><span class="p">]</span>  <span class="c1"># hack since vecutil handles matrices, not vectors</span>
+
+        <span class="c1">#coord.rotate(self.Crotate)</span>
+        <span class="n">vec2</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Crotate</span><span class="p">)</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="n">vec2</span>
+        <span class="c1">#print &quot;Rotate&quot;</span>
+        <span class="c1">#for item in vec:</span>
+        <span class="c1">#    print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="c1">#coord.rotate(self.Cexchflip)</span>
+        <span class="n">vec2</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cexchflip</span><span class="p">)</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="n">vec2</span>
+        <span class="c1">#print &quot;ExchFlip&quot;</span>
+        <span class="c1">#for item in vec:</span>
+        <span class="c1">#    print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="c1">#coord.rotate(transpose(self.Protate))</span>
+        <span class="n">vec2</span> <span class="o">=</span> <span class="n">mult</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Protate</span><span class="p">))</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="n">vec2</span>
+        <span class="c1">#print &quot;P4 Rotate&quot;</span>
+        <span class="c1">#for item in vec:</span>
+        <span class="c1">#    print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+        <span class="k">return</span> <span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

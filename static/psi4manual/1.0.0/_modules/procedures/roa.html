@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procedures.roa &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for procedures.roa</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2016 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">p4const</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">p4util</span>
+<span class="kn">import</span> <span class="nn">psi4</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">shelve</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1"># Relative hack for now</span>
+<span class="n">path_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()))[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;../&quot;</span><span class="p">)))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path_dir</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">findif_response_utils</span>
+
+
+<div class="viewcode-block" id="run_roa"><a class="viewcode-back" href="../../autodoc_driver.html#procedures.roa.run_roa">[docs]</a><span class="k">def</span> <span class="nf">run_roa</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Main driver for managing Raman Optical activity computations with</span>
+<span class="sd">        CC response theory.</span>
+
+<span class="sd">        Uses distributed finite differences approach --&gt;</span>
+<span class="sd">            1. Sets up a database to keep track of running/finished/waiting</span>
+<span class="sd">                computations.</span>
+<span class="sd">            2. Generates separate input files for displaced geometries.</span>
+<span class="sd">            3. When all displacements are run, collects the necessary information</span>
+<span class="sd">                from each displaced computation, and computes final result.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get list of omega values -&gt; Make sure we only have one wavelength</span>
+    <span class="c1"># Catch this now before any real work gets done</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;CCRESPONSE&#39;</span><span class="p">,</span> <span class="s1">&#39;OMEGA&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;ROA scattering can only be performed for one wavelength.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="s1">&#39;Running ROA computation. Subdirectories for each &#39;</span>
+        <span class="s1">&#39;required displaced geometry have been created.</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">dbno</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Initialize database</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;database&#39;</span><span class="p">,</span> <span class="n">writeback</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c1"># Check if final result is in here</span>
+    <span class="c1"># -&gt;if we have already computed roa, back up the dict</span>
+    <span class="c1"># -&gt;copy it setting this flag to false and continue</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;roa_computed&#39;</span> <span class="ow">in</span> <span class="n">db</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;roa_computed&#39;</span><span class="p">]</span> <span class="p">):</span>
+        <span class="n">db2</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;.database.bak{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dbno</span><span class="p">),</span> <span class="n">writeback</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">dbno</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">db2</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">value</span>
+
+        <span class="n">db2</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">db</span><span class="p">[</span><span class="s1">&#39;roa_computed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">db</span><span class="p">[</span><span class="s1">&#39;roa_computed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">if</span> <span class="s1">&#39;inputs_generated&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">db</span><span class="p">:</span>
+        <span class="n">findif_response_utils</span><span class="o">.</span><span class="n">initialize_database</span><span class="p">(</span><span class="n">db</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="s2">&quot;roa&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;roa_tensor&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Generate input files</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;inputs_generated&#39;</span><span class="p">]:</span>
+        <span class="n">findif_response_utils</span><span class="o">.</span><span class="n">generate_inputs</span><span class="p">(</span><span class="n">db</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
+        <span class="c1"># handled by helper db[&#39;inputs_generated&#39;] = True</span>
+
+    <span class="c1"># Check job status</span>
+    <span class="k">if</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;inputs_generated&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;jobs_complete&#39;</span><span class="p">]:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Checking status&#39;</span><span class="p">)</span>
+        <span class="n">findif_response_utils</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">job</span><span class="p">,</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;job_status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} --&gt; {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">status</span><span class="p">))</span>
+
+    <span class="c1"># Compute ROA Scattering</span>
+    <span class="k">if</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;jobs_complete&#39;</span><span class="p">]:</span>
+        <span class="n">mygauge</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;CCRESPONSE&#39;</span><span class="p">,</span> <span class="s1">&#39;GAUGE&#39;</span><span class="p">)</span>
+        <span class="n">consider_gauge</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;LENGTH&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Length Gauge&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;VELOCITY&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Modified Velocity Gauge&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;BOTH&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Length Gauge&#39;</span><span class="p">,</span> <span class="s1">&#39;Modified Velocity Gauge&#39;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">gauge_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;{} Results&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">consider_gauge</span><span class="p">[</span><span class="n">mygauge</span><span class="p">]]</span>
+        <span class="c1"># Gather data</span>
+        <span class="n">dip_polar_list</span> <span class="o">=</span> <span class="n">findif_response_utils</span><span class="o">.</span><span class="n">collect_displaced_matrix_data</span><span class="p">(</span>
+            <span class="n">db</span><span class="p">,</span> <span class="s1">&#39;Dipole Polarizability&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">opt_rot_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">findif_response_utils</span><span class="o">.</span><span class="n">collect_displaced_matrix_data</span><span class="p">(</span>
+                    <span class="n">db</span><span class="p">,</span>
+                    <span class="s2">&quot;Optical Rotation Tensor ({})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gauge</span><span class="p">),</span>
+                    <span class="mi">3</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">gauge</span> <span class="ow">in</span> <span class="n">consider_gauge</span><span class="p">[</span><span class="n">mygauge</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">dip_quad_polar_list</span> <span class="o">=</span> <span class="n">findif_response_utils</span><span class="o">.</span><span class="n">collect_displaced_matrix_data</span><span class="p">(</span>
+            <span class="n">db</span><span class="p">,</span> <span class="s2">&quot;Electric-Dipole/Quadrupole Polarizability&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+        <span class="c1"># Compute Scattering</span>
+        <span class="c1"># Run new function (src/bin/ccresponse/scatter.cc)</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;Running scatter function&#39;</span><span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_local_option</span><span class="p">(</span><span class="s1">&#39;FINDIF&#39;</span><span class="p">,</span> <span class="s1">&#39;DISP_SIZE&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">g_idx</span><span class="p">,</span> <span class="n">gauge</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">opt_rot_list</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">----------------------------------------------------------------------&#39;</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">%%%%%%%%%%</span><span class="s1"> {} </span><span class="si">%%%%%%%%%%</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gauge_list</span><span class="p">[</span><span class="n">g_idx</span><span class="p">]))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">----------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">%%%%%%%%%%</span><span class="s1"> {} </span><span class="si">%%%%%%%%%%</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gauge_list</span><span class="p">[</span><span class="n">g_idx</span><span class="p">]))</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;roa.py:85 I am not being passed a molecule, grabbing from global :(&#39;</span><span class="p">)</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">psi4</span><span class="o">.</span><span class="n">get_active_molecule</span><span class="p">(),</span> <span class="n">step</span><span class="p">,</span> <span class="n">dip_polar_list</span><span class="p">,</span> <span class="n">gauge</span><span class="p">,</span> <span class="n">dip_quad_polar_list</span><span class="p">)</span>
+
+        <span class="n">db</span><span class="p">[</span><span class="s1">&#39;roa_computed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<span class="c1">#   SAVE this for when multiple wavelengths works</span>
+<span class="c1"># # Get list of omega values</span>
+<span class="c1"># omega = psi4.get_option(&#39;CCRESPONSE&#39;,&#39;OMEGA&#39;)</span>
+<span class="c1"># if len(omega) &gt; 1:</span>
+<span class="c1">#     units = copy.copy(omega[-1])</span>
+<span class="c1">#     omega.pop()</span>
+<span class="c1"># else:</span>
+<span class="c1">#     units = &#39;atomic&#39;</span>
+<span class="c1"># wavelength = copy.copy(omega[0])</span>
+<span class="c1"># # Set up units for scatter.cc</span>
+<span class="c1"># if units == &#39;NM&#39;:</span>
+<span class="c1">#     wavelength = (psi_c * psi_h * 1*(10**-9))/(wavelength * psi_hartree2J)</span>
+<span class="c1"># if units == &#39;HZ&#39;:</span>
+<span class="c1">#     wavelength = wavelength * psi_h / psi_hartree2J</span>
+<span class="c1"># if units == &#39;EV&#39;:</span>
+<span class="c1">#     wavelength = wavelength / psi_hartree2ev</span>
+<span class="c1"># if units == &#39;atomic&#39;:</span>
+<span class="c1">#     pass</span>
+<span class="c1"># ################################</span>
+<span class="c1"># ###                          ###</span>
+<span class="c1"># ###    DATABASE STRUCTURE    ###</span>
+<span class="c1"># ###                          ###</span>
+<span class="c1"># ################################</span>
+
+<span class="c1"># Dict of dicts</span>
+<span class="c1"># inputs_generated (boolean)</span>
+<span class="c1"># job_status: (ordered Dict)</span>
+<span class="c1">#    key-&gt; {atom}_{cord}_{p/m}</span>
+<span class="c1">#       val-&gt; (not_started,running,finished)</span>
+<span class="c1">#    job_list: (string)</span>
+<span class="c1">#        status (string)</span>
+<span class="c1"># jobs_complete (boolean)</span>
+<span class="c1"># roa_computed (boolean)</span>
+<span class="c1"># prop (string) = roa</span>
+<span class="c1">#</span>
+
+<span class="c1"># ?</span>
+<span class="c1"># data: dipole_polarizability</span>
+<span class="c1">#    : optical_rotation</span>
+<span class="c1">#    : dipole_quadrupole_polarizability</span>
+<span class="c1"># ?</span>
+<span class="c1"># results:</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

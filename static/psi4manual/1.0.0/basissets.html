@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basis Sets &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Psithon: Structuring an Input File" href="psithoninput.html" />
+    <link rel="next" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="prev" title="Molecule and Geometry Specification" href="psithonmol.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="methods.html" title="Theoretical Methods: SCF to FCI"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psithonmol.html" title="Molecule and Geometry Specification"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithoninput.html" accesskey="U">Psithon: Structuring an Input File</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="basis-sets">
+<span id="sec-basissets"></span><h1>Basis Sets<a class="headerlink" href="#basis-sets" title="Permalink to this headline">¶</a></h1>
+<p>Basis sets in <span class="sc">Psi4</span> are Gaussian functions (not Slater-type functions or plane waves),
+all-electron [no effective core potentials (ECPs)],
+and of Gaussian94 format (for ease of export from <a class="reference external" href="https://bse.pnl.gov/bse/portal">EMSL</a>).
+Both spherical harmonic (5D/7F) and Cartesian (6D/10F) Gaussian functions are supported,
+but their mixtures are not, neither within a basis set (<em>e.g.</em>, 6D/7F) nor within a calculation
+(<em>e.g.</em>, cartesian for the orbital basis and spherical for the fitting basis).
+For built-in basis sets, the correct <code class="docutils literal"><span class="pre">spherical</span></code>/<code class="docutils literal"><span class="pre">cartesian</span></code> value for <a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><span class="xref std std-term">PUREAM</span></a>
+is set internally from the orbital basis.</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sec-basisbuiltin"><span>Built-In Basis Sets</span></a></li>
+<li><a class="reference internal" href="psithoninput.html#sec-jobcontrol"><span>Specifying basis sets</span></a></li>
+<li><a class="reference internal" href="basissets_tables.html#apdx-basistables"><span>Built-in basis sets by family</span></a></li>
+<li><a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><span>Built-in basis sets by element</span></a></li>
+<li><a class="reference internal" href="#sec-basisuserdefined"><span>User-Defined basis sets</span></a></li>
+<li><a class="reference internal" href="basissets_byfamily.html#apdx-basisfamily"><span>Auxiliary bases for built-in orbital basis sets</span></a></li>
+</ul>
+<div class="section" id="built-in-basis-sets">
+<span id="sec-basisbuiltin"></span><span id="index-0"></span><h2>Built-In Basis Sets<a class="headerlink" href="#built-in-basis-sets" title="Permalink to this headline">¶</a></h2>
+<p>A wide range of orbital basis sets are built into <span class="sc">Psi4</span>. These are
+summarized in Tables <a class="reference internal" href="basissets_tables.html#table-basispopleorbital"><span>Pople</span></a>,
+<a class="reference internal" href="basissets_tables.html#table-basisdunningorbital"><span>Dunning</span></a>,
+<a class="reference internal" href="basissets_tables.html#table-basisdunningdk"><span>Dunning (Douglas-Kroll)</span></a>,
+<a class="reference internal" href="basissets_tables.html#table-basiskarlsruhe"><span>Karlsruhe</span></a>,
+and <a class="reference internal" href="basissets_tables.html#table-basisother"><span>Other</span></a> in Appendix <a class="reference internal" href="basissets_tables.html#apdx-basistables"><span>Basis Sets by Family</span></a>.
+These tables are arranged so that columns indicate degree of
+augmentation by diffuse functions (generally necessary for anions, excited
+states, and noncovalent interactions) and DTQ56 indicate the <img class="math" src="_images/math/e460448678d0fee5606f8c8c813064d88f08ed97.png" alt="X\;=\zeta" style="vertical-align: -4px"/> levels
+available.  Several intermediate levels of diffuse space between the customary
+non-augmented and augmented versions have been supplied for each basis set,
+including heavy-augmented and Truhlar&#8217;s <a class="reference internal" href="bibliography.html#papajak-2011-10" id="id1">[Papajak:2011:10]</a> calendar
+truncations described in Table <a class="reference internal" href="basissets_tables.html#table-basismonths"><span>Months Bases</span></a>.  Fitting bases
+in Tables <a class="reference internal" href="basissets_tables.html#table-basisdunningjkfit"><span>JKFIT</span></a>,
+<a class="reference internal" href="basissets_tables.html#table-basisdunningmp2fit"><span>RI</span></a>, and <a class="reference internal" href="basissets_tables.html#table-basisdunningdual"><span>DUAL</span></a>
+are available for methods incorporating density-fitting or dual-basis
+approximations. JKFIT sets are appropriate for fitting <img class="math" src="_images/math/b2cc50b781b61d514f15615173c1a14962df6206.png" alt="(oo|" style="vertical-align: -5px"/>-type products,
+such as encountered in SCF theory and the electrostatics/exchange terms of SAPT.
+RI sets are appropriate for fitting <img class="math" src="_images/math/944f26484aaa80132a7644e7dc633391da9d9184.png" alt="(ov|" style="vertical-align: -5px"/>-type products, such as encountered in
+MP2 and most SAPT terms.  Citations for basis sets can be found in their
+definition files at <a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/basis">psi4/share/basis</a> in the source.  For basis set availability by
+element and the default value for keyword <a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><span class="xref std std-term">PUREAM</span></a>, consult
+Appendix <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><span>Basis Sets by Element</span></a>.</p>
+</div>
+<div class="section" id="mixing-basis-sets">
+<span id="sec-psithonbasissets"></span><span id="index-1"></span><h2>Mixing Basis Sets<a class="headerlink" href="#mixing-basis-sets" title="Permalink to this headline">¶</a></h2>
+<p>While the above syntax will suffice for specifying basis sets in most cases,
+the user may need to assign basis sets to specific atoms.  To achieve this, a
+<code class="docutils literal"><span class="pre">basis</span></code> block can be used.  We use a snippet from the <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/mints2/input.dat">mints2</a> sample
+input file, which performs a benzene SCF computation, to demonstrate this
+feature.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>basis {
+   assign DZ
+   assign C 3-21G
+   assign H1 sto-3g
+   assign C1 sto-3g
+}
+</pre></div>
+</div>
+<p>The first line in this block assigns the DZ basis set to all atoms.  The next
+line then assigns 3-21G to all carbon atoms, leaving the hydrogens with the DZ
+basis set.  On the third line, the hydrogen atoms which have been specifically
+labelled as <code class="docutils literal"><span class="pre">H1</span></code> are given the STO-3G basis set, leaving the unlabelled hydrogen
+atoms with the DZ basis set.  Likewise, the fourth line assigns the STO-3G
+basis set to just the carbon atoms labelled <code class="docutils literal"><span class="pre">C1</span></code>.  This bizzare example was
+constructed to demonstrate the syntax, but the flexibility of the basis set
+specification is advantageous, for example, when selectivily omitting diffuse
+functions to make computations more tractable.</p>
+<p id="index-2">In the above example the basis sets have been assigned asymmetrically, reducing
+the effective symmetry from <img class="math" src="_images/math/034f235664cf8ae74d450c288b48fcee87644c64.png" alt="D_{6h}" style="vertical-align: -3px"/> to <img class="math" src="_images/math/ab44cf29f6b7cf2559186d6ec00af45f66958751.png" alt="C_{2v}" style="vertical-align: -3px"/>; <span class="sc">Psi4</span> will detect this
+automatically and run in the appropriate point group.  The same syntax can be
+used to specify basis sets other than that used to define orbitals.  For
+example,</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set df_basis_mp2 cc-pvdz-ri
+
+ or
+
+basis {
+   assign cc-pVDZ-RI df_basis_mp2
+}
+</pre></div>
+</div>
+<p>are both equivalent ways to set the auxiliary basis set for density fitted MP2
+computations.  To assign the aug-cc-pVDZ-RI to carbon atoms, the following
+command is used:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>basis {
+   assign C aug-cc-pVDZ-RI df_basis_mp2
+}
+</pre></div>
+</div>
+<p>When most popular basis sets are being used, including Dunning and
+Pople-style, the SCF, DF-MP2, and SAPT codes will chose the appropriate
+auxiliary basis set automatically according to <a class="reference internal" href="basissets_byfamily.html#apdx-basisfamily"><span>Auxiliary Basis Sets</span></a>,
+unless instructed otherwise by setting the auxiliary basis set in the
+input.  Finally, we note that the <code class="docutils literal"><span class="pre">basis</span> <span class="pre">{...}</span></code> block may also be used
+for defining basis sets, as detailed in <a class="reference internal" href="#sec-basisuserdefined"><span>User-Defined Basis Sets</span></a>.</p>
+</div>
+<div class="section" id="decontracted-basis-sets">
+<span id="sec-basisdecontracted"></span><span id="index-3"></span><h2>Decontracted Basis Sets<a class="headerlink" href="#decontracted-basis-sets" title="Permalink to this headline">¶</a></h2>
+<p>Decontraction of the basis set can be useful in certain situations. In order to
+decontract a given basis set, simply add &#8220;-decontract&#8221; to the name of the primary basis set.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set basis cc-pvdz-decontract
+</pre></div>
+</div>
+<p>Obviously this will add significantly to the computational cost of any given calculation, however it can
+be useful when checking the basis set dependence of a particular calculated property or in certain situations
+where a large basis set is critical. Currently it is recommended that a decontracted basis is always used when performing realtivistic calculations using the <a class="reference internal" href="relativistic.html#sec-relativistic"><span>X2C Hamiltonian</span></a>.</p>
+</div>
+<div class="section" id="user-defined-basis-sets">
+<span id="sec-basisuserdefined"></span><h2>User-Defined Basis Sets<a class="headerlink" href="#user-defined-basis-sets" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">No recompile of the PSI program is necessary for changes made to
+files in <code class="docutils literal"><span class="pre">$PSIDATADIR</span></code>, including those described below.</p>
+</div>
+<p>There are three routes by which a basis set in G94 format can be introduced to <span class="sc">Psi4</span>&#8216;s notice.</p>
+<p class="rubric">(1) Install new basis set file into <span class="sc">Psi4</span> basis library.</p>
+<p>Copy the basis set definitions for all elements into a blank file. Exclamation points denote comments.
+As the first line of the file, add the word <code class="docutils literal"><span class="pre">spherical</span></code> or <code class="docutils literal"><span class="pre">cartesian</span></code> to indicate
+whether the basis set will run in (5D/7F) or (6D/10F).</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>cartesian
+****
+H     0
+S   3   1.00
+      3.42525091             0.15432897
+      0.62391373             0.53532814
+      0.16885540             0.44463454
+****
+O     0
+S   3   1.00
+    130.7093200              0.15432897
+     23.8088610              0.53532814
+      6.4436083              0.44463454
+SP   3   1.00
+      5.0331513             -0.09996723             0.15591627
+      1.1695961              0.39951283             0.60768372
+      0.3803890              0.70011547             0.39195739
+****
+</pre></div>
+</div>
+<p>Name the file with the name of the basis set and a <code class="docutils literal"><span class="pre">.gbs</span></code> extension,
+after applying the following transformations.</p>
+<ul class="simple">
+<li>All letters lowercase</li>
+<li>Replace all <code class="docutils literal"><span class="pre">*</span></code> with <code class="docutils literal"><span class="pre">s</span></code></li>
+<li>Replace all <code class="docutils literal"><span class="pre">+</span></code> with <code class="docutils literal"><span class="pre">p</span></code></li>
+<li>Replace all <code class="docutils literal"><span class="pre">(</span></code> <code class="docutils literal"><span class="pre">)</span></code> <code class="docutils literal"><span class="pre">,</span></code> with <code class="docutils literal"><span class="pre">_</span></code> (underscores replace parentheses and commas)</li>
+</ul>
+<p>For example, basis 6-31++G** is stored in <a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/basis/6-31ppgss.gbs">psi4/share/basis/6-31ppgss.gbs</a>,
+and cc-pV(D+d)Z is stored in <a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/basis/cc-pv_dpd_z.gbs">psi4/share/basis/cc-pv_dpd_z.gbs</a>.
+Only one basis set may be specified per file.
+Copy the new basis set file into <a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/basis">psi4/share/basis</a>.
+Request the new basis set in an input file in the usual manner.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set basis new_basis_name
+</pre></div>
+</div>
+<p class="rubric">(2) Use new basis set file in arbitrary location.</p>
+<p>Prepare a basis set file exactly as above. Append the directory
+containing the basis set file to the environment variable
+<span class="target" id="index-4"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a>.</p>
+<p>Request the new basis set in an input file in the usual manner.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set basis new_basis_name
+</pre></div>
+</div>
+<p class="rubric">(3) Include new basis set in input file.</p>
+<p>Construct for a basis set a section like the one below that includes
+<code class="docutils literal"><span class="pre">[basis</span> <span class="pre">name]</span></code>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><span class="xref std std-term">PUREAM</span></a> value, and element basis set
+specifications. Hash signs denote comments.  This format is exactly like
+the stand-alone basis file except for the addition of the basis name in
+brackets.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[ sto-3g ]
+cartesian
+****
+H     0
+S   3   1.00
+      3.42525091             0.15432897
+      0.62391373             0.53532814
+      0.16885540             0.44463454
+****
+O     0
+S   3   1.00
+    130.7093200              0.15432897
+     23.8088610              0.53532814
+      6.4436083              0.44463454
+SP   3   1.00
+      5.0331513             -0.09996723             0.15591627
+      1.1695961              0.39951283             0.60768372
+      0.3803890              0.70011547             0.39195739
+****
+</pre></div>
+</div>
+<p>Copy the section into a <span class="sc">Psi4</span> input file and surround it with the
+command <code class="docutils literal"><span class="pre">basis</span> <span class="pre">{...}</span></code>, as shown below.  Multiple basis sets can be
+specified by adding additional sections within the surrounding brackets.
+Use <code class="docutils literal"><span class="pre">assign</span></code> statements to actually request the basis set. (See
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/mints2/input.dat">mints2</a> for an example.)</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>basis {
+
+# assign basset to all atoms and addl to hydrogens
+assign basset
+assign H addl
+
+# basis set section like in snippet above goes here
+[basset]
+...
+
+# additional basis set sections follow
+[addl]
+...
+}
+</pre></div>
+</div>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Basis Sets</a><ul>
+<li><a class="reference internal" href="#built-in-basis-sets">Built-In Basis Sets</a></li>
+<li><a class="reference internal" href="#mixing-basis-sets">Mixing Basis Sets</a></li>
+<li><a class="reference internal" href="#decontracted-basis-sets">Decontracted Basis Sets</a></li>
+<li><a class="reference internal" href="#user-defined-basis-sets">User-Defined Basis Sets</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="psithonmol.html"
+                        title="previous chapter">Molecule and Geometry Specification</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="methods.html"
+                        title="next chapter">Theoretical Methods: SCF to FCI</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/basissets.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="methods.html" title="Theoretical Methods: SCF to FCI"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psithonmol.html" title="Molecule and Geometry Specification"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithoninput.html" >Psithon: Structuring an Input File</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

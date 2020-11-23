@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to PCMSolver &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" />
+    <link rel="next" title="Interface to Molden, molden()" href="molden.html" />
+    <link rel="prev" title="2aminopyridine" href="autodoc_available_efpfrag.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="molden.html" title="Interface to Molden, molden()"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="autodoc_available_efpfrag.html" title="2aminopyridine"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="interface-to-pcmsolver">
+<span id="sec-pcmsolver"></span><span id="index-0"></span><h1>Interface to PCMSolver<a class="headerlink" href="#interface-to-pcmsolver" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Roberto Di Remigio, T. Daniel Crawford, Andrew C. Simmonett</em></p>
+<p><em>Section author: Roberto Di Remigio</em></p>
+<p><em>Module:</em> <span class="xref std std-ref">Keywords</span>, <span class="xref std std-ref">PSI Variables</span>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/lib/libpsipcm">PCMSolver</a></p>
+<p><span class="sc">Psi4</span> contains code to interface to the PCMSolver library developed
+by R. Di Remigio and L. Frediani.
+The version 1.1.0 of the PCMSolver library is distributed with <span class="sc">Psi4</span>
+and requires no additional licence, downloads, or configuration.
+The library is documented at <a class="reference external" href="http://pcmsolver.readthedocs.org/en/latest/">http://pcmsolver.readthedocs.org/</a>, while the source code is hosted at
+<a class="reference external" href="https://github.com/PCMSolver/pcmsolver">https://github.com/PCMSolver/pcmsolver/</a>
+The library allows for calculations in solution with the polarizable continuum model (PCM),
+a continuum solvation model.
+Compilation of the library and its interface to <span class="sc">Psi4</span> can be <em>disabled</em> by passing the
+<code class="docutils literal"><span class="pre">--pcmsolver=off</span></code> to the <code class="docutils literal"><span class="pre">setup</span></code> script or <code class="docutils literal"><span class="pre">-DENABLE_PCMSOLVER=OFF</span></code> directly to CMake.</p>
+<div class="section" id="using-the-polarizable-continuum-model">
+<span id="sec-usingpcm"></span><span id="index-1"></span><h2>Using the polarizable continuum model<a class="headerlink" href="#using-the-polarizable-continuum-model" title="Permalink to this headline">¶</a></h2>
+<p>The inclusion of a PCM description of the solvent into your calculation
+is achieved by setting <code class="docutils literal"><span class="pre">pcm</span> <span class="pre">true</span></code> in your input file.
+<span class="sc">Psi4</span> understands the additional option <code class="docutils literal"><span class="pre">pcm_scf_type</span></code> with possible values <code class="docutils literal"><span class="pre">total</span></code>
+(the default) or <code class="docutils literal"><span class="pre">separate</span></code>.
+The latter forces the separate handling of nuclear and electronic electrostatic potentials and
+polarization charges. It is mainly useful for debugging.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">At present PCM can only be used for energy calculations with SCF wavefunctions.
+Moreover, the PCMSolver library <strong>cannot</strong> exploit molecular point group symmetry.</p>
+</div>
+<p>The PCM model and molecular cavity are specified in a <code class="docutils literal"><span class="pre">pcm</span></code> section that has
+to be explicitly typed in by the user. This additional section follows a syntax
+that is slightly different from that of <span class="sc">Psi4</span> and is fully documented
+<a class="reference external" href="http://pcmsolver.readthedocs.org/en/latest/users/input.html">here</a></p>
+<p>A typical input for a Hartree-Fock calculation with PCM would look like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule NH3 {
+symmetry c1
+N     -0.0000000001    -0.1040380466      0.0000000000
+H     -0.9015844116     0.4818470201     -1.5615900098
+H     -0.9015844116     0.4818470201      1.5615900098
+H      1.8031688251     0.4818470204      0.0000000000
+units bohr
+no_reorient
+no_com
+}
+
+set {
+  basis STO-3G
+  scf_type pk
+  pcm true
+  pcm_scf_type total
+}
+
+pcm = {
+   Units = Angstrom
+   Medium {
+   SolverType = IEFPCM
+   Solvent = Water
+   }
+
+   Cavity {
+   RadiiSet = UFF
+   Type = GePol
+   Scaling = False
+   Area = 0.3
+   Mode = Implicit
+   }
+}
+</pre></div>
+</div>
+<p>More examples can be found in the directories with PCM tests
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/pcmsolver/pcm_scf/input.dat">pcmsolver/pcm_scf</a>,
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/pcmsolver/pcm_dft/input.dat">pcmsolver/pcm_dft</a>, and
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/pcmsolver/pcm_dipole/input.dat">pcmsolver/pcm_dipole</a>.</p>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface to PCMSolver</a><ul>
+<li><a class="reference internal" href="#using-the-polarizable-continuum-model">Using the polarizable continuum model</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="autodoc_available_efpfrag.html"
+                        title="previous chapter">2aminopyridine</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="molden.html"
+                        title="next chapter">Interface to Molden, <code class="docutils literal"><span class="pre">molden()</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pcmsolver.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="molden.html" title="Interface to Molden, molden()"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="autodoc_available_efpfrag.html" title="2aminopyridine"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

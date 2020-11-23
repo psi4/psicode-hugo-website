@@ -1,0 +1,416 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>psi4.driver.procrouting.empirical_dispersion</title>
+    
+    <link rel="stylesheet" href="../../../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'add49b9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../../_static/cloud.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/procrouting/empirical_dispersion.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.procrouting.empirical_dispersion</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2017 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module to provide lightweight definitions of emperical dispersion terms.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">psi4</span> <span class="k">import</span> <span class="n">core</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.qcdb</span> <span class="k">import</span> <span class="n">interface_dftd3</span> <span class="k">as</span> <span class="n">dftd3</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.qcdb</span> <span class="k">import</span> <span class="n">interface_gcp</span> <span class="k">as</span> <span class="n">gcp</span>
+
+
+<div class="viewcode-block" id="EmpericalDispersion"><a class="viewcode-back" href="../../../../api/psi4.driver.EmpericalDispersion.html#psi4.driver.EmpericalDispersion">[docs]</a><span class="k">class</span> <span class="nc">EmpericalDispersion</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alias</span> <span class="o">=</span> <span class="n">alias</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="c1"># Functional Alias</span>
+
+        <span class="c1"># Figure out dispersion type</span>
+        <span class="k">if</span> <span class="n">dtype</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">dtype</span>
+
+
+        <span class="n">tuple_params</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;tuple_params&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">dash_alias</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">dash_alias</span><span class="p">[</span><span class="n">dtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="c1"># Dispersion type</span>
+
+        <span class="k">if</span> <span class="n">dtype</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">dashcoeff</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span> <span class="o">=</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">dash_server</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">dtype</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;s6&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+
+        <span class="c1"># Build coefficients</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;-D2GR&quot;</span><span class="p">,</span> <span class="s2">&quot;-D3ZERO&quot;</span><span class="p">,</span> <span class="s2">&quot;-D3BJ&quot;</span><span class="p">,</span> <span class="s2">&quot;-D3MZERO&quot;</span><span class="p">,</span> <span class="s2">&quot;-D3MBJ&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-D2GR&#39;</span><span class="p">,</span> <span class="s1">&#39;-D2&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disp_type</span> <span class="o">=</span> <span class="s1">&#39;gr&#39;</span>
+
+            <span class="c1"># Odd tuple syntax favored by psi</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">tuple_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tuple_params</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s1">&#39;s6&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tuple_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tuple_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;D2&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s2">&quot;alpha6&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tuple_params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="p">(</span><span class="s2">&quot;ZERO&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;BJ&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s2">&quot;s8&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tuple_params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tuple_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;ZERO&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s2">&quot;sr6&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tuple_params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="s2">&quot;BJ&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s2">&quot;a1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tuple_params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tuple_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;ZERO&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s2">&quot;alpha6&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tuple_params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="s2">&quot;BJ&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s2">&quot;a2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tuple_params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tuple_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Too many parameter in input tuple param.&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># Only other case at the moment</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-D2P4&#39;</span><span class="p">,</span> <span class="s1">&#39;-D2&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disp_type</span> <span class="o">=</span> <span class="s1">&#39;p4&#39;</span>
+            <span class="k">if</span> <span class="n">tuple_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;s6&#39;</span><span class="p">,</span> <span class="s1">&#39;p1&#39;</span><span class="p">,</span> <span class="s1">&#39;p2&#39;</span><span class="p">,</span> <span class="s1">&#39;p3&#39;</span><span class="p">],</span> <span class="n">tuple_params</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+
+        <span class="c1"># Build the C++ dispersion class</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_type</span> <span class="o">==</span> <span class="s1">&#39;p4&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disp</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dispersion</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disp</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+        <span class="c1"># Set user input</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The following DFTD3 parameters were not understood for </span><span class="si">%s</span><span class="s2"> dispersion type: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+                            <span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-D1&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Grimme&#39;s -D1 Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;    Grimme, S. (2004), J. Comp. Chem., 25: 1463-1473&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Grimme:2004:1463&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-D2&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Grimme&#39;s -D2 Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;    Grimme, S. (2006),  J. Comp. Chem., 27: 1787-1799&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Grimme:2006:1787&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-CHG&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Chai and Head-Gordon Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;    Chai, J.-D.; Head-Gordon, M. (2010), J. Chem. Phys., 132: 6615-6620&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Chai:2010:6615&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-DAS2009&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Podeszwa and Szalewicz Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;    Pernal, K.; Podeszwa, R.; Patkowski, K.; Szalewicz, K. (2009), Phys. Rev. Lett., 103: 263201&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Pernal:2009:263201&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-DAS2010&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Podeszwa and Szalewicz Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;    Podeszwa, R.; Pernal, K.; Patkowski, K.; Szalewicz, K. (2010), J. Phys. Chem. Lett., 1: 550&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Podeszwa:2010:550&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-D2GR&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Grimme&#39;s -D2 Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;    Grimme, S. (2006),  J. Comp. Chem., 27: 1787-1799&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Grimme:2006:1787&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-D3ZERO&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Grimme&#39;s -D3 (zero-damping) Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;    Grimme S.; Antony J.; Ehrlich S.; Krieg H. (2010), J. Chem. Phys., 132: 154104&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Grimme:2010:154104&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-D3BJ&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Grimme&#39;s -D3 (BJ-damping) Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="s2">&quot;    Grimme S.; Ehrlich S.; Goerigk L. (2011), J. Comput. Chem., 32: 1456&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Grimme:2011:1456&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-D3MZERO&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Grimme&#39;s -D3 (zero-damping, short-range refitted) Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span>  <span class="o">=</span> <span class="s2">&quot;    Grimme S.; Antony J.; Ehrlich S.; Krieg H. (2010), J. Chem. Phys., 132: 154104</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">+=</span> <span class="s2">&quot;    Smith, D. G. A.; Burns, L. A.; Patkowski, K.; Sherrill, C. D. (2016), J. Phys. Chem. Lett.; 7: 2197&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Grimme:2010:154104&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-D3MBJ&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;    Grimme&#39;s -D3 (BJ-damping, short-range refitted) Dispersion Correction&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span>  <span class="o">=</span> <span class="s2">&quot;    Grimme S.; Ehrlich S.; Goerigk L. (2011), J. Comput. Chem., 32: 1456</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">+=</span> <span class="s2">&quot;    Smith, D. G. A.; Burns, L. A.; Patkowski, K.; Sherrill, C. D. (2016), J. Phys. Chem. Lett.; 7: 2197&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bibtex</span> <span class="o">=</span> <span class="s2">&quot;Grimme:2011:1456&quot;</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Emperical Dispersion type </span><span class="si">%s</span><span class="s2"> not understood.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EmpericalDispersion.print_out"><a class="viewcode-back" href="../../../../api/psi4.driver.EmpericalDispersion.html#psi4.driver.EmpericalDispersion.print_out">[docs]</a>    <span class="k">def</span> <span class="nf">print_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   =&gt; </span><span class="si">%s</span><span class="s2">: Empirical Dispersion &lt;=</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        S6 = </span><span class="si">%14.6E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s2">&quot;s6&quot;</span><span class="p">]);</span>
+        <span class="k">if</span> <span class="s2">&quot;s8&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        S8 = </span><span class="si">%14.6E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">[</span><span class="s2">&quot;s8&quot;</span><span class="p">]);</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;s6&quot;</span><span class="p">,</span> <span class="s2">&quot;s8&quot;</span><span class="p">]:</span> <span class="k">continue</span>
+
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    </span><span class="si">%6s</span><span class="s2"> = </span><span class="si">%14.6E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">v</span><span class="p">));</span>
+
+        <span class="c1"># Psi auto sets this with no change of deviation</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disp_type</span> <span class="o">==</span> <span class="s1">&#39;p4&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;-D2&quot;</span><span class="p">):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    </span><span class="si">%6s</span><span class="s2"> = </span><span class="si">%14.6E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;A6&quot;</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">))</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span></div>
+
+<div class="viewcode-block" id="EmpericalDispersion.compute_energy"><a class="viewcode-back" href="../../../../api/psi4.driver.EmpericalDispersion.html#psi4.driver.EmpericalDispersion.compute_energy">[docs]</a>    <span class="k">def</span> <span class="nf">compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_type</span> <span class="o">==</span> <span class="s1">&#39;gr&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;HF3C&#39;</span><span class="p">,</span> <span class="s1">&#39;PBEH3C&#39;</span><span class="p">]:</span>
+                <span class="n">dashd_part</span> <span class="o">=</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">run_dftd3</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">dashlvl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                                             <span class="n">dashparam</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">gcp_part</span> <span class="o">=</span> <span class="n">gcp</span><span class="o">.</span><span class="n">run_gcp</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">dashd_part</span> <span class="o">+</span> <span class="n">gcp_part</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">run_dftd3</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">dashlvl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                                       <span class="n">dashparam</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="o">.</span><span class="n">compute_energy</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EmpericalDispersion.compute_gradient"><a class="viewcode-back" href="../../../../api/psi4.driver.EmpericalDispersion.html#psi4.driver.EmpericalDispersion.compute_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp_type</span> <span class="o">==</span> <span class="s1">&#39;gr&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;HF3C&#39;</span><span class="p">,</span> <span class="s1">&#39;PBEH3C&#39;</span><span class="p">]:</span>
+                <span class="n">dashd_part</span> <span class="o">=</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">run_dftd3</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">dashlvl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                                             <span class="n">dashparam</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">gcp_part</span> <span class="o">=</span> <span class="n">gcp</span><span class="o">.</span><span class="n">run_gcp</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">dashd_part</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gcp_part</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">dashd_part</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">run_dftd3</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">dashlvl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                                       <span class="n">dashparam</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dash_params</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../../index.html" title="index">
+          <img class="logo" src="../../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/procrouting/empirical_dispersion.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, The Psi4 Project.
+      Last updated on Wednesday, 17 May 2017 05:47AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

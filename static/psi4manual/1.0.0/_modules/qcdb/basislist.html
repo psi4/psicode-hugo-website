@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.basislist &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.basislist</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1">#@BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># PSI4: an ab initio quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1">#@END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">r&quot;&quot;&quot;Module to define a class :py:class:`~BasisFamily` that associates</span>
+<span class="sd">fitting basis sets to an orbital basis and to provide functions to</span>
+<span class="sd">query appropriate fitting bases for any orbital basis distributed</span>
+<span class="sd">with Psi4.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="n">basisfamily_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="BasisFamily"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily">[docs]</a><span class="k">class</span> <span class="nc">BasisFamily</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to associate with an orbital basis name *ornate*</span>
+<span class="sd">    the gbs file names in which the orbital basis *orbital*</span>
+<span class="sd">    (usually the coded form of *ornate*) and *jfit*, *jkfit*,</span>
+<span class="sd">    *rifit*, and *dualfit* auxiliary bases can be found.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ornate</span><span class="p">,</span> <span class="n">orbital</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="c1"># literature name of orbital basis set, e.g., aug-cc-pVTZ or 6-31+G*</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ornate</span> <span class="o">=</span> <span class="n">ornate</span>
+        <span class="c1"># gbs file name of orbital basis set, e.g., aug-cc-pvtz or 6-31pgs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orbital</span> <span class="o">=</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">ornate</span><span class="p">)</span> <span class="k">if</span> <span class="n">orbital</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">orbital</span><span class="p">)</span>
+        <span class="c1"># gbs file name of JKFIT designed for orbital basis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jkfit</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># gbs friendly file name of JFIT designed for orbital basis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jfit</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># gbs file name of CFIT designed for orbital basis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rifit</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># gbs file name of DUAL designed for orbital basis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dualfit</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># gbs file name of JKFIT default when self.jkfit unavailable</span>
+        <span class="c1">#self.jkdef = jkdef</span>
+        <span class="c1"># gbs file name of JFIT default when self.jfit unavailable</span>
+        <span class="c1">#self.jdef = jdef</span>
+        <span class="c1"># gbs file name of CFIT default when self.rifit unavailable</span>
+        <span class="c1">#self.ridef = ridef</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;  ==&gt; </span><span class="si">%s</span><span class="s2"> Family &lt;==</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ornate</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;  Orbital basis:        </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orbital</span><span class="p">)</span>
+        <span class="c1">#text += &quot;&quot;&quot;  JK auxiliary basis:   %s\n&quot;&quot;&quot; % (self.jkfit)</span>
+        <span class="c1">#text += &quot;&quot;&quot;  MP2 auxiliary basis:  %s\n&quot;&quot;&quot; % (self.rifit)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;  JK auxiliary basis:   </span><span class="si">%s</span><span class="s2">  Def: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jkfit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jkdef</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;  J auxiliary basis:    </span><span class="si">%s</span><span class="s2">  Def: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jfit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jdef</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;  MP2 auxiliary basis:  </span><span class="si">%s</span><span class="s2">  Def: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rifit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ridef</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;  DUAL auxiliary basis: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dualfit</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">text</span>
+
+<div class="viewcode-block" id="BasisFamily.name"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to return the ornate name of the orbital basis,</span>
+<span class="sd">        e.g., 6-311++G** for 6-311ppgss.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ornate</span></div>
+
+<div class="viewcode-block" id="BasisFamily.add_jkfit"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily.add_jkfit">[docs]</a>    <span class="k">def</span> <span class="nf">add_jkfit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add basis *fit* as associated fitting basis</span>
+<span class="sd">        member *jkfit* to a BasisFamily object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jkfit</span> <span class="o">=</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BasisFamily.add_rifit"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily.add_rifit">[docs]</a>    <span class="k">def</span> <span class="nf">add_rifit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add basis *fit* as associated fitting basis</span>
+<span class="sd">        member *rifit* to a BasisFamily object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rifit</span> <span class="o">=</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BasisFamily.add_dualfit"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily.add_dualfit">[docs]</a>    <span class="k">def</span> <span class="nf">add_dualfit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add basis *fit* as associated helper basis</span>
+<span class="sd">        member *dualfit* to a BasisFamily object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dualfit</span> <span class="o">=</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BasisFamily.add_jfit"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily.add_jfit">[docs]</a>    <span class="k">def</span> <span class="nf">add_jfit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add basis *fit* as associated fitting basis</span>
+<span class="sd">        member *jfit* to a BasisFamily object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jfit</span> <span class="o">=</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BasisFamily.add_jfit_default"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily.add_jfit_default">[docs]</a>    <span class="k">def</span> <span class="nf">add_jfit_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add basis *fit* as associated fitting basis</span>
+<span class="sd">        member *jdef* to a BasisFamily object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jdef</span> <span class="o">=</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BasisFamily.add_jkfit_default"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily.add_jkfit_default">[docs]</a>    <span class="k">def</span> <span class="nf">add_jkfit_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add basis *fit* as associated fitting basis</span>
+<span class="sd">        member *jkdef* to a BasisFamily object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jkdef</span> <span class="o">=</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BasisFamily.add_rifit_default"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.BasisFamily.add_rifit_default">[docs]</a>    <span class="k">def</span> <span class="nf">add_rifit_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add basis *fit* as associated fitting basis</span>
+<span class="sd">        member *ridef* to a BasisFamily object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ridef</span> <span class="o">=</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="sanitize_basisname"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.sanitize_basisname">[docs]</a><span class="k">def</span> <span class="nf">sanitize_basisname</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return *name* in coded form, stripped of</span>
+<span class="sd">    characters that confuse filenames, characters into lowercase,</span>
+<span class="sd">    ``+`` into ``p``, ``*`` into ``s``, and ``(``, ``)``, &amp; ``,``</span>
+<span class="sd">    into ``_``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">temp</span></div>
+
+
+<div class="viewcode-block" id="load_basis_families"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.load_basis_families">[docs]</a><span class="k">def</span> <span class="nf">load_basis_families</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Function to load into the array ``basisfamily_list``</span>
+<span class="sd">    BasisFamily objects for all Psi4&#39;s standard installed bases.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.basislistdunning</span> <span class="kn">import</span> <span class="n">load_basfam_dunning</span>
+    <span class="kn">from</span> <span class="nn">.basislistother</span> <span class="kn">import</span> <span class="n">load_basfam_other</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">basisfamily_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">load_basfam_dunning</span><span class="p">()</span>
+        <span class="n">load_basfam_other</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">basisfamily_list</span></div>
+
+
+<div class="viewcode-block" id="print_basis_families"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.print_basis_families">[docs]</a><span class="k">def</span> <span class="nf">print_basis_families</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Function to print to the output file a formatted summary</span>
+<span class="sd">    of all the BasisFamily objects in ``basisfamily_list``, by</span>
+<span class="sd">    default all Psi4&#39;s standard installed bases.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">basisfamily_list</span> <span class="o">=</span> <span class="n">load_basis_families</span><span class="p">()</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">fam</span> <span class="ow">in</span> <span class="n">basisfamily_list</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fam</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="corresponding_basis"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislist.corresponding_basis">[docs]</a><span class="k">def</span> <span class="nf">corresponding_basis</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;BASIS&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to validate if the orbital basis *name* in coded or</span>
+<span class="sd">    ornate form is in Psi4&#39;s standard installed bases list. ``None``</span>
+<span class="sd">    is returned if the orbital basis is not found.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">role</span> <span class="o">=</span> <span class="n">role</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="n">basisfamily_list</span> <span class="o">=</span> <span class="n">load_basis_families</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">fam</span> <span class="ow">in</span> <span class="n">basisfamily_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">fam</span><span class="o">.</span><span class="n">ornate</span><span class="p">)</span> <span class="o">==</span> <span class="n">sanitize_basisname</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;ORNATE&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">fam</span><span class="o">.</span><span class="n">ornate</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;BASIS&#39;</span> <span class="ow">or</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;ORBITAL&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">fam</span><span class="o">.</span><span class="n">orbital</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;JFIT&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">fam</span><span class="o">.</span><span class="n">jfit</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;JKFIT&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">fam</span><span class="o">.</span><span class="n">jkfit</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;RIFIT&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">fam</span><span class="o">.</span><span class="n">rifit</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;DUALFIT&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">fam</span><span class="o">.</span><span class="n">dualfit</span>
+    <span class="k">return</span> <span class="bp">None</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

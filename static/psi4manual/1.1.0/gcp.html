@@ -1,0 +1,344 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to gCP by S. Grimme</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'add49b9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interface to GDMA Distributed Multipole Analysis by A. J. Stone — gdma()" href="gdma.html" />
+    <link rel="prev" title="Interface to programs through FCHK files — fchk()" href="fchk.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gdma.html" title="Interface to GDMA Distributed Multipole Analysis by A. J. Stone — gdma()"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="fchk.html" title="Interface to programs through FCHK files — fchk()"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/gcp.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="interface-to-gcp-by-s-grimme">
+<span id="sec-gcp"></span><span id="index-0"></span><h1>Interface to gCP by S. Grimme<a class="headerlink" href="#interface-to-gcp-by-s-grimme" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Lori A. Burns</em></p>
+<p><em>Section author: Lori A. Burns</em></p>
+<p><em>Module:</em> <span class="xref std std-ref">Samples</span></p>
+<a class="reference external image-reference" href="http://www.thch.uni-bonn.de/tc/downloads/gcp/index.html"><img alt="https://img.shields.io/badge/home-gCP-5077AB.svg" src="https://img.shields.io/badge/home-gCP-5077AB.svg" /></a>
+<br><a class="reference external image-reference" href="http://www.thch.uni-bonn.de/tc/downloads/gcp/data/manGCP.pdf"><img alt="https://img.shields.io/badge/docs-latest-5077AB.svg" src="https://img.shields.io/badge/docs-latest-5077AB.svg" /></a>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Binary</strong></p>
+<ul>
+<li><a class="first reference external image-reference" href="https://anaconda.org/psi4/gcp"><img alt="https://anaconda.org/psi4/gcp/badges/version.svg" src="https://anaconda.org/psi4/gcp/badges/version.svg" /></a>
+</li>
+<li><p class="first">gCP is available as a conda package for Linux and macOS (and Windows, through the Ubuntu shell).</p>
+</li>
+<li><p class="first">If using the <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> binary, gCP has already been installed alongside.</p>
+</li>
+<li><p class="first">If using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> built from source, and anaconda or miniconda has
+already been installed (instructions at <a class="reference internal" href="conda.html#sec-quickconda"><span class="std std-ref">Quick Installation</span></a>),
+the gcp executable can be obtained through <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">gcp</span></code>.</p>
+</li>
+<li><p class="first">To remove a conda installation, <code class="docutils literal"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">gcp</span></code>.</p>
+</li>
+</ul>
+<p><strong>Source</strong></p>
+<ul>
+<li><a class="first reference external image-reference" href="http://www.thch.uni-bonn.de/tc/downloads/gcp/getgCP.html"><img alt="https://img.shields.io/badge/home-gCP-5077AB.svg" src="https://img.shields.io/badge/home-gCP-5077AB.svg" /></a>
+</li>
+<li><p class="first">If using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> built from source and you want to build gCP from
+from source also, follow the instructions provided with the source
+(essentially, download the freely available tarball, unpack the source,
+edit the Makefile to select a Fortran compiler, and run make).</p>
+</li>
+</ul>
+<p>To be used by <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>, the program binary (<code class="docutils literal"><span class="pre">gcp</span></code>) must be
+found in your <span class="target" id="index-1"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a> or <span class="target" id="index-2"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a> (in that order). If
+<span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> is unable to execute the binary, an error will be reported.
+To preferentially use a particular gcp compilation, simply adjust its
+position in the path environment variables.</p>
+</div>
+<div class="section" id="running-gcp">
+<h2>Running gCP<a class="headerlink" href="#running-gcp" title="Permalink to this headline">¶</a></h2>
+<p>At present there is a limited interface to gCP that is used
+only to implement the &#8220;HF-3c&#8221; <a class="reference internal" href="bibliography.html#sure-2013-1672" id="id1">[Sure:2013:1672]</a> and &#8220;PBEh-3c&#8221;
+<a class="reference internal" href="bibliography.html#grimme-2015-054107" id="id2">[Grimme:2015:054107]</a> methods (both energy and gradient). The <a class="reference internal" href="dftd3.html#sec-dftd3"><span class="std std-ref">DFTD3</span></a> executable must also be available for these methods to
+run. Unlike every other method in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>, if a basis set has not been
+set, these will default to their intended basis sets: MINIX for HF-3c
+and def2-mSVP for PBEh-3c. If a basis has previously been set, but you
+want to use the default basis, use the slash syntax to &#8220;empty&#8221; the basis
+option for the scope of the current calculation, <code class="docutils literal"><span class="pre">energy(&quot;hf3c/&quot;)</span></code>.</p>
+<p>A few practical examples:</p>
+<ul>
+<li><p class="first">HF-3c single point with default minix basis</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;hf3c&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p class="first">PBEh-3c optimization with default def2-mSVP basis</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;pbeh3c&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p class="first">HF-3c with non-standard basis</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pvdz</span>
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;hf3c&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p class="first">PBEh-3c with default basis after basis set</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pvdz</span>
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;pbeh3c/&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</li>
+</ul>
+<p>If only BSSE/basis set corrections (rather than total energies) are of
+interest, the <code class="docutils literal"><span class="pre">gcp</span></code> program can be run independently of the scf
+through the python function <a class="reference internal" href="#qcdb.interface_gcp.run_gcp" title="qcdb.interface_gcp.run_gcp"><code class="xref py py-func docutils literal"><span class="pre">run_gcp()</span></code></a>. (This function
+is the same <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>/<code class="docutils literal"><span class="pre">gcp</span></code> interface that is called during an scf job.)
+This route is much faster than running a HF or DFT energy.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">molecule</span> <span class="n">nene</span> <span class="p">{</span>
+<span class="n">Ne</span>
+<span class="n">Ne</span> <span class="mi">1</span> <span class="mf">2.0</span>
+<span class="p">}</span>
+
+<span class="n">nene</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">E</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">nene</span><span class="o">.</span><span class="n">run_gcp</span><span class="p">(</span><span class="s1">&#39;hf3c&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">E</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">nene</span><span class="o">.</span><span class="n">run_gcp</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="s1">&#39;HF3c&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<dl class="function">
+<dt id="qcdb.interface_gcp.run_gcp">
+<code class="descclassname">qcdb.interface_gcp.</code><code class="descname">run_gcp</code><span class="sig-paren">(</span><em>self</em>, <em>func=None</em>, <em>dertype=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcdb/interface_gcp.html#run_gcp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qcdb.interface_gcp.run_gcp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to call Grimme&#8217;s dftd3 program (<a class="reference external" href="http://toc.uni-muenster.de/DFTD3/">http://toc.uni-muenster.de/DFTD3/</a>)
+to compute the -D correction of level <em>dashlvl</em> using parameters for
+the functional <em>func</em>. The dictionary <em>dashparam</em> can be used to supply
+a full set of dispersion parameters in the absense of <em>func</em> or to supply
+individual overrides in the presence of <em>func</em>. Returns energy if <em>dertype</em> is 0,
+gradient if <em>dertype</em> is 1, else tuple of energy and gradient if <em>dertype</em>
+unspecified. The dftd3 executable must be independently compiled and found in
+<span class="target" id="index-3"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a> or <span class="target" id="index-4"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a>.
+<em>self</em> may be either a qcdb.Molecule (sensibly) or a psi4.Molecule
+(works b/c psi4.Molecule has been extended by this method py-side and
+only public interface fns used) or a string that can be instantiated
+into a qcdb.Molecule.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Interface to gCP by S. Grimme</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#running-gcp">Running gCP</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gdma.html" title="Interface to GDMA Distributed Multipole Analysis by A. J. Stone — gdma()"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="fchk.html" title="Interface to programs through FCHK files — fchk()"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/gcp.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, The Psi4 Project.
+      Last updated on Wednesday, 17 May 2017 05:47AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.orca &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.orca</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">.pdict</span> <span class="kn">import</span> <span class="n">PreservingDict</span>
+<span class="kn">from</span> <span class="nn">.molecule</span> <span class="kn">import</span> <span class="n">Molecule</span>
+<span class="kn">from</span> <span class="nn">.physconst</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="harvest"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.harvest">[docs]</a><span class="k">def</span> <span class="nf">harvest</span><span class="p">(</span><span class="n">p4Mol</span><span class="p">,</span> <span class="n">orca_out</span><span class="p">,</span> <span class="o">**</span><span class="n">largs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Harvest variables, gradient, and the molecule from the output and other</span>
+<span class="sd">    files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Split into lines as it is much easier to find what is needed</span>
+    <span class="n">out_lines</span> <span class="o">=</span> <span class="n">orca_out</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">harvest_molecule_from_outfile</span><span class="p">(</span><span class="n">out_lines</span><span class="p">)</span>
+
+    <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;NONE&quot;</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">harvest_engrad</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+    <span class="c1"># Harvest energies and properties from the output file</span>
+    <span class="n">psivar</span> <span class="o">=</span> <span class="n">PreservingDict</span><span class="p">()</span>
+    <span class="n">harvest_scf_from_outfile</span><span class="p">(</span><span class="n">out_lines</span><span class="p">,</span> <span class="n">psivar</span><span class="p">)</span>
+    <span class="n">harvest_dipole</span><span class="p">(</span><span class="n">out_lines</span><span class="p">,</span> <span class="n">psivar</span><span class="p">)</span>
+    <span class="n">harvest_mp2</span><span class="p">(</span><span class="n">out_lines</span><span class="p">,</span> <span class="n">psivar</span><span class="p">)</span>
+    <span class="n">harvest_coupled_cluster</span><span class="p">(</span><span class="n">out_lines</span><span class="p">,</span> <span class="n">psivar</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">psivar</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">mol</span></div>
+
+
+<div class="viewcode-block" id="muster_memory"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.muster_memory">[docs]</a><span class="k">def</span> <span class="nf">muster_memory</span><span class="p">(</span><span class="n">mem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform input *mem* in MB into psi4-type options for orca.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># prepare memory keywords to be set as c-side keywords</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">))</span>
+    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_MAXCORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mem</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;%MaxCore {}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_MAXCORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">]:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="n">item</span><span class="p">][</span><span class="s1">&#39;clobber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">options</span></div>
+
+
+<div class="viewcode-block" id="muster_modelchem"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.muster_modelchem">[docs]</a><span class="k">def</span> <span class="nf">muster_modelchem</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dertype</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform calculation method *name* and derivative level *dertype*</span>
+<span class="sd">    into options for orca. While deliberately requested pieces,</span>
+<span class="sd">    generally orca__orca_deriv_level and orca__orca_calc_level,</span>
+<span class="sd">    are set to complain if contradicted (&#39;clobber&#39; set to True), other</span>
+<span class="sd">    &#39;recommended&#39; settings, can be countermanded by keywords in input file</span>
+<span class="sd">    (&#39;clobber&#39; set to False). Occasionally, we want these pieces to actually</span>
+<span class="sd">    overcome keywords in input file (&#39;superclobber&#39; set to True).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">lowername</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">dertype</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_RUNTYP&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ENERGY&#39;</span>
+    <span class="k">elif</span> <span class="n">dertype</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_RUNTYP&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ENGRAD&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Requested Orca dertype {} is not available.&quot;</span>
+                              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dertype</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;orca-b3lyp&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_FUNCTIONAL&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;B3LYP_G&#39;</span>
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;orca-mp2&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_CALC_LEVEL&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;MP2&#39;</span>
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;orca-ccsd&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_CALC_LEVEL&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;CCSD&#39;</span>
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;orca-ccsd(t)&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_CALC_LEVEL&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;CCSD(T)&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Requested Orca computational methods {} is not &quot;</span>
+                              <span class="s2">&quot;available.&quot;</span> <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lowername</span><span class="p">))</span>
+
+    <span class="c1"># Set clobbering</span>
+    <span class="k">if</span> <span class="s1">&#39;ORCA_RUNTYP&#39;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">]:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_RUNTYP&#39;</span><span class="p">][</span><span class="s1">&#39;clobber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_RUNTYP&#39;</span><span class="p">][</span><span class="s1">&#39;superclobber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="s1">&#39;ORCA_FUNCTIONAL&#39;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">]:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_FUNCTIONAL&#39;</span><span class="p">][</span><span class="s1">&#39;clobber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;ORCA&#39;</span><span class="p">][</span><span class="s1">&#39;ORCA_FUNCTIONAL&#39;</span><span class="p">][</span><span class="s1">&#39;superclobber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">options</span></div>
+
+
+<div class="viewcode-block" id="orca_list"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.orca_list">[docs]</a><span class="k">def</span> <span class="nf">orca_list</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return an array of Orca methods with energies. Appended</span>
+<span class="sd">    to procedures[&#39;energy&#39;].</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;orca&#39;</span><span class="p">)</span>
+    <span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;orca-b3lyp&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="orca_gradient_list"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.orca_gradient_list">[docs]</a><span class="k">def</span> <span class="nf">orca_gradient_list</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return an array of Orca methods with analytical gradients.</span>
+<span class="sd">    Appended to procedures[&#39;gradient&#39;].</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;oc-b3lyp&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="harvest_molecule_from_outfile"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.harvest_molecule_from_outfile">[docs]</a><span class="k">def</span> <span class="nf">harvest_molecule_from_outfile</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a molecule of the last geometry&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Sample molecule block&quot;&quot;&quot;</span>
+    <span class="c1">#----------------------------</span>
+    <span class="c1">#CARTESIAN COORDINATES (A.U.)</span>
+    <span class="c1">#----------------------------</span>
+    <span class="c1">#  NO LB      ZA    FRAG    MASS        X           Y           Z</span>
+    <span class="c1">#   0 O     8.0000    0    15.999         -0.043407801307192         -0.055556028344352          0.000000000000000</span>
+    <span class="c1">#   1 H     1.0000    0     1.008          1.780497256508764         -0.017018089151928          0.000000000000000</span>
+    <span class="c1">#   2 H     1.0000    0     1.008         -0.462170608038134          1.719154625261312          0.000000000000000</span>
+    <span class="c1">#</span>
+
+    <span class="n">geom_start</span> <span class="o">=</span> <span class="n">find_start</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="s1">&#39;CARTESIAN COORDINATES (A.U.)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">geom_start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Molecule</span><span class="p">()</span>
+
+    <span class="c1"># Geometry starts 3 lines after header and ends with a blank line</span>
+    <span class="n">geom_start</span> <span class="o">+=</span> <span class="mi">3</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">mol_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">geom_start</span><span class="p">:],</span> <span class="n">start</span><span class="o">=</span><span class="n">geom_start</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">num</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">frag</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">mol_str</span> <span class="o">+=</span> <span class="s1">&#39;{} {} {} {}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">mol_str</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="harvest_scf_from_outfile"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.harvest_scf_from_outfile">[docs]</a><span class="k">def</span> <span class="nf">harvest_scf_from_outfile</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">psivar</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Harvest SCF results from the SCF section of the output file&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Sample SCF results block&quot;&quot;&quot;</span>
+    <span class="c1">#----------------</span>
+    <span class="c1">#TOTAL SCF ENERGY</span>
+    <span class="c1">#----------------</span>
+    <span class="c1">#</span>
+    <span class="c1">#Total Energy       :          -76.02602169 Eh           -2068.77322 eV</span>
+    <span class="c1">#</span>
+    <span class="c1">#Components:</span>
+    <span class="c1">#Nuclear Repulsion  :            9.12509697 Eh             248.30651 eV</span>
+    <span class="c1">#Electronic Energy  :          -85.15111867 Eh           -2317.07974 eV</span>
+    <span class="c1">#</span>
+    <span class="c1">#One Electron Energy:         -123.01434123 Eh           -3347.39040 eV</span>
+    <span class="c1">#Two Electron Energy:           37.86322256 Eh            1030.31067 eV</span>
+    <span class="c1">#</span>
+    <span class="c1">#Virial components:</span>
+    <span class="c1">#Potential Energy   :         -151.99262033 Eh           -4135.92947 eV</span>
+    <span class="c1">#Kinetic Energy     :           75.96659864 Eh            2067.15624 eV</span>
+    <span class="c1">#Virial Ratio       :            2.00078223</span>
+    <span class="c1">#</span>
+    <span class="c1">#</span>
+
+    <span class="n">scf_start</span> <span class="o">=</span> <span class="n">find_start</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="s1">&#39;TOTAL SCF ENERGY&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scf_start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># Energies in SCF block</span>
+    <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;SCF TOTAL ENERGY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">scf_start</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;NUCLEAR REPULSION ENERGY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">scf_start</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="harvest_dipole"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.harvest_dipole">[docs]</a><span class="k">def</span> <span class="nf">harvest_dipole</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">psivar</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Harvest the dipole, and return as a tuple (x, y, z)</span>
+<span class="sd">    Multiple different dipole moments can be output if post-HF calculations are</span>
+<span class="sd">    run and their dipoles are requested resulting in highly similar blocks.</span>
+<span class="sd">    It by default collects the last which appears to always be the one requested</span>
+
+<span class="sd">    TODO: collect all the different types of dipole moments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Sample dipole moment results block&quot;&quot;&quot;</span>
+    <span class="c1">#-------------</span>
+    <span class="c1">#DIPOLE MOMENT</span>
+    <span class="c1">#-------------</span>
+    <span class="c1">#                                X             Y             Z</span>
+    <span class="c1">#Electronic contribution:     -0.11359      -0.14669      -0.00000</span>
+    <span class="c1">#Nuclear contribution   :      0.61892       0.79867       0.00000</span>
+    <span class="c1">#                        -----------------------------------------</span>
+    <span class="c1">#Total Dipole Moment    :      0.50533       0.65198      -0.00000</span>
+    <span class="c1">#                        -----------------------------------------</span>
+    <span class="c1">#Magnitude (a.u.)       :      0.82489</span>
+    <span class="c1">#Magnitude (Debye)      :      2.09670</span>
+    <span class="c1">#</span>
+    <span class="c1">#</span>
+
+    <span class="n">dipole_start</span> <span class="o">=</span> <span class="n">find_start</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="s1">&#39;DIPOLE MOMENT&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dipole_start</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Dipole x, y, z are the last items 6 lines down in the dipole block</span>
+        <span class="n">dipole_str_list</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">dipole_start</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="c1"># Convert the dipole to debye</span>
+        <span class="n">dipole</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">psi_dipmom_au2debye</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dipole_str_list</span><span class="p">]</span>
+        <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;CURRENT DIPOLE X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dipole</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;CURRENT DIPOLE Y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dipole</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;CURRENT DIPOLE Z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dipole</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># Dipole magnitude is 8 line down in the dipole block</span>
+        <span class="n">magnitude</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">dipole_start</span> <span class="o">+</span> <span class="mi">8</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="harvest_mp2"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.harvest_mp2">[docs]</a><span class="k">def</span> <span class="nf">harvest_mp2</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">psivar</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Harvest the MP2 results&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Sample MP2 energy line (works for both MP2 and RI-MP2)&quot;&quot;&quot;</span>
+    <span class="c1">#---------------------------------------</span>
+    <span class="c1">#MP2 TOTAL ENERGY:      -76.226803665 Eh</span>
+    <span class="c1">#---------------------------------------</span>
+
+    <span class="sd">&quot;&quot;&quot;Sample MP2 correlation energy line (yes there is a space)&quot;&quot;&quot;</span>
+    <span class="c1">#-----------------------------------------------</span>
+    <span class="c1"># MP2 CORRELATION ENERGY   :     -0.125436532 Eh</span>
+    <span class="c1">#-----------------------------------------------</span>
+
+    <span class="sd">&quot;&quot;&quot;Sample RI-MP2 Correlation energy line (yes there is a space)&quot;&quot;&quot;</span>
+    <span class="c1">#-----------------------------------------------</span>
+    <span class="c1"># RI-MP2 CORRELATION ENERGY:     -0.125496692 Eh</span>
+    <span class="c1">#-----------------------------------------------</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">16</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;MP2 TOTAL ENERGY&#39;</span><span class="p">:</span>
+            <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;MP2 TOTAL ENERGY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">break</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">23</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39; MP2 CORRELATION ENERGY&#39;</span> <span class="ow">or</span>\
+                <span class="n">line</span><span class="p">[:</span><span class="mi">26</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39; RI-MP2 CORRELATION ENERGY&#39;</span><span class="p">:</span>
+            <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;MP2 CORRELATION ENERGY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">break</span></div>
+
+
+<div class="viewcode-block" id="harvest_coupled_cluster"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.harvest_coupled_cluster">[docs]</a><span class="k">def</span> <span class="nf">harvest_coupled_cluster</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">psivar</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Harvest coupled cluster results</span>
+<span class="sd">    WARNING: Canonical and DLPNO print the coupled cluster results differently</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Sample (canonical) CCSD results block&quot;&quot;&quot;</span>
+    <span class="c1">#----------------------</span>
+    <span class="c1">#COUPLED CLUSTER ENERGY</span>
+    <span class="c1">#----------------------</span>
+    <span class="c1">#</span>
+    <span class="c1">#E(0)                                       ...    -76.063720080</span>
+    <span class="c1">#E(CORR)                                    ...     -0.288938791</span>
+    <span class="c1">#E(TOT)                                     ...    -76.352658871</span>
+    <span class="c1">#Singles Norm &lt;S|S&gt;**1/2                    ...      0.021106262</span>
+    <span class="c1">#T1 diagnostic                              ...      0.007462191</span>
+    <span class="c1">#</span>
+
+    <span class="sd">&quot;&quot;&quot;Sample DLPNO coupled cluster block (CCSD)&quot;&quot;&quot;</span>
+    <span class="c1">#----------------------</span>
+    <span class="c1">#COUPLED CLUSTER ENERGY</span>
+    <span class="c1">#----------------------</span>
+    <span class="c1">#</span>
+    <span class="c1">#E(0)                                       ...    -76.026019996</span>
+    <span class="c1">#E(CORR)(strong-pairs)                      ...     -0.211953159</span>
+    <span class="c1">#E(CORR)(weak-pairs)                        ...     -0.000007244</span>
+    <span class="c1">#E(CORR)(corrected)                         ...     -0.211960403</span>
+    <span class="c1">#E(TOT)                                     ...    -76.237980399</span>
+    <span class="c1">#Singles Norm &lt;S|S&gt;**1/2                    ...      0.014443573</span>
+    <span class="c1">#T1 diagnostic                              ...      0.005106574</span>
+    <span class="c1">#</span>
+
+    <span class="sd">&quot;&quot;&quot;Sample CCSD(T) block (same for DLPNO and canonical)&quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1">#Triples Correction (T)                     ...     -0.001544381</span>
+    <span class="c1">#Final correlation energy                   ...     -0.134770265</span>
+    <span class="c1">#E(CCSD)                                    ...    -75.709548429</span>
+    <span class="c1">#E(CCSD(T))                                 ...    -75.711092810</span>
+    <span class="c1">#</span>
+
+    <span class="n">cc_start</span> <span class="o">=</span> <span class="n">find_start</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="s1">&#39;COUPLED CLUSTER ENERGY&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cc_start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1">#psivar[&quot;CC REFERENCE&quot;] = float(lines[cc_start + 3].split()[-1])</span>
+
+    <span class="c1"># CCSD energy block is less than 20 lines</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">cc_start</span><span class="p">:</span><span class="n">cc_start</span> <span class="o">+</span> <span class="mi">20</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="n">cc_start</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;E(TOT)&quot;</span><span class="p">:</span>
+            <span class="n">psivar</span><span class="p">[</span><span class="s2">&quot;CCSD TOTAL ENERGY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">psivar</span><span class="p">[</span><span class="s2">&quot;CCSD CORRELATION ENERGY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1">#psivar[&quot;SINGLES NORM&quot;] = lines[i+1].split()[-1]</span>
+            <span class="c1">#psivar[&quot;T1 DIAGNOSTIC&quot;] = lines[i+2].split()[-1]</span>
+            <span class="k">break</span>
+
+    <span class="c1"># CCSD(T) energy block</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">cc_start</span><span class="p">:],</span> <span class="n">start</span><span class="o">=</span><span class="n">cc_start</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">22</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Triples Correction (T)&quot;</span><span class="p">:</span>
+            <span class="c1">#psivar[&quot;TRIPLES CORRELATION ENERGY&quot;] = line.split()[-1]</span>
+            <span class="n">psivar</span><span class="p">[</span><span class="s2">&quot;CCSD(T) CORRELATION ENERGY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">psivar</span><span class="p">[</span><span class="s2">&quot;CCSD TOTAL ENERGY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">psivar</span><span class="p">[</span><span class="s2">&quot;CCSD(T) TOTAL ENERGY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">break</span></div>
+
+
+<div class="viewcode-block" id="harvest_engrad"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.harvest_engrad">[docs]</a><span class="k">def</span> <span class="nf">harvest_engrad</span><span class="p">(</span><span class="n">engrad</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse the engrad file for the gradient&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">engrad</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">num_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">13</span> <span class="o">+</span> <span class="n">num_atoms</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="n">grad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">])))</span>
+    <span class="k">return</span> <span class="n">grad</span></div>
+
+
+<div class="viewcode-block" id="find_start"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.orca.find_start">[docs]</a><span class="k">def</span> <span class="nf">find_start</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_str</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find the start of a block, iterate backwards by default,</span>
+<span class="sd">    Usually the last one is wanted</span>
+<span class="sd">    If not found, return -1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="c1"># Iterate backwards until the last value is found</span>
+    <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">))):</span>
+            <span class="k">if</span> <span class="n">start_str</span> <span class="o">==</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">i</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">start_str</span> <span class="o">==</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">start</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

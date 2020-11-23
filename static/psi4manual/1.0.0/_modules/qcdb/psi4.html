@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.psi4 &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.psi4</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1">#@BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># PSI4: an ab initio quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1">#@END LICENSE</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">qcformat</span>
+<span class="c1">#import molpro_basissets</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">options</span>
+<span class="kn">from</span> <span class="nn">.pdict</span> <span class="kn">import</span> <span class="n">PreservingDict</span>
+<span class="kn">from</span> <span class="nn">.psivarrosetta</span> <span class="kn">import</span> <span class="n">useme2psivar</span>
+
+
+<div class="viewcode-block" id="harvest_output"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psi4.harvest_output">[docs]</a><span class="k">def</span> <span class="nf">harvest_output</span><span class="p">(</span><span class="n">outtext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to separate portions of a Psi4 output file *outtext*.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">psivar</span> <span class="o">=</span> <span class="n">PreservingDict</span><span class="p">()</span>
+    <span class="n">psivar_coord</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">psivar_grad</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">NUMBER</span> <span class="o">=</span> <span class="s2">&quot;((?:[-+]?</span><span class="se">\\</span><span class="s2">d*</span><span class="se">\\</span><span class="s2">.</span><span class="se">\\</span><span class="s2">d+(?:[DdEe][-+]?</span><span class="se">\\</span><span class="s2">d+)?)|(?:[-+]?</span><span class="se">\\</span><span class="s2">d+</span><span class="se">\\</span><span class="s2">.</span><span class="se">\\</span><span class="s2">d*(?:[DdEe][-+]?</span><span class="se">\\</span><span class="s2">d+)?))&quot;</span>
+
+    <span class="c1"># Process SAPT</span>
+    <span class="n">mobj</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+        <span class="s1">r&#39;^\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;SAPT Results&#39;</span> <span class="o">+</span> <span class="s1">r&#39;\s*&#39;</span> <span class="o">+</span> 
+        <span class="s1">r&#39;^\s*(?:-+)\s*&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;^\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;Electrostatics&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;(?:.*?)&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;^\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;Exchange&#39;</span> <span class="o">+</span> 
+        <span class="s1">r&#39;(?:.*?)&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;^\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;Induction&#39;</span> <span class="o">+</span> 
+        <span class="s1">r&#39;(?:.*?)&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;^\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;Dispersion&#39;</span> <span class="o">+</span> 
+        <span class="s1">r&#39;(?:.*?)&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;^\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;Total&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;(?:.*?)&#39;</span> <span class="o">+</span> 
+        <span class="s1">r&#39;^(?:\s*?)$&#39;</span><span class="p">,</span>
+        <span class="n">outtext</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mobj</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;matched sapt&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pv</span> <span class="ow">in</span> <span class="n">mobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+            <span class="n">submobj</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">r&#39;^\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;(.+?)&#39;</span> <span class="o">+</span> <span class="s1">r&#39;\s+&#39;</span> <span class="o">+</span> 
+                <span class="n">NUMBER</span> <span class="o">+</span> <span class="s1">r&#39;\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;[mEh]&#39;</span> <span class="o">+</span> <span class="s1">r&#39;\s+&#39;</span> <span class="o">+</span>
+                <span class="n">NUMBER</span> <span class="o">+</span> <span class="s1">r&#39;\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;[kcal/mol]&#39;</span> <span class="o">+</span> <span class="s1">r&#39;\s*$&#39;</span><span class="p">,</span> <span class="n">pv</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">submobj</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">submobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+                    <span class="n">useme</span> <span class="o">=</span> <span class="n">useme2psivar</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="c1">#print &#39;%30s&#39; % (&#39;&#39;),</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1">#print &#39;%30s&#39; % (useme),</span>
+                    <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">useme</span><span class="p">)]</span> <span class="o">=</span> <span class="n">submobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="c1">#print &#39;*&#39;, submobj.group(1), submobj.group(2), submobj.group(3)</span>
+
+    <span class="c1"># Process PsiVariables</span>
+    <span class="n">mobj</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">r&#39;^(?:  Variable Map:)\s*&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;^\s*(?:-+)\s*&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;^(.*?)&#39;</span> <span class="o">+</span>
+        <span class="s1">r&#39;^(?:\s*?)$&#39;</span><span class="p">,</span>
+        <span class="n">outtext</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mobj</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">pv</span> <span class="ow">in</span> <span class="n">mobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+            <span class="n">submobj</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">r&#39;^\s+&#39;</span> <span class="o">+</span> <span class="s1">r&#39;&quot;(.+?)&quot;&#39;</span> <span class="o">+</span> <span class="s1">r&#39;\s+=&gt;\s+&#39;</span> <span class="o">+</span> <span class="n">NUMBER</span> <span class="o">+</span> <span class="s1">r&#39;\s*$&#39;</span><span class="p">,</span> <span class="n">pv</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">submobj</span><span class="p">:</span>
+                <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">submobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))]</span> <span class="o">=</span> <span class="n">submobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Process Completion</span>
+    <span class="n">mobj</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">r&#39;Psi4 exiting successfully. Buy a developer a beer!&#39;</span><span class="p">,</span>
+        <span class="n">outtext</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mobj</span><span class="p">:</span>
+        <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;SUCCESS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">return</span> <span class="n">psivar</span><span class="p">,</span> <span class="n">psivar_coord</span><span class="p">,</span> <span class="n">psivar_grad</span></div>
+
+
+<div class="viewcode-block" id="Infile"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psi4.Infile">[docs]</a><span class="k">class</span> <span class="nc">Infile</span><span class="p">(</span><span class="n">qcformat</span><span class="o">.</span><span class="n">InputFormat2</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mem</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">mtd</span><span class="p">,</span> <span class="n">der</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+        <span class="n">qcformat</span><span class="o">.</span><span class="n">InputFormat2</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mem</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">mtd</span><span class="p">,</span> <span class="n">der</span><span class="p">,</span> <span class="n">opt</span><span class="p">)</span>
+
+        <span class="c1">#print self.method, self.molecule.nactive_fragments()</span>
+        <span class="k">if</span> <span class="s1">&#39;sapt&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">nactive_fragments</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FragmentCountError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Requested molecule has </span><span class="si">%d</span><span class="s2">, not 2, fragments.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">nactive_fragments</span><span class="p">()))</span>
+
+<span class="c1">#        # memory in MB --&gt; MW</span>
+<span class="c1">#        self.memory = int(math.ceil(mem / 8.0))</span>
+<span class="c1">#        # auxiliary basis sets</span>
+<span class="c1">#        [self.unaugbasis, self.augbasis, self.auxbasis] = self.corresponding_aux_basis()</span>
+
+<div class="viewcode-block" id="Infile.format_infile_string"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psi4.Infile.format_infile_string">[docs]</a>    <span class="k">def</span> <span class="nf">format_infile_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Handle memory and comment</span>
+        <span class="n">memcmd</span><span class="p">,</span> <span class="n">memkw</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;# </span><span class="si">%s</span><span class="se">\n\n</span><span class="s2">memory </span><span class="si">%d</span><span class="s2"> mb</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">tagline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">),</span> <span class="p">{}</span>
+
+        <span class="c1"># Handle molecule and basis set</span>
+        <span class="n">molcmd</span><span class="p">,</span> <span class="n">molkw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">format_molecule_for_psi4</span><span class="p">(),</span> <span class="p">{}</span>
+
+        <span class="c1"># format global convergence directions</span>
+<span class="c1">#        text += self.format_global_parameters()</span>
+        <span class="n">_cdscmd</span><span class="p">,</span> <span class="n">cdskw</span> <span class="o">=</span> <span class="n">muster_cdsgroup_options</span><span class="p">()</span>
+
+        <span class="c1"># Handle calc type and quantum chemical method</span>
+        <span class="n">mdccmd</span><span class="p">,</span> <span class="n">mdckw</span> <span class="o">=</span> <span class="n">procedures</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dertype</span><span class="p">)</span>
+
+<span class="c1">#        # format options</span>
+<span class="c1">#        optcmd = qcdb.options.prepare_options_for_psi4(mdckw)</span>
+
+<span class="c1"># make options from imdb only user options (currently non-existent). set basis and castup from here.</span>
+        <span class="c1"># Handle driver vs input/default keyword reconciliation</span>
+        <span class="n">userkw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span>
+<span class="c1">#        userkw = p4util.prepare_options_for_modules()</span>
+        <span class="c1">#userkw = qcdb.options.reconcile_options(userkw, memkw)</span>
+        <span class="c1">#userkw = qcdb.options.reconcile_options(userkw, molkw)</span>
+        <span class="c1">#userkw = qcdb.options.reconcile_options(userkw, baskw)</span>
+        <span class="c1">#userkw = qcdb.options.reconcile_options(userkw, psikw)</span>
+        <span class="n">userkw</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">reconcile_options2</span><span class="p">(</span><span class="n">userkw</span><span class="p">,</span> <span class="n">cdskw</span><span class="p">)</span>
+        <span class="n">userkw</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">reconcile_options2</span><span class="p">(</span><span class="n">userkw</span><span class="p">,</span> <span class="n">mdckw</span><span class="p">)</span>
+
+        <span class="c1"># Handle conversion of psi4 keyword structure into cfour format</span>
+        <span class="n">optcmd</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">prepare_options_for_psi4</span><span class="p">(</span><span class="n">userkw</span><span class="p">)</span>
+
+        <span class="c1"># Handle text to be passed untouched to psi4</span>
+        <span class="n">litcmd</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\n</span><span class="s2">print_variables()</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+        <span class="c1"># Assemble infile pieces</span>
+        <span class="k">return</span> <span class="n">memcmd</span> <span class="o">+</span> <span class="n">molcmd</span> <span class="o">+</span> <span class="n">optcmd</span> <span class="o">+</span> <span class="n">mdccmd</span> <span class="o">+</span> <span class="n">litcmd</span></div></div>
+
+<span class="c1">#&#39;hf&#39;</span>
+<span class="c1">#&#39;df-hf&#39;</span>
+<span class="c1">#&#39;b3lyp&#39;</span>
+<span class="c1">#&#39;blyp&#39;</span>
+<span class="c1">#&#39;bp86&#39;</span>
+<span class="c1">#&#39;fno-ccsd(t)&#39;</span>
+<span class="c1">#&#39;df-ccsd(t)&#39;</span>
+<span class="c1">#&#39;fno-df-ccsd(t)&#39;</span>
+<span class="c1">#&#39;df-b97-d&#39;</span>
+<span class="c1">#&#39;df-b97-d3&#39;</span>
+<span class="c1">#&#39;pbe0-2&#39;</span>
+<span class="c1">#&#39;dsd-pbep86&#39;</span>
+<span class="c1">#&#39;wb97x-2&#39;</span>
+<span class="c1">#&#39;DLdf+d&#39;</span>
+<span class="c1">#&#39;DLdf+d09&#39;</span>
+<span class="c1">#&#39;df-b3lyp&#39;</span>
+<span class="c1">#&#39;df-b3lyp-d&#39;</span>
+<span class="c1">#&#39;df-b3lyp-d3&#39;</span>
+<span class="c1">#&#39;df-wb97x-d&#39;</span>
+
+
+<div class="viewcode-block" id="muster_cdsgroup_options"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psi4.muster_cdsgroup_options">[docs]</a><span class="k">def</span> <span class="nf">muster_cdsgroup_options</span><span class="p">():</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">))</span>
+    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;E_CONVERGENCE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;GUESS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;sad&#39;</span>
+    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;MAXITER&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+
+    <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">options</span></div>
+
+
+<div class="viewcode-block" id="muster_modelchem"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psi4.muster_modelchem">[docs]</a><span class="k">def</span> <span class="nf">muster_modelchem</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dertype</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform calculation method *name* and derivative level *dertype*</span>
+<span class="sd">    into options for cfour. While deliberately requested pieces,</span>
+<span class="sd">    generally |cfour__cfour_deriv_level| and |cfour__cfour_calc_level|,</span>
+<span class="sd">    are set to complain if contradicted (&#39;clobber&#39; set to True), other</span>
+<span class="sd">    &#39;recommended&#39; settings, like |cfour__cfour_cc_program|, can be</span>
+<span class="sd">    countermanded by keywords in input file (&#39;clobber&#39; set to False).</span>
+<span class="sd">    Occasionally, want these pieces to actually overcome keywords in</span>
+<span class="sd">    input file (&#39;superclobber&#39; set to True).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">lowername</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">dertype</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;energy(&#39;&quot;&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Requested Psi4 dertype </span><span class="si">%d</span><span class="s2"> is not available.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dertype</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;mp2&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;direct&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;MP2&#39;</span><span class="p">][</span><span class="s1">&#39;MP2_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;conv&#39;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;mp2&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;df-mp2&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;MP2&#39;</span><span class="p">][</span><span class="s1">&#39;MP2_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;mp2&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;sapt0&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;sapt0&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;sapt2+&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_T2&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_T3&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_V4&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;OCC_TOLERANCE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0e-6</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;sapt2+&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;sapt2+(3)&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_T2&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_T3&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_V4&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;OCC_TOLERANCE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0e-6</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;sapt2+(3)&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;sapt2+3(ccd)&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_T2&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_T3&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS_V4&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;OCC_TOLERANCE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0e-6</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SAPT&#39;</span><span class="p">][</span><span class="s1">&#39;DO_MBPT_DISP&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;sapt2+3(ccd)&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;df-b97-d3&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_SPHERICAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">302</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_RADIAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;b97-d3&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;df-wb97x-d&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_SPHERICAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">302</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_RADIAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;wb97x-d&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;df-b3lyp-d3&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_SPHERICAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">302</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_RADIAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;b3lyp-d3&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;dfdf-b2plyp-d3&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;DFMP2&#39;</span><span class="p">][</span><span class="s1">&#39;MP2_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_SPHERICAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">302</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_RADIAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;b2plyp-d3&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;df-wpbe&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_SPHERICAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">302</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_RADIAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;wpbe&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;ccsd-polarizability&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;property(&#39;ccsd&#39;, properties=[&#39;polarizability&#39;])</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;mrccsdt(q)&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pk&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;GLOBALS&#39;</span><span class="p">][</span><span class="s1">&#39;NAT_ORBS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>  <span class="c1"># needed by mrcc but not recognized by mrcc</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;FNOCC&#39;</span><span class="p">][</span><span class="s1">&#39;OCC_TOLERANCE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;mrccsdt(q)&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;c4-ccsdt(q)&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;CFOUR&#39;</span><span class="p">][</span><span class="s1">&#39;CFOUR_SCF_CONV&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">11</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;CFOUR&#39;</span><span class="p">][</span><span class="s1">&#39;CFOUR_CC_CONV&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;CFOUR&#39;</span><span class="p">][</span><span class="s1">&#39;CFOUR_FROZEN_CORE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;c4-ccsdt(q)&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">elif</span> <span class="n">lowername</span> <span class="o">==</span> <span class="s1">&#39;df-m05-2x&#39;</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;df&#39;</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_SPHERICAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">302</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">][</span><span class="s1">&#39;DFT_RADIAL_POINTS&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;m05-2x&#39;)</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Requested Psi4 computational methods </span><span class="si">%d</span><span class="s2"> is not available.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lowername</span><span class="p">))</span>
+
+<span class="c1">#    # Set clobbering</span>
+<span class="c1">#    if &#39;CFOUR_DERIV_LEVEL&#39; in options[&#39;CFOUR&#39;]:</span>
+<span class="c1">#        options[&#39;CFOUR&#39;][&#39;CFOUR_DERIV_LEVEL&#39;][&#39;clobber&#39;] = True</span>
+<span class="c1">#        options[&#39;CFOUR&#39;][&#39;CFOUR_DERIV_LEVEL&#39;][&#39;superclobber&#39;] = True</span>
+<span class="c1">#    if &#39;CFOUR_CALC_LEVEL&#39; in options[&#39;CFOUR&#39;]:</span>
+<span class="c1">#        options[&#39;CFOUR&#39;][&#39;CFOUR_CALC_LEVEL&#39;][&#39;clobber&#39;] = True</span>
+<span class="c1">#        options[&#39;CFOUR&#39;][&#39;CFOUR_CALC_LEVEL&#39;][&#39;superclobber&#39;] = True</span>
+<span class="c1">#    if &#39;CFOUR_CC_PROGRAM&#39; in options[&#39;CFOUR&#39;]:</span>
+<span class="c1">#        options[&#39;CFOUR&#39;][&#39;CFOUR_CC_PROGRAM&#39;][&#39;clobber&#39;] = False</span>
+
+    <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">options</span></div>
+
+<span class="n">procedures</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;df-b97-d3&#39;</span>     <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;df-wb97x-d&#39;</span>    <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;df-b3lyp-d3&#39;</span>   <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;mp2&#39;</span>           <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;df-mp2&#39;</span>        <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;sapt0&#39;</span>         <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;sapt2+&#39;</span>        <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;sapt2+(3)&#39;</span>     <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;sapt2+3(ccd)&#39;</span>  <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;mrccsdt(q)&#39;</span>    <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;c4-ccsdt(q)&#39;</span>   <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;ccsd-polarizability&#39;</span> <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;dfdf-b2plyp-d3&#39;</span><span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;df-wpbe&#39;</span>       <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+        <span class="s1">&#39;df-m05-2x&#39;</span>     <span class="p">:</span> <span class="n">muster_modelchem</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">qcmtdIN</span> <span class="o">=</span> <span class="n">procedures</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="psi4_list"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.psi4.psi4_list">[docs]</a><span class="k">def</span> <span class="nf">psi4_list</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return an array of Psi4 methods with energies.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">procedures</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

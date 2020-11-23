@@ -1,0 +1,173 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Complete Basis Set" href="cbs.html" />
+    <link rel="next" title="Spectroscopic Constants for Diatomics" href="diatomic.html" />
+    <link rel="prev" title="Complete Basis Set" href="cbs.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="diatomic.html" title="Spectroscopic Constants for Diatomics"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cbs.html" title="Complete Basis Set"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="cbs.html" accesskey="U">Complete Basis Set</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="math" id="eq-cbs">
+<span id="index-0"></span><p><img src="_images/math/dc7ee176476c1c8c6385cb631ef6f6b64aae76e0.png" alt="E_{total}^{\text{CBS}} = \mathcal{F}_{\textbf{scf\_scheme}} \left(E_{total,\; \text{SCF}}^{\textbf{scf\_basis}}\right) \; + \mathcal{F}_{\textbf{corl\_scheme}} \left(E_{corl,\; \textbf{corl\_wfn}}^{\textbf{corl\_basis}}\right) \; + \delta_{\textbf{delta\_wfn\_lesser}}^{\textbf{delta\_wfn}} \; + \delta_{\textbf{delta2\_wfn\_lesser}}^{\textbf{delta2\_wfn}} \; + \delta_{\textbf{delta3\_wfn\_lesser}}^{\textbf{delta3\_wfn}} \; + \delta_{\textbf{delta4\_wfn\_lesser}}^{\textbf{delta4\_wfn}} \; + \delta_{\textbf{delta5\_wfn\_lesser}}^{\textbf{delta5\_wfn}}"/></p>
+</div><p>Here, <img class="math" src="_images/math/3c228c67510f108dd0f92d4397f191d7ce8f3efb.png" alt="\mathcal{F}" style="vertical-align: 0px"/> is an energy or energy extrapolation scheme, and the following also hold.</p>
+<div class="math">
+<p><img src="_images/math/6b2ca9dfbf16ba4eda063af2348a3adf84c0dd3d.png" alt="\delta_{\textbf{delta\_wfn\_lesser}}^{\textbf{delta\_wfn}} \; = \mathcal{F}_{\textbf{delta\_scheme}} \left(E_{corl,\; \textbf{delta\_wfn}}^{\textbf{delta\_basis}}\right) - \mathcal{F}_{\textbf{delta\_scheme}} \left(E_{corl,\; \textbf{delta\_wfn\_lesser}}^{\textbf{delta\_basis}}\right)"/></p>
+</div><div class="math">
+<p><img src="_images/math/3837e23ed5ce3bd999509b93f4867fb46ce7aa29.png" alt="\delta_{\textbf{delta2\_wfn\_lesser}}^{\textbf{delta2\_wfn}} \; = \mathcal{F}_{\textbf{delta2\_scheme}} \left(E_{corl,\; \textbf{delta2\_wfn}}^{\textbf{delta2\_basis}}\right) - \mathcal{F}_{\textbf{delta2\_scheme}} \left(E_{corl,\; \textbf{delta2\_wfn\_lesser}}^{\textbf{delta2\_basis}}\right)"/></p>
+</div><div class="math">
+<p><img src="_images/math/c5440087c569bae9bdc5949ca32ba2398f4768be.png" alt="\delta_{\textbf{delta3\_wfn\_lesser}}^{\textbf{delta3\_wfn}} \; = \mathcal{F}_{\textbf{delta3\_scheme}} \left(E_{corl,\; \textbf{delta3\_wfn}}^{\textbf{delta3\_basis}}\right) - \mathcal{F}_{\textbf{delta3\_scheme}} \left(E_{corl,\; \textbf{delta3\_wfn\_lesser}}^{\textbf{delta3\_basis}}\right)"/></p>
+</div><div class="math">
+<p><img src="_images/math/2423fe70b570255cf9cee22cbdc07216beab2ade.png" alt="\delta_{\textbf{delta4\_wfn\_lesser}}^{\textbf{delta4\_wfn}} \; = \mathcal{F}_{\textbf{delta4\_scheme}} \left(E_{corl,\; \textbf{delta4\_wfn}}^{\textbf{delta4\_basis}}\right) - \mathcal{F}_{\textbf{delta4\_scheme}} \left(E_{corl,\; \textbf{delta4\_wfn\_lesser}}^{\textbf{delta4\_basis}}\right)"/></p>
+</div><div class="math">
+<p><img src="_images/math/a6f4954a2fb25afcea4b5145dc509e88ea01d38d.png" alt="\delta_{\textbf{delta5\_wfn\_lesser}}^{\textbf{delta5\_wfn}} \; = \mathcal{F}_{\textbf{delta5\_scheme}} \left(E_{corl,\; \textbf{delta5\_wfn}}^{\textbf{delta5\_basis}}\right) - \mathcal{F}_{\textbf{delta5\_scheme}} \left(E_{corl,\; \textbf{delta5\_wfn\_lesser}}^{\textbf{delta5\_basis}}\right)"/></p>
+</div><p>A translation of this ungainly equation to example [5] below is as
+follows. In words, this is a double- and triple-zeta 2-point
+Helgaker-extrapolated CCSD(T) coupled-cluster correlation correction
+appended to a triple- and quadruple-zeta 2-point
+Helgaker-extrapolated MP2 correlation energy appended to a SCF/aug-cc-pVQZ
+reference energy.</p>
+<div class="math">
+<p><img src="_images/math/c1de2370061ad81a169fe0782c7c805cc6ae5b33.png" alt="E_{total}^{\text{CBS}} = \mathcal{F}_{\text{highest\_1}} \left(E_{total,\; \text{SCF}}^{\text{aug-cc-pVQZ}}\right) \; + \mathcal{F}_{\text{corl\_xtpl\_helgaker\_2}} \left(E_{corl,\; \text{MP2}}^{\text{aug-cc-pV[TQ]Z}}\right) \; + \delta_{\text{MP2}}^{\text{CCSD(T)}}"/></p>
+</div><div class="math">
+<p><img src="_images/math/adcf3c13919161c842f2e7ee0166527f2347b899.png" alt="\delta_{\text{MP2}}^{\text{CCSD(T)}} \; = \mathcal{F}_{\text{corl\_xtpl\_helgaker\_2}} \left(E_{corl,\; \text{CCSD(T)}}^{\text{aug-cc-pV[DT]Z}}\right) - \mathcal{F}_{\text{corl\_xtpl\_helgaker\_2}} \left(E_{corl,\; \text{MP2}}^{\text{aug-cc-pV[DT]Z}}\right)"/></p>
+</div><style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cbs.html"
+                        title="previous chapter">Complete Basis Set</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="diatomic.html"
+                        title="next chapter">Spectroscopic Constants for Diatomics</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cbs_eqn.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="diatomic.html" title="Spectroscopic Constants for Diatomics"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cbs.html" title="Complete Basis Set"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="cbs.html" >Complete Basis Set</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

@@ -1,0 +1,524 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>psi4.driver.molutil</title>
+    
+    <link rel="stylesheet" href="../../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'add49b9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../_static/cloud.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/molutil.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.molutil</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2017 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;Module with utility functions that act on molecule objects.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">psi4</span> <span class="k">import</span> <span class="n">core</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.p4util</span> <span class="k">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">filter_comments</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.inputparser</span> <span class="k">import</span> <span class="n">process_pubchem_command</span><span class="p">,</span> <span class="n">pubchemre</span>
+
+
+<div class="viewcode-block" id="extract_clusters"><a class="viewcode-back" href="../../../api/psi4.driver.extract_clusters.html#psi4.core.extract_clusters">[docs]</a><span class="k">def</span> <span class="nf">extract_clusters</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">ghost</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cluster_size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return all subclusters of the molecule *mol* of</span>
+<span class="sd">    real size *cluster_size* and all other atoms ghosted if *ghost*</span>
+<span class="sd">    equals true, all other atoms discarded if *ghost* is false. If</span>
+<span class="sd">    *cluster_size* = 0, returns all possible combinations of cluster size.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># How many levels of clusters are possible?</span>
+    <span class="n">nfrag</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">nfragments</span><span class="p">()</span>
+
+    <span class="c1"># Initialize the cluster array</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># scope the arrays</span>
+    <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ghosts</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># counter</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># loop over all possible cluster sizes</span>
+    <span class="k">for</span> <span class="n">nreal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfrag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="c1"># if a specific cluster size size is requested, only do that</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nreal</span> <span class="o">!=</span> <span class="n">cluster_size</span> <span class="ow">and</span> <span class="n">cluster_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># initialize the reals list</span>
+        <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># setup first combination [3,2,1] lexical ordering</span>
+        <span class="c1"># fragments indexing is 1&#39;s based, bloody hell</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">reals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="c1"># start loop through lexical promotion</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+            <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># Generate cluster from last iteration</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ghost</span><span class="p">):</span>
+                <span class="n">ghosts</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfrag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">g</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reals</span><span class="p">):</span>
+                        <span class="n">ghosts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+                <span class="n">clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">extract_subsets</span><span class="p">(</span><span class="n">reals</span><span class="p">,</span> <span class="n">ghosts</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">extract_subsets</span><span class="p">(</span><span class="n">reals</span><span class="p">))</span>
+
+            <span class="c1"># reset rank</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># look for lexical promotion opportunity</span>
+            <span class="c1"># i.e.: [4 2 1] has a promotion opportunity at</span>
+            <span class="c1">#   index 1 to produce [4 3 1]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">reals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">!=</span> <span class="n">reals</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">rank</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># do the promotion</span>
+            <span class="n">reals</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">reals</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># demote the right portion of the register</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">reals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># boundary condition is promotion into</span>
+            <span class="c1"># [nfrag+1 nfrag-1 ...]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">reals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nfrag</span><span class="p">):</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">clusters</span></div>
+
+
+<div class="viewcode-block" id="extract_cluster_indexing"><a class="viewcode-back" href="../../../api/psi4.driver.extract_cluster_indexing.html#psi4.core.extract_cluster_indexing">[docs]</a><span class="k">def</span> <span class="nf">extract_cluster_indexing</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">cluster_size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to returns a LIST of all subclusters of the molecule *mol* of</span>
+<span class="sd">    real size *cluster_size*. If *cluster_size* = 0, returns all possible</span>
+<span class="sd">    combinations of cluster size.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">copy</span>
+
+    <span class="c1"># How many levels of clusters are possible?</span>
+    <span class="n">nfrag</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">nfragments</span><span class="p">()</span>
+
+    <span class="c1"># Initialize the cluster array</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># scope the arrays</span>
+    <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># counter</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># loop over all possible cluster sizes</span>
+    <span class="k">for</span> <span class="n">nreal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfrag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="c1"># if a specific cluster size size is requested, only do that</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nreal</span> <span class="o">!=</span> <span class="n">cluster_size</span> <span class="ow">and</span> <span class="n">cluster_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># initialize the reals list</span>
+        <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># setup first combination [3,2,1] lexical ordering</span>
+        <span class="c1"># fragments indexing is 1&#39;s based, bloody hell</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">reals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="c1"># start loop through lexical promotion</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+            <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># Generate cluster from last iteration</span>
+            <span class="n">clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">reals</span><span class="p">))</span>
+
+            <span class="c1"># reset rank</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># look for lexical promotion opportunity</span>
+            <span class="c1"># i.e.: [4 2 1] has a promotion opportunity at</span>
+            <span class="c1">#   index 1 to produce [4 3 1]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">reals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">!=</span> <span class="n">reals</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">rank</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># do the promotion</span>
+            <span class="n">reals</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">reals</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># demote the right portion of the register</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">reals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># boundary condition is promotion into</span>
+            <span class="c1"># [nfrag+1 nfrag-1 ...]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">reals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nfrag</span><span class="p">):</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">clusters</span></div>
+
+
+<div class="viewcode-block" id="molecule_set_attr"><a class="viewcode-back" href="../../../api/psi4.driver.molecule_set_attr.html#psi4.core.molecule_set_attr">[docs]</a><span class="k">def</span> <span class="nf">molecule_set_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to redefine __setattr__ method of molecule class.&quot;&quot;&quot;</span>
+    <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_variable&quot;</span><span class="p">)</span>
+    <span class="n">isvar</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">isvar</span><span class="p">:</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;set_variable&quot;</span><span class="p">)</span>
+        <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="molecule_get_attr"><a class="viewcode-back" href="../../../api/psi4.driver.molecule_get_attr.html#psi4.core.molecule_get_attr">[docs]</a><span class="k">def</span> <span class="nf">molecule_get_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to redefine __getattr__ method of molecule class.&quot;&quot;&quot;</span>
+    <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_variable&quot;</span><span class="p">)</span>
+    <span class="n">isvar</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">isvar</span><span class="p">:</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;get_variable&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BFS"><a class="viewcode-back" href="../../../api/psi4.driver.BFS.html#psi4.core.BFS">[docs]</a><span class="k">def</span> <span class="nf">BFS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform a breadth-first search (BFS) on the real atoms</span>
+<span class="sd">    in molecule, returning an array of atom indices of fragments.</span>
+<span class="sd">    Relies upon van der Waals radii and so faulty for close</span>
+<span class="sd">    (esp. hydrogen-bonded) fragments. Original code from</span>
+<span class="sd">    Michael S. Marshall.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vdW_diameter</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;H&#39;</span><span class="p">:</span>  <span class="mf">1.001</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;HE&#39;</span><span class="p">:</span> <span class="mf">1.012</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;LI&#39;</span><span class="p">:</span> <span class="mf">0.825</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;BE&#39;</span><span class="p">:</span> <span class="mf">1.408</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;B&#39;</span><span class="p">:</span>  <span class="mf">1.485</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;C&#39;</span><span class="p">:</span>  <span class="mf">1.452</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;N&#39;</span><span class="p">:</span>  <span class="mf">1.397</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;O&#39;</span><span class="p">:</span>  <span class="mf">1.342</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;F&#39;</span><span class="p">:</span>  <span class="mf">1.287</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;NE&#39;</span><span class="p">:</span> <span class="mf">1.243</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;NA&#39;</span><span class="p">:</span> <span class="mf">1.144</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;MG&#39;</span><span class="p">:</span> <span class="mf">1.364</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;AL&#39;</span><span class="p">:</span> <span class="mf">1.639</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;SI&#39;</span><span class="p">:</span> <span class="mf">1.716</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;P&#39;</span><span class="p">:</span>  <span class="mf">1.705</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;S&#39;</span><span class="p">:</span>  <span class="mf">1.683</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;CL&#39;</span><span class="p">:</span> <span class="mf">1.639</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;AR&#39;</span><span class="p">:</span> <span class="mf">1.595</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">}</span>
+
+    <span class="n">Queue</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">White</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">())</span>  <span class="c1"># untouched</span>
+    <span class="n">Black</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># touched and all edges discovered</span>
+    <span class="n">Fragment</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># stores fragments</span>
+
+    <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># starts with the first atom in the list</span>
+    <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+
+    <span class="c1"># Simply start with the first atom, do a BFS when done, go to any</span>
+    <span class="c1">#   untouched atom and start again iterate until all atoms belong</span>
+    <span class="c1">#   to a fragment group</span>
+    <span class="k">while</span> <span class="n">White</span> <span class="ow">or</span> <span class="n">Queue</span><span class="p">:</span>                <span class="c1"># Iterates to the next fragment</span>
+        <span class="n">Fragment</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+
+        <span class="k">while</span> <span class="n">Queue</span><span class="p">:</span>                     <span class="c1"># BFS within a fragment</span>
+            <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">Queue</span><span class="p">:</span>              <span class="c1"># find all white neighbors to vertex u</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">White</span><span class="p">:</span>
+                    <span class="n">dist</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                           <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span>
+                           <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span>
+                           <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">vdW_diameter</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">u</span><span class="p">)]</span> <span class="o">+</span> \
+                       <span class="n">vdW_diameter</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">i</span><span class="p">)]:</span>
+                        <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  <span class="c1"># if you find you, put in the queue</span>
+                        <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  <span class="c1"># &amp; remove it from the untouched list</span>
+            <span class="n">Queue</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>              <span class="c1"># remove focus from Queue</span>
+            <span class="n">Black</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">Fragment</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">))</span>  <span class="c1"># add to group (0-indexed)</span>
+            <span class="n">Fragment</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>          <span class="c1"># preserve original atom ordering</span>
+
+        <span class="k">if</span> <span class="n">White</span><span class="p">:</span>                        <span class="c1"># can&#39;t move White -&gt; Queue if empty</span>
+            <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">White</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">White</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">Fragment</span></div>
+
+
+<div class="viewcode-block" id="dynamic_variable_bind"><a class="viewcode-back" href="../../../api/psi4.driver.dynamic_variable_bind.html#psi4.core.dynamic_variable_bind">[docs]</a><span class="k">def</span> <span class="nf">dynamic_variable_bind</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to dynamically add extra members to</span>
+<span class="sd">    the core.Molecule class.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="fm">__setattr__</span> <span class="o">=</span> <span class="n">molecule_set_attr</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="fm">__getattr__</span> <span class="o">=</span> <span class="n">molecule_get_attr</span>
+
+    <span class="bp">cls</span><span class="o">.</span><span class="n">BFS</span> <span class="o">=</span> <span class="n">BFS</span></div>
+
+
+<span class="n">dynamic_variable_bind</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span>  <span class="c1"># pass class type, not class instance</span>
+
+
+<span class="c1">#</span>
+<span class="c1"># Define geometry to be used by PSI4.</span>
+<span class="c1"># The molecule created by this will be set in options.</span>
+<span class="c1">#</span>
+<span class="c1"># geometry(&quot;</span>
+<span class="c1">#   O  1.0 0.0 0.0</span>
+<span class="c1">#   H  0.0 1.0 0.0</span>
+<span class="c1">#   H  0.0 0.0 0.0</span>
+<span class="c1">#</span>
+<div class="viewcode-block" id="geometry"><a class="viewcode-back" href="../../../api/psi4.driver.geometry.html#psi4.core.geometry">[docs]</a><span class="k">def</span> <span class="nf">geometry</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to create a molecule object of name *name* from the</span>
+<span class="sd">    geometry in string *geom*. Permitted for user use but deprecated</span>
+<span class="sd">    in driver in favor of explicit molecule-passing. Comments within</span>
+<span class="sd">    the string are filtered.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">efp_init</span><span class="p">()</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">pubchemre</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">process_pubchem_command</span><span class="p">,</span> <span class="n">geom</span><span class="p">)</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">filter_comments</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">molecule</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">create_molecule_from_string</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">molecule</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">activate</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">molecule</span></div>
+
+
+<div class="viewcode-block" id="activate"><a class="viewcode-back" href="../../../api/psi4.driver.activate.html#psi4.core.activate">[docs]</a><span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to set molecule object *mol* as the current active molecule.</span>
+<span class="sd">    Permitted for user use but deprecated in driver in favor of explicit</span>
+<span class="sd">    molecule-passing.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">set_active_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../index.html" title="index">
+          <img class="logo" src="../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/molutil.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, The Psi4 Project.
+      Last updated on Wednesday, 17 May 2017 05:47AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

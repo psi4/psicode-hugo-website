@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Plugins: Adding New Functionality to Psi4 &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Contributions: Intro to Programming in Psi4" href="contributing.html" />
+    <link rel="next" title="Best Practices for Python Functions" href="bestpractices_py.html" />
+    <link rel="prev" title="Contributions: Intro to Programming in Psi4" href="contributing.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="bestpractices_py.html" title="Best Practices for Python Functions"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributions: Intro to Programming in Psi4"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="contributing.html" accesskey="U">Contributions: Intro to Programming in <span class="sc">Psi4</span></a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="plugins-adding-new-functionality-to-psifour">
+<span id="sec-plugins"></span><h1>Plugins: Adding New Functionality to <span class="sc">Psi4</span><a class="headerlink" href="#plugins-adding-new-functionality-to-psifour" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="modular-approach-to-development">
+<h2>Modular Approach to Development<a class="headerlink" href="#modular-approach-to-development" title="Permalink to this headline">¶</a></h2>
+<p>The redesign of <span class="sc">Psi4</span> into a single-executable changed the way that
+code development is done. The standalone nature of modules in previous
+versions of Psi made their development very easy, as new functionality
+could be implemented almost as a standalone executable, which could easily
+be ported into the Psi code when completed. The new design specifies that
+these modules are now libraries, not separate executables, which are
+linked into the main Psi executable. The single-executable design is
+conducive to code reuse, as it allows common tasks to be implemented as a
+class instead of a module; the functionality can then be easily obtained
+throughout the code by creating objects as required. Examples of this are
+the LibMints class, which provides similar functionality to the old cints
+module, and LibTrans, which replaces the old transqt code. When codes are
+wrapped in a library, they should be placed into <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/lib">psi4/src/lib</a>, and
+codes that resemble modules belong in <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/bin">psi4/src/bin</a>.</p>
+<p>The single-executable design leads to a somewhat cumbersome development
+cycle, since every time a change is made, one must compile the code,
+archive it into a library, and then re-link the code into the main
+executable. It&#8217;s also daunting to new developers if they&#8217;re required to
+learn the structure of the source tree, executable initialization code,
+and makefile systems in the existing code in order to add new features,
+which was never a problem with previous versions due to the independent
+nature of the modules. To overcome these problems, <span class="sc">Psi4</span> now has a
+useful plugin feature. This allows codes to be developed as standalone
+entities, which are compiled independently of the Psi source, but can
+still link against Psi&#8217;s vast library. The plugins can be loaded at
+run-time from any location.</p>
+</div>
+<div class="section" id="creating-a-new-plugin">
+<h2>Creating a New Plugin<a class="headerlink" href="#creating-a-new-plugin" title="Permalink to this headline">¶</a></h2>
+<p><span class="sc">Psi4</span> can create basic plugins for you and automatically tailor them
+to your compilation environment. To create a basic plugin, run the
+following while replacing <code class="docutils literal"><span class="pre">myplugin</span></code> with the name of your great code.
+If the name you provide is not valid, <span class="sc">Psi4</span> will complain.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">plugin</span> <span class="n">myplugin</span>
+</pre></div>
+</div>
+<p><span class="sc">Psi4</span> will create a new directory with the name you specify for the
+plugin. In this example, a directory named myplugin will be created.</p>
+<p>All you need to do is cd into the directory and type make. Then execute
+psi4 in the directory on the default input file.</p>
+<p><span class="sc">Psi4</span> comes with a few templates that provide an excellent starting
+point. These include code that demonstrates AO, MO, and SO integrals. Use
+one of the following commands that meets your needs:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">plugin</span> <span class="n">myplugin</span> <span class="o">+</span><span class="n">aointegrals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">plugin</span> <span class="n">myplugin</span> <span class="o">+</span><span class="n">mointegrals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">plugin</span> <span class="n">myplugin</span> <span class="o">+</span><span class="n">sointegrals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">plugin</span> <span class="n">myplugin</span> <span class="o">+</span><span class="n">wavefunction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">plugin</span> <span class="n">myplugin</span> <span class="o">+</span><span class="n">scf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">new</span><span class="o">-</span><span class="n">plugin</span> <span class="n">myplugin</span> <span class="o">+</span><span class="n">ambit</span>
+</pre></div>
+</div>
+<p>Several stable sample plugin directories are available to consult in the
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/plugins">psi4/plugins</a> directory. Other plugin directories can be used as models
+but are in active development. For documentation on plugin modules, see
+<span class="xref std std-ref">Available Plugins</span>.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/plugins/aointegrals/aointegrals.cc">psi4/plugins/aointegrals/aointegrals.cc</a>
+An example that uses the LibMints library to generate and print AO basis (no symmetry) integrals.</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/plugins/backtrans/backtrans.cc">psi4/plugins/backtrans/backtrans.cc</a>
+A test of the one- and two-particle density matrix backtransformation code.</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/plugins/mointegrals/mointegrals.cc">psi4/plugins/mointegrals/mointegrals.cc</a>
+An example that uses the LibTrans library to generate and print MO basis integrals.</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/plugins/mollerplesset2/mp2.cc">psi4/plugins/mollerplesset2/mp2.cc</a>
+A plugin that uses LibTrans to generate open- and closed-shell MP2 energies.</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/plugins/sointegrals/sointegrals.cc">psi4/plugins/sointegrals/sointegrals.cc</a>
+An example that uses the LibMints library to generate and print SO basis (with symmetry) integrals.</li>
+</ul>
+</div>
+<div class="section" id="creating-a-new-plugin-using-a-conda-pre-compiled-binary">
+<span id="sec-condaplugins"></span><h2>Creating a New Plugin Using a Conda Pre-compiled Binary<a class="headerlink" href="#creating-a-new-plugin-using-a-conda-pre-compiled-binary" title="Permalink to this headline">¶</a></h2>
+<p><span class="sc">Psi4</span> plugins can also be created using Conda for both <span class="sc">Psi4</span> binary and
+development environment.
+To compile a plugin with the default <code class="docutils literal"><span class="pre">Makefile</span></code>, it is necessary to have the
+<code class="docutils literal"><span class="pre">gcc</span></code> compiler installed in the Conda distribution or environment (below,
+<code class="docutils literal"><span class="pre">$PSI4CONDA</span></code>) used to run <span class="sc">Psi4</span>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span># prepare
+&gt;&gt;&gt; bash
+&gt;&gt;&gt; export PATH=$PSI4CONDA/bin:$PATH  # usually already done from psi4 installation
+&gt;&gt;&gt; cd &quot;$(dirname $(which psi4))&quot;/..  # move into distribution/environment directory, $PSI4CONDA
+&gt;&gt;&gt; conda install gcc                 # install compilers into expected place
+
+# check (yes, next line gives empty result. yes, LD_LIBRARY_PATH irrelevant)
+&gt;&gt;&gt; echo $PYTHONHOME $PYTHONPATH $DYLD_LIBRARY_PATH $PSIDATADIR
+
+&gt;&gt;&gt; which python psi4 gcc
+$PSI4CONDA/bin/python
+$PSI4CONDA/bin/psi4
+$PSI4CONDA/bin/gcc
+
+# create and compile plugin
+&gt;&gt;&gt; psi4 --new-plugin testplugin      # generate new plugin
+&gt;&gt;&gt; cd testplugin                     # move into plugin directory
+&gt;&gt;&gt; make                              # compile the plugin to product testplugin.so
+&gt;&gt;&gt; psi4                              # run sample input.dat
+Attention! This SCF may be density-fitted.
+</pre></div>
+</div>
+<p>Please note that the conda distribution must be in <code class="docutils literal"><span class="pre">$PATH</span></code> or the
+conda enviroment must be activated before compilation and execution of
+plugins created using this procedure.</p>
+</div>
+<div class="section" id="files-in-a-plugin-directory">
+<h2>Files in a Plugin Directory<a class="headerlink" href="#files-in-a-plugin-directory" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the main <code class="docutils literal"><span class="pre">myplugin.cc</span></code> file, a fresh plugin directory contains the following files</p>
+<ul class="simple">
+<li><strong>Makefile</strong> — Makefile for the directory. As long as you are the
+only user of the plugin, this should not need editing. After any change to
+the plugin C++ code, <code class="docutils literal"><span class="pre">make</span></code> must be run in the plugin directory to
+recompile the <code class="docutils literal"><span class="pre">myplugin.so</span></code> executable, but recompiling the main
+<span class="sc">Psi4</span> code is not necessary.</li>
+<li><strong>input.dat</strong> — Sample input file for the plugin.
+Since the <code class="docutils literal"><span class="pre">__init__.py</span></code> file makes the plugin directory look like a
+Python module, the plugin can be treated as such in an input file. The
+location of the plugin directory must be included in <span class="target" id="index-0"></span><a class="reference internal" href="external.html#envvar-PYTHONPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PYTHONPATH</span></code></a>,
+either externally in the calling shell or defined in the input file.
+This is usually done by manipulating <span class="target" id="index-1"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a>. Then,
+the plugin can be loaded as <code class="docutils literal"><span class="pre">import</span> <span class="pre">myplugin</span></code> and executed as
+<code class="docutils literal"><span class="pre">energy('myplugin')</span></code>. Any other Python functions are also available from
+the input file, <em>e.g.</em> <code class="docutils literal"><span class="pre">myplugin.testfunction()</span></code>, note the namespace
+protection.</li>
+<li><strong>pymodule.py</strong> — Python component of the plugin. The procedure
+for calling plugin code shown in <code class="docutils literal"><span class="pre">input.dat</span></code> sounds very simple, but it
+can be made simpler still. By encoding the sequence of <span class="sc">Psi4</span> module
+calls needed to run the plugin in the <code class="docutils literal"><span class="pre">run_myplugin()</span></code> function in this
+file, the plugin is hooked into the main <span class="sc">Psi4</span> driver function
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a> and so can be accessed through
+<code class="docutils literal"><span class="pre">energy('myplugin')</span></code> in an input file. Any other Python functions can
+also be placed in this file.</li>
+<li><strong>__init__.py</strong> — Init script for the plugin (in the sense that
+the whole plugin directory is a Python module). This file generally won&#8217;t
+need editing unless additional Python files are added to the plugin
+directory (add additional lines to the <code class="docutils literal"><span class="pre">#</span> <span class="pre">Load</span> <span class="pre">Python</span> <span class="pre">modules</span></code> section)
+or the plugin depends on .so codes in other plugin directories (add
+additional plugin_load lines relative to the current plugin directory to
+the <code class="docutils literal"><span class="pre">#</span> <span class="pre">Load</span> <span class="pre">C++</span> <span class="pre">plugin</span></code> section).</li>
+</ul>
+<ul class="simple">
+<li><strong>doc.rst</strong> — Documentation file. Place in this file any notes,
+equations, warnings to users, todo lists, <em>etc.</em>. Plain text is fine,
+though reStructuredText is the ultimate goal. Remove the <code class="docutils literal"><span class="pre">..</span> <span class="pre">comment</span></code>
+text and build Sphinx documentation for samples of linking keywords,
+sections, and math. This file is absorbed into the <span class="sc">Psi4</span>
+documentation, along with any docstrings to Python functions, and the C++
+keywords block in the <code class="docutils literal"><span class="pre">myplugin.cc</span></code> file. See <a class="reference internal" href="documentation.html#sec-documentation"><span>Documentation</span></a>
+for building documentation and <span class="xref std std-ref">Available Plugins</span>
+for this file&#8217;s final destination.</li>
+</ul>
+<p>Please note that pure virtual functions in a plugin may cause undefined symbols errors when
+the plugin is loaded.</p>
+<p>To create a purely Python plugin, create a new plugin directory, then
+remove the <code class="docutils literal"><span class="pre">Makefile</span></code> and <code class="docutils literal"><span class="pre">myplugin.cc</span></code> files and
+erase the shared object loading portion of <code class="docutils literal"><span class="pre">__init__.py</span></code>. Create as many .py
+files as necessary (registering each one in <code class="docutils literal"><span class="pre">__init__.py</span></code>), use
+<code class="docutils literal"><span class="pre">input.dat</span></code> as a model for loading the plugin, no recompile ever
+necessary.</p>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Plugins: Adding New Functionality to <span class="sc">Psi4</span></a><ul>
+<li><a class="reference internal" href="#modular-approach-to-development">Modular Approach to Development</a></li>
+<li><a class="reference internal" href="#creating-a-new-plugin">Creating a New Plugin</a></li>
+<li><a class="reference internal" href="#creating-a-new-plugin-using-a-conda-pre-compiled-binary">Creating a New Plugin Using a Conda Pre-compiled Binary</a></li>
+<li><a class="reference internal" href="#files-in-a-plugin-directory">Files in a Plugin Directory</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="contributing.html"
+                        title="previous chapter">Contributions: Intro to Programming in <span class="sc">Psi4</span></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="bestpractices_py.html"
+                        title="next chapter">Best Practices for Python Functions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/plugins.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="bestpractices_py.html" title="Best Practices for Python Functions"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributions: Intro to Programming in Psi4"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="contributing.html" >Contributions: Intro to Programming in <span class="sc">Psi4</span></a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

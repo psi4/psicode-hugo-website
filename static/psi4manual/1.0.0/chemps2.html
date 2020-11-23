@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to CheMPS2 by S. Wouters &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" />
+    <link rel="next" title="Interface to DFTD3 by S. Grimme" href="dftd3.html" />
+    <link rel="prev" title="Interface to CFOUR by J. Stanton and J. Gauss" href="cfour.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dftd3.html" title="Interface to DFTD3 by S. Grimme"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cfour.html" title="Interface to CFOUR by J. Stanton and J. Gauss"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="interface-to-chemps2-by-s-wouters">
+<span id="sec-chemps2"></span><span id="index-0"></span><h1>Interface to CheMPS2 by S. Wouters<a class="headerlink" href="#interface-to-chemps2-by-s-wouters" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Sebastian Wouters</em></p>
+<p><em>Section author: Lori A. Burns</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__dmrg.html#apdx-dmrg"><span>Keywords</span></a>, <a class="reference internal" href="autodir_psivariables/module__dmrg.html#apdx-dmrg-psivar"><span>PSI Variables</span></a>, <a class="reference internal" href="autodoc_testsuite_dmrg.html#apdx-testsuitedmrg"><span>Samples</span></a></p>
+<p><span class="sc">Psi4</span> contains code to interface to the CheMPS2
+library of S. Wouters, which is based at <a class="reference external" href="https://github.com/SebWouters/CheMPS2">GitHub</a>. Consult the excellent
+<a class="reference external" href="http://sebwouters.github.io/CheMPS2/">documentation</a> for using and
+<a class="reference external" href="http://sebwouters.github.io/CheMPS2/publications.html">citing</a> the library.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As of late June 2016, DMRG keywords in <span class="sc">Psi4</span> have been
+realigned with those of the chemps2 executable, plus a
+&#8220;dmrg_&#8221; prefix. The only exceptions are the orbital space
+<span class="sc">Psi4</span> keywords <a class="reference internal" href="autodoc_glossary_options_c.html#term-restricted-docc-globals"><span class="xref std std-term">RESTRICTED_DOCC</span></a> (formerly
+CheMPS2 used <a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-docc-globals"><span class="xref std std-term">FROZEN_DOCC</span></a>, contrary to its
+definition) and <a class="reference internal" href="autodoc_glossary_options_c.html#term-active-globals"><span class="xref std std-term">ACTIVE</span></a> which are passed along to
+CheMPS2 keywords <code class="docutils literal"><span class="pre">NOCC</span></code> and <code class="docutils literal"><span class="pre">NACT</span></code>. A <a class="reference external" href="https://github.com/psi4/psi4/issues/150#issuecomment-228951911">translation table</a>
+is available.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>build psi4 with the plugin option ENABLE_PLUGINS=ON, and then run:</p>
+<p>CheMPS2 is available as conda package <a class="reference external" href="https://anaconda.org/psi4/chemps2">chemps2</a> or <a class="reference external" href="https://anaconda.org/psi4/pychemps2">pychemps2</a> for Linux and OSX.</p>
+<img src="https://anaconda.org/psi4/pychemps2/badges/version.svg" /><ul class="simple">
+<li>If using the <span class="sc">Psi4</span> binary, CheMPS2 has already been installed alongside.</li>
+<li>If using <span class="sc">Psi4</span> built from source, and anaconda or miniconda has
+already been installed (instructions at <a class="reference internal" href="conda.html#sec-quickconda"><span>Quick Installation</span></a>), CheMPS2
+can be obtained through <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">chemps2</span></code>. Then <a class="reference external" href="https://github.com/psi4/psi4/wiki/9_CheMPS2">enable</a> it as a feature and
+rebuild <span class="sc">Psi4</span> to detect CheMPS2 and activate dependent code.</li>
+<li>If using <span class="sc">Psi4</span> built from source and you want CheMPS2 built from
+source also, <a class="reference external" href="https://github.com/psi4/psi4/wiki/9_CheMPS2">enable</a>
+it as a feature and let the build system fetch and build it and activate
+dependent code.</li>
+<li>To remove the CheMPS2 that conda installs alongside <span class="sc">Psi4</span>,
+<code class="docutils literal"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">chemps2</span></code> (or <code class="docutils literal"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">pychemps2</span></code>; use <code class="docutils literal"><span class="pre">conda</span>
+<span class="pre">list</span></code> to see which is installed).</li>
+</ul>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils" id="id2">
+<span id="table-chemps2-calls"></span><caption><span class="caption-text">Density matrix renormalization group capabilities of <span class="sc">Psi4</span> through CheMPS2</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="19%" />
+<col width="47%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>dmrg-ci</td>
+<td>DMRG configuration interaction (CI)</td>
+<td>RHF/ROHF</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-odd"><td>dmrg-scf</td>
+<td>DMRG complete active space SCF (CASSCF)</td>
+<td>RHF/ROHF</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-even"><td>dmrg-caspt2</td>
+<td>DMRG CAS with 2nd-order perturbation theory (CASPT2)</td>
+<td>RHF/ROHF</td>
+<td>&#8212;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="dmrg-keywords">
+<h2>DMRG Keywords<a class="headerlink" href="#dmrg-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dmrg-caspt2-calc">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-caspt2-calc-dmrg"><span class="xref std std-term">DMRG_CASPT2_CALC</span></a><a class="headerlink" href="#dmrg-caspt2-calc" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do calculate the DMRG-CASPT2 energy after the DMRGSCF calculations are done?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-caspt2-imag">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-caspt2-imag-dmrg"><span class="xref std std-term">DMRG_CASPT2_IMAG</span></a><a class="headerlink" href="#dmrg-caspt2-imag" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>CASPT2 Imaginary shift</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 0.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-caspt2-ipea">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-caspt2-ipea-dmrg"><span class="xref std std-term">DMRG_CASPT2_IPEA</span></a><a class="headerlink" href="#dmrg-caspt2-ipea" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>CASPT2 IPEA shift</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 0.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-caspt2-orbs">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-caspt2-orbs-dmrg"><span class="xref std std-term">DMRG_CASPT2_ORBS</span></a><a class="headerlink" href="#dmrg-caspt2-orbs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether to calculate the DMRG-CASPT2 energy after the DMRGSCF calculations are done.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: PSEUDOCANONICAL, ACTIVE</li>
+<li><strong>Default</strong>: PSEUDOCANONICAL</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-diis">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-diis-dmrg"><span class="xref std std-term">DMRG_DIIS</span></a><a class="headerlink" href="#dmrg-diis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether or not to use DIIS for DMRG.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-diis-write">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-diis-write-dmrg"><span class="xref std std-term">DMRG_DIIS_WRITE</span></a><a class="headerlink" href="#dmrg-diis-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether or not to store the DIIS checkpoint on disk (convenient for restarting).</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-excitation">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-excitation-dmrg"><span class="xref std std-term">DMRG_EXCITATION</span></a><a class="headerlink" href="#dmrg-excitation" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Which root is targeted: 0 means ground state, 1 first excited state, etc.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-irrep">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-irrep-dmrg"><span class="xref std std-term">DMRG_IRREP</span></a><a class="headerlink" href="#dmrg-irrep" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The DMRG wavefunction irrep uses the same conventions as PSI4. How convenient :-). Just to avoid confusion, it&#8217;s copied here. It can also be found on <a class="reference external" href="http://sebwouters.github.io/CheMPS2/doxygen/classCheMPS2_1_1Irreps.html">http://sebwouters.github.io/CheMPS2/doxygen/classCheMPS2_1_1Irreps.html</a> . Symmetry Conventions Irrep Number &amp; Name Group Number &amp; Name 0 1 2 3 4 5 6 7 0: c1 A 1: ci Ag Au 2: c2 A B 3: cs A&#8217; A&#8217;&#8217; 4: d2 A B1 B2 B3 5: c2v A1 A2 B1 B2 6: c2h Ag Bg Au Bu 7: d2h Ag B1g B2g B3g Au B1u B2u B3u</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: -1</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-local-init">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-local-init-dmrg"><span class="xref std std-term">DMRG_LOCAL_INIT</span></a><a class="headerlink" href="#dmrg-local-init" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether to start the active space localization process from a random unitary or the unit matrix.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-molden-write">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-molden-write-dmrg"><span class="xref std std-term">DMRG_MOLDEN_WRITE</span></a><a class="headerlink" href="#dmrg-molden-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>DMRG-CI or converged DMRG-SCF orbitals in molden format</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-mps-write">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-mps-write-dmrg"><span class="xref std std-term">DMRG_MPS_WRITE</span></a><a class="headerlink" href="#dmrg-mps-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether or not to create intermediary MPS checkpoints</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-multiplicity">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-multiplicity-dmrg"><span class="xref std std-term">DMRG_MULTIPLICITY</span></a><a class="headerlink" href="#dmrg-multiplicity" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The DMRG wavefunction multiplicity in the form (2S+1)</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: -1</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-opdm-ao-print">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-opdm-ao-print-dmrg"><span class="xref std std-term">DMRG_OPDM_AO_PRINT</span></a><a class="headerlink" href="#dmrg-opdm-ao-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Print out the density matrix in the AO basis</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-print-corr">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-print-corr-dmrg"><span class="xref std std-term">DMRG_PRINT_CORR</span></a><a class="headerlink" href="#dmrg-print-corr" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether or not to print the correlation functions after the DMRG calculation</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-scf-active-space">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-scf-active-space-dmrg"><span class="xref std std-term">DMRG_SCF_ACTIVE_SPACE</span></a><a class="headerlink" href="#dmrg-scf-active-space" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Which active space to use for DMRG calculations: &#8211;&gt; input with SCF rotations (INPUT); &#8211;&gt; natural orbitals (NO); &#8211;&gt; localized and ordered orbitals (LOC)</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: INPUT, NO, LOC</li>
+<li><strong>Default</strong>: INPUT</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-scf-diis-thr">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-scf-diis-thr-dmrg"><span class="xref std std-term">DMRG_SCF_DIIS_THR</span></a><a class="headerlink" href="#dmrg-scf-diis-thr" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>When the update norm is smaller than this value DIIS starts.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1e-2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-scf-grad-thr">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-scf-grad-thr-dmrg"><span class="xref std std-term">DMRG_SCF_GRAD_THR</span></a><a class="headerlink" href="#dmrg-scf-grad-thr" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The density RMS convergence to stop an instruction during successive DMRG instructions</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.e-6</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-scf-max-iter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-scf-max-iter-dmrg"><span class="xref std std-term">DMRG_SCF_MAX_ITER</span></a><a class="headerlink" href="#dmrg-scf-max-iter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of DMRG iterations</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 100</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-scf-state-avg">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-scf-state-avg-dmrg"><span class="xref std std-term">DMRG_SCF_STATE_AVG</span></a><a class="headerlink" href="#dmrg-scf-state-avg" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether or not to use state-averaging for roots &gt;=2 with DMRG-SCF.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-sweep-dvdson-rtol">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-sweep-dvdson-rtol-dmrg"><span class="xref std std-term">DMRG_SWEEP_DVDSON_RTOL</span></a><a class="headerlink" href="#dmrg-sweep-dvdson-rtol" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The residual tolerances for the Davidson diagonalization during DMRG instructions</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-sweep-energy-conv">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-sweep-energy-conv-dmrg"><span class="xref std std-term">DMRG_SWEEP_ENERGY_CONV</span></a><a class="headerlink" href="#dmrg-sweep-energy-conv" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The energy convergence to stop an instruction during successive DMRG instructions</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-sweep-max-sweeps">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-sweep-max-sweeps-dmrg"><span class="xref std std-term">DMRG_SWEEP_MAX_SWEEPS</span></a><a class="headerlink" href="#dmrg-sweep-max-sweeps" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The maximum number of sweeps to stop an instruction during successive DMRG instructions</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-sweep-noise-prefac">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-sweep-noise-prefac-dmrg"><span class="xref std std-term">DMRG_SWEEP_NOISE_PREFAC</span></a><a class="headerlink" href="#dmrg-sweep-noise-prefac" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The noiseprefactors for successive DMRG instructions</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-sweep-states">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-sweep-states-dmrg"><span class="xref std std-term">DMRG_SWEEP_STATES</span></a><a class="headerlink" href="#dmrg-sweep-states" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The number of reduced renormalized basis states to be retained during successive DMRG instructions</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dmrg-unitary-write">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dmrg-unitary-write-dmrg"><span class="xref std std-term">DMRG_UNITARY_WRITE</span></a><a class="headerlink" href="#dmrg-unitary-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether or not to store the unitary on disk (convenient for restarting).</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface to CheMPS2 by S. Wouters</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#dmrg-keywords">DMRG Keywords</a><ul>
+<li><a class="reference internal" href="#dmrg-caspt2-calc"><code class="docutils literal"><span class="pre">DMRG_CASPT2_CALC</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-caspt2-imag"><code class="docutils literal"><span class="pre">DMRG_CASPT2_IMAG</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-caspt2-ipea"><code class="docutils literal"><span class="pre">DMRG_CASPT2_IPEA</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-caspt2-orbs"><code class="docutils literal"><span class="pre">DMRG_CASPT2_ORBS</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-diis"><code class="docutils literal"><span class="pre">DMRG_DIIS</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-diis-write"><code class="docutils literal"><span class="pre">DMRG_DIIS_WRITE</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-excitation"><code class="docutils literal"><span class="pre">DMRG_EXCITATION</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-irrep"><code class="docutils literal"><span class="pre">DMRG_IRREP</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-local-init"><code class="docutils literal"><span class="pre">DMRG_LOCAL_INIT</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-molden-write"><code class="docutils literal"><span class="pre">DMRG_MOLDEN_WRITE</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-mps-write"><code class="docutils literal"><span class="pre">DMRG_MPS_WRITE</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-multiplicity"><code class="docutils literal"><span class="pre">DMRG_MULTIPLICITY</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-opdm-ao-print"><code class="docutils literal"><span class="pre">DMRG_OPDM_AO_PRINT</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-print-corr"><code class="docutils literal"><span class="pre">DMRG_PRINT_CORR</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-scf-active-space"><code class="docutils literal"><span class="pre">DMRG_SCF_ACTIVE_SPACE</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-scf-diis-thr"><code class="docutils literal"><span class="pre">DMRG_SCF_DIIS_THR</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-scf-grad-thr"><code class="docutils literal"><span class="pre">DMRG_SCF_GRAD_THR</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-scf-max-iter"><code class="docutils literal"><span class="pre">DMRG_SCF_MAX_ITER</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-scf-state-avg"><code class="docutils literal"><span class="pre">DMRG_SCF_STATE_AVG</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-sweep-dvdson-rtol"><code class="docutils literal"><span class="pre">DMRG_SWEEP_DVDSON_RTOL</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-sweep-energy-conv"><code class="docutils literal"><span class="pre">DMRG_SWEEP_ENERGY_CONV</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-sweep-max-sweeps"><code class="docutils literal"><span class="pre">DMRG_SWEEP_MAX_SWEEPS</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-sweep-noise-prefac"><code class="docutils literal"><span class="pre">DMRG_SWEEP_NOISE_PREFAC</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-sweep-states"><code class="docutils literal"><span class="pre">DMRG_SWEEP_STATES</span></code></a></li>
+<li><a class="reference internal" href="#dmrg-unitary-write"><code class="docutils literal"><span class="pre">DMRG_UNITARY_WRITE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cfour.html"
+                        title="previous chapter">Interface to CFOUR by J. Stanton and J. Gauss</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dftd3.html"
+                        title="next chapter">Interface to DFTD3 by S. Grimme</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/chemps2.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dftd3.html" title="Interface to DFTD3 by S. Grimme"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cfour.html" title="Interface to CFOUR by J. Stanton and J. Gauss"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

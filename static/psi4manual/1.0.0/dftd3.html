@@ -1,0 +1,469 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to DFTD3 by S. Grimme &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" />
+    <link rel="next" title="Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess" href="dkh.html" />
+    <link rel="prev" title="Interface to CheMPS2 by S. Wouters" href="chemps2.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dkh.html" title="Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="chemps2.html" title="Interface to CheMPS2 by S. Wouters"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="interface-to-dftd3-by-s-grimme">
+<span id="sec-dftd3"></span><span id="index-0"></span><h1>Interface to DFTD3 by S. Grimme<a class="headerlink" href="#interface-to-dftd3-by-s-grimme" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Lori A. Burns</em></p>
+<p><em>Section author: Lori A. Burns</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodoc_testsuite_dftd3.html#apdx-testsuitedftd3"><span>Samples</span></a></p>
+<p><span class="sc">Psi4</span> contains code to interface to the DFTD3 program of S. Grimme, which is freely
+downloadable from <a class="reference external" href="http://www.thch.uni-bonn.de/tc/index.php?section=downloads&amp;subsection=getd3&amp;lang=english">http://www.thch.uni-bonn.de/tc/index.php?section=downloads&amp;subsection=getd3&amp;lang=english</a>).</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>DFTD3 is available as conda package. If using the <span class="sc">Psi4</span> binary, the
+<code class="docutils literal"><span class="pre">dftd3</span></code> executable has already been installed alongside. If using
+<span class="sc">Psi4</span> built from source, and anaconda or miniconda has already
+been installed (instructions at <a class="reference internal" href="conda.html#sec-quickconda"><span>Quick Installation</span></a>), the <code class="docutils literal"><span class="pre">dftd3</span></code>
+executable can be obtained through <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">dftd3</span></code>.</p>
+<p>To be used by <span class="sc">Psi4</span>, the program binary (<code class="docutils literal"><span class="pre">dftd3</span></code>) must be
+found in your <span class="target" id="index-1"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a> or <span class="target" id="index-2"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a> (in that order). If
+<span class="sc">Psi4</span> is unable to execute the binary, an error will be reported.
+To preferentially use a particular dftd3 compilation, simply adjust its
+position in the path environment variables. To remove the dftd3 that
+conda installs alongside <span class="sc">Psi4</span>, <code class="docutils literal"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">dftd3</span></code>.</p>
+<p>Alternatively, to build DFTD3 yourself,
+follow the instructions provided with the source
+(essentially, unpack the source, edit the Makefile to select a
+Fortran compiler, and run make). From version 3.1.0 onwards, DFTD3 can be used
+as-is; for earlier versions, patches are available:
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/scripts/patch_grimme_dftd3.3.0.2">psi4/share/scripts/patch_grimme_dftd3.3.0.2</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="n">dftd3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ls</span>
+<span class="go">dftd3.tar</span>
+<span class="go">patch_grimme_dftd3.3.0.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tar</span> <span class="o">-</span><span class="n">xvf</span> <span class="n">dftd3</span><span class="o">.</span><span class="n">tar</span>
+<span class="go">copyc6.f</span>
+<span class="go">dftd3.f</span>
+<span class="go">Makefile</span>
+<span class="go">man.pdf</span>
+<span class="go">pars.f</span>
+<span class="go">param</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">patch</span> <span class="o">&lt;</span> <span class="n">patch_grimme_dftd3</span><span class="o">.</span><span class="mf">3.0</span><span class="o">.</span><span class="mi">2</span>
+<span class="go">patching file dftd3.f</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make</span>
+<span class="go">making dftd3.o from dftd3.f</span>
+<span class="go">ifort -O  -c dftd3.f -o dftd3.o</span>
+<span class="go">making copyc6.o from copyc6.f</span>
+<span class="go">ifort -O  -c copyc6.f -o copyc6.o</span>
+<span class="go">ifort dftd3.o copyc6.o    -o ./dftd3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ls</span>
+<span class="go">Makefile           copyc6.o           dftd3.f            dftd3.tar          param              patch_grimme_dftd3.3.0.2</span>
+<span class="go">copyc6.f           dftd3              dftd3.o            man.pdf            pars.f</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<p>The local or semilocal character of conventional density functionals
+necessarily leads to neglect of the long-range correlation interactions
+which capture attractive van der Waals forces. Initially proposed by Yang
+<a class="reference internal" href="bibliography.html#wu-2002-515" id="id1">[Wu:2002:515]</a> and assiduously developed by Grimme, <a class="reference internal" href="bibliography.html#grimme-2004-1463" id="id2">[Grimme:2004:1463]</a>
+<a class="reference internal" href="bibliography.html#grimme-2006-1787" id="id3">[Grimme:2006:1787]</a> <a class="reference internal" href="bibliography.html#grimme-2010-154104" id="id4">[Grimme:2010:154104]</a> the DFT+Dispersion method
+appends to the base functional a scaled, damped, and fitted leading term
+to the well-known dispersion energy series, <img class="math" src="_images/math/648b4f151df758919089b0a51136673238a51898.png" alt="E_{disp} = -C_6/R^6
+-C_8/R^8 -C_{10}/R^{10}-\cdots" style="vertical-align: -6px"/>. The DFT-D2 <a class="reference internal" href="bibliography.html#grimme-2006-1787" id="id5">[Grimme:2006:1787]</a> variant
+takes the explicit form below. Here, dispersion coefficients,
+<img class="math" src="_images/math/84fee3be89b8b36bbe733fe121c197fd9780afc4.png" alt="C_6^{ij}" style="vertical-align: -4px"/>, obtained from the geometric mean of tabulated elemental
+values, are summed over interatomic distances, <img class="math" src="_images/math/6f2bdb7b5619c49366f40970a65b39ef03496d58.png" alt="R_{ij}" style="vertical-align: -6px"/>, modulated
+by a damping function, <img class="math" src="_images/math/467f2bcac965f762aff59260f57659d8c0ab2d04.png" alt="f_{damp}(R_{ij})" style="vertical-align: -6px"/>, that gradually activates
+the dispersion correction (at a rate characterized by <img class="math" src="_images/math/85faa0504f5c77aaea82491a6cabafcc3883475e.png" alt="\alpha_6" style="vertical-align: -3px"/>)
+over a distance characterized by the sum of the two atomic vdW radii,
+<img class="math" src="_images/math/091f95a8e412cba99f87e736cb3ad36362cc1414.png" alt="R_{vdW}" style="vertical-align: -3px"/>, while an overall scaling term, <img class="math" src="_images/math/86ed8b743f7451965614c642ef3cf069a7a655dd.png" alt="s_6" style="vertical-align: -3px"/>, is optimized
+to be unique to each <img class="math" src="_images/math/6decc1e6be9bbafb099c59651c88f689a2767a17.png" alt="E_{xc}" style="vertical-align: -3px"/> functional. (<img class="math" src="_images/math/85faa0504f5c77aaea82491a6cabafcc3883475e.png" alt="\alpha_6" style="vertical-align: -3px"/> is
+sometimes allowed to vary as well.)</p>
+<div class="math" id="equation-DFTD2">
+<p><span class="eqno">(1)</span><img src="_images/math/a935b8519fa4dddba7dc07f6b0e186bc8eab357f.png" alt="E_{disp}^{\text{D2}}=-s_6 \sum_{i,j&gt;i}^{N_{at}} \frac{C_6^{ij}}{(R_{ij})^6} f_{damp}(R_{ij})"/></p>
+</div><div class="math">
+<p><img src="_images/math/165142dc15635c6a1c31a3cd6fe0cb45f5a0829a.png" alt="f_{damp}(R_{ij}) = \frac{1}{1 + e^{- \alpha_6 (R_{ij}/R_{vdW} - 1)}}"/></p>
+</div><p>Grimme recently presented a refined method, DFT-D3, <a class="reference internal" href="bibliography.html#grimme-2010-154104" id="id6">[Grimme:2010:154104]</a>
+which incorporates an additional <img class="math" src="_images/math/1c9dbc9aa8ed129e95672515d95576eacbb6df2a.png" alt="R^{-8}" style="vertical-align: 0px"/> term in the dispersion
+series and adjusts the <img class="math" src="_images/math/0f0837f894ae62b29ac829c294132d2cf0c3733c.png" alt="C_{6}^{ij}" style="vertical-align: -4px"/> combination formula and damping
+function. The individual atomic <img class="math" src="_images/math/84a30e1cfb5ae2ad3b421b0af3b165e5f10b0be8.png" alt="C_6^i" style="vertical-align: -5px"/> are interpolated from
+several reference values based upon coordination numbers extracted from
+the molecular structure, rather than assigned solely by atomic identity as
+in DFT-D2, and thereby incorporate some awareness of the chemical
+environment into an otherwise largely heuristic correction.  The -D3
+dispersion has the following form, where <img class="math" src="_images/math/cf1594d9be246fdc8d9e967427968dd5cd95cd96.png" alt="s_{r,6}" style="vertical-align: -6px"/> and <img class="math" src="_images/math/7924a78edea28f01bf1f4de6b2adb773daade023.png" alt="s_8" style="vertical-align: -3px"/>
+are the customary nonunity parameters fitted for individual functionals.</p>
+<div class="math" id="equation-DFTD3ZERO">
+<p><span class="eqno">(2)</span><img src="_images/math/5cc537cfa27cefaa4728a78ae854002c2ae337d3.png" alt="E_{disp}^{\text{D3ZERO}}=-\sum_{n=6,8} s_n \sum_{i,j&gt;i}^{N_{at}}
+\frac{C_n^{ij}}{(R_{ij})^n} f_{damp}(R_{ij})"/></p>
+</div><div class="math">
+<p><img src="_images/math/3359aff0d97dd7b8ac108b9a5c48d7843fddf85a.png" alt="f_{damp}(R_{ij}) = \frac{1}{1 + 6 (R_{ij}/(s_{r,n} R_0^{ij}))^{- \alpha_n}}"/></p>
+</div><p>A modified damping scheme for DFT-D3 using the rational damping form of
+Becke and Johnson was introduced in <a class="reference internal" href="bibliography.html#grimme-2011-1456" id="id7">[Grimme:2011:1456]</a>.  The parameters
+fit for individual functionals are now <img class="math" src="_images/math/86ed8b743f7451965614c642ef3cf069a7a655dd.png" alt="s_6" style="vertical-align: -3px"/>, <img class="math" src="_images/math/7924a78edea28f01bf1f4de6b2adb773daade023.png" alt="s_8" style="vertical-align: -3px"/>,
+<img class="math" src="_images/math/0cea09413197c28625ecd0261f720c9e7f04bec1.png" alt="a_1" style="vertical-align: -4px"/>, and <img class="math" src="_images/math/17af53352142b3c084dfdb514a1fa00657379792.png" alt="a_2" style="vertical-align: -3px"/>.</p>
+<div class="math">
+<p><img src="_images/math/4de8012748f2eaa93a4070a9db1c215eab9f2eae.png" alt="E_{disp}^{\text{D3BJ}}=-\sum_{n=6,8} s_n \sum_{i,j&gt;i}^{N_{at}}
+\frac{C_n^{ij}}{(R_{ij})^n + (f_{damp})^n}"/></p>
+</div><div class="math">
+<p><img src="_images/math/11837cfbfcbf8cb3f94222e0c5a35abdcc4ea41a.png" alt="f_{damp} = a_1 \sqrt{\frac{C_8^{ij}}{C_6^{ij}}} + a_2"/></p>
+</div><p>All parameters characterizing the dispersion correction are taken from
+<a class="reference external" href="http://toc.uni-muenster.de/DFTD3/">http://toc.uni-muenster.de/DFTD3/</a>
+or else from the literature.</p>
+</div>
+<div class="section" id="running-dftd3">
+<h2>Running DFTD3<a class="headerlink" href="#running-dftd3" title="Permalink to this headline">¶</a></h2>
+<p>A number of <em>a posteriori</em> dispersion corrections are available in
+<span class="sc">Psi4</span>.  While most are computed within <span class="sc">Psi4</span>&#8216;s codebase (-D1, -D2,
+-CHG, -DAS2009, -DAS2010), the -D3 correction and its variants are
+available only through the <code class="docutils literal"><span class="pre">DFTD3</span></code> program.  Once installed, the
+<code class="docutils literal"><span class="pre">dftd3</span></code>/<span class="sc">Psi4</span> interface is transparent, and all corrections are
+interfaced exactly alike.</p>
+<p>Dispersion corrections are built into DFT functionals, so appending an <em>a
+posteriori</em> correction to a computation is as simple as
+<code class="docutils literal"><span class="pre">energy('b2plyp-d')</span></code> <em>vs.</em> <code class="docutils literal"><span class="pre">energy('b2plyp')</span></code>. For example, the
+following input file computes (with much redundant work) for water a
+B3LYP, a B3LYP-D2, and a B3LYP-D3 (zero-damping) energy.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule h2o {
+     O
+     H 1 1.0
+     H 1 1.0 2 104.5
+ }
+ set {
+     basis cc-pVDZ
+ }
+ energy(&#39;b3lyp&#39;)
+ energy(&#39;b3lyp-d&#39;)
+ energy(&#39;b3lyp-d3&#39;)
+</pre></div>
+</div>
+<p>Consult the table <a class="reference internal" href="dft_byfunctional.html#table-dft-disp"><span>-D Functionals</span></a> to see for each
+functional what corrections are available and what default parameters
+define them. The dispersion correction is available after a calculation in
+the PSI variable <a class="reference internal" href="glossary_psivariables.html#psivar-DISPERSIONCORRECTIONENERGY"><code class="xref std std-psivar docutils literal"><span class="pre">DISPERSION</span> <span class="pre">CORRECTION</span> <span class="pre">ENERGY</span></code></a>.
+By default, the output from the <code class="docutils literal"><span class="pre">dftd3</span></code>
+program is suppressed; to see it in the output file, set print &gt; 2.</p>
+<table border="1" class="docutils" id="id21">
+<span id="table-dashd"></span><caption><span class="caption-text">Variants of S. Grimme&#8217;s -D correction</span><a class="headerlink" href="#id21" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="18%" />
+<col width="51%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Extension <a class="footnote-reference" href="#f0" id="id8">[1]</a></th>
+<th class="head">Variant and Computing Program</th>
+<th class="head"><a class="reference internal" href="autodoc_glossary_options_c.html#term-dft-dispersion-parameters-scf"><span class="xref std std-term">DFT_DISPERSION_PARAMETERS</span></a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>-D</td>
+<td>alias to -D2P4</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>-D1</td>
+<td>-D1 <a class="footnote-reference" href="#f1" id="id9">[2]</a> within <span class="sc">Psi4</span></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>-D2</td>
+<td>alias to -D2P4</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>-D2P4</td>
+<td>-D2 <a class="footnote-reference" href="#f2" id="id10">[3]</a> within <span class="sc">Psi4</span></td>
+<td>[<img class="math" src="_images/math/86ed8b743f7451965614c642ef3cf069a7a655dd.png" alt="s_6" style="vertical-align: -3px"/>]</td>
+</tr>
+<tr class="row-even"><td>-D2GR</td>
+<td>-D2 <a class="footnote-reference" href="#f2" id="id11">[3]</a> through <code class="docutils literal"><span class="pre">dftd3</span></code></td>
+<td>[<img class="math" src="_images/math/86ed8b743f7451965614c642ef3cf069a7a655dd.png" alt="s_6" style="vertical-align: -3px"/>, <img class="math" src="_images/math/85faa0504f5c77aaea82491a6cabafcc3883475e.png" alt="\alpha_6" style="vertical-align: -3px"/>]</td>
+</tr>
+<tr class="row-odd"><td>-D3</td>
+<td>alias to -D3ZERO</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>-D3ZERO</td>
+<td>-D3 <a class="footnote-reference" href="#f3" id="id12">[4]</a> w/ original zero-damping through <code class="docutils literal"><span class="pre">dftd3</span></code></td>
+<td>[<img class="math" src="_images/math/86ed8b743f7451965614c642ef3cf069a7a655dd.png" alt="s_6" style="vertical-align: -3px"/>, <img class="math" src="_images/math/7924a78edea28f01bf1f4de6b2adb773daade023.png" alt="s_8" style="vertical-align: -3px"/>, <img class="math" src="_images/math/cf1594d9be246fdc8d9e967427968dd5cd95cd96.png" alt="s_{r,6}" style="vertical-align: -6px"/>, <img class="math" src="_images/math/85faa0504f5c77aaea82491a6cabafcc3883475e.png" alt="\alpha_6" style="vertical-align: -3px"/>]</td>
+</tr>
+<tr class="row-odd"><td>-D3BJ</td>
+<td>-D3 <a class="footnote-reference" href="#f4" id="id13">[5]</a> w/ newer Becke-Johnson rational damping through <code class="docutils literal"><span class="pre">dftd3</span></code></td>
+<td>[<img class="math" src="_images/math/86ed8b743f7451965614c642ef3cf069a7a655dd.png" alt="s_6" style="vertical-align: -3px"/>, <img class="math" src="_images/math/7924a78edea28f01bf1f4de6b2adb773daade023.png" alt="s_8" style="vertical-align: -3px"/>, <img class="math" src="_images/math/0cea09413197c28625ecd0261f720c9e7f04bec1.png" alt="a_1" style="vertical-align: -4px"/>, <img class="math" src="_images/math/17af53352142b3c084dfdb514a1fa00657379792.png" alt="a_2" style="vertical-align: -3px"/>]</td>
+</tr>
+<tr class="row-even"><td>-D3M</td>
+<td>alias to -D3MZERO</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>-D3MZERO</td>
+<td>-D3 <a class="footnote-reference" href="#f5" id="id14">[6]</a> w/ reparameterized and more flexible original zero-damping through <code class="docutils literal"><span class="pre">dftd3</span></code></td>
+<td>[<img class="math" src="_images/math/86ed8b743f7451965614c642ef3cf069a7a655dd.png" alt="s_6" style="vertical-align: -3px"/>, <img class="math" src="_images/math/7924a78edea28f01bf1f4de6b2adb773daade023.png" alt="s_8" style="vertical-align: -3px"/>, <img class="math" src="_images/math/cf1594d9be246fdc8d9e967427968dd5cd95cd96.png" alt="s_{r,6}" style="vertical-align: -6px"/>, <img class="math" src="_images/math/3edbdde8cd7a5140ace3a7f0b62e850ca34dcafc.png" alt="\beta" style="vertical-align: -4px"/>]</td>
+</tr>
+<tr class="row-even"><td>-D3MBJ</td>
+<td>-D3 <a class="footnote-reference" href="#f5" id="id15">[6]</a> w/ reparameterized newer Becke-Johnson rational damping through <code class="docutils literal"><span class="pre">dftd3</span></code></td>
+<td>[<img class="math" src="_images/math/86ed8b743f7451965614c642ef3cf069a7a655dd.png" alt="s_6" style="vertical-align: -3px"/>, <img class="math" src="_images/math/7924a78edea28f01bf1f4de6b2adb773daade023.png" alt="s_8" style="vertical-align: -3px"/>, <img class="math" src="_images/math/0cea09413197c28625ecd0261f720c9e7f04bec1.png" alt="a_1" style="vertical-align: -4px"/>, <img class="math" src="_images/math/17af53352142b3c084dfdb514a1fa00657379792.png" alt="a_2" style="vertical-align: -3px"/>]</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f0" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[1]</a></td><td>Note that there are functionals with these extensions (<em>e.g.</em>, wB97X-D) that,
+not being Grimme corrections, have nothing to do with this table.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[2]</a></td><td><a class="reference internal" href="bibliography.html#grimme-2004-1463" id="id16">[Grimme:2004:1463]</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id10">1</a>, <a class="fn-backref" href="#id11">2</a>)</em> <a class="reference internal" href="bibliography.html#grimme-2006-1787" id="id17">[Grimme:2006:1787]</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id12">[4]</a></td><td><a class="reference internal" href="bibliography.html#grimme-2010-154104" id="id18">[Grimme:2010:154104]</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id13">[5]</a></td><td><a class="reference internal" href="bibliography.html#grimme-2011-1456" id="id19">[Grimme:2011:1456]</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[6]</td><td><em>(<a class="fn-backref" href="#id14">1</a>, <a class="fn-backref" href="#id15">2</a>)</em> <a class="reference internal" href="bibliography.html#smith-2016-2197" id="id20">[Smith:2016:2197]</a></td></tr>
+</tbody>
+</table>
+<p>A few practical examples:</p>
+<ul>
+<li><p class="first">DFT-D2 single point with default parameters (<code class="docutils literal"><span class="pre">dftd3</span></code> not called)</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;bp86-d&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">DFT-D3BJ optimization with default parameters</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;pbe-d3bj&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">DFT-D2 optimization with custom s6 parameter</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set dft_dispersion_parameters [1.20]
+optimize(&#39;b3lyp-d2&#39;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">DFT-D3ZERO single point (b3lyp) with custom s8 parameter (reset all four values)</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set dft_dispersion_parameters [1.0, 2.0, 1.261, 14.0]
+energy(&#39;b3lyp-d3&#39;)
+</pre></div>
+</div>
+</li>
+</ul>
+<p>If only dispersion corrections (rather than total energies) are of
+interest, the <code class="docutils literal"><span class="pre">dftd3</span></code> program can be run independently of the scf
+through the python function <a class="reference internal" href="#qcdb.interface_dftd3.run_dftd3" title="qcdb.interface_dftd3.run_dftd3"><code class="xref py py-func docutils literal"><span class="pre">run_dftd3()</span></code></a>. (This function
+is the same <span class="sc">Psi4</span>/<code class="docutils literal"><span class="pre">dftd3</span></code> interface that is called during an scf job.)
+This route is much faster than running a DFT-D energy.</p>
+<ul>
+<li><p class="first">Some set-up:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule nene {
+Ne
+Ne 1 2.0
+}
+
+nene.update_geometry()
+</pre></div>
+</div>
+</li>
+<li><p class="first">The same four dispersion corrections/gradients as the section above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">nene</span><span class="o">.</span><span class="n">run_dftd3</span><span class="p">(</span><span class="s1">&#39;bp86&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">-7.735e-05</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">nene</span><span class="o">.</span><span class="n">run_dftd3</span><span class="p">(</span><span class="s1">&#39;pbe&#39;</span><span class="p">,</span> <span class="s1">&#39;d3bj&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">G</span>
+<span class="go">[[0.0, 0.0, -1.1809087569358e-05], [0.0, 0.0, 1.1809087569358e-05]]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">nene</span><span class="o">.</span><span class="n">run_dftd3</span><span class="p">(</span><span class="s1">&#39;b3lyp&#39;</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;s6&#39;</span><span class="p">:</span> <span class="mf">1.20</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">E</span>
+<span class="go">-8.84e-05</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">nene</span><span class="o">.</span><span class="n">run_dftd3</span><span class="p">(</span><span class="n">dashlvl</span><span class="o">=</span><span class="s1">&#39;d3&#39;</span><span class="p">,</span> <span class="n">dashparam</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;s8&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;alpha6&#39;</span><span class="p">:</span> <span class="mf">14.0</span><span class="p">,</span> <span class="s1">&#39;sr6&#39;</span><span class="p">:</span> <span class="mf">1.261</span><span class="p">,</span> <span class="s1">&#39;s6&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">E</span>
+<span class="go">-0.00024762</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<dl class="function">
+<dt id="qcdb.interface_dftd3.run_dftd3">
+<code class="descname">run_dftd3</code><span class="sig-paren">(</span><em>self</em>, <em>func=None</em>, <em>dashlvl=None</em>, <em>dashparam=None</em>, <em>dertype=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcdb/interface_dftd3.html#run_dftd3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qcdb.interface_dftd3.run_dftd3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to call Grimme&#8217;s dftd3 program (<a class="reference external" href="http://toc.uni-muenster.de/DFTD3/">http://toc.uni-muenster.de/DFTD3/</a>)
+to compute the -D correction of level <em>dashlvl</em> using parameters for
+the functional <em>func</em>. The dictionary <em>dashparam</em> can be used to supply
+a full set of dispersion parameters in the absense of <em>func</em> or to supply
+individual overrides in the presence of <em>func</em>. Returns energy if <em>dertype</em> is 0,
+gradient if <em>dertype</em> is 1, else tuple of energy and gradient if <em>dertype</em>
+unspecified. The dftd3 executable must be independently compiled and found in
+<span class="target" id="index-3"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a> or <span class="target" id="index-4"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal"><span class="pre">PSIPATH</span></code></a>.
+<em>self</em> may be either a qcdb.Molecule (sensibly) or a psi4.Molecule
+(works b/c psi4.Molecule has been extended by this method py-side and
+only public interface fns used) or a string that can be instantiated
+into a qcdb.Molecule.</p>
+</dd></dl>
+
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface to DFTD3 by S. Grimme</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#theory">Theory</a></li>
+<li><a class="reference internal" href="#running-dftd3">Running DFTD3</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="chemps2.html"
+                        title="previous chapter">Interface to CheMPS2 by S. Wouters</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dkh.html"
+                        title="next chapter">Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/dftd3.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dkh.html" title="Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="chemps2.html" title="Interface to CheMPS2 by S. Wouters"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

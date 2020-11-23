@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procedures.proc_util &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for procedures.proc_util</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># PSI4: an ab initio quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="c1"># Relative hack for now</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">inspect</span>
+<span class="n">path_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span> <span class="p">))[</span><span class="mi">0</span><span class="p">],</span><span class="s2">&quot;../&quot;</span><span class="p">)))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path_dir</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">p4util.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">p4util</span>
+<span class="kn">import</span> <span class="nn">psi4</span>
+
+<div class="viewcode-block" id="scf_set_reference_local"><a class="viewcode-back" href="../../autodoc_driver.html#procedures.proc_util.scf_set_reference_local">[docs]</a><span class="k">def</span> <span class="nf">scf_set_reference_local</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Figures out the correct SCF reference to set locally</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">optstash</span> <span class="o">=</span> <span class="n">p4util</span><span class="o">.</span><span class="n">OptionsState</span><span class="p">(</span>
+        <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT_FUNCTIONAL&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;REFERENCE&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Alter default algorithm</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">psi4</span><span class="o">.</span><span class="n">has_option_changed</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">):</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">,</span> <span class="s1">&#39;DF&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;hf&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;RKS&#39;</span><span class="p">:</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">,</span><span class="s1">&#39;RHF&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;UKS&#39;</span><span class="p">:</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">,</span><span class="s1">&#39;UHF&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;scf&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;RKS&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT_FUNCTIONAL&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT_CUSTOM_FUNCTIONAL&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">,</span><span class="s1">&#39;RHF&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;UKS&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT_FUNCTIONAL&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT_CUSTOM_FUNCTIONAL&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">,</span><span class="s1">&#39;UHF&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">optstash</span></div>
+
+<div class="viewcode-block" id="dft_set_reference_local"><a class="viewcode-back" href="../../autodoc_driver.html#procedures.proc_util.dft_set_reference_local">[docs]</a><span class="k">def</span> <span class="nf">dft_set_reference_local</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Figures out the correct DFT reference to set locally</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">optstash</span> <span class="o">=</span> <span class="n">p4util</span><span class="o">.</span><span class="n">OptionsState</span><span class="p">(</span>
+        <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT_FUNCTIONAL&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;REFERENCE&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;DF_BASIS_MP2&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;DFMP2&#39;</span><span class="p">,</span> <span class="s1">&#39;MP2_OS_SCALE&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;DFMP2&#39;</span><span class="p">,</span> <span class="s1">&#39;MP2_SS_SCALE&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Alter default algorithm</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">psi4</span><span class="o">.</span><span class="n">has_option_changed</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">):</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">,</span> <span class="s1">&#39;DF&#39;</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT_FUNCTIONAL&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="n">user_ref</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">user_ref</span> <span class="o">==</span> <span class="s1">&#39;RHF&#39;</span><span class="p">):</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;REFERENCE&#39;</span><span class="p">,</span> <span class="s1">&#39;RKS&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">user_ref</span> <span class="o">==</span> <span class="s1">&#39;UHF&#39;</span><span class="p">):</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;REFERENCE&#39;</span><span class="p">,</span> <span class="s1">&#39;UKS&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">user_ref</span> <span class="o">==</span> <span class="s1">&#39;ROHF&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;ROHF reference for DFT is not available.&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">user_ref</span> <span class="o">==</span> <span class="s1">&#39;CUHF&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;CUHF reference for DFT is not available.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">optstash</span></div>
+
+<div class="viewcode-block" id="oeprop_validator"><a class="viewcode-back" href="../../autodoc_driver.html#procedures.proc_util.oeprop_validator">[docs]</a><span class="k">def</span> <span class="nf">oeprop_validator</span><span class="p">(</span><span class="n">prop_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validations a list of OEProp computations. Throws if not found</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">oeprop_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DIPOLE&#39;</span><span class="p">,</span> <span class="s1">&#39;QUADRUPOLE&#39;</span><span class="p">,</span> <span class="s1">&#39;MULLIKEN_CHARGES&#39;</span><span class="p">,</span> <span class="s1">&#39;LOWDIN_CHARGES&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;WIBERG_LOWDIN_INDICES&#39;</span><span class="p">,</span> <span class="s1">&#39;MAYER_INDICES&#39;</span><span class="p">,</span> <span class="s1">&#39;MAYER_INDICES&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;MO_EXTENTS&#39;</span><span class="p">,</span> <span class="s1">&#39;GRID_FIELD&#39;</span><span class="p">,</span> <span class="s1">&#39;GRID_ESP&#39;</span><span class="p">,</span> <span class="s1">&#39;ESP_AT_NUCLEI&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;NO_OCCUPATIONS&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">prop_list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationnError</span><span class="p">(</span><span class="s2">&quot;OEProp: No properties specified!&quot;</span><span class="p">)</span>
+
+
+    <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">prop_list</span><span class="p">:</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s1">&#39;MULTIPOLE(&#39;</span> <span class="ow">in</span> <span class="n">prop</span><span class="p">:</span> <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">oeprop_methods</span><span class="p">:</span>
+            <span class="n">alt_method_name</span> <span class="o">=</span> <span class="n">p4util</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">find_approximate_string_matches</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span>
+                                                                     <span class="n">oeprop_methods</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">alternatives</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">alt_method_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">alternatives</span> <span class="o">=</span> <span class="s2">&quot; Did you mean? </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alt_method_name</span><span class="p">))</span>
+
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;OEProp: Feature &#39;</span><span class="si">%s</span><span class="s2">&#39; is not recognized. </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">alternatives</span><span class="p">))</span></div>
+    
+
+<div class="viewcode-block" id="check_iwl_file_from_scf_type"><a class="viewcode-back" href="../../autodoc_driver.html#procedures.proc_util.check_iwl_file_from_scf_type">[docs]</a><span class="k">def</span> <span class="nf">check_iwl_file_from_scf_type</span><span class="p">(</span><span class="n">scf_type</span><span class="p">,</span> <span class="n">wfn</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensures that a IWL file has been written based on input SCF type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">scf_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;DF&#39;</span><span class="p">,</span> <span class="s1">&#39;CD&#39;</span><span class="p">,</span> <span class="s1">&#39;PK&#39;</span><span class="p">,</span> <span class="s1">&#39;DIRECT&#39;</span><span class="p">]:</span>
+        <span class="n">mints</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span>
+        <span class="n">mints</span><span class="o">.</span><span class="n">set_print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">mints</span><span class="o">.</span><span class="n">integrals</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="check_non_symmetric_jk_density"><a class="viewcode-back" href="../../autodoc_driver.html#procedures.proc_util.check_non_symmetric_jk_density">[docs]</a><span class="k">def</span> <span class="nf">check_non_symmetric_jk_density</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensure non-symmetric density matrices are supported for the selected JK routine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scf_type</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">)</span>
+    <span class="n">supp_jk_type</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DF&#39;</span><span class="p">,</span> <span class="s1">&#39;CD&#39;</span><span class="p">,</span> <span class="s1">&#39;PK&#39;</span><span class="p">,</span> <span class="s1">&#39;DIRECT&#39;</span><span class="p">,</span> <span class="s1">&#39;OUT_OF_CORE&#39;</span><span class="p">]</span>
+    <span class="n">supp_string</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supp_jk_type</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;, or &#39;</span> <span class="o">+</span> <span class="n">supp_jk_type</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span>
+
+    <span class="k">if</span> <span class="n">scf_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">supp_jk_type</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Method </span><span class="si">%s</span><span class="s2">: Requires support for non-symmetric density matrices.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                              <span class="s2">&quot;     Please set SCF_TYPE to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">supp_string</span><span class="p">))</span> </div>
+
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

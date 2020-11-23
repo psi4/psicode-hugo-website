@@ -1,0 +1,592 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DCFT &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../index.html" />
+    <link rel="up" title="Keywords by Module" href="../autodoc_options_c_bymodule.html" />
+    <link rel="next" title="ALGORITHM" href="dcft__algorithm.html" />
+    <link rel="prev" title="TDHF_MEM_SAFETY_FACTOR" href="cphf__tdhf_mem_safety_factor.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dcft__algorithm.html" title="ALGORITHM"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cphf__tdhf_mem_safety_factor.html" title="TDHF_MEM_SAFETY_FACTOR"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../appendices.html" >Appendices</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../autodoc_options_c_bymodule.html" accesskey="U">Keywords by Module</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="../_images/psi4banner.png"><img alt="Psi4 Project Logo" src="../_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="dcft">
+<span id="apdx-dcft"></span><h1>DCFT<a class="headerlink" href="#dcft" title="Permalink to this headline">¶</a></h1>
+<p>Performs density cumulant functional theory computations</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="algorithm">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-algorithm-dcft"><span class="xref std std-term">ALGORITHM</span></a><a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Algorithm to use for the density cumulant and orbital updates in the DCFT energy computation. Two-step algorithm is usually more efficient for small systems, but for large systems simultaneous algorithm (default) is recommended. If convergence problems are encountered (especially for highly symmetric systems) QC algorithm can be used.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: TWOSTEP, SIMULTANEOUS, QC</li>
+<li><strong>Default</strong>: SIMULTANEOUS</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ao-basis">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-ao-basis-dcft"><span class="xref std std-term">AO_BASIS</span></a><a class="headerlink" href="#ao-basis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls whether to avoid the AO-&gt;MO transformation of the two-electron integrals for the four-virtual case (&lt;VV||VV&gt;) by computing the corresponding terms in the AO basis. AO_BASIS = DISK algorithm reduces the memory requirements and can significantly reduce the cost of the energy computation if SIMULTANEOUS algorithm is used. For the TWOSTEP algorithm, however, AO_BASIS = DISK option is not recommended due to extra I/O.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: NONE, DISK</li>
+<li><strong>Default</strong>: DISK</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dcft-functional">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-dcft-functional-dcft"><span class="xref std std-term">DCFT_FUNCTIONAL</span></a><a class="headerlink" href="#dcft-functional" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Chooses appropriate DCFT method</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: DC-06, DC-12, ODC-06, ODC-12, ODC-13, CEPA0</li>
+<li><strong>Default</strong>: ODC-12</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dcft-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-dcft-type-dcft"><span class="xref std std-term">DCFT_TYPE</span></a><a class="headerlink" href="#dcft-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>What algorithm to use for the DCFT computation</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: CONV, DF</li>
+<li><strong>Default</strong>: CONV</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="df-basis-dcft">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-df-basis-dcft-dcft"><span class="xref std std-term">DF_BASIS_DCFT</span></a><a class="headerlink" href="#df-basis-dcft" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Auxiliary basis set for DCFT density fitting computations. <a class="reference internal" href="../basissets_byfamily.html#apdx-basisfamily"><span>Defaults</span></a> to a RI basis.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="../basissets_byelement.html#apdx-basiselement"><span>basis string</span></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="diis-start-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-diis-start-convergence-dcft"><span class="xref std std-term">DIIS_START_CONVERGENCE</span></a><a class="headerlink" href="#diis-start-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Value of RMS of the density cumulant residual and SCF error vector below which DIIS extrapolation starts. Same keyword controls the DIIS extrapolation for the solution of the response equations.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1e-3</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="e-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-e-convergence-dcft"><span class="xref std std-term">E_CONVERGENCE</span></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for energy. See Table <a class="reference internal" href="../scf.html#table-conv-corl"><span>Post-SCF Convergence</span></a> for default convergence criteria for different calculation types.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1e-10</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="guess-r-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-guess-r-convergence-dcft"><span class="xref std std-term">GUESS_R_CONVERGENCE</span></a><a class="headerlink" href="#guess-r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for the density cumulant and orbital guess for the variationally orbital-optimized DCFT methods. Currently only available for ALGORITHM = SIMULTANEOUS.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1e-3</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-maxiter-dcft"><span class="xref std std-term">MAXITER</span></a><a class="headerlink" href="#maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of macro- or micro-iterations for both energy and response equations</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 40</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="molden-write">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-molden-write-dcft"><span class="xref std std-term">MOLDEN_WRITE</span></a><a class="headerlink" href="#molden-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do write a MOLDEN output file? If so, the filename will end in .molden, and the prefix is determined by <a class="reference internal" href="../autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> (if set), or else by the name of the output file plus the name of the current molecule.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="odc-guess">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-odc-guess-dcft"><span class="xref std std-term">ODC_GUESS</span></a><a class="headerlink" href="#odc-guess" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether to perform a guess DC-06 or DC-12 computation for ODC-06 or ODC-12 methods, respectively. Currently only available for ALGORITHM = SIMULTANEOUS.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="qc-coupling">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-qc-coupling-dcft"><span class="xref std std-term">QC_COUPLING</span></a><a class="headerlink" href="#qc-coupling" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls whether to include the coupling terms in the DCFT electronic Hessian (for ALOGRITHM = QC with QC_TYPE = SIMULTANEOUS only)</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="qc-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-qc-type-dcft"><span class="xref std std-term">QC_TYPE</span></a><a class="headerlink" href="#qc-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls the type of the quadratically-convergent algorithm (effective for ALGORITHM = QC). If set to TWOSTEP the Newton-Raphson equations are only solved for the orbital updates, the cumulant is updated using the standard Jacobi algorithm. If set to SIMULTANEOUS both cumulant and orbitals are updated in a single Newton-Raphson step.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: TWOSTEP, SIMULTANEOUS</li>
+<li><strong>Default</strong>: SIMULTANEOUS</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="reference">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-reference-dcft"><span class="xref std std-term">REFERENCE</span></a><a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Reference wavefunction type</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: UHF, RHF, ROHF</li>
+<li><strong>Default</strong>: RHF</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="response-algorithm">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-response-algorithm-dcft"><span class="xref std std-term">RESPONSE_ALGORITHM</span></a><a class="headerlink" href="#response-algorithm" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Algorithm to use for the solution of DC-06 response equations in computation of analytic gradients and properties</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: TWOSTEP, SIMULTANEOUS</li>
+<li><strong>Default</strong>: TWOSTEP</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="r-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-r-convergence-dcft"><span class="xref std std-term">R_CONVERGENCE</span></a><a class="headerlink" href="#r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for the RMS of the residual vector in density cumulant updates, as well as the solution of the density cumulant and orbital response equations. In the orbital updates controls the RMS of the SCF error vector</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1e-10</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="three-particle">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-three-particle-dcft"><span class="xref std std-term">THREE_PARTICLE</span></a><a class="headerlink" href="#three-particle" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether to compute three-particle energy correction or not</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: NONE, PERTURBATIVE</li>
+<li><strong>Default</strong>: NONE</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="expert">
+<h2><em>Expert</em><a class="headerlink" href="#expert" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cachelevel">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-cachelevel-dcft"><span class="xref std std-term">CACHELEVEL</span></a><a class="headerlink" href="#cachelevel" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls how to cache quantities within the DPD library</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="damping-percentage">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-damping-percentage-dcft"><span class="xref std std-term">DAMPING_PERCENTAGE</span></a><a class="headerlink" href="#damping-percentage" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The amount (percentage) of damping to apply to the orbital update procedure: 0 will result in a full update, 100 will completely stall the update. A value around 20 (which corresponds to 20% of the previous iteration&#8217;s density being mixed into the current iteration) can help in cases where oscillatory convergence is observed.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 0.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dcft-guess">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-dcft-guess-dcft"><span class="xref std std-term">DCFT_GUESS</span></a><a class="headerlink" href="#dcft-guess" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether to read the orbitals from a previous computation, or to compute an MP2 guess</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: CC, BCC, MP2, DCFT</li>
+<li><strong>Default</strong>: MP2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="diis-max-vecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-diis-max-vecs-dcft"><span class="xref std std-term">DIIS_MAX_VECS</span></a><a class="headerlink" href="#diis-max-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of error vectors stored for DIIS extrapolation</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 6</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="diis-min-vecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-diis-min-vecs-dcft"><span class="xref std std-term">DIIS_MIN_VECS</span></a><a class="headerlink" href="#diis-min-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum number of error vectors stored for DIIS extrapolation</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 3</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="energy-level-shift">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-energy-level-shift-dcft"><span class="xref std std-term">ENERGY_LEVEL_SHIFT</span></a><a class="headerlink" href="#energy-level-shift" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Level shift applied to the diagonal of the density-weighted Fock operator. While this shift can improve convergence, it does change the DCFT energy.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 0.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ignore-tau">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-ignore-tau-dcft"><span class="xref std std-term">IGNORE_TAU</span></a><a class="headerlink" href="#ignore-tau" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls whether to ignore terms containing non-idempotent contribution to OPDM or not (for debug puproses only). For practical applications only the default must be used</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ints-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-ints-tolerance-dcft"><span class="xref std std-term">INTS_TOLERANCE</span></a><a class="headerlink" href="#ints-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum absolute value below which integrals are neglected</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1e-14</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mo-relax">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-mo-relax-dcft"><span class="xref std std-term">MO_RELAX</span></a><a class="headerlink" href="#mo-relax" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls whether to relax the orbitals during the energy computation or not (for debug puproses only). For practical applications only the default must be used</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="orbital-level-shift">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-orbital-level-shift-dcft"><span class="xref std std-term">ORBITAL_LEVEL_SHIFT</span></a><a class="headerlink" href="#orbital-level-shift" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The shift applied to the denominator in the orbital update iterations</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 0.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="relax-guess-orbitals">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-relax-guess-orbitals-dcft"><span class="xref std std-term">RELAX_GUESS_ORBITALS</span></a><a class="headerlink" href="#relax-guess-orbitals" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls whether to relax the guess orbitals by taking the guess density cumulant and performing orbital update on the first macroiteration (for ALOGRITHM = TWOSTEP only)</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="relax-tau">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-relax-tau-dcft"><span class="xref std std-term">RELAX_TAU</span></a><a class="headerlink" href="#relax-tau" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls whether to relax tau during the cumulant updates or not</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="stability-add-vectors">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-stability-add-vectors-dcft"><span class="xref std std-term">STABILITY_ADD_VECTORS</span></a><a class="headerlink" href="#stability-add-vectors" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The number of vectors that can be added simultaneously into the subspace for Davidson&#8217;s diagonalization in stability check</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 20</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="stability-augment-space-tol">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-stability-augment-space-tol-dcft"><span class="xref std std-term">STABILITY_AUGMENT_SPACE_TOL</span></a><a class="headerlink" href="#stability-augment-space-tol" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The value of the rms of the residual in Schmidt orthogonalization which is used as a threshold for augmenting the vector subspace in stability check</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 0.1</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="stability-check">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-stability-check-dcft"><span class="xref std std-term">STABILITY_CHECK</span></a><a class="headerlink" href="#stability-check" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Performs stability analysis of the DCFT energy</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="stability-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-stability-convergence-dcft"><span class="xref std std-term">STABILITY_CONVERGENCE</span></a><a class="headerlink" href="#stability-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls the convergence of the Davidson&#8217;s diagonalization in stability check</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1e-4</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="stability-max-space-size">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-stability-max-space-size-dcft"><span class="xref std std-term">STABILITY_MAX_SPACE_SIZE</span></a><a class="headerlink" href="#stability-max-space-size" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The maximum size of the subspace for the stability check. The program will terminate if this parameter is exceeded and the convergence (STABILITY_CONVERGENCE) is not satisfied</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 200</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="stability-n-eigenvalues">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-stability-n-eigenvalues-dcft"><span class="xref std std-term">STABILITY_N_EIGENVALUES</span></a><a class="headerlink" href="#stability-n-eigenvalues" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The number of Hessian eigenvalues computed during the stability check</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 3</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="stability-n-guess-vectors">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-stability-n-guess-vectors-dcft"><span class="xref std std-term">STABILITY_N_GUESS_VECTORS</span></a><a class="headerlink" href="#stability-n-guess-vectors" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The number of guess vectors used for Davidson&#8217;s diagonalization in stability check</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 20</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="tikhonow-omega">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-tikhonow-omega-dcft"><span class="xref std std-term">TIKHONOW_OMEGA</span></a><a class="headerlink" href="#tikhonow-omega" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The shift applied to the denominator in the density cumulant update iterations</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 0.0</li>
+</ul>
+</div></blockquote>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DCFT</a><ul>
+<li><a class="reference internal" href="#general">General</a><ul>
+<li><a class="reference internal" href="#algorithm"><code class="docutils literal"><span class="pre">ALGORITHM</span></code></a></li>
+<li><a class="reference internal" href="#ao-basis"><code class="docutils literal"><span class="pre">AO_BASIS</span></code></a></li>
+<li><a class="reference internal" href="#dcft-functional"><code class="docutils literal"><span class="pre">DCFT_FUNCTIONAL</span></code></a></li>
+<li><a class="reference internal" href="#dcft-type"><code class="docutils literal"><span class="pre">DCFT_TYPE</span></code></a></li>
+<li><a class="reference internal" href="#df-basis-dcft"><code class="docutils literal"><span class="pre">DF_BASIS_DCFT</span></code></a></li>
+<li><a class="reference internal" href="#diis-start-convergence"><code class="docutils literal"><span class="pre">DIIS_START_CONVERGENCE</span></code></a></li>
+<li><a class="reference internal" href="#e-convergence"><code class="docutils literal"><span class="pre">E_CONVERGENCE</span></code></a></li>
+<li><a class="reference internal" href="#guess-r-convergence"><code class="docutils literal"><span class="pre">GUESS_R_CONVERGENCE</span></code></a></li>
+<li><a class="reference internal" href="#maxiter"><code class="docutils literal"><span class="pre">MAXITER</span></code></a></li>
+<li><a class="reference internal" href="#molden-write"><code class="docutils literal"><span class="pre">MOLDEN_WRITE</span></code></a></li>
+<li><a class="reference internal" href="#odc-guess"><code class="docutils literal"><span class="pre">ODC_GUESS</span></code></a></li>
+<li><a class="reference internal" href="#qc-coupling"><code class="docutils literal"><span class="pre">QC_COUPLING</span></code></a></li>
+<li><a class="reference internal" href="#qc-type"><code class="docutils literal"><span class="pre">QC_TYPE</span></code></a></li>
+<li><a class="reference internal" href="#reference"><code class="docutils literal"><span class="pre">REFERENCE</span></code></a></li>
+<li><a class="reference internal" href="#response-algorithm"><code class="docutils literal"><span class="pre">RESPONSE_ALGORITHM</span></code></a></li>
+<li><a class="reference internal" href="#r-convergence"><code class="docutils literal"><span class="pre">R_CONVERGENCE</span></code></a></li>
+<li><a class="reference internal" href="#three-particle"><code class="docutils literal"><span class="pre">THREE_PARTICLE</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert"><em>Expert</em></a><ul>
+<li><a class="reference internal" href="#cachelevel"><code class="docutils literal"><span class="pre">CACHELEVEL</span></code></a></li>
+<li><a class="reference internal" href="#damping-percentage"><code class="docutils literal"><span class="pre">DAMPING_PERCENTAGE</span></code></a></li>
+<li><a class="reference internal" href="#dcft-guess"><code class="docutils literal"><span class="pre">DCFT_GUESS</span></code></a></li>
+<li><a class="reference internal" href="#diis-max-vecs"><code class="docutils literal"><span class="pre">DIIS_MAX_VECS</span></code></a></li>
+<li><a class="reference internal" href="#diis-min-vecs"><code class="docutils literal"><span class="pre">DIIS_MIN_VECS</span></code></a></li>
+<li><a class="reference internal" href="#energy-level-shift"><code class="docutils literal"><span class="pre">ENERGY_LEVEL_SHIFT</span></code></a></li>
+<li><a class="reference internal" href="#ignore-tau"><code class="docutils literal"><span class="pre">IGNORE_TAU</span></code></a></li>
+<li><a class="reference internal" href="#ints-tolerance"><code class="docutils literal"><span class="pre">INTS_TOLERANCE</span></code></a></li>
+<li><a class="reference internal" href="#mo-relax"><code class="docutils literal"><span class="pre">MO_RELAX</span></code></a></li>
+<li><a class="reference internal" href="#orbital-level-shift"><code class="docutils literal"><span class="pre">ORBITAL_LEVEL_SHIFT</span></code></a></li>
+<li><a class="reference internal" href="#relax-guess-orbitals"><code class="docutils literal"><span class="pre">RELAX_GUESS_ORBITALS</span></code></a></li>
+<li><a class="reference internal" href="#relax-tau"><code class="docutils literal"><span class="pre">RELAX_TAU</span></code></a></li>
+<li><a class="reference internal" href="#stability-add-vectors"><code class="docutils literal"><span class="pre">STABILITY_ADD_VECTORS</span></code></a></li>
+<li><a class="reference internal" href="#stability-augment-space-tol"><code class="docutils literal"><span class="pre">STABILITY_AUGMENT_SPACE_TOL</span></code></a></li>
+<li><a class="reference internal" href="#stability-check"><code class="docutils literal"><span class="pre">STABILITY_CHECK</span></code></a></li>
+<li><a class="reference internal" href="#stability-convergence"><code class="docutils literal"><span class="pre">STABILITY_CONVERGENCE</span></code></a></li>
+<li><a class="reference internal" href="#stability-max-space-size"><code class="docutils literal"><span class="pre">STABILITY_MAX_SPACE_SIZE</span></code></a></li>
+<li><a class="reference internal" href="#stability-n-eigenvalues"><code class="docutils literal"><span class="pre">STABILITY_N_EIGENVALUES</span></code></a></li>
+<li><a class="reference internal" href="#stability-n-guess-vectors"><code class="docutils literal"><span class="pre">STABILITY_N_GUESS_VECTORS</span></code></a></li>
+<li><a class="reference internal" href="#tikhonow-omega"><code class="docutils literal"><span class="pre">TIKHONOW_OMEGA</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cphf__tdhf_mem_safety_factor.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">TDHF_MEM_SAFETY_FACTOR</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dcft__algorithm.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">ALGORITHM</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/autodir_options_c/module__dcft.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dcft__algorithm.html" title="ALGORITHM"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cphf__tdhf_mem_safety_factor.html" title="TDHF_MEM_SAFETY_FACTOR"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../appendices.html" >Appendices</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="../autodoc_options_c_bymodule.html" >Keywords by Module</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>
