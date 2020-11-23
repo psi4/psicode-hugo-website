@@ -1,0 +1,622 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.libmintscoordentry &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for qcdb.libmintscoordentry</h1><div class="highlight"><pre>
+<span class="sd">r&quot;&quot;&quot;Module to largely replicate in python the psi4 libmints</span>
+<span class="sd">CoordValue and CoordEntry classes, which were developed by</span>
+<span class="sd">Justin M. Turney, with incremental improvements by other</span>
+<span class="sd">psi4 developers.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">vecutil</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="CoordValue"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordValue">[docs]</a><span class="k">class</span> <span class="nc">CoordValue</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An abstract class to handle storage of Cartesian coordinate values, which</span>
+<span class="sd">    may be defined in terms of other variables through this mechanism, greatly</span>
+<span class="sd">    simplifying Z-matrix specification, for example.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">computed</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="c"># Fixed coordinate?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYfixed</span> <span class="o">=</span> <span class="n">fixed</span>
+        <span class="c"># Whether the current value is up to date or not</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="n">computed</span>
+
+<div class="viewcode-block" id="CoordValue.set_fixed"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordValue.set_fixed">[docs]</a>    <span class="k">def</span> <span class="nf">set_fixed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixed</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set whether the coordinate value is fixed or not&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYfixed</span> <span class="o">=</span> <span class="n">fixed</span>
+</div>
+<div class="viewcode-block" id="CoordValue.fixed"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordValue.fixed">[docs]</a>    <span class="k">def</span> <span class="nf">fixed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get whether the coordinate value is fixed or not&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYfixed</span>
+</div>
+<div class="viewcode-block" id="CoordValue.invalidate"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordValue.invalidate">[docs]</a>    <span class="k">def</span> <span class="nf">invalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Flag the current value as outdated&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="CoordValue.everything"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordValue.everything">[docs]</a>    <span class="k">def</span> <span class="nf">everything</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">CoordValue</span><span class="se">\n</span><span class="s">  Fixed = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Computed = </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PYfixed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="NumberValue"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.NumberValue">[docs]</a><span class="k">class</span> <span class="nc">NumberValue</span><span class="p">(</span><span class="n">CoordValue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Specialization of CoordValue that is simply a number to be stored.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">CoordValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="c"># coordinate number value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="NumberValue.compute"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.NumberValue.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes value of coordinate from member data&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+</div>
+<div class="viewcode-block" id="NumberValue.rset"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.NumberValue.rset">[docs]</a>    <span class="k">def</span> <span class="nf">rset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resets value of coordinate if not fixed&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYfixed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">val</span>
+</div>
+<div class="viewcode-block" id="NumberValue.type"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.NumberValue.type">[docs]</a>    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets specialization type of CoordValue&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;NumberType&#39;</span>
+</div>
+<div class="viewcode-block" id="NumberValue.clone"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.NumberValue.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns new, independent NumberValue object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NumberValue.variable_to_string"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.NumberValue.variable_to_string">[docs]</a>    <span class="k">def</span> <span class="nf">variable_to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Takes a CoordValue object, and returns a string for printing.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%*.*f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">precision</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">precision</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="NumberValue.everything"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.NumberValue.everything">[docs]</a>    <span class="k">def</span> <span class="nf">everything</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">NumberValue</span><span class="se">\n</span><span class="s">  Fixed = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Computed = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Type = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Value = </span><span class="si">%f</span><span class="se">\n</span><span class="s">  FValue = </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> \
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PYfixed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="VariableValue"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue">[docs]</a><span class="k">class</span> <span class="nc">VariableValue</span><span class="p">(</span><span class="n">CoordValue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Specialization of CoordValue, where the current value depends</span>
+<span class="sd">    on the list of geometry values stored by the molecule.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">geometryVariables</span><span class="p">,</span> <span class="n">negate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">CoordValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="c"># Name of variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYname</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="c"># Dictionary from molecule of variable names and values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometryVariables</span> <span class="o">=</span> <span class="n">geometryVariables</span>
+        <span class="c"># Whether the coordinate value is actually the negative of the variable value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">negate</span> <span class="o">=</span> <span class="n">negate</span>
+
+<div class="viewcode-block" id="VariableValue.compute"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes value of coordinate from member data&quot;&quot;&quot;</span>
+        <span class="n">vstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYname</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">vstr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometryVariables</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IncompleteAtomError</span><span class="p">(</span><span class="s">&#39;Variable </span><span class="si">%s</span><span class="s"> used in geometry specification has not been defined&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vstr</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">negate</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometryVariables</span><span class="p">[</span><span class="n">vstr</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometryVariables</span><span class="p">[</span><span class="n">vstr</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="VariableValue.negated"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue.negated">[docs]</a>    <span class="k">def</span> <span class="nf">negated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets whether the coordinate value is actually the negative of the variable value&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">negate</span>
+</div>
+<div class="viewcode-block" id="VariableValue.name"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the name of the variable&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYname</span>
+</div>
+<div class="viewcode-block" id="VariableValue.rset"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue.rset">[docs]</a>    <span class="k">def</span> <span class="nf">rset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resets value of coordinate if not fixed&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYfixed</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">negate</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">geometryVariables</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">PYname</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">geometryVariables</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">PYname</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+</div>
+<div class="viewcode-block" id="VariableValue.type"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue.type">[docs]</a>    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets specialization type of CoordValue&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;VariableType&#39;</span>
+</div>
+<div class="viewcode-block" id="VariableValue.clone"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns new, independent VariableValue object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VariableValue.variable_to_string"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue.variable_to_string">[docs]</a>    <span class="k">def</span> <span class="nf">variable_to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Takes a CoordValue object, and returns a string for printing.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">negate</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;-&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYname</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYname</span>
+</div>
+<div class="viewcode-block" id="VariableValue.everything"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.VariableValue.everything">[docs]</a>    <span class="k">def</span> <span class="nf">everything</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">VariableValue</span><span class="se">\n</span><span class="s">  Fixed = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Computed = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Type = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Value = </span><span class="si">%f</span><span class="se">\n</span><span class="s">  FValue = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Name = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Negated = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Map = </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> \
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PYfixed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">negated</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometryVariables</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="CoordEntry"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry">[docs]</a><span class="k">class</span> <span class="nc">CoordEntry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_number</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="c"># Order in full atomic list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYentry_number</span> <span class="o">=</span> <span class="n">entry_number</span>
+        <span class="c"># Whether the coordinates have been computed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="c"># Actual cartesian coordinates of the atom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+
+        <span class="c"># Atomic number of the atom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYZ</span> <span class="o">=</span> <span class="n">Z</span>
+        <span class="c"># Charge of the atom (SAD-related)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYcharge</span> <span class="o">=</span> <span class="n">charge</span>
+        <span class="c"># Mass of the atom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYmass</span> <span class="o">=</span> <span class="n">mass</span>
+        <span class="c"># Label of the atom minus any extra info (H1 =&gt; H)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYsymbol</span> <span class="o">=</span> <span class="n">symbol</span>
+        <span class="c"># Original label from the molecule from the input file (H1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYlabel</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="c"># Is this a ghost atom?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ghosted</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CoordEntry.r"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.r">[docs]</a>    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the distance between two sets of coordinates&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">a2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;ERROR: r() only defined for Vector3</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">distance</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CoordEntry.a"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.a">[docs]</a>    <span class="k">def</span> <span class="nf">a</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the angle (in rad.) between three sets of coordinates.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">a2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">a3</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;ERROR: a() only defined for Vector3</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">eBA</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">a1</span><span class="p">)</span>
+        <span class="n">eBC</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">)</span>
+        <span class="n">eBA</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">eBA</span><span class="p">)</span>
+        <span class="n">eBC</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">eBC</span><span class="p">)</span>
+        <span class="n">costheta</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">eBA</span><span class="p">,</span> <span class="n">eBC</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">costheta</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">1.0E-14</span><span class="p">:</span>
+            <span class="n">costheta</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">if</span> <span class="n">costheta</span> <span class="o">&lt;</span> <span class="mf">1.0E-14</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">costheta</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">costheta</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CoordEntry.d"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.d">[docs]</a>    <span class="k">def</span> <span class="nf">d</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the dihedral (in rad.) between four sets of coordinates.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">a2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">a3</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">a4</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;ERROR: d() only defined for Vector3</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">eBA</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">a1</span><span class="p">)</span>
+        <span class="n">eDC</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">a4</span><span class="p">,</span> <span class="n">a3</span><span class="p">)</span>
+        <span class="n">eCB</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">a3</span><span class="p">,</span> <span class="n">a2</span><span class="p">)</span>
+        <span class="n">CBNorm</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">eCB</span><span class="p">)</span>
+        <span class="n">DCxCB</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">eDC</span><span class="p">,</span> <span class="n">eCB</span><span class="p">)</span>
+        <span class="n">CBxBA</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">eCB</span><span class="p">,</span> <span class="n">eBA</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">CBNorm</span> <span class="o">*</span> <span class="n">dot</span><span class="p">(</span><span class="n">eDC</span><span class="p">,</span> <span class="n">CBxBA</span><span class="p">),</span> <span class="n">dot</span><span class="p">(</span><span class="n">DCxCB</span><span class="p">,</span> <span class="n">CBxBA</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.is_computed"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.is_computed">[docs]</a>    <span class="k">def</span> <span class="nf">is_computed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether the current atom&#39;s coordinates are up-to-date.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.is_equivalent_to"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.is_equivalent_to">[docs]</a>    <span class="k">def</span> <span class="nf">is_equivalent_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether this atom has the same mass and ghost status as atom *other*.</span>
+<span class="sd">        Unlike the libmints version, this does not compare basisset assignment.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">PYZ</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYZ</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">PYmass</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYmass</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">ghosted</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ghosted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.is_ghosted"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.is_ghosted">[docs]</a>    <span class="k">def</span> <span class="nf">is_ghosted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether the current atom is ghosted or not.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ghosted</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.set_ghosted"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.set_ghosted">[docs]</a>    <span class="k">def</span> <span class="nf">set_ghosted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gh</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Flag the atom as either ghost or real.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ghosted</span> <span class="o">=</span> <span class="n">gh</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.Z"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.Z">[docs]</a>    <span class="k">def</span> <span class="nf">Z</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The nuclear charge of the current atom (0 if ghosted).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ghosted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYZ</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.charge"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.charge">[docs]</a>    <span class="k">def</span> <span class="nf">charge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The &quot;atomic charge&quot; of the current atom (for SAD purposes).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYcharge</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.mass"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.mass">[docs]</a>    <span class="k">def</span> <span class="nf">mass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The atomic mass of the current atom.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYmass</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.symbol"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.symbol">[docs]</a>    <span class="k">def</span> <span class="nf">symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The atomic symbol.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYsymbol</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.label"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.label">[docs]</a>    <span class="k">def</span> <span class="nf">label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The atom label.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYlabel</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.entry_number"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.entry_number">[docs]</a>    <span class="k">def</span> <span class="nf">entry_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The order in which this appears in the full atom list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYentry_number</span>
+</div>
+<div class="viewcode-block" id="CoordEntry.everything"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CoordEntry.everything">[docs]</a>    <span class="k">def</span> <span class="nf">everything</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">CoordEntry</span><span class="se">\n</span><span class="s">  Entry Number = </span><span class="si">%d</span><span class="se">\n</span><span class="s">  Computed = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Z = </span><span class="si">%d</span><span class="se">\n</span><span class="s">  Charge = </span><span class="si">%f</span><span class="se">\n</span><span class="s">  Mass = </span><span class="si">%f</span><span class="se">\n</span><span class="s">  Symbol = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Label = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Ghosted = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  Coordinates = </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> \
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entry_number</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_computed</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ghosted</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="CartesianEntry"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CartesianEntry">[docs]</a><span class="k">class</span> <span class="nc">CartesianEntry</span><span class="p">(</span><span class="n">CoordEntry</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to hold all information about an atom, including its</span>
+<span class="sd">    coordinate specification as three Cartesians.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_number</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">CoordEntry</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_number</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
+
+<div class="viewcode-block" id="CartesianEntry.compute"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CartesianEntry.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the values of the coordinates (in whichever units</span>
+<span class="sd">        were inputted), returning them in a Vector</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span>
+</div>
+<div class="viewcode-block" id="CartesianEntry.set_coordinates"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CartesianEntry.set_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">set_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Given the current set of coordinates, updates the values of this</span>
+<span class="sd">        atom&#39;s coordinates and any variables that may depend on it.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">rset</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">rset</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">rset</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="CartesianEntry.type"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CartesianEntry.type">[docs]</a>    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The type of CoordEntry specialization.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;CartesianCoord&#39;</span>
+</div>
+<div class="viewcode-block" id="CartesianEntry.print_in_input_format"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CartesianEntry.print_in_input_format">[docs]</a>    <span class="k">def</span> <span class="nf">print_in_input_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints the updated geometry, in the format provided by the user.&quot;&quot;&quot;</span>
+        <span class="n">xstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">ystr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">zstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="se">\t</span><span class="si">%16s</span><span class="s"> </span><span class="si">%16s</span><span class="s"> </span><span class="si">%16s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">xstr</span><span class="p">,</span> <span class="n">ystr</span><span class="p">,</span> <span class="n">zstr</span><span class="p">)</span>
+        <span class="c"># should go to outfile</span>
+</div>
+<div class="viewcode-block" id="CartesianEntry.invalidate"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CartesianEntry.invalidate">[docs]</a>    <span class="k">def</span> <span class="nf">invalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Flags the current coordinates as being outdated.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="CartesianEntry.clone"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CartesianEntry.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns new, independent CartesianEntry object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CartesianEntry.everything"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.CartesianEntry.everything">[docs]</a>    <span class="k">def</span> <span class="nf">everything</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">CoordEntry</span><span class="o">.</span><span class="n">everything</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">CartesianEntry</span><span class="se">\n</span><span class="s">  Type = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  x = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  y = </span><span class="si">%s</span><span class="se">\n</span><span class="s">  z = </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="ZMatrixEntry"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.ZMatrixEntry">[docs]</a><span class="k">class</span> <span class="nc">ZMatrixEntry</span><span class="p">(</span><span class="n">CoordEntry</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to hold all information about an atom, including its</span>
+<span class="sd">    coordinate specification as any position of ZMatrix.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_number</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> \
+        <span class="n">rto</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">rval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ato</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">aval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dto</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dval</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">CoordEntry</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_number</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rto</span> <span class="o">=</span> <span class="n">rto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rval</span> <span class="o">=</span> <span class="n">rval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ato</span> <span class="o">=</span> <span class="n">ato</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aval</span> <span class="o">=</span> <span class="n">aval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dto</span> <span class="o">=</span> <span class="n">dto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dval</span> <span class="o">=</span> <span class="n">dval</span>
+
+<div class="viewcode-block" id="ZMatrixEntry.invalidate"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.ZMatrixEntry.invalidate">[docs]</a>    <span class="k">def</span> <span class="nf">invalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Flags the current coordinates as being outdated&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rval</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rval</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aval</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aval</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dval</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dval</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ZMatrixEntry.print_in_input_format"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.ZMatrixEntry.print_in_input_format">[docs]</a>    <span class="k">def</span> <span class="nf">print_in_input_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints the updated geometry, in the format provided by the user&quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># The first atom</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># The second atom</span>
+            <span class="n">now_rto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">entry_number</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">now_rval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rval</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s"> </span><span class="si">%5d</span><span class="s"> </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(),</span> <span class="n">now_rto</span><span class="p">,</span> <span class="n">now_rval</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># The third atom</span>
+            <span class="n">now_rto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">entry_number</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">now_rval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rval</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">now_ato</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span><span class="o">.</span><span class="n">entry_number</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">now_aval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aval</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s"> </span><span class="si">%5d</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%5d</span><span class="s"> </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(),</span> <span class="n">now_rto</span><span class="p">,</span> <span class="n">now_rval</span><span class="p">,</span> <span class="n">now_ato</span><span class="p">,</span> <span class="n">now_aval</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Remaining atoms</span>
+            <span class="n">now_rto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">entry_number</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">now_rval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rval</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">now_ato</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span><span class="o">.</span><span class="n">entry_number</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">now_aval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aval</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">now_dto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span><span class="o">.</span><span class="n">entry_number</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">now_dval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dval</span><span class="o">.</span><span class="n">variable_to_string</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s"> </span><span class="si">%5d</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%5d</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%5d</span><span class="s"> </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(),</span> <span class="n">now_rto</span><span class="p">,</span> <span class="n">now_rval</span><span class="p">,</span> <span class="n">now_ato</span><span class="p">,</span> <span class="n">now_aval</span><span class="p">,</span> <span class="n">now_dto</span><span class="p">,</span> <span class="n">now_dval</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">text</span>
+<span class="c">#        outfile</span>
+</div>
+<div class="viewcode-block" id="ZMatrixEntry.set_coordinates"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.ZMatrixEntry.set_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">set_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Given the current set of coordinates, updates the values of this</span>
+<span class="sd">        atom&#39;s coordinates, and any variables that may depend on it.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0E-14</span> <span class="k">else</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0E-14</span> <span class="k">else</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0E-14</span> <span class="k">else</span> <span class="n">z</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">is_computed</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;Coordinates have been set in the wrong order&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rval</span><span class="o">.</span><span class="n">rset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">compute</span><span class="p">()))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span><span class="o">.</span><span class="n">is_computed</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;Coordinates have been set in the wrong order&quot;</span><span class="p">)</span>
+            <span class="n">aval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">compute</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+            <span class="c"># Noise creeps in for linear molecules. Force linearity, if it is close enough.</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">aval</span> <span class="o">*</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aval</span><span class="o">.</span><span class="n">rset</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span><span class="o">.</span><span class="n">is_computed</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;Coordinates have been set in the wrong order&quot;</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">compute</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span><span class="o">.</span><span class="n">compute</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+            <span class="c"># Check for NaN, and don&#39;t update if we find one</span>
+            <span class="c"># what is this? proper py traslation?</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">val</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dval</span><span class="o">.</span><span class="n">rset</span><span class="p">(</span><span class="n">val</span> <span class="o">*</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="ZMatrixEntry.type"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.ZMatrixEntry.type">[docs]</a>    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The type of CoordEntry specialization.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;ZMatrixCoord&#39;</span>
+</div>
+<div class="viewcode-block" id="ZMatrixEntry.clone"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.ZMatrixEntry.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns new, independent ZMatrixEntry object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ZMatrixEntry.compute"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.ZMatrixEntry.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the Cartesian coordinates in Bohr of current atom&#39;s entry.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">computed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span>
+
+        <span class="c"># place first atom at the origin</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="c"># place second atom directly above the first</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span> <span class="o">==</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rval</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+        <span class="c"># place third atom pointing upwards</span>
+        <span class="c">#    this       rTo   rVal  aTo  aVal</span>
+        <span class="c">#      A         B           C</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rval</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aval</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+            <span class="n">cosABC</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">sinABC</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+            <span class="n">eCB</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+            <span class="n">eCB</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">eCB</span><span class="p">)</span>
+            <span class="n">eX</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+            <span class="n">eY</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">eCB</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="mf">1.0E-5</span><span class="p">):</span>
+                <span class="c"># CB is collinear with X, start by finding Y</span>
+                <span class="n">eY</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="n">eX</span> <span class="o">=</span> <span class="n">perp_unit</span><span class="p">(</span><span class="n">eY</span><span class="p">,</span> <span class="n">eCB</span><span class="p">)</span>
+                <span class="n">eY</span> <span class="o">=</span> <span class="n">perp_unit</span><span class="p">(</span><span class="n">eX</span><span class="p">,</span> <span class="n">eCB</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># CB is not collinear with X, we can safely find X first</span>
+                <span class="n">eX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="n">eY</span> <span class="o">=</span> <span class="n">perp_unit</span><span class="p">(</span><span class="n">eX</span><span class="p">,</span> <span class="n">eCB</span><span class="p">)</span>
+                <span class="n">eX</span> <span class="o">=</span> <span class="n">perp_unit</span><span class="p">(</span><span class="n">eY</span><span class="p">,</span> <span class="n">eCB</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">=</span> <span class="n">B</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">eY</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">*</span> <span class="n">sinABC</span> <span class="o">-</span> <span class="n">eCB</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">*</span> <span class="n">cosABC</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">xyz</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1.E-14</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="c"># The fourth, or subsequent, atom</span>
+        <span class="c">#</span>
+        <span class="c"># The atom specification is</span>
+        <span class="c">#      this       rTo   rVal  aTo  aVal   dTo   dVal</span>
+        <span class="c">#        A         B           C           D</span>
+        <span class="c"># which allows us to define the vector from C-&gt;B (eCB) as the +z axis, and eDC</span>
+        <span class="c"># lies in the xz plane.  Then eX, eY and eZ (=eBC) are the x, y, and z axes, respecively.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rval</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aval</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dval</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rto</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ato</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dto</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+            <span class="n">eDC</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+            <span class="n">eCB</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+            <span class="n">eDC</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">eDC</span><span class="p">)</span>
+            <span class="n">eCB</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">eCB</span><span class="p">)</span>
+            <span class="n">cosABC</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">sinABC</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">cosABCD</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">sinABCD</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">eY</span> <span class="o">=</span> <span class="n">perp_unit</span><span class="p">(</span><span class="n">eDC</span><span class="p">,</span> <span class="n">eCB</span><span class="p">)</span>
+            <span class="n">eX</span> <span class="o">=</span> <span class="n">perp_unit</span><span class="p">(</span><span class="n">eY</span><span class="p">,</span> <span class="n">eCB</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">=</span> <span class="n">B</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">eX</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">*</span> <span class="n">sinABC</span> <span class="o">*</span> <span class="n">cosABCD</span> <span class="o">+</span>
+                         <span class="n">eY</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">*</span> <span class="n">sinABC</span> <span class="o">*</span> <span class="n">sinABCD</span> <span class="o">-</span> <span class="n">eCB</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">*</span> <span class="n">cosABC</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">xyz</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1.E-14</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">xyz</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">computed</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span>
+</div>
+<div class="viewcode-block" id="ZMatrixEntry.everything"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintscoordentry.ZMatrixEntry.everything">[docs]</a>    <span class="k">def</span> <span class="nf">everything</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">CoordEntry</span><span class="o">.</span><span class="n">everything</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">ZMatrixEntry</span><span class="se">\n</span><span class="s">  Type = </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">())</span>
+        <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_in_input_format</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Mar 20, 2014.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

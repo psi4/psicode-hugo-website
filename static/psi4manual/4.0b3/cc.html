@@ -1,0 +1,577 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CC: Coupled Cluster Methods &mdash; PSI4 [beta3] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta3] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="PSIMRCC Implementation of Mk-MRCC Theory" href="psimrcc.html" />
+    <link rel="prev" title="CEPA: Coupled-Pair Methods" href="cepa.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psimrcc.html" title="PSIMRCC Implementation of Mk-MRCC Theory"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cepa.html" title="CEPA: Coupled-Pair Methods"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="cc-coupled-cluster-methods">
+<span id="sec-cc"></span><span id="index-0"></span><h1>CC: Coupled Cluster Methods<a class="headerlink" href="#cc-coupled-cluster-methods" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: T. Daniel Crawford</em></p>
+<p><em>Section author: T. Daniel Crawford</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__ccenergy.html#apdx-ccenergy"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__ccenergy.html#apdx-ccenergy-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/ccenergy">CCENERGY</a></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__cceom.html#apdx-cceom"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__cceom.html#apdx-cceom-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/cceom">CCEOM</a></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__ccresponse.html#apdx-ccresponse"><em>Keywords</em></a>, <em class="xref std std-ref">PSI Variables</em>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/ccresponse">CCRESPONSE</a></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__cctriples.html#apdx-cctriples"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__cctriples.html#apdx-cctriples-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/cctriples">CCTRIPLES</a></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__ccdensity.html#apdx-ccdensity"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__ccdensity.html#apdx-ccdensity-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/ccdensity">CCDENSITY</a></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__cchbar.html#apdx-cchbar"><em>Keywords</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/cchbar">CCHBAR</a></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__cclambda.html#apdx-cclambda"><em>Keywords</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/cclambda">CCLAMBDA</a></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__ccsort.html#apdx-ccsort"><em>Keywords</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/ccsort">CCSORT</a></p>
+<p>The coupled cluster approach is one of the most accurate and reliable quantum
+chemical techniques for including the effects of electron correlation.
+Instead of the linear expansion of the wavefunction used by configuation
+interaction, coupled cluster uses an exponential expansion,</p>
+<div class="math" id="equation-CCexpansion">
+<p><span class="eqno">(1)</span><img src="_images/math/cc30b6fde20a160ad91396de11f47dddea869efc.png" alt="| \Psi \rangle &amp;= e^{\hat{T}} | \Phi_0 \rangle \\
+               &amp;= \left( 1 + {\hat{T}} + \frac{1}{2} {\hat{T}}^2 + \frac{1}{3!}{\hat{T}}^3 + \cdots \right) | \Phi_0 \rangle,"/></p>
+</div><p>where the cluster operator <img class="math" src="_images/math/8be7b8df4c87a7484250bd8503fc3db8d844702e.png" alt="{\hat{T}}" style="vertical-align: 0px"/> is written as a sum of operators that
+generate singly-excited, doubly-excited, <em>etc.</em>, determinants:</p>
+<div class="math">
+<p><img src="_images/math/016f9357b400f5231b419c3852d1568a65afc51b.png" alt="{\hat{T}} = {\hat{T}_1} + {\hat{T}_2} + {\hat{T}_3} + \cdots + {\hat{T}_N},"/></p>
+</div><p>with</p>
+<div class="math">
+<p><img src="_images/math/3db8a17c4b41d4a3be8d1bce9604f0db83fca525.png" alt="{\hat T}_1 | \Phi_0 \rangle &amp;= \sum_{i}^{\rm occ} \sum_a^{\rm vir} t_i^a | \Phi_i^a \rangle \\
+{\hat T}_2 | \Phi_0 \rangle &amp;= \sum_{i&lt;j}^{\rm occ} \sum_{a&lt;b}^{\rm vir} t_{ij}^{ab} | \Phi_{ij}^{ab} \rangle,"/></p>
+</div><p><em>etc.</em>  The popular coupled cluster singles and doubles (CCSD) model
+<a class="reference internal" href="bibliography.html#purvis-1982">[Purvis:1982]</a> truncates the expansion at <img class="math" src="_images/math/2342dc2946fe9c9dbdbafa4f904be3400c992e83.png" alt="{\hat{T}} = {\hat{T}_1}
++ {\hat{T}_2}" style="vertical-align: -4px"/>.  This model has the same number of parameters as
+configuration interaction singles and doubles (CISD) but improves upon
+it by approximately accounting for higher-order terms using products
+of lower-order terms (<em>e.g.</em>, the term <img class="math" src="_images/math/bdc9ed6753e8eaf306a3e6a1e3a8e37426b55591.png" alt="{\hat{T}_2}^2" style="vertical-align: -5px"/> approximately
+accounts for quadruple excitations).  The inclusion of such products
+makes coupled-cluster methods <em>size extensive</em>, meaning that the
+quality of the computation should not degrade for larger molecules.
+The computational cost for CCSD scales as <img class="math" src="_images/math/68cec2a7158be1512f2d126c26e832d978b3bc50.png" alt="{\cal{O}}(o^2 v^4)" style="vertical-align: -4px"/>, where
+<img class="math" src="_images/math/3eabe6c97f03e413d1aa3c292e9478f286e64df1.png" alt="o" style="vertical-align: 0px"/> is the number of occupied orbitals and <img class="math" src="_images/math/a9f23bf124b6b2b2a993eb313c72e678664ac74a.png" alt="v" style="vertical-align: 0px"/> is the number of virtual
+orbitals.</p>
+<p>Improving upon CCSD, the CCSD(T) method <a class="reference internal" href="bibliography.html#raghavachari-1989">[Raghavachari:1989]</a> includes
+a perturbative estimate of the energy contributed by the <img class="math" src="_images/math/e71d1bf1fe28b48cbf1510f13992c07f4272bab8.png" alt="{\hat{T}_3}" style="vertical-align: -3px"/>
+operator.  The computational cost of this additional term scales as
+<img class="math" src="_images/math/14740f91130a3dd0c0ce57001923c0c3b2451c76.png" alt="{\cal{O}}(o^3 v^4)" style="vertical-align: -4px"/>, making it rather expensive for molecules with more than
+a dozen heavy atoms or so.  However, when this method is affordable, it
+provides very high quality results in most cases.</p>
+<p>PSI4 is capable of computing energies and analytic gradients for a
+number of coupled cluster models.  It can also compute linear response
+properties (such as static or frequency-dependent polarizability,
+or optical rotation angles) for some models.  Excited states can
+also be computed by the CC2 and CC3 models, or by EOM-CCSD.  Table
+<a class="reference internal" href="#table-ccsummary"><em>CC Methods</em></a> summarizes these capabilities.  This section
+describes how to carry out coupled cluster calculations within PSI4.
+For higher-order coupled-cluster methods like CCSDT and CCSDTQ, PSI4
+can interface to Kállay&#8217;s MRCC code (see <a class="reference internal" href="mrcc.html#sec-mrcc"><em>MRCC</em></a>).</p>
+<table border="1" class="docutils" id="table-ccsummary">
+<caption>Current coupled cluster capabilities of PSI4</caption>
+<colgroup>
+<col width="20%" />
+<col width="16%" />
+<col width="15%" />
+<col width="15%" />
+<col width="20%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Reference</th>
+<th class="head">Method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+<th class="head">Exc. Energies</th>
+<th class="head">LR Props</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>RHF</td>
+<td>CC2</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr class="row-odd"><td>UHF</td>
+<td>CC2</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr class="row-even"><td>ROHF</td>
+<td>CC2</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr class="row-odd"><td>RHF</td>
+<td>CCSD</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr class="row-even"><td>RHF</td>
+<td>CCSD(T)</td>
+<td>Y</td>
+<td>N</td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-odd"><td>ROHF</td>
+<td>CCSD</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr class="row-even"><td>ROHF</td>
+<td>CCSD(T)</td>
+<td>Y</td>
+<td>N</td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-odd"><td>UHF</td>
+<td>CCSD</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr class="row-even"><td>UHF</td>
+<td>CCSD(T)</td>
+<td>Y</td>
+<td>Y</td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-odd"><td>RHF</td>
+<td>CC3</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr class="row-even"><td>UHF</td>
+<td>CC3</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr class="row-odd"><td>ROHF</td>
+<td>CC3</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr class="row-even"><td>Brueckner</td>
+<td>CCD</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr class="row-odd"><td>Brueckner</td>
+<td>CCD(T)</td>
+<td>Y</td>
+<td>N</td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+</tr>
+</tbody>
+</table>
+<p>The following wavefunctions are currently recognized by PSI4 as arguments
+to functions like <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><tt class="xref py py-func docutils literal"><span class="pre">energy()</span></tt></a>: <tt class="docutils literal"><span class="pre">'ccsd'</span></tt>, <tt class="docutils literal"><span class="pre">'ccsd(t)'</span></tt>, <tt class="docutils literal"><span class="pre">'cc2'</span></tt>,
+<tt class="docutils literal"><span class="pre">'cc3'</span></tt>, <tt class="docutils literal"><span class="pre">'bccd'</span></tt> (CCD with Brueckner orbitals), <tt class="docutils literal"><span class="pre">'bccd(t)'</span></tt> (CCD(T) with
+Brueckner orbitals), <tt class="docutils literal"><span class="pre">'eom-ccsd'</span></tt>, <tt class="docutils literal"><span class="pre">'eom-cc2'</span></tt> (CC2 for excited states),
+<tt class="docutils literal"><span class="pre">'eom-cc3'</span></tt> (CC3 for excited states).  Response properties can be obtained
+by calling the function <a class="reference internal" href="prop.html#driver.property" title="driver.property"><tt class="xref py py-func docutils literal"><span class="pre">property()</span></tt></a> (instead of, for example, <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><tt class="xref py py-func docutils literal"><span class="pre">energy()</span></tt></a>,
+<em>e.g.</em>, <tt class="docutils literal"><span class="pre">property('ccsd')</span></tt>.  There are many sample
+coupled cluster inputs provided in <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/samples">psi4/samples</a>.</p>
+<div class="section" id="basic-keywords">
+<h2>Basic Keywords<a class="headerlink" href="#basic-keywords" title="Permalink to this headline">¶</a></h2>
+<p>A complete list of keywords related to coupled-cluster computations is
+provided in the appendices, with the majority of the relevant
+keywords appearing in Appendix <a class="reference internal" href="autodir_options_c/module__ccenergy.html#apdx-ccenergy"><em>CCENERGY</em></a>.  For a standard ground-state
+CCSD or CCSD(T) computation, the following keywords are common:</p>
+<div class="section" id="reference">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-ccenergy"><em class="xref std std-term">REFERENCE</em></a><a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Reference wavefunction type</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: RHF, ROHF, UHF</li>
+<li><strong>Default</strong>: RHF</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="r-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-ccenergy"><em class="xref std std-term">R_CONVERGENCE</em></a><a class="headerlink" href="#r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for wavefunction (change) in CC amplitude equations.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-7</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="maxiter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-maxiter-ccenergy"><em class="xref std std-term">MAXITER</em></a><a class="headerlink" href="#maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of iterations to solve the CC equations</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 50</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="brueckner-orbs-r-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-brueckner-orbs-r-convergence-ccenergy"><em class="xref std std-term">BRUECKNER_ORBS_R_CONVERGENCE</em></a><a class="headerlink" href="#brueckner-orbs-r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for Breuckner orbitals. The convergence is determined based on the largest <img class="math" src="_images/math/c073f8a05257a19c2dacc368858763bb44fa3747.png" alt="T_1" style="vertical-align: -4px"/> amplitude.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-5</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="restart">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-restart-ccenergy"><em class="xref std std-term">RESTART</em></a><a class="headerlink" href="#restart" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do restart the coupled-cluster iterations from old <img class="math" src="_images/math/8b91b7245b0dd42b4f5585b97e323a8cfaa064a8.png" alt="t_1" style="vertical-align: -4px"/> and <img class="math" src="_images/math/a40dccc3bb61d55c03b7dafe15707eeef43885ab.png" alt="t_2" style="vertical-align: -3px"/> amplitudes? For geometry optimizations, Brueckner calculations, etc. the iterative solution of the CC amplitude equations may benefit considerably by reusing old vectors as initial guesses. Assuming that the MO phases remain the same between updates, the CC codes will, by default, re-use old vectors, unless the user sets RESTART = false.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cachelevel">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cachelevel-ccenergy"><em class="xref std std-term">CACHELEVEL</em></a><a class="headerlink" href="#cachelevel" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Cacheing level for libdpd governing the storage of amplitudes, integrals, and intermediates in the CC procedure. A value of 0 retains no quantities in cache, while a level of 6 attempts to store all quantities in cache. For particularly large calculations, a value of 0 may help with certain types of memory problems. The default is 2, which means that all four-index quantites with up to two virtual-orbital indices (e.g., <img class="math" src="_images/math/4889095c8707b08efce1ad5e10bd94cffaa46544.png" alt="\langle ij | ab \rangle&gt;" style="vertical-align: -5px"/> integrals) may be held in the cache.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cachetype">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cachetype-ccenergy"><em class="xref std std-term">CACHETYPE</em></a><a class="headerlink" href="#cachetype" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Selects the priority type for maintaining the automatic memory cache used by the libdpd codes. A value of <tt class="docutils literal"><span class="pre">LOW</span></tt> selects a &#8220;low priority&#8221; scheme in which the deletion of items from the cache is based on pre-programmed priorities. A value of LRU selects a &#8220;least recently used&#8221; scheme in which the oldest item in the cache will be the first one deleted.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: LOW, LRU</li>
+<li><strong>Default</strong>: LOW</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="num-amps-print">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-num-amps-print-ccenergy"><em class="xref std std-term">NUM_AMPS_PRINT</em></a><a class="headerlink" href="#num-amps-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of important <img class="math" src="_images/math/8b91b7245b0dd42b4f5585b97e323a8cfaa064a8.png" alt="t_1" style="vertical-align: -4px"/> and <img class="math" src="_images/math/a40dccc3bb61d55c03b7dafe15707eeef43885ab.png" alt="t_2" style="vertical-align: -3px"/> amplitudes to print</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 10</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-amps-print">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-amps-print-ccenergy"><em class="xref std std-term">MP2_AMPS_PRINT</em></a><a class="headerlink" href="#mp2-amps-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do print the MP2 amplitudes which are the starting guesses for RHF and UHF reference functions?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="larger-calculations">
+<h2>Larger Calculations<a class="headerlink" href="#larger-calculations" title="Permalink to this headline">¶</a></h2>
+<p>Here are a few recommendations for carrying out large-basis-set coupled
+cluster calculations with PSI4:</p>
+<ul class="simple">
+<li>In most cases it is reasonable to set the <tt class="docutils literal"><span class="pre">memory</span></tt> keyword to 90% of
+the available physical memory, at most.  There is a small amount of overhead
+associated with the
+coupled cluster modules that is not accounted for by the internal CC memory
+handling routines.  Thus, the user should <em>not</em> specify the entire
+physical memory of the system, or swapping is likely.  However, for especially large
+calculations, it is better to set the <tt class="docutils literal"><span class="pre">memory</span></tt> keyword to a value less than 16 GB.</li>
+<li>Set the <a class="reference internal" href="autodoc_glossary_options_c.html#term-cachelevel-ccenergy"><em class="xref std std-term">CACHELEVEL</em></a> keyword to <tt class="docutils literal"><span class="pre">0</span></tt>.
+This will turn off cacheing, which, for very large calculations, can
+lead to heap fragmentation and memory faults, even when sufficient
+physical memory exists.</li>
+<li>Set the <a class="reference internal" href="autodoc_glossary_options_c.html#term-print-globals"><em class="xref std std-term">PRINT</em></a> keyword to <tt class="docutils literal"><span class="pre">2</span></tt>.  This
+will help narrow where memory bottlenecks or other errors exist in the
+event of a crash.</li>
+</ul>
+</div>
+<div class="section" id="excited-state-coupled-cluster-calculations">
+<h2>Excited State Coupled Cluster Calculations<a class="headerlink" href="#excited-state-coupled-cluster-calculations" title="Permalink to this headline">¶</a></h2>
+<p>A complete list of keywords related to
+coupled cluster linear response is provided in Appendix <a class="reference internal" href="autodir_options_c/module__cceom.html#apdx-cceom"><em>CCEOM</em></a>.
+The most important keywords associated with EOM-CC calculations are:</p>
+<div class="section" id="roots-per-irrep">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-roots-per-irrep-cceom"><em class="xref std std-term">ROOTS_PER_IRREP</em></a><a class="headerlink" href="#roots-per-irrep" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of excited states per irreducible representation for EOM-CC and CC-LR calculations. Irreps denote the final state symmetry, not the symmetry of the transition.</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="e-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-cceom"><em class="xref std std-term">E_CONVERGENCE</em></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for excitation energy (change) in the Davidson algorithm for CC-EOM.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-8</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="singles-print">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-singles-print-cceom"><em class="xref std std-term">SINGLES_PRINT</em></a><a class="headerlink" href="#singles-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do print information on the iterative solution to the single-excitation EOM-CC problem used as a guess to full EOM-CC?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="schmidt-add-residual-tolerance">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-schmidt-add-residual-tolerance-cceom"><em class="xref std std-term">SCHMIDT_ADD_RESIDUAL_TOLERANCE</em></a><a class="headerlink" href="#schmidt-add-residual-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum absolute value above which a guess vector to a root is added to the Davidson algorithm in the EOM-CC iterative procedure.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-3</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="eom-guess">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-eom-guess-cceom"><em class="xref std std-term">EOM_GUESS</em></a><a class="headerlink" href="#eom-guess" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Specifies a set of single-excitation guess vectors for the EOM-CC procedure. If EOM_GUESS = <tt class="docutils literal"><span class="pre">SINGLES</span></tt>, the guess will be taken from the singles-singles block of the similarity-transformed Hamiltonian, Hbar. If EOM_GUESS = <tt class="docutils literal"><span class="pre">DISK</span></tt>, guess vectors from a previous computation will be read from disk. If EOM_GUESS = <tt class="docutils literal"><span class="pre">INPUT</span></tt>, guess vectors will be specified in user input. The latter method is not currently available.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: SINGLES, DISK, INPUT</li>
+<li><strong>Default</strong>: SINGLES</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="linear-response-cclr-calculations">
+<h2>Linear Response (CCLR) Calculations<a class="headerlink" href="#linear-response-cclr-calculations" title="Permalink to this headline">¶</a></h2>
+<p>Linear response computations are invoked like <tt class="docutils literal"><span class="pre">property('ccsd')</span></tt>
+or <tt class="docutils literal"><span class="pre">property('cc2')</span></tt>, along with a list of requested properties.
+A complete list of keywords related to
+coupled cluster linear response is provided in Appendix <a class="reference internal" href="autodir_options_c/module__ccresponse.html#apdx-ccresponse"><em>CCRESPONSE</em></a>.</p>
+<p>The most important keywords associated with CC-LR calculations are as follows.</p>
+<div class="section" id="property">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-property-ccresponse"><em class="xref std std-term">PROPERTY</em></a><a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The response property desired. Acceptable values are <tt class="docutils literal"><span class="pre">POLARIZABILITY</span></tt> (default) for dipole-polarizabilities, <tt class="docutils literal"><span class="pre">ROTATION</span></tt> for specific rotations, <tt class="docutils literal"><span class="pre">ROA</span></tt> for Raman Optical Activity, and <tt class="docutils literal"><span class="pre">ALL</span></tt> for all of the above.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: POLARIZABILITY, ROTATION, ROA, ALL</li>
+<li><strong>Default</strong>: POLARIZABILITY</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="omega">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-omega-ccresponse"><em class="xref std std-term">OMEGA</em></a><a class="headerlink" href="#omega" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Array that specifies the desired frequencies of the incident radiation field in CCLR calculations. If only one element is given, the units will be assumed to be atomic units. If more than one element is given, then the units must be specified as the final element of the array. Acceptable units are <tt class="docutils literal"><span class="pre">HZ</span></tt>, <tt class="docutils literal"><span class="pre">NM</span></tt>, <tt class="docutils literal"><span class="pre">EV</span></tt>, and <tt class="docutils literal"><span class="pre">AU</span></tt>.</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="gauge">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-gauge-ccresponse"><em class="xref std std-term">GAUGE</em></a><a class="headerlink" href="#gauge" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Specifies the choice of representation of the electric dipole operator. Acceptable values are <tt class="docutils literal"><span class="pre">LENGTH</span></tt> for the usual length-gauge representation, <tt class="docutils literal"><span class="pre">VELOCITY</span></tt> for the modified velocity-gauge representation in which the static-limit optical rotation tensor is subtracted from the frequency- dependent tensor, or <tt class="docutils literal"><span class="pre">BOTH</span></tt>. Note that, for optical rotation calculations, only the choices of <tt class="docutils literal"><span class="pre">VELOCITY</span></tt> or <tt class="docutils literal"><span class="pre">BOTH</span></tt> will yield origin-independent results.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: LENGTH, VELOCITY, BOTH</li>
+<li><strong>Default</strong>: LENGTH</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CC: Coupled Cluster Methods</a><ul>
+<li><a class="reference internal" href="#basic-keywords">Basic Keywords</a><ul>
+<li><a class="reference internal" href="#reference"><tt class="docutils literal"><span class="pre">REFERENCE</span></tt></a></li>
+<li><a class="reference internal" href="#r-convergence"><tt class="docutils literal"><span class="pre">R_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#maxiter"><tt class="docutils literal"><span class="pre">MAXITER</span></tt></a></li>
+<li><a class="reference internal" href="#brueckner-orbs-r-convergence"><tt class="docutils literal"><span class="pre">BRUECKNER_ORBS_R_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#restart"><tt class="docutils literal"><span class="pre">RESTART</span></tt></a></li>
+<li><a class="reference internal" href="#cachelevel"><tt class="docutils literal"><span class="pre">CACHELEVEL</span></tt></a></li>
+<li><a class="reference internal" href="#cachetype"><tt class="docutils literal"><span class="pre">CACHETYPE</span></tt></a></li>
+<li><a class="reference internal" href="#num-amps-print"><tt class="docutils literal"><span class="pre">NUM_AMPS_PRINT</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-amps-print"><tt class="docutils literal"><span class="pre">MP2_AMPS_PRINT</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#larger-calculations">Larger Calculations</a></li>
+<li><a class="reference internal" href="#excited-state-coupled-cluster-calculations">Excited State Coupled Cluster Calculations</a><ul>
+<li><a class="reference internal" href="#roots-per-irrep"><tt class="docutils literal"><span class="pre">ROOTS_PER_IRREP</span></tt></a></li>
+<li><a class="reference internal" href="#e-convergence"><tt class="docutils literal"><span class="pre">E_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#singles-print"><tt class="docutils literal"><span class="pre">SINGLES_PRINT</span></tt></a></li>
+<li><a class="reference internal" href="#schmidt-add-residual-tolerance"><tt class="docutils literal"><span class="pre">SCHMIDT_ADD_RESIDUAL_TOLERANCE</span></tt></a></li>
+<li><a class="reference internal" href="#eom-guess"><tt class="docutils literal"><span class="pre">EOM_GUESS</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linear-response-cclr-calculations">Linear Response (CCLR) Calculations</a><ul>
+<li><a class="reference internal" href="#property"><tt class="docutils literal"><span class="pre">PROPERTY</span></tt></a></li>
+<li><a class="reference internal" href="#omega"><tt class="docutils literal"><span class="pre">OMEGA</span></tt></a></li>
+<li><a class="reference internal" href="#gauge"><tt class="docutils literal"><span class="pre">GAUGE</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cepa.html"
+                        title="previous chapter">CEPA: Coupled-Pair Methods</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="psimrcc.html"
+                        title="next chapter">PSIMRCC Implementation of Mk-MRCC Theory</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/cc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psimrcc.html" title="PSIMRCC Implementation of Mk-MRCC Theory"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cepa.html" title="CEPA: Coupled-Pair Methods"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, The Psi4 Project.
+      Last updated on Oct 16, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

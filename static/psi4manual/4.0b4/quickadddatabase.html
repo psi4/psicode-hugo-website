@@ -1,0 +1,209 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Creating a Database &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="index.html" />
+    <link rel="up" title="Customization: Adding Simple Extensions" href="customizing.html" />
+    <link rel="next" title="Contributions: Intro to Programming in PSI4" href="contributing.html" />
+    <link rel="prev" title="Defining a Method Alias" href="quickaddalias.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributions: Intro to Programming in PSI4"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="quickaddalias.html" title="Defining a Method Alias"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="customizing.html" accesskey="U">Customization: Adding Simple Extensions</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="admonition note" id="index-0">
+<p class="first admonition-title">Note</p>
+<p class="last">No recompile of the PSI program is necessary for changes made to
+files in <tt class="docutils literal"><span class="pre">$PSIDATADIR</span></tt>, including those described below.</p>
+</div>
+<div class="section" id="creating-a-database">
+<span id="sec-createdatabase"></span><h1>Creating a Database<a class="headerlink" href="#creating-a-database" title="Permalink to this headline">¶</a></h1>
+<p>A necessary consideration in constructing a database is the distinction
+between reagents and reactions. A reagent is a single molecular system
+(may be a dimer) whose geometry you are possession of and whose electronic
+energy may be of interest. A reaction is a combination of one or more
+reagent energies whose value you are interested in and a reference value
+for which you may or may not be in possession of. A few examples follow.
+In a database of interaction energies, the reagents are dimers and their
+component monomers (usually derived from the dimer geometry), and the
+reactions are the dimer less monomers energies. In a database of barrier
+heights, the reagents are reactants, products, and transition-state
+structures, and the reactions are the transition-states less
+minimum-energy structures. Possibly you may have a collection of
+structures to simply be acted upon in parallel, in which case the
+structures are both the reagents and the reactions. The role of the
+database.py file is to collect arrays and dictionaries that define the
+geometries of reagents (GEOS), their combination into reactions (RXNM &amp;
+ACTV), available reference values for reactions (BIND), and brief comments
+for reagents and reactions (TAGL). The journey from reagent geometries to
+functional database.py file is largely automated, in a process described
+below.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Prepare geometry files</dt>
+<dd><p class="first">Assemble xyz files for all intended reagent systems in a directory.
+Follow the rules below for best results. The filename for each xyz
+file should be the name of the system. lowercase or MixedCase is
+preferable (according to Sherrill lab convention). Avoid dashes and
+dots in the name as python won&#8217;t allow them. If you&#8217;re determined to
+have dashes and dots, they must be replaced by other characters in the
+process_input line, then translated back in the GEOS section; see
+NBC10.py for an example.</p>
+<ul class="last simple">
+<li>The first line for each xyz file should be the number of atoms in the system.</li>
+<li>The second line for each xyz file can be blank (interpreted as no comment), anything (interpreted as a comment), or two integers and anything (interpreted as charge, multiplicity, and remainder as comment).</li>
+<li>The third and subsequent lines have four fields: the element symbol and the three cartesian coordinates in angstroms. The atom lines should not contain any dummy atoms (what&#8217;s the use in cartesian form).  For dimer systems, an algorithm is used to apportion the atoms into two fragments; thus the atoms need not be arranged with all fragmentA atoms before all fragmentB atoms. The algorithm will fail for very closely arranged fragments. For dimers, any charge and multiplicity from the second line will be applied to fragmentA (python); charge and multiplicity may need to be redistributed later in the editing step.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Run script <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/lib/scripts/ixyz2database.py">psi4/lib/scripts/ixyz2database.py</a></p>
+<blockquote>
+<div><p>Move into the directory where all your xyz files are located. Run the
+script, probably as <tt class="docutils literal"><span class="pre">$PSIDATADIR/scripts/ixyz2database.py</span></tt>. (If you
+run it in place, there won&#8217;t be any path problems. It will ask a number of
+questions about your intended database and generate a python file
+named for your database. Uppercase is preferable for database names
+(according to Sherrill lab convention). Note your choice for the route
+variable for the next step.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Edit file database.py</p>
+<blockquote>
+<div><p>According to your responses in to questions in the ixyz2database.py script,
+several bullets will be printed of edits you necessarily or optionally
+should make. Copy your new database into <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/lib/databases">psi4/lib/databases</a>.</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="quickaddalias.html"
+                        title="previous chapter">Defining a Method Alias</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="contributing.html"
+                        title="next chapter">Contributions: Intro to Programming in PSI4</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/quickadddatabase.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributions: Intro to Programming in PSI4"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="quickaddalias.html" title="Defining a Method Alias"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="customizing.html" >Customization: Adding Simple Extensions</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Apr 25, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

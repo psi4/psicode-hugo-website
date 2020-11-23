@@ -1,0 +1,841 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation Instructions for PSI4 &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<span class="target" id="sec-installfilepage"></span><div class="section" id="installation-instructions-for-psi4">
+<h1>Installation Instructions for PSI4<a class="headerlink" href="#installation-instructions-for-psi4" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="#sec-install-i"><em>I.   Compilation Prerequisites</em></a></li>
+<li><a class="reference internal" href="#sec-install-ii"><em>II.  Brief Summary of Configuration, Compilation, and Installation</em></a></li>
+<li><a class="reference internal" href="#sec-install-iii"><em>III. Detailed Installation Instructions</em></a></li>
+<li><a class="reference internal" href="#sec-install-iv"><em>IV.  Recommendations for BLAS and LAPACK libraries</em></a></li>
+<li><a class="reference internal" href="#sec-install-v"><em>V.   Miscellaneous architecture-specific notes</em></a></li>
+<li><a class="reference internal" href="#sec-install-vi"><em>VI.  Common Problems with PSI Compilation</em></a></li>
+</ul>
+<div class="section" id="i-compilation-prerequisites">
+<span id="sec-install-i"></span><h2>I. Compilation Prerequisites<a class="headerlink" href="#i-compilation-prerequisites" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">C++ Compiler</p>
+</li>
+<li><p class="first">F77 Compiler (the F95 compiler, gfortran, with gcc-4.X will work)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The F77 compiler is only used to determine the symbol-naming
+convention of and some system routines for the BLAS and LAPACK libraries
+on a few architectures.  It is optional in a few cases (e.g. Mac OS X
+systems).</p>
+</div>
+</li>
+<li><p class="first">Optimized BLAS library (preferably NOT one supplied by a standard
+Linux distribution; see recommendations at <a class="reference internal" href="#sec-install-iv"><em>Section IV</em></a> below)</p>
+</li>
+<li><p class="first">Optimized LAPACK library (preferably NOT one supplied by a standard
+Linux distribution; see recommendations at <a class="reference internal" href="#sec-install-iv"><em>Section IV</em></a> below)</p>
+</li>
+<li><p class="first">POSIX threads (Pthreads) library (optional)</p>
+</li>
+<li><p class="first">Python interpreter (2.6 or higher; psi4 is Python3 compatible)</p>
+</li>
+<li><p class="first">Python developer libraries corresponding to your interpreter.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To check to see if you have the Python developer libraries
+installed look for the Python config program. If your Python interpreter
+is named <tt class="docutils literal"><span class="pre">python</span></tt> look for the config program <tt class="docutils literal"><span class="pre">python-config</span></tt>,
+likewise if your interpreter is <tt class="docutils literal"><span class="pre">python2.6</span></tt>, the config program is
+<tt class="docutils literal"><span class="pre">python2.6-config</span></tt>. If you cannot find the config program the
+developer libraries will not be detected and the PSI4 configure script
+will fail. The library is called <tt class="docutils literal"><span class="pre">python-devel</span></tt> for Fedora and
+<tt class="docutils literal"><span class="pre">python-dev</span></tt> for Ubuntu.</p>
+</div>
+</li>
+<li><p class="first">GNU utilities: (see <a class="reference external" href="http://www.gnu.org">http://www.gnu.org</a>)</p>
+<ul>
+<li><p class="first">make</p>
+</li>
+<li><p class="first">autoconf (version 2.52 or higher)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">autoconf is only needed for special
+architectures or to compile the
+development branch.</p>
+</div>
+</li>
+<li><p class="first">aclocal</p>
+</li>
+<li><p class="first">fileutils (esp. install)</p>
+</li>
+</ul>
+</li>
+<li><p class="first">For documentation: (available pre-built off <a class="reference external" href="http://www.psicode.org">http://www.psicode.org</a>)</p>
+<ul class="simple">
+<li>latex</li>
+<li>sphinx (version 1.1 or higher)</li>
+<li>dvipng (for latex math in html)</li>
+</ul>
+</li>
+</ul>
+<p>For Ubuntu users, you will need the following packages installed:
+gfortran [for linking to BLAS/LAPACK], g++, autoconf, python-dev</p>
+</div>
+<div class="section" id="ii-brief-summary-of-configuration-compilation-and-installation">
+<span id="sec-install-ii"></span><h2>II. Brief Summary of Configuration, Compilation, and Installation<a class="headerlink" href="#ii-brief-summary-of-configuration-compilation-and-installation" title="Permalink to this headline">¶</a></h2>
+<p>This section outlines the main steps of configuring, compiling, and
+installing PSI.  More detail is given below in <a class="reference internal" href="#sec-install-iii"><em>Section III</em></a>.</p>
+<ol class="upperalpha">
+<li><p class="first">Autoconf</p>
+<ol class="arabic">
+<li><p class="first">For unusual architectures (or for developers working in the development
+branch), one needs to first run autoconf to generate
+the file &#8220;configure&#8221; in the top-level psi4 directory.  For most Linux
+and Mac compilations, this should not be necessary because the configure
+file provided with PSI4 should be sufficient.  To replace the general
+configure file with one specific to your architecture, in the top-level
+psi4 directory, run autoconf:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">autoconf</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p class="first">Configuration and Compilation</p>
+<p>Make an object directory in which you can compile the code</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mkdir</span> <span class="n">obj</span>
+</pre></div>
+</div>
+<p>Next you need to configure the code. Find a configuration
+<a class="reference internal" href="#sec-install-iii-1-configurelines"><em>option line</em></a> or combination of
+configuration options at <a class="reference internal" href="#sec-install-iii-1-a"><em>Section III(1)A</em></a>.</p>
+<ul>
+<li><p class="first">Either, use the line directly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="n">obj</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">../</span><span class="n">configure</span> <span class="p">[</span><span class="n">your</span> <span class="n">compilation</span> <span class="n">configuration</span> <span class="n">options</span> <span class="n">here</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">or, save your configuration options for a future compilation.
+In the top-level psi4 directory, create a file like &#8220;do-configure&#8221; with
+the configure command and options on one line.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cat</span> <span class="n">do</span><span class="o">-</span><span class="n">configure</span>
+<span class="go">../configure [your compilation configuration options here]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chmod</span> <span class="n">u</span><span class="o">+</span><span class="n">x</span> <span class="n">do</span><span class="o">-</span><span class="n">configure</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="n">obj</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">../</span><span class="n">do</span><span class="o">-</span><span class="n">configure</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Compile the code, run the tests, and (if tests pass) install it.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">make</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make</span> <span class="n">tests</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>That&#8217;s it!  The details about final user configuration are given below in
+<a class="reference internal" href="#sec-install-iii-7"><em>Section III(7)</em></a>.  If something goes wrong,
+check <a class="reference internal" href="#sec-install-vi"><em>Section VI</em></a> about common compilation problems.</p>
+</div>
+<div class="section" id="iii-detailed-installation-instructions">
+<span id="sec-install-iii"></span><h2>III. Detailed Installation Instructions<a class="headerlink" href="#iii-detailed-installation-instructions" title="Permalink to this headline">¶</a></h2>
+<p>This section provides a more detailed explanation of the procedure for
+compiling and installing the PSI4 package.</p>
+<ul>
+<li><p class="first">Step 1: Configuration</p>
+<ol class="upperalpha">
+<li><p class="first">General Information about Configuration</p>
+<p>First, we recommend that you choose for the top-level psi4 source
+directory something other than <tt class="docutils literal"><span class="pre">/usr/local/psi</span></tt>; <tt class="docutils literal"><span class="pre">$HOME/psi4</span></tt> or
+<tt class="docutils literal"><span class="pre">/usr/local/src/psi4</span></tt> are convenient choices.  Next, in the top-level psi4
+source directory you&#8217;ve chosen, first run autoconf to generate the configure
+script from configure.ac.  It is best to keep the source code separate
+from the compilation area, so you must first choose a subdirectory for
+compilation of the codes.  A simple option is <tt class="docutils literal"><span class="pre">psi4/objdir</span></tt>, which should
+work for most environments.  However, if you need executables for several
+architectures, you should choose more meaningful subdirectory names.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The compilation directory will be referred to as $objdir for the
+remainder of these instructions.</p>
+</div>
+<p>In $objdir, run the configure script found in the PSI4 top-level source
+directory.  This script will scan your system to locate certain libraries,
+header files, etc. needed for complete compilation.  The script accepts a
+number of options, all of which are listed above.  The most important of
+these is the <tt class="docutils literal"><span class="pre">--prefix</span></tt> option, which selects the installation directory for
+the executables, the libraries, header files, basis set data, and other
+administrative files.  The default <tt class="docutils literal"><span class="pre">--prefix</span></tt> is <tt class="docutils literal"><span class="pre">/usr/local/psi</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The configure script&#8217;s <tt class="docutils literal"><span class="pre">--prefix</span></tt> directory will be referred to as
+$prefix for the remainder of these instructions.</p>
+</div>
+<p id="sec-install-iii-1-a">Besides <tt class="docutils literal"><span class="pre">--prefix</span></tt>, PSI often needs a few additional options for the
+configure script.  To make it easy to recompile later (especially if
+you&#8217;re a developer), it can be convenient (but not necessary) to to put
+the configure options in a small executable file, so you can re-do the
+configuration later very easily. Let us assume that we will be putting
+the configure options in a file named do-configure, in the top-level
+psi4 directory (we&#8217;ll keep it up there instead of down in the compilation
+directory $objdir, so that if we delete the compilation directory later,
+we&#8217;ll still have the do-configure file). All configure options must be
+on one line in the do-configure script.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The configure options below are for the most common architectures and
+compilers. The developers would appreciate it if you would share any special
+configuration options that might be needed for less commonly encountered
+situations.</p>
+</div>
+<p>For g++, if you have BLAS and LAPACK in standard locations (like <tt class="docutils literal"><span class="pre">/usr/lib64</span></tt>),
+configuration is very easy. Pick one of the following scenarios, and place the
+text given in the psi4/do-configure file (all on one long line). Replace the
+text after prefix with whatever directory you want to use for your
+installation directory.</p>
+<ul id="sec-install-iii-1-configurelines">
+<li><p class="first">Intel compiler with MKL math library [highly recommended; if you don&#8217;t use
+this, then at least make sure you have a threaded BLAS (see BLAS
+recommendations at <a class="reference internal" href="#sec-install-iv"><em>Section IV</em></a> below)]</p>
+<div class="highlight-python"><pre>../configure --prefix=/usr/local/psi4 --with-blas='-mkl' --with-cc=icc --with-cxx=icpc --with-fc=ifort  --with-opt='-O2 -static -no-prec-div' --with-incdirs=-mkl</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It&#8217;s <tt class="docutils literal"><span class="pre">-mkl</span></tt>, not <tt class="docutils literal"><span class="pre">-lmkl</span></tt>.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>There seems to be a problem with icpc 12.0.2 and possibly earlier
+12.0 versions, giving an error like:</p>
+<div class="highlight-python"><pre>error: identifier "__is_trivial" is undefined.</pre>
+</div>
+<p class="last">Use at least version 12.0.4.</p>
+</div>
+</li>
+<li><p class="first">Gnu compiler with ACML math library (better than MKL for AMD processors)</p>
+<div class="highlight-python"><pre>../configure --prefix=/usr/local/psi4 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-opt=-O2 --with-blas="-L/opt/acml5.2.0/gfortran64_mp/lib -lacml_mp" --with-lapack="-L/opt/acml5.2.0/gfortran64_mp/lib -lacml_mp"</pre>
+</div>
+</li>
+<li><p class="first">g++, optimized</p>
+<div class="highlight-python"><pre>../configure --prefix=/usr/local/psi4</pre>
+</div>
+</li>
+<li><p class="first">g++, for debugging</p>
+<div class="highlight-python"><pre>../configure --prefix=/usr/local/psi4 --without-opt --with-debug</pre>
+</div>
+</li>
+<li><p class="first">Compiling for Mac</p>
+<p>PSI4 has been compiled on OS X 10.7 (Lion) and 10.8 (Mountain Lion).
+To get the compilers needed, it&#8217;s easiest to install XCode.
+However, XCode does not provide a Fortran compiler. Although
+Fortran compilers are not needed to compile Psi, a broken one can
+prevent Psi from configuring properly. Do not download the latest
+version of GFortran from the HPC website; this is unlikely to be
+compatible with your version of GCC. Instead, you should run <tt class="docutils literal"><span class="pre">gcc</span>
+<span class="pre">-v</span></tt> to find out what version of GCC you&#8217;re using, and then
+download the corresponding GFortran from
+<a class="reference external" href="http://r.research.att.com/tools/">http://r.research.att.com/tools/</a>.  If you configure Psi on a Mac
+without any Fortran compiler it will set itself up correctly, so
+this is only necessary if you want a Fortran compiler for other
+purposes. You can configure Psi by adding something like</p>
+<div class="highlight-python"><pre>../configure --with-plugins</pre>
+</div>
+<p>to the do-configure script. If you want to use the new LLVM compilers that
+ship with XCode 4 (they compile quicker than GCC), use</p>
+<div class="highlight-python"><pre>../configure --with-plugins --with-cxx=llvm-g++</pre>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>If you still happen to encouter an error like:</p>
+<div class="highlight-python"><pre>checking Fortran symbols... giving up
+configure: error: could not determine fortran symbol names</pre>
+</div>
+<p>adding the following tag to your configure may help</p>
+<div class="last highlight-python"><pre>--with-f77symbol=lcu</pre>
+</div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">List of Specific Configuration Options</p>
+<p>The example configuration options in the previous subsection are usually
+sufficient.  However, if not, you may need to make use of one or more
+of the following options to the configure script:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--prefix=directory</span></tt> &#8212; Use this option if you wish to install the
+PSI4 package somewhere other than the default directory, <tt class="docutils literal"><span class="pre">/usr/local/psi</span></tt>.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-cxx=compiler</span></tt> &#8212; Use this option to specify a C++ compiler.
+One should use compilers that generate reentrant code, if possible.
+The default search order for compilers is: xlC_r (AIX only), g++, c++,
+icpc, cxx.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-fc=compiler</span></tt> &#8212; Use this option to specify a Fortran-77 compiler,
+which is used to determine linking coventions for BLAS and LAPACK libraries
+and to provide system routines for those libraries.  Note that no fortran
+compiler is necessary on Mac OS X systems (see below).  The default search
+order for compilers is: xlf_r (AIX only), gfortran, g77, ifort, f77, f2c.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-f77symbol=value</span></tt> &#8212; This option allows manual assignment of the
+FORTRAN77 symbol convention, which is necessary for C programs to link
+Fortran-interface libraries such as BLAS and LAPACK. This option should
+only be used by experts and even then should almost never be necessary.
+Allowed values are:</p>
+<ul class="simple">
+<li>lc  : lower-case</li>
+<li>lcu : lower-case with underscore (default)</li>
+<li>uc  : upper-case</li>
+<li>ucu : upper-case with underscore</li>
+</ul>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-ld=linker</span></tt> &#8212; Use this option to specify a linker.  The
+default is &#8216;ld&#8217;.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-ar=archiver</span></tt> &#8212; Use this option to specify an archiver.  The
+default is to look for &#8216;ar&#8217; automatically.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-ar-flags=flags</span></tt> &#8212; Use this option to specify additional archiver
+flags. The default is &#8216;r&#8217;.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-incdirs=directories</span></tt> &#8212; Use this option to specify extra
+directories where to look for header files. Directories should be specified
+prepended by <tt class="docutils literal"><span class="pre">-I</span></tt>, i.e. <tt class="docutils literal"><span class="pre">-Idir1</span> <span class="pre">-Idir2</span></tt>, etc. If several directories are
+specified, enclose the list with single right-quotes, e.g.,</p>
+<div class="highlight-python"><pre>--with-incdirs='-I/usr/local/include -I/home/psi4/include'</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-libs=libraries</span></tt> &#8212; Use this option to specify extra
+libraries which should be used during linking. Libraries should be
+specified by their full names or in the usual <tt class="docutils literal"><span class="pre">-l</span></tt> notation, e.g.
+<tt class="docutils literal"><span class="pre">-lm</span> <span class="pre">/usr/lib/libm.a</span></tt>.  If several libraries are specified, enclose
+the list with single right-quotes, e.g.,</p>
+<div class="highlight-python"><pre>--with-libs='-libm -lgcc_s'</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-libdirs=directories</span></tt> &#8212; Use this option to specify extra
+directories where to look for libraries. Directories should be specified
+prepended by <tt class="docutils literal"><span class="pre">-L</span></tt>, e.g., <tt class="docutils literal"><span class="pre">-Ldir1</span> <span class="pre">-Ldir2</span></tt>. If several directories are
+specified, enclose the list with single right-quotes, e.g.,</p>
+<div class="highlight-python"><pre>--with-libdirs='-L/usr/local/lib -I/home/psi4/lib'</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-blas=library</span></tt> &#8212; Use this option to specify a BLAS library.
+(Many BLAS libraries can be detected automatically.)
+If your BLAS library has multiple components, enclose the file list
+with single right-quotes, e.g.,</p>
+<div class="highlight-python"><pre>--with-blas='-lf77blas -latlas'</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-lapack=library</span></tt> &#8212; Use this option to specify a LAPACK library.
+(Many LAPACK libraries can be detected automatically.)
+If your LAPACK library has multiple components, enclose the file list
+with single right-quotes, e.g.,</p>
+<div class="highlight-python"><pre>--with-lapack='-llapack -lcblas -latlas'</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-max-am-eri=integer</span></tt> &#8212; Specifies the maximum angular momentum
+level for the primitive Gaussian basis functions when computing
+electron repulsion integrals.  This is set to h-type functions (AM=5)
+by default.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-max-am-deriv1=integer</span></tt> &#8212; Specifies the maximum angular
+momentum level for first derivatives of the primitive Gaussian
+basis functions.  This is set to g-type functions (AM=4) by default.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-max-am-deriv2=integer</span></tt> &#8212; Specifies the maximum angular
+momentum level for second derivatives of the primitive Gaussian
+basis functions.  This is set to f-type functions (AM=3) by default.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-max-am-r12=integer</span></tt> &#8212; Specifies the maximum angular momentum
+level for primitive Gaussian basis functions used in r_12 explicitly
+correlated methods.  This is set to f-type functions (AM=3) by default.
+Not yet active.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-debug=yes/no</span></tt> &#8212; Turns on debugging flags (-g) if yes.  This is
+set to no by default.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-opt=yes/no</span></tt> &#8212; Turns off compiler optimizations (-OX) if no.
+This is set to yes by default.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-strict=yes</span></tt> &#8212; Turns on strict compiler warnings.</p>
+</li>
+</ul>
+</li>
+<li><p class="first">Python interpreter</p>
+<p>Usually Python will be detected automatically.  If this fails, or if
+you have multiple versions installed and want to specify a particular
+one, set the PYTHON environmental variable to the full path name
+of the Python interpreter you want to use.  This defaults to the
+<tt class="docutils literal"><span class="pre">python</span></tt> in your path. For example, if you want to use
+<tt class="docutils literal"><span class="pre">python2.6</span></tt> located in /usr/bin set the environmental variable to be:</p>
+<div class="highlight-python"><pre>PYTHON=/usr/bin/python2.6</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If the variable PYTHON is set, the config program must be
+present with a similar name. For instance, in the above example
+the following must exist:</p>
+<div class="last highlight-python"><pre>/usr/bin/python2.6-config</pre>
+</div>
+</div>
+<p>You either set the environmental variable before you call configure, or
+tell configure about it:</p>
+<div class="highlight-python"><pre>../configure PYTHON=/usr/bin/python2.6</pre>
+</div>
+</li>
+<li><p class="first">Boost Libraries</p>
+<p>PSI4 can use a user-provided boost C++ library, or, alternatively,
+build the boost version 1.48.0 that comes bundled with the distribution.
+By default, PSI4 will look in your include/library paths for
+a compatible and complete boost installation (boost 1.46 or newer). A
+boost installation in a nonstandard location can be specified by the
+<tt class="docutils literal"><span class="pre">--with-boost=PATH</span></tt> and <tt class="docutils literal"><span class="pre">--with-boost-libdir=PATH</span></tt> configure flags. If a
+default or user-specified boost installation is found to be incomplete,
+incompatible, or nonexistent, boost 1.48.0 will be unpacked automatically
+and built as part of the PSI4 build process.</p>
+<p>Required Compiled Boost Modules (all Boost 1.46.0 or later):</p>
+<ul class="simple">
+<li>Filesystem</li>
+<li>Python</li>
+<li>Regex</li>
+<li>Serialization</li>
+<li>System</li>
+<li>Thread</li>
+</ul>
+<p>Relevant Configure Options:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-boost[=value]</span></tt> &#8212; Use Boost library from a standard location
+if yes (default), from the specified location if &lt;path&gt;, or disable
+it if no.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-boost-libdir=directory</span></tt> &#8212;
+Force given directory for boost libraries. Note that this will override
+library path detection, so use this parameter only if default library
+detection fails and you know exactly where your boost libraries are
+located.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-boost-filesystem[=special-lib]</span></tt> &#8212;
+Use the Filesystem library from boost. It is possible to specify a
+certain library for the linker e.g.,</p>
+<div class="highlight-python"><pre>--with-boost-filesystem=boost_filesystem-gcc-mt</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-boost-python</span></tt> &#8212; Specify the boost python library or suffix to use.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-boost-regex[=special-lib]</span></tt> &#8212;
+Use the Regex library from boost. It is possible to specify a certain
+library for the linker e.g.,</p>
+<div class="highlight-python"><pre>--with-boost-regex=boost_regex-gcc-mt-d-1_33_1</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-boost-serialization[=special-lib]</span></tt> &#8212;
+Use the Serialization library from boost. It is possible to specify a
+certain library for the linker e.g.,</p>
+<div class="highlight-python"><pre>--with-boost-serialization=boost_serialization-gcc-mt-d-1_33_1</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-boost-system[=special-lib]</span></tt> &#8212;
+Use the System library from boost. It is possible to specify a certain
+library for the linker e.g.,</p>
+<div class="highlight-python"><pre>--with-boost-system=boost_system-gcc-mt</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">--with-boost-thread[=special-lib]</span></tt> &#8212;
+Use the Thread library from boost. It is possible to specify a certain
+library for the linker e.g.,</p>
+<div class="highlight-python"><pre>--with-boost-thread=boost_thread-gcc-mt</pre>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p class="first">Step 2: Compilation</p>
+<p>Running <tt class="docutils literal"><span class="pre">make</span></tt> (which must be GNU&#8217;s &#8216;make&#8217; utility) in $objdir will compile
+the PSI4 libraries and executable modules.</p>
+</li>
+<li><p class="first">Step 3: Testing</p>
+<p>To execute automatically the ever-growing number of test cases after
+compilation, simply execute <tt class="docutils literal"><span class="pre">make</span> <span class="pre">tests</span></tt> in the $objdir directory.
+This will run each (relatively small) test case and report the results.
+Failure of any of the test cases should be reported to the developers.
+By default, any such failure will stop the testing process.  If you desire
+to run the entire testing suit without interruption, execute <tt class="docutils literal"><span class="pre">make</span> <span class="pre">tests</span>
+<span class="pre">TESTFLAGS='-u</span> <span class="pre">-q'</span></tt>. Note that you must do a <tt class="docutils literal"><span class="pre">make</span> <span class="pre">testsclean</span></tt> in $objdir
+to run the test suite again.</p>
+</li>
+<li><p class="first">Step 4: Installation</p>
+<p>Once testing is complete, installation into $prefix is accomplished by
+running <tt class="docutils literal"><span class="pre">make</span> <span class="pre">install</span></tt> in $objdir. Executable modules are installed in
+$prefix/bin, include files in $prefix/include, libraries in $prefix/lib, and
+basis set data and various control structures in $prefix/share.</p>
+</li>
+<li><p class="first">Step 5: Building Documentation</p>
+<p>This is not recommended because all of the documentation should be
+available at <a class="reference external" href="http://sirius.chem.vt.edu/psi4manual/latest/index.html">http://sirius.chem.vt.edu/psi4manual/latest/index.html</a>
+(link &#8220;docs&#8221; off <a class="reference external" href="http://www.psicode.org">http://www.psicode.org</a>), and it is automatically updated.  However,
+if your system has the appropriate utilities (notably the sphinx package
+and LaTeX), you may build the package documentation from the top-level
+$objdir by running <tt class="docutils literal"><span class="pre">make</span> <span class="pre">doc</span></tt>.  The resulting files will appear in the
+$prefix/doc area.</p>
+</li>
+<li><p class="first">Step 6: Cleaning</p>
+<p>All object files and libraries can be removed to save disk space by running
+<tt class="docutils literal"><span class="pre">make</span> <span class="pre">clean</span></tt> in $objdir.</p>
+</li>
+</ul>
+<ul id="sec-install-iii-7">
+<li><p class="first">Step 7: User Configuration</p>
+<p>After the PSI4 package has been successfully installed, the user will need
+to add the installation directory into his/her path.  If the package has
+been installed in the default location <tt class="docutils literal"><span class="pre">/usr/local/psi</span></tt>, then in C shell,
+the user should add something like the following to their <tt class="docutils literal"><span class="pre">.cshrc</span></tt> file:</p>
+<div class="highlight-python"><pre>setenv PSI /usr/local/psi
+set path = ($path $PSI/bin)</pre>
+</div>
+<p>Next, the user needs to tell the PSI4 I/O manager how to handle scratch files.
+Identify the path to a fast scratch disk for which the user has write access.
+If the local <tt class="docutils literal"><span class="pre">/tmp</span></tt> volume is large enough, it might be used.
+However, a dedicated scratch volume (using RAID0 striping for speed) is
+recommended.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Scratch should NOT be a NFS-mounted volume, as writes to a
+remote disk over the network can be very slow and can tie up the network
+and negatively impact other users.</p>
+</div>
+<p>Specify scratch location by editing the <tt class="docutils literal"><span class="pre">.cshrc</span></tt> file to set the scratch
+environment variable <span class="target" id="index-0"></span><a class="reference internal" href="external.html#envvar-PSI_SCRATCH"><tt class="xref std std-envvar docutils literal"><span class="pre">PSI_SCRATCH</span></tt></a>. If the selected location is
+<tt class="docutils literal"><span class="pre">/scratch/user</span></tt>, add something like the following:</p>
+<div class="highlight-python"><pre>setenv PSI_SCRATCH /scratch/user</pre>
+</div>
+<p>In a bash shell, the corresponding commands to be added to <tt class="docutils literal"><span class="pre">.bashrc</span></tt> is
+the following:</p>
+<div class="highlight-python"><pre>export PSI=/usr/local/psi
+PATH=$PSI/bin:$PATH ; export PATH
+export PSI_SCRATCH=/scratch/user</pre>
+</div>
+<p>More advanced control of scratch files and is handled through a
+<tt class="docutils literal"><span class="pre">.psi4rc</span></tt> file, which is discussed at section <a class="reference internal" href="external.html#sec-psirc"><em>Scratch Files and the ~/.psi4rc File</em></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For developers: during compilation and testing, PSI4 finds its basis sets,
+grids, etc., in <tt class="docutils literal"><span class="pre">psi4/lib</span></tt>.  After installation, PSI4 will look in
+$prefix/share/psi.  If you want to specify a non-standard location for this
+information, you can do this by setting the environmental variable
+$PSI4DATADIR to the directory containg the basis, grids, etc.,
+subdirectories.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="iv-recommendations-for-blas-and-lapack-libraries">
+<span id="sec-install-iv"></span><h2>IV. Recommendations for BLAS and LAPACK libraries<a class="headerlink" href="#iv-recommendations-for-blas-and-lapack-libraries" title="Permalink to this headline">¶</a></h2>
+<p>Much of the speed and efficiency of the PSI4 programs depends on the
+corresponding speed and efficiency of the available BLAS and LAPACK libraries
+(especially the former).  In addition, the most common compilation problems
+involve these libraries.  Users may therefore wish to consider the following
+BLAS and LAPACK recommendations when building PSI4:</p>
+<ol class="arabic">
+<li><p class="first">It is NOT wise to use the stock BLAS library provided with many
+Linux distributions like RedHat. This library is usually just the
+netlib distribution and is completely unoptimized. PSI4&#8217;s
+performance will suffer if you choose this route.</p>
+<p>The choice of LAPACK is less critical, and so the unoptimized
+netlib distribution is acceptable.  If you do choose to use the
+RedHat/Fedora stock BLAS and LAPACK, make sure that the blas-devel
+and lapack-devel packages are installed.</p>
+</li>
+<li><p class="first">Perhaps the best choice, if you have it available, is
+Intel&#8217;s MKL library, which includes BLAS and LAPACK (note: use
+version 11 or later, we had difficulty with version 10 for very
+large coupled-cluster computations).  MKL is efficient and works
+well in threaded mode.</p>
+<p>Otherwise, the simplest choice is to use ATLAS
+(<a class="reference external" href="http://math-atlas.sourceforge.net/">http://math-atlas.sourceforge.net/</a>), which is readily available
+on all Linux distributions. Another alternative is OpenBLAS
+(<a class="reference external" href="https://github.com/xianyi/OpenBLAS">https://github.com/xianyi/OpenBLAS</a>, formerly GotoBLAS). These
+work well on nearly every achitecture to which the PSI4 developers
+have access, though we have identified at least one case in which
+the Goto libraries yielded faulty DGEMM calls.  On Mac OS X
+systems, the vecLib package that comes with Xcode works well.</p>
+</li>
+</ol>
+<ol class="arabic" id="sec-install-iv-3" start="3">
+<li><p class="first">PSI4 does not require a Fortran compiler, unless the resident BLAS
+and LAPACK libraries require Fortran-based system libraries.  If you see
+compiler complaints about missing symbols like &#8220;do_fio&#8221; or &#8220;e_wsfe&#8221;, then
+your libraries were most likely compiled with g77 or gfortran, which
+require <tt class="docutils literal"><span class="pre">-lg2c</span></tt> to resolve the Fortran I/O calls.  Use of the same gcc
+package for PSI4 should normally resolve this problem.</p>
+</li>
+<li><p class="first">The PSI4 configure script can often identify and use several
+different BLAS and LAPACK libraries, but its ability to do this
+automatically depends on a number of factors, including correspondence
+between the compiler used for PSI4 and the compiler used to build
+BLAS/LAPACK, placement of the libraries in commonly searched directories,
+etc. PSI4&#8217;s configure script will find your BLAS and LAPACK if any of the
+the following are installed in standard locations (e.g. <tt class="docutils literal"><span class="pre">/usr/local/lib</span></tt>):</p>
+<ol class="loweralpha simple">
+<li>ATLAS: <tt class="docutils literal"><span class="pre">libf77blas.a</span></tt> and <tt class="docutils literal"><span class="pre">libatlas.a</span></tt>, plus netlib&#8217;s <tt class="docutils literal"><span class="pre">liblapack.a</span></tt></li>
+<li>MKL 8: <tt class="docutils literal"><span class="pre">libmkl.so</span></tt> and <tt class="docutils literal"><span class="pre">libmkl_lapack64.a</span></tt> (with the corresponding
+Intel compilers)</li>
+<li>Goto: <tt class="docutils literal"><span class="pre">libgoto.a</span></tt> and netlib&#8217;s <tt class="docutils literal"><span class="pre">liblapack.a</span></tt></li>
+<li>Cray SCSL (e.g. on SGI Altix): <tt class="docutils literal"><span class="pre">libscs.so</span></tt> (NB: No Fortran compiler
+is necessary in this case, so <tt class="docutils literal"><span class="pre">--with-fc=no</span></tt> should work.)</li>
+<li>ESSL (e.g. on AIX systems): <tt class="docutils literal"><span class="pre">libessl.a</span></tt></li>
+</ol>
+</li>
+<li><p class="first">If configure cannot identify your BLAS and LAPACK libraries
+automatically, you can specify them on the command-line using the
+<tt class="docutils literal"><span class="pre">--with-blas</span></tt> and <tt class="docutils literal"><span class="pre">--with-lapack</span></tt> arguments described above.  Here are a few
+examples that work on the PSI4 developers&#8217; systems:</p>
+<ol class="loweralpha">
+<li><p class="first">Linux with ATLAS:</p>
+<div class="highlight-python"><pre>--with-blas='-lf77blas -latlas' --with-lapack='-llapack -lcblas'</pre>
+</div>
+</li>
+<li><p class="first">Mac OS X with vecLib:</p>
+<div class="highlight-python"><pre>--with-blas='-altivec -framework vecLib' --with-lapack=' '</pre>
+</div>
+</li>
+<li><p class="first">Linux with MKL 8.1 and icc/icpc/ifort 9.1:</p>
+<div class="highlight-python"><pre>--with-libdirs=-L/usr/local/opt/intel/mkl/8.0.2/lib/32 --with-blas=-lmkl --with-lapack=-lmkl_lapack32</pre>
+</div>
+</li>
+<li><p class="first">Linux on ia32 with MKL 10.1 and icc/icpc 11.0:</p>
+<div class="highlight-python"><pre>--with-blas='-Wl,--start-group -L/usr/local/opt/intel/mkl/10.1.0.015/lib/32 -l mkl -Wl,--end-group -lguide -lpthread'</pre>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li><p class="first">Compilation notes for ATLAS</p>
+<p>These shortcut notes might be helpful if you are using Linux.  However,
+we recommend reading and following the full ATLAS installation notes.</p>
+<p>You&#8217;ll need a Fortran compiler installed.</p>
+<p>Unpack the source code, then make a compilation directory (could
+be an obj subdirectory in the source directory, or elsewhere).</p>
+<p>Turn off CPU throttling so the auto-tuning capabilities have a chance
+to work.  On Linux, this can be tune using</p>
+<div class="highlight-python"><pre>/usr/bin/cpufreq-selector -g performance</pre>
+</div>
+<p>cd into the compilation directory and run the source
+directory configure script there, with any necessary flags, e.g.,</p>
+<div class="highlight-python"><pre>/usr/local/src/atlas/configure --prefix=/usr/local/atlas</pre>
+</div>
+<p>where prefix gives the installation directory.
+It should automatically detect if you&#8217;re on an x86_64</p>
+<p>Then make and check using</p>
+<div class="highlight-python"><pre>make; make check; make ptcheck</pre>
+</div>
+<p>And install</p>
+<div class="highlight-python"><pre>make install</pre>
+</div>
+</li>
+<li><p class="first">Compilation notes for netlib&#8217;s LAPACK</p>
+<p>These shortcut notes might be helpful if you are using Linux.  However,
+we recommend reading and following the full LAPACK installation notes.</p>
+<p>You&#8217;ll need a Fortran compiler installed.</p>
+<p>If you decide to compile LAPACK from source, it may be obtained from
+<a class="reference external" href="http://www.netlib.org/lapack/">http://www.netlib.org/lapack/</a>.  Unpack the source code, and in the
+top-level source directory, you need to create a make.inc file with
+the appropriate options for your machine.  For Linux/gfortran,
+simply</p>
+<div class="highlight-python"><pre>cp make.inc.example make.inc</pre>
+</div>
+<p>Next, edit BLASLIB in make.inc to point to your BLAS library
+(full pathnames are recommended):</p>
+<div class="highlight-python"><pre>BLASLIB = /home/david/software/atlas3.9.25/lib/libf77blas.a /home/david/software/atlas3.9.25/lib/libatlas.a</pre>
+</div>
+<p>Edit Makefile as necessary (probably not needed).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+<p>Copy the resulting file [lapack_($ARCH).a] where you want it
+(a standard location like /usr/local/lib is easier for PSI to find).
+It is probably helpful to rename the file liblapack.a.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="v-miscellaneous-architecture-specific-notes">
+<span id="sec-install-v"></span><h2>V. Miscellaneous Architecture-Specific Notes<a class="headerlink" href="#v-miscellaneous-architecture-specific-notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Linux on x86 and x86_64<ol class="arabic">
+<li>Intel compilers: We had trouble with icpc 12.0.x.  Use 12.1 or
+later.</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="vi-common-problems-with-psi-compilation">
+<span id="sec-install-vi"></span><h2>VI. Common Problems with PSI Compilation<a class="headerlink" href="#vi-common-problems-with-psi-compilation" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">No rule to make target foo.h, needed by bar.d. Stop.</p>
+<p>This commonly happens after pulling updates from the repository. It happens
+when a library header file is removed or renamed by the update, but there are
+still old dependency files in the object directory, which think that they
+still need to know about that header. There&#8217;s a simple remedy, just run</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">make</span> <span class="n">DODEPEND</span><span class="o">=</span><span class="n">no</span> <span class="n">dclean</span>
+</pre></div>
+</div>
+<p>in the object directory.</p>
+</li>
+<li><p class="first">Make gets stuck in an infinite loop</p>
+<p>This means that the makefiles have not been properly updated. Running</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">autoconf</span>
+</pre></div>
+</div>
+<p>in the top-level Psi directory, followed by</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="o">./</span><span class="n">config</span><span class="o">.</span><span class="n">status</span> <span class="o">--</span><span class="n">recheck</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">./</span><span class="n">config</span><span class="o">.</span><span class="n">status</span>
+</pre></div>
+</div>
+<p>in the object directory should fix it. This procedure will need to be run
+whenever an update changes the directory structure.</p>
+</li>
+<li><p class="first">Incompatible g++/icpc</p>
+<p>The Intel compilers require an installed set of C++ headers. Unfortunately,
+the GNU compilers tend to be more cutting-edge than the Intel compilers,
+meaning that Intel is always playing catch-up to new features in g++. This
+means the two are often incompatible, leading to trouble if one wants to use
+icpc to compile PSI4 (or anything else...). Your best bet in general is to not
+upgrade Linux too fast, and always keep the very latest Intel compilers
+around.</p>
+</li>
+<li><p class="first">Missing symbols like &#8220;do_fio&#8221; or &#8220;e_wsfe&#8221;</p>
+<p>See <a class="reference internal" href="#sec-install-iv-3"><em>Section IV(3)</em></a> above.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation Instructions for PSI4</a><ul>
+<li><a class="reference internal" href="#i-compilation-prerequisites">I. Compilation Prerequisites</a></li>
+<li><a class="reference internal" href="#ii-brief-summary-of-configuration-compilation-and-installation">II. Brief Summary of Configuration, Compilation, and Installation</a></li>
+<li><a class="reference internal" href="#iii-detailed-installation-instructions">III. Detailed Installation Instructions</a></li>
+<li><a class="reference internal" href="#iv-recommendations-for-blas-and-lapack-libraries">IV. Recommendations for BLAS and LAPACK libraries</a></li>
+<li><a class="reference internal" href="#v-miscellaneous-architecture-specific-notes">V. Miscellaneous Architecture-Specific Notes</a></li>
+<li><a class="reference internal" href="#vi-common-problems-with-psi-compilation">VI. Common Problems with PSI Compilation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/installfile.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Apr 25, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

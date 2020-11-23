@@ -1,0 +1,469 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CEPA: Coupled-Pair Methods &mdash; PSI4 [beta3] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta3] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="CC: Coupled Cluster Methods" href="cc.html" />
+    <link rel="prev" title="SAPT: Symmetry-Adapted Perturbation Theory" href="sapt.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cc.html" title="CC: Coupled Cluster Methods"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt.html" title="SAPT: Symmetry-Adapted Perturbation Theory"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<span class="target" id="sec-cepa"></span><span class="target" id="index-0"></span><div class="section" id="cepa-coupled-pair-methods">
+<span id="index-1"></span><h1>CEPA: Coupled-Pair Methods<a class="headerlink" href="#cepa-coupled-pair-methods" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: A. Eugene DePrince</em></p>
+<p><em>Section author: A. Eugene DePrince</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__cepa.html#apdx-cepa"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__cepa.html#apdx-cepa-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/cepa">CEPA</a></p>
+<p>Coupled-pair methods can be viewed as approximations to coupled-cluster (CC) theory or as size-extensive modifications
+of truncated configuration interaction (CI) theory.  The methods have the same complexity as CI
+with single and double excitations (CISD), and solving the CISD or coupled-pair equations requires
+fewer floating point operations than solving the CC with singles and doubles (CCSD) equations.  CISD,
+CCSD, and the coupled-pair methods discussed below all scale formally with the sixth power of system size.  For a
+detailed discussion of the properties of various coupled-pair methods, see Ref. <a class="reference internal" href="bibliography.html#wennmohs-2008">[Wennmohs:2008]</a>.</p>
+<p>What follows is a very basic description of the practical differences in the equations that define each of the
+coupled-pair methods implemented in PSI4.  We begin with the CISD wave function</p>
+<div class="math" id="equation-CIwfn">
+<p><span class="eqno">(1)</span><img src="_images/math/f2c4b24e81ba4d2e39d9b86c384325521d9e33af.png" alt="| \Psi \rangle = | \Psi_0 \rangle + \sum_i^{occ} \sum_a^{vir} t_i^a | \Psi_i^a\rangle + \frac{1}{4}\sum_{ij}^{occ} \sum_{ab}^{vir} t_{ij}^{ab} | \Psi_{ij}^{ab}\rangle,"/></p>
+</div><p>where we have chosen the intermediate normalization, <img class="math" src="_images/math/1a523eb0f5b658857ca7caa246f931419a0f4803.png" alt="\langle \Psi_0 | \Psi \rangle = 1" style="vertical-align: -5px"/>.
+The CISD correlation energy is given by</p>
+<div class="math" id="equation-CIenergy">
+<p><span class="eqno">(2)</span><img src="_images/math/0e6abb8ee66464175658625768c3fd473a233e7b.png" alt="E_c = \langle \Psi_0 | \hat{H} - E_0 | \Psi \rangle,"/></p>
+</div><p>and the amplitudes can be determined by the solution to the coupled set of eqations:</p>
+<div class="math" id="equation-CIeqns">
+<p><span class="eqno">(3)</span><img src="_images/math/33fd79578b36f55dfd47e103f3c53edeab060a5a.png" alt="0   &amp;= \langle \Psi_{ij}^{ab} | \hat{H} - E_0 - E_c | \Psi \rangle, \\
+0   &amp;= \langle \Psi_{i}^{a} | \hat{H} - E_0 - E_c | \Psi \rangle."/></p>
+</div><p>The CISD method is not size-extensive, but this problem can be overcome by making very simple modifications to the amplitude
+equations.  With malice and forethought, we replace the correlation energy, <img class="math" src="_images/math/3f95d127e55f117825d17893d59a40dee6112d61.png" alt="E_c" style="vertical-align: -3px"/>, with generalized shifts for
+the doubles and singles equations, <img class="math" src="_images/math/91891d5d40a162cd22232442d9ab6c8a065d39c6.png" alt="\Delta_{ij}" style="vertical-align: -6px"/> and <img class="math" src="_images/math/80e1f59bdde4c99cae9dcad411e62c44169114a4.png" alt="\Delta_i" style="vertical-align: -3px"/>:</p>
+<div class="math" id="equation-CEPAeqns">
+<p><span class="eqno">(4)</span><img src="_images/math/14148d9c09dedb3d720a1aa64fdfe93b03132091.png" alt="0   &amp;= \langle \Psi_{ij}^{ab} | \hat{H} - E_0 - \Delta_{ij} | \Psi \rangle, \\
+0   &amp;= \langle \Psi_{i}^{a} | \hat{H} - E_0 - \Delta_i | \Psi \rangle."/></p>
+</div><p>These shifts approximate the effects of triple and quadruple excitations.
+The values for <img class="math" src="_images/math/91891d5d40a162cd22232442d9ab6c8a065d39c6.png" alt="\Delta_{ij}" style="vertical-align: -6px"/> and <img class="math" src="_images/math/80e1f59bdde4c99cae9dcad411e62c44169114a4.png" alt="\Delta_i" style="vertical-align: -3px"/>  used in several coupled-pair methods are given in Table
+<a class="reference internal" href="#table-cepa-shifts"><em>CEPA Shifts</em></a>.  Note that these shifts are defined in a spin-free formalism
+for closed-shell references only.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-cepa-shifts">
+<colgroup>
+<col width="19%" />
+<col width="46%" />
+<col width="35%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head"><img class="math" src="_images/math/91891d5d40a162cd22232442d9ab6c8a065d39c6.png" alt="\Delta_{ij}" style="vertical-align: -6px"/></th>
+<th class="head"><img class="math" src="_images/math/80e1f59bdde4c99cae9dcad411e62c44169114a4.png" alt="\Delta_i" style="vertical-align: -3px"/></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sdci</td>
+<td><img class="math" src="_images/math/3f95d127e55f117825d17893d59a40dee6112d61.png" alt="E_c" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/3f95d127e55f117825d17893d59a40dee6112d61.png" alt="E_c" style="vertical-align: -3px"/></td>
+</tr>
+<tr class="row-odd"><td>dci</td>
+<td><img class="math" src="_images/math/3f95d127e55f117825d17893d59a40dee6112d61.png" alt="E_c" style="vertical-align: -3px"/></td>
+<td>NA</td>
+</tr>
+<tr class="row-even"><td>cepa(0)</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>cepa(1)</td>
+<td><img class="math" src="_images/math/6b72867b9d963c4d80c30e3ac55efe1e63491538.png" alt="\frac{1}{2}\sum_k(\epsilon_{ik}+\epsilon_{jk})" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/0c07e2189ccda4556e0e73afe87a98832f636e4a.png" alt="\sum_k \epsilon_{ik}" style="vertical-align: -5px"/></td>
+</tr>
+<tr class="row-even"><td>cepa(3)</td>
+<td><img class="math" src="_images/math/63e0bcbb3e862dfff52a0d07fe3a97e386fd92b9.png" alt="-\epsilon_{ij}+\sum_k(\epsilon_{ik}+\epsilon_{jk})" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/3626ad69d960eeadea84ccaf3e020fceb90fece9.png" alt="-\epsilon_{ii}+2\sum_k \epsilon_{ik}" style="vertical-align: -5px"/></td>
+</tr>
+<tr class="row-odd"><td>acpf</td>
+<td><img class="math" src="_images/math/1d802ed5eacb3f72065adb99305160e86f147282.png" alt="\frac{2}{N} E_c" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/1d802ed5eacb3f72065adb99305160e86f147282.png" alt="\frac{2}{N} E_c" style="vertical-align: -6px"/></td>
+</tr>
+<tr class="row-even"><td>aqcc</td>
+<td><img class="math" src="_images/math/3a90f4e1b6e9fb49e97981e384c33880eef8d3fd.png" alt="[1-\frac{(N-3)(N-2)}{N(N-1)}]E_c" style="vertical-align: -9px"/></td>
+<td><img class="math" src="_images/math/3a90f4e1b6e9fb49e97981e384c33880eef8d3fd.png" alt="[1-\frac{(N-3)(N-2)}{N(N-1)}]E_c" style="vertical-align: -9px"/></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The pair correlation energy, <img class="math" src="_images/math/9775c4979815e5b297f3a5bb23239b6e3acc6363.png" alt="\epsilon_{ij}" style="vertical-align: -6px"/>, is simply a partial sum of the correlation energy.  In a spin-free formalism,
+the pair energy is given by</p>
+<div class="math" id="equation-pair_energy">
+<p><span class="eqno">(5)</span><img src="_images/math/974547e305d8f21e1b0644259a8ce4b4a64ba788.png" alt="\epsilon_{ij} = \sum_{ab} v_{ij}^{ab} (2 t_{ij}^{ab} - t_{ij}^{ba})"/></p>
+</div><p>Methods whose shifts (<img class="math" src="_images/math/91891d5d40a162cd22232442d9ab6c8a065d39c6.png" alt="\Delta_{ij}" style="vertical-align: -6px"/> and <img class="math" src="_images/math/80e1f59bdde4c99cae9dcad411e62c44169114a4.png" alt="\Delta_i" style="vertical-align: -3px"/>) do not explicitly depend on orbitals <img class="math" src="_images/math/34857b3ba74ce5cd8607f3ebd23e9015908ada71.png" alt="i" style="vertical-align: 0px"/> or <img class="math" src="_images/math/8122aa89ea6e80784c6513d22787ad86e36ad0cc.png" alt="j" style="vertical-align: -4px"/>
+(CISD, CEPA(0), ACPF, and AQCC)
+have solutions that render the energy stationary with respect variations in the amplitudes.  This convenient property allows
+density matrices and 1-electron properties to be evaluated without any additional effort.</p>
+<p>The coupled-pair methods currently supported in PSI4 are outlined in Table <a class="reference internal" href="#table-cepa-calls"><em>CEPA Methods</em></a>.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-cepa-calls">
+<colgroup>
+<col width="19%" />
+<col width="47%" />
+<col width="7%" />
+<col width="10%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method</th>
+<th class="head">energy</th>
+<th class="head">derivatives</th>
+<th class="head">1-electron properties</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cepa(0)</td>
+<td>coupled electron pair approximation, variant 0</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr class="row-odd"><td>cepa(1)</td>
+<td>coupled electron pair approximation, variant 1</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr class="row-even"><td>cepa(3)</td>
+<td>coupled electron pair approximation, variant 3</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr class="row-odd"><td>acpf</td>
+<td>averaged coupled-pair functional</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr class="row-even"><td>aqcc</td>
+<td>averaged quadratic coupled-cluster</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr class="row-odd"><td>sdci</td>
+<td>configuration interaction with single and double excitations</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr class="row-even"><td>dci</td>
+<td>configuration interaction with double excitations</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="section" id="basic-coupled-pair-keywords">
+<span id="index-2"></span><h2>Basic Coupled Pair Keywords<a class="headerlink" href="#basic-coupled-pair-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basis">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-mints"><em class="xref std std-term">BASIS</em></a><a class="headerlink" href="#basis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Primary basis set</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><em>basis string</em></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="freeze-core">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-freeze-core-globals"><em class="xref std std-term">FREEZE_CORE</em></a><a class="headerlink" href="#freeze-core" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Specifies how many core orbitals to freeze in correlated computations. <tt class="docutils literal"><span class="pre">TRUE</span></tt> will default to freezing the standard default number of core orbitals. For heavier elements, there can be some ambiguity in how many core orbitals to freeze; in such cases, <tt class="docutils literal"><span class="pre">SMALL</span></tt> picks the most conservative standard setting (freezes fewer orbitals), and <tt class="docutils literal"><span class="pre">LARGE</span></tt> picks the least conservative standard setting (freezes more orbitals). More precise control over the number of frozen orbitals can be attained by using the keywords <a class="reference internal" href="autodoc_glossary_options_c.html#term-num-frozen-docc-globals"><em class="xref std std-term">NUM_FROZEN_DOCC</em></a> (gives the total number of orbitals to freeze, program picks the lowest-energy orbitals) or <a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-docc-globals"><em class="xref std std-term">FROZEN_DOCC</em></a> (gives the number of orbitals to freeze per irreducible representation)</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: FALSE, TRUE, SMALL, LARGE</li>
+<li><strong>Default</strong>: FALSE</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="r-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-cepa"><em class="xref std std-term">R_CONVERGENCE</em></a><a class="headerlink" href="#r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Desired convergence for the t1 and t2 amplitudes, defined as the norm of the change in the amplitudes between iterations.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1.0e-7</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="maxiter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-maxiter-cepa"><em class="xref std std-term">MAXITER</em></a><a class="headerlink" href="#maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of iterations to converge the t1 and t2 amplitudes.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 100</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="diis-max-vecs">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-diis-max-vecs-cepa"><em class="xref std std-term">DIIS_MAX_VECS</em></a><a class="headerlink" href="#diis-max-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of vectors to store for DIIS extrapolation.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 8</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-scale-os">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-scale-os-cepa"><em class="xref std std-term">MP2_SCALE_OS</em></a><a class="headerlink" href="#mp2-scale-os" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Opposite-spin scaling factor for SCS-MP2.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.20</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-scale-ss">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-scale-ss-cepa"><em class="xref std std-term">MP2_SCALE_SS</em></a><a class="headerlink" href="#mp2-scale-ss" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Same-spin scaling factor for SCS-MP2</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.0/3.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dipmom">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dipmom-cepa"><em class="xref std std-term">DIPMOM</em></a><a class="headerlink" href="#dipmom" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Compute the dipole moment? Note that quadrupole moments will also be computed if PRINT &gt;= 2.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cepa-vabcd-direct">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cepa-vabcd-direct-cepa"><em class="xref std std-term">CEPA_VABCD_DIRECT</em></a><a class="headerlink" href="#cepa-vabcd-direct" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Use integral-direct implementation of the (ac|bd) t(ij,cd) contraction? AO integrals will be generated on the fly. The CEPA iterations will be slower, but the AO-&gt;MO integral transform will be faster, and the out-of-core sort of the (AC|BD) integrals will be avoided.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="advanced-coupled-pair-keywords">
+<span id="index-3"></span><h2>Advanced Coupled Pair Keywords<a class="headerlink" href="#advanced-coupled-pair-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cepa-level">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cepa-level-cepa"><em class="xref std std-term">CEPA_LEVEL</em></a><a class="headerlink" href="#cepa-level" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Which coupled-pair method is called? This parameter is used internally by the python driver. Changing its value won&#8217;t have any effect on the procedure.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Default</strong>: CEPA(0)</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="scs-cepa">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-scs-cepa-cepa"><em class="xref std std-term">SCS_CEPA</em></a><a class="headerlink" href="#scs-cepa" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Perform SCS-CEPA? If true, note that the default values for the spin component scaling factors are optimized for the CCSD method.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cepa-scale-os">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cepa-scale-os-cepa"><em class="xref std std-term">CEPA_SCALE_OS</em></a><a class="headerlink" href="#cepa-scale-os" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Oppposite-spin scaling factor for SCS-CEPA.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.27</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cepa-scale-ss">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cepa-scale-ss-cepa"><em class="xref std std-term">CEPA_SCALE_SS</em></a><a class="headerlink" href="#cepa-scale-ss" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Same-spin scaling factor for SCS-CEPA.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.13</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cepa-no-singles">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cepa-no-singles-cepa"><em class="xref std std-term">CEPA_NO_SINGLES</em></a><a class="headerlink" href="#cepa-no-singles" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Flag to exclude singly excited configurations from the computation. Note that this algorithm is not optimized for doubles-only computations.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CEPA: Coupled-Pair Methods</a><ul>
+<li><a class="reference internal" href="#basic-coupled-pair-keywords">Basic Coupled Pair Keywords</a><ul>
+<li><a class="reference internal" href="#basis"><tt class="docutils literal"><span class="pre">BASIS</span></tt></a></li>
+<li><a class="reference internal" href="#freeze-core"><tt class="docutils literal"><span class="pre">FREEZE_CORE</span></tt></a></li>
+<li><a class="reference internal" href="#r-convergence"><tt class="docutils literal"><span class="pre">R_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#maxiter"><tt class="docutils literal"><span class="pre">MAXITER</span></tt></a></li>
+<li><a class="reference internal" href="#diis-max-vecs"><tt class="docutils literal"><span class="pre">DIIS_MAX_VECS</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-scale-os"><tt class="docutils literal"><span class="pre">MP2_SCALE_OS</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-scale-ss"><tt class="docutils literal"><span class="pre">MP2_SCALE_SS</span></tt></a></li>
+<li><a class="reference internal" href="#dipmom"><tt class="docutils literal"><span class="pre">DIPMOM</span></tt></a></li>
+<li><a class="reference internal" href="#cepa-vabcd-direct"><tt class="docutils literal"><span class="pre">CEPA_VABCD_DIRECT</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-coupled-pair-keywords">Advanced Coupled Pair Keywords</a><ul>
+<li><a class="reference internal" href="#cepa-level"><tt class="docutils literal"><span class="pre">CEPA_LEVEL</span></tt></a></li>
+<li><a class="reference internal" href="#scs-cepa"><tt class="docutils literal"><span class="pre">SCS_CEPA</span></tt></a></li>
+<li><a class="reference internal" href="#cepa-scale-os"><tt class="docutils literal"><span class="pre">CEPA_SCALE_OS</span></tt></a></li>
+<li><a class="reference internal" href="#cepa-scale-ss"><tt class="docutils literal"><span class="pre">CEPA_SCALE_SS</span></tt></a></li>
+<li><a class="reference internal" href="#cepa-no-singles"><tt class="docutils literal"><span class="pre">CEPA_NO_SINGLES</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sapt.html"
+                        title="previous chapter">SAPT: Symmetry-Adapted Perturbation Theory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cc.html"
+                        title="next chapter">CC: Coupled Cluster Methods</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/cepa.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cc.html" title="CC: Coupled Cluster Methods"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt.html" title="SAPT: Symmetry-Adapted Perturbation Theory"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, The Psi4 Project.
+      Last updated on Oct 16, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

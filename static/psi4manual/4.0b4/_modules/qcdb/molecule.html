@@ -1,0 +1,366 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.molecule &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for qcdb.molecule</h1><div class="highlight"><pre>
+<span class="c">#import os</span>
+<span class="c">#import re</span>
+<span class="c">#import math</span>
+<span class="c">#import copy</span>
+<span class="c">#from periodictable import *</span>
+<span class="c">#from physconst import *</span>
+<span class="c">#from vecutil import *</span>
+<span class="c">#from exceptions import *</span>
+<span class="c">#from coordentry import *</span>
+<span class="kn">from</span> <span class="nn">libmintsmolecule</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="Molecule"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.molecule.Molecule">[docs]</a><span class="k">class</span> <span class="nc">Molecule</span><span class="p">(</span><span class="n">LibmintsMolecule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to store python extensions to the MoleculeLibmints class.</span>
+<span class="sd">    Multiple classes allows separation of libmints and extension methods.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psi4molstr</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize Molecule object from LibmintsMolecule&quot;&quot;&quot;</span>
+        <span class="n">LibmintsMolecule</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psi4molstr</span><span class="p">)</span>
+
+        <span class="c"># The comment line</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tagline</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;  ==&gt; qcdb Molecule </span><span class="si">%s</span><span class="s"> &lt;==</span><span class="se">\n\n</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;   =&gt; </span><span class="si">%s</span><span class="s"> &lt;=</span><span class="se">\n\n</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tagline</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_string_for_psi4</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">text</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Molecule.init_with_xyz"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.molecule.Molecule.init_with_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">init_with_xyz</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">xyzfilename</span><span class="p">,</span> <span class="n">no_com</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">no_reorient</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pull information from an XYZ file. No fragment info detected.</span>
+<span class="sd">        Charge, multiplicity, tagline pulled from second line if available.</span>
+
+<span class="sd">        &gt;&gt;&gt; H2O = qcdb.Molecule.init_with_xyz(&#39;h2o.xyz&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">lock_frame</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">PYmove_to_com</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">no_com</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">PYfix_orientation</span> <span class="o">=</span> <span class="n">no_reorient</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">infile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">xyzfilename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;&quot;&quot;Molecule::init_with_xyz: given filename &#39;</span><span class="si">%s</span><span class="s">&#39; does not exist.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">xyzfilename</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">xyzfilename</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;&quot;&quot;Molecule::init_with_xyz: given filename &#39;</span><span class="si">%s</span><span class="s">&#39; is blank.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">xyzfilename</span><span class="p">))</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="n">xyz1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;^\s*(\d+)\s*(bohr|au)?\s*$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="n">xyz2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^\s*(-?\d+)\s+(\d+)\s+(.*)\s*$&#39;</span><span class="p">)</span>
+        <span class="n">xyzN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;(?:\s*)([A-Z](?:[a-z])?)(?:\s+)(-?\d+\.\d+)(?:\s+)(-?\d+\.\d+)(?:\s+)(-?\d+\.\d+)(?:\s*)&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+
+        <span class="c"># Try to match the first line</span>
+        <span class="k">if</span> <span class="n">xyz1</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">fileNatom</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">xyz1</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">xyz1</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">fileUnits</span> <span class="o">=</span> <span class="s">&#39;Angstrom&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fileUnits</span> <span class="o">=</span> <span class="s">&#39;Bohr&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;Molecule::init_with_xyz: Malformed first line</span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="c"># Try to match the second line</span>
+        <span class="k">if</span> <span class="n">xyz2</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">set_molecular_charge</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">xyz2</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">set_multiplicity</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">xyz2</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">tagline</span> <span class="o">=</span> <span class="n">xyz2</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">tagline</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c"># Next line begins the useful information.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">fileNatom</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">xyzN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">]):</span>
+
+                    <span class="n">fileAtom</span> <span class="o">=</span> <span class="n">xyzN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                    <span class="n">fileX</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">xyzN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                    <span class="n">fileY</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">xyzN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+                    <span class="n">fileZ</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">xyzN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+                    <span class="c"># Check that the atom symbol is valid</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">fileAtom</span> <span class="ow">in</span> <span class="n">el2z</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;Illegal atom symbol in geometry specification: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">atomSym</span><span class="p">))</span>
+
+                    <span class="c"># Add it to the molecule.</span>
+                    <span class="n">instance</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">el2z</span><span class="p">[</span><span class="n">fileAtom</span><span class="p">],</span> <span class="n">fileX</span><span class="p">,</span> <span class="n">fileY</span><span class="p">,</span> <span class="n">fileZ</span><span class="p">,</span> <span class="n">fileAtom</span><span class="p">,</span> <span class="n">el2masses</span><span class="p">[</span><span class="n">fileAtom</span><span class="p">])</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;Molecule::init_with_xyz: Malformed atom information line </span><span class="si">%d</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;Molecule::init_with_xyz: Expected atom in file at line </span><span class="si">%d</span><span class="s">.</span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]))</span>
+
+        <span class="c"># We need to make 1 fragment with all atoms</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">fragments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">fileNatom</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">fragment_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;Real&#39;</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">fragment_charges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">molecular_charge</span><span class="p">())</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">fragment_multiplicities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">())</span>
+        <span class="c"># Set the units properly</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">PYunits</span> <span class="o">=</span> <span class="n">fileUnits</span>
+        <span class="k">if</span> <span class="n">fileUnits</span> <span class="o">==</span> <span class="s">&#39;Bohr&#39;</span><span class="p">:</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">input_units_to_au</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">elif</span> <span class="n">fileUnits</span> <span class="o">==</span> <span class="s">&#39;Angstrom&#39;</span><span class="p">:</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">input_units_to_au</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">psi_bohr2angstroms</span>
+
+        <span class="n">instance</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">instance</span>
+</div>
+<div class="viewcode-block" id="Molecule.save_string_for_psi4"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.molecule.Molecule.save_string_for_psi4">[docs]</a>    <span class="k">def</span> <span class="nf">save_string_for_psi4</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a string of Molecule formatted for psi4.</span>
+<span class="sd">        Includes fragments and reorienting, if specified.</span>
+
+<span class="sd">        &gt;&gt;&gt; print H2OH2O.save_string_for_psi4()</span>
+<span class="sd">        6</span>
+<span class="sd">        0 1</span>
+<span class="sd">        O         -1.55100700      -0.11452000       0.00000000</span>
+<span class="sd">        H         -1.93425900       0.76250300       0.00000000</span>
+<span class="sd">        H         -0.59967700       0.04071200       0.00000000</span>
+<span class="sd">        --</span>
+<span class="sd">        0 1</span>
+<span class="sd">        @X         0.00000000       0.00000000       0.00000000</span>
+<span class="sd">        O          1.35062500       0.11146900       0.00000000</span>
+<span class="sd">        H          1.68039800      -0.37374100      -0.75856100</span>
+<span class="sd">        H          1.68039800      -0.37374100       0.75856100</span>
+<span class="sd">        units Angstrom</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Nfr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nfragments</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_types</span><span class="p">[</span><span class="n">fr</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;Absent&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">Nfr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;--</span><span class="se">\n</span><span class="s">&quot;&quot;&quot;</span>
+            <span class="n">Nfr</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span><span class="si">%d</span><span class="s"> </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragment_charges</span><span class="p">[</span><span class="n">fr</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_multiplicities</span><span class="p">[</span><span class="n">fr</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">fr</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">fr</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_atoms</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span><span class="si">%-3s</span><span class="s">  </span><span class="si">%16.8f</span><span class="s"> </span><span class="si">%16.8f</span><span class="s"> </span><span class="si">%16.8f</span><span class="se">\n</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> \
+                    <span class="p">((</span><span class="s">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fZ</span><span class="p">(</span><span class="n">at</span><span class="p">)</span> <span class="k">else</span> <span class="s">&quot;@&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_atoms</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">symbol</span><span class="p">(),</span> \
+                    <span class="n">geom</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">geom</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;units </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">text</span>
+</div>
+<div class="viewcode-block" id="Molecule.format_string_for_qchem"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.molecule.Molecule.format_string_for_qchem">[docs]</a>    <span class="k">def</span> <span class="nf">format_string_for_qchem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Molecule.auto_fragments"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.molecule.Molecule.auto_fragments">[docs]</a>    <span class="k">def</span> <span class="nf">auto_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detects fragments in an unfragmented molecule using BFS</span>
+<span class="sd">        algorithm. Returns a new Molecule in Cartesian, fixed-geom</span>
+<span class="sd">        (no variable values), no dummy-atom format. Any non-default</span>
+<span class="sd">        charge and multiplicity assigned to first fragment.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nfragments</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;Molecule already fragmented so no further action by auto_fragments().&#39;</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">flist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BFS</span><span class="p">()</span>
+
+        <span class="c"># form new molecule through a string since self may contain</span>
+        <span class="c">#   dummies or zmatrix specs that mayn&#39;t be valid with atom shuffling</span>
+        <span class="n">new_geom</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYcharge_specified</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYmultiplicity_specified</span><span class="p">:</span>
+            <span class="n">new_geom</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\n</span><span class="s">   </span><span class="si">%d</span><span class="s"> </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecular_charge</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flist</span><span class="p">)):</span>
+            <span class="n">new_geom</span> <span class="o">+=</span> <span class="s">&quot;&quot;</span> <span class="k">if</span> <span class="n">fr</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s">&quot;   --</span><span class="se">\n</span><span class="s">&quot;</span>
+            <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">flist</span><span class="p">[</span><span class="n">fr</span><span class="p">]:</span>
+                <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+                <span class="n">new_geom</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span><span class="si">%-4s</span><span class="s"> &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">((</span><span class="s">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">(</span><span class="n">at</span><span class="p">)</span> <span class="k">else</span> <span class="s">&quot;@&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">at</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="n">new_geom</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;  </span><span class="si">%17.12f</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">geom</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                <span class="n">new_geom</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">new_geom</span> <span class="o">+=</span> <span class="s">&quot;   units </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYmove_to_com</span><span class="p">:</span>
+            <span class="n">new_geom</span> <span class="o">+=</span> <span class="s">&quot;   no_com</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientation_fixed</span><span class="p">():</span>
+            <span class="n">new_geom</span> <span class="o">+=</span> <span class="s">&quot;   no_reorient</span><span class="se">\n</span><span class="s">&quot;</span>
+
+        <span class="n">subset</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">new_geom</span><span class="p">)</span>
+        <span class="n">subset</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">subset</span>
+</div>
+<div class="viewcode-block" id="Molecule.BFS"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.molecule.Molecule.BFS">[docs]</a>    <span class="k">def</span> <span class="nf">BFS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a breadth-first search (BFS) on the real atoms</span>
+<span class="sd">        in molecule, returning an array of atom indices of fragments.</span>
+<span class="sd">        Relies upon van der Waals radii and so faulty for close</span>
+<span class="sd">        (esp. hydrogen-bonded) fragments. Original code from</span>
+<span class="sd">        Michael S. Marshall.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vdW_diameter</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;H&#39;</span><span class="p">:</span>  <span class="mf">1.001</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;HE&#39;</span><span class="p">:</span> <span class="mf">1.012</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;LI&#39;</span><span class="p">:</span> <span class="mf">0.825</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;BE&#39;</span><span class="p">:</span> <span class="mf">1.408</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;B&#39;</span><span class="p">:</span>  <span class="mf">1.485</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;C&#39;</span><span class="p">:</span>  <span class="mf">1.452</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;N&#39;</span><span class="p">:</span>  <span class="mf">1.397</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;O&#39;</span><span class="p">:</span>  <span class="mf">1.342</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;F&#39;</span><span class="p">:</span>  <span class="mf">1.287</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;NE&#39;</span><span class="p">:</span> <span class="mf">1.243</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;NA&#39;</span><span class="p">:</span> <span class="mf">1.144</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;MG&#39;</span><span class="p">:</span> <span class="mf">1.364</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;AL&#39;</span><span class="p">:</span> <span class="mf">1.639</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;SI&#39;</span><span class="p">:</span> <span class="mf">1.716</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;P&#39;</span><span class="p">:</span>  <span class="mf">1.705</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;S&#39;</span><span class="p">:</span>  <span class="mf">1.683</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;CL&#39;</span><span class="p">:</span> <span class="mf">1.639</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+            <span class="s">&#39;AR&#39;</span><span class="p">:</span> <span class="mf">1.595</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">}</span>
+
+        <span class="n">Queue</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">White</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">())</span>  <span class="c"># untouched</span>
+        <span class="n">Black</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c"># touched and all edges discovered</span>
+        <span class="n">Fragment</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c"># stores fragments</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c"># starts with the first atom in the list</span>
+        <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+
+        <span class="c"># Simply start with the first atom, do a BFS when done, go to any</span>
+        <span class="c">#   untouched atom and start again iterate until all atoms belong</span>
+        <span class="c">#   to a fragment group</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">White</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">Queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c"># Iterates to the next fragment</span>
+            <span class="n">Fragment</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">Queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>                <span class="c"># BFS within a fragment</span>
+                <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">Queue</span><span class="p">:</span>                  <span class="c"># find all (still white) nearest neighbors to vertex u</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">White</span><span class="p">:</span>
+                        <span class="n">dist</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">*</span> <span class="n">psi_bohr2angstroms</span>
+                        <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">vdW_diameter</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">u</span><span class="p">)]</span> <span class="o">+</span> <span class="n">vdW_diameter</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">i</span><span class="p">)]:</span>
+                            <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>      <span class="c"># if you find you, put in the queue</span>
+                            <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>      <span class="c"># and remove it from the untouched list</span>
+                <span class="n">Queue</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>                  <span class="c"># remove focus from Queue</span>
+                <span class="n">Black</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+                <span class="n">Fragment</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">))</span>      <span class="c"># add to group (0-indexed)</span>
+                <span class="n">Fragment</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>              <span class="c"># preserve original atom ordering</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">White</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>                  <span class="c"># can&#39;t move White -&gt; Queue if no more exist</span>
+                <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">White</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">White</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">Fragment</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Mar 20, 2014.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

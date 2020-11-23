@@ -1,0 +1,258 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>diatomic &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for diatomic</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">PsiMod</span>
+<span class="kn">from</span> <span class="nn">physconst</span> <span class="kn">import</span> <span class="n">psi_bohr2angstroms</span><span class="p">,</span> <span class="n">psi_hartree2aJ</span><span class="p">,</span> <span class="n">psi_amu2kg</span><span class="p">,</span> <span class="n">psi_h</span><span class="p">,</span> <span class="n">psi_c</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">diatomic_fits</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="diatomic_anharmonicity"><a class="viewcode-back" href="../diatomic.html#diatomic.diatomic_anharmonicity">[docs]</a><span class="k">def</span> <span class="nf">diatomic_anharmonicity</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates spectroscopic constants for a diatomic molecules.</span>
+<span class="sd">       Fits a diatomic potential energy curve using either a 5 or 9 point Legendre fit, locates the minimum</span>
+<span class="sd">       energy point, and then applies second order vibrational perturbation theory to obtain spectroscopic </span>
+<span class="sd">       constants.  The r values provided must bracket the minimum energy point, or an error will result.</span>
+<span class="sd">       </span>
+<span class="sd">       A dictionary with the following keys, which correspond to spectroscopic constants, is returned:</span>
+
+<span class="sd">       :type rvals: list</span>
+<span class="sd">       :param rvals: The bond lengths (in Angstrom) for which energies are </span>
+<span class="sd">           provided of length either 5 or 9 but must be the same length as </span>
+<span class="sd">           the energies array</span>
+
+<span class="sd">       :type energies: list</span>
+<span class="sd">       :param energies: The energies (Eh) computed at the bond lengths in the rvals list</span>
+
+<span class="sd">       :returns: (*dict*) Keys: &quot;re&quot;, &quot;r0&quot;, &quot;we&quot;, &quot;wexe&quot;, &quot;nu&quot;, &quot;ZPVE(harmonic)&quot;, &quot;ZPVE(anharmonic)&quot;, &quot;Be&quot;, &quot;B0&quot;, &quot;ae&quot;, &quot;De&quot;</span>
+<span class="sd">                 corresponding to the spectroscopic constants in cm-1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">angstrom_to_bohr</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">psi_bohr2angstroms</span>
+    <span class="n">angstrom_to_meter</span> <span class="o">=</span> <span class="mf">10e-10</span><span class="p">;</span>
+   
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rvals</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;The number of energies must match the number of distances&quot;</span><span class="p">)</span>
+   
+    <span class="n">npoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rvals</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">npoints</span> <span class="o">!=</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">npoints</span> <span class="o">!=</span> <span class="mi">9</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Only 5- or 9-point fits are implemented right now&quot;</span><span class="p">)</span>
+
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">Performing a </span><span class="si">%d</span><span class="s">-point fit</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">npoints</span><span class="p">)</span>
+    
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Optimizing geometry based on current surface:</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">npoints</span> <span class="o">==</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="n">optx</span> <span class="o">=</span> <span class="n">rvals</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">npoints</span> <span class="o">==</span> <span class="mi">9</span><span class="p">):</span>
+        <span class="n">optx</span> <span class="o">=</span> <span class="n">rvals</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">PsiMod</span><span class="o">.</span><span class="n">get_active_molecule</span><span class="p">()</span>
+    <span class="n">natoms</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">natom</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">natoms</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;The current molecule must be a diatomic for this code to work!&quot;</span><span class="p">)</span>
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">mass</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">mass</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">maxit</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">thres</span> <span class="o">=</span> <span class="mf">1.0e-9</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxit</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">npoints</span> <span class="o">==</span> <span class="mi">5</span><span class="p">):</span>
+            <span class="n">grad</span><span class="o">=</span> <span class="n">first_deriv_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+            <span class="n">secd</span> <span class="o">=</span> <span class="n">second_deriv_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="n">function_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">npoints</span> <span class="o">==</span> <span class="mi">9</span><span class="p">):</span>
+            <span class="n">grad</span> <span class="o">=</span> <span class="n">first_deriv_9pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+            <span class="n">secd</span> <span class="o">=</span> <span class="n">second_deriv_9pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="n">function_9pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+        <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;       E = </span><span class="si">%20.14f</span><span class="s">, x = </span><span class="si">%14.7f</span><span class="s">, grad = </span><span class="si">%20.14f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">optx</span><span class="p">,</span> <span class="n">grad</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">thres</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">optx</span> <span class="o">-=</span> <span class="n">grad</span> <span class="o">/</span> <span class="n">secd</span><span class="p">;</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot; Final E = </span><span class="si">%20.14f</span><span class="s">, x = </span><span class="si">%14.7f</span><span class="s">, grad = </span><span class="si">%20.14f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">function_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">),</span> <span class="n">optx</span><span class="p">,</span> <span class="n">grad</span><span class="p">));</span>
+
+    <span class="k">if</span> <span class="n">optx</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">rvals</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Minimum energy point is outside range of points provided.  Use a lower range of r values.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">optx</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">rvals</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Minimum energy point is outside range of points provided.  Use a higher range of r values.&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">npoints</span> <span class="o">==</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">function_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">first_deriv_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+        <span class="n">secd</span> <span class="o">=</span> <span class="n">second_deriv_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi_hartree2aJ</span>
+        <span class="n">third</span> <span class="o">=</span> <span class="n">third_deriv_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi_hartree2aJ</span>
+        <span class="n">fourth</span> <span class="o">=</span> <span class="n">fourth_deriv_5pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi_hartree2aJ</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">npoints</span> <span class="o">==</span> <span class="mi">9</span><span class="p">):</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">function_9pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">first_deriv_9pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span>
+        <span class="n">secd</span> <span class="o">=</span> <span class="n">second_deriv_9pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi_hartree2aJ</span>
+        <span class="n">third</span> <span class="o">=</span> <span class="n">third_deriv_9pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi_hartree2aJ</span>
+        <span class="n">fourth</span> <span class="o">=</span> <span class="n">fourth_deriv_9pt</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">optx</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi_hartree2aJ</span>
+
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Equilibrium Energy </span><span class="si">%20.14f</span><span class="s"> Hartrees</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">energy</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;Gradient           </span><span class="si">%20.14f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">first</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;Quadratic Force Constant </span><span class="si">%14.7f</span><span class="s"> MDYNE/A</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">secd</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;Cubic Force Constant     </span><span class="si">%14.7f</span><span class="s"> MDYNE/A**2</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">third</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;Quartic Force Constant   </span><span class="si">%14.7f</span><span class="s"> MDYNE/A**3</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">fourth</span><span class="p">)</span>
+    
+    <span class="n">hbar</span> <span class="o">=</span> <span class="n">psi_h</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="p">((</span><span class="n">m1</span><span class="o">*</span><span class="n">m2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">m1</span><span class="o">+</span><span class="n">m2</span><span class="p">))</span><span class="o">*</span><span class="n">psi_amu2kg</span>
+    <span class="n">we</span> <span class="o">=</span> <span class="mf">5.3088375e-11</span><span class="o">*</span><span class="n">sqrt</span><span class="p">(</span><span class="n">secd</span><span class="o">/</span><span class="n">mu</span><span class="p">)</span>
+    <span class="n">wexe</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.2415491e-6</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">we</span><span class="o">/</span><span class="n">secd</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="mf">5.0</span><span class="o">*</span><span class="n">third</span><span class="o">*</span><span class="n">third</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">3.0</span><span class="o">*</span><span class="n">secd</span><span class="p">)</span><span class="o">-</span><span class="n">fourth</span><span class="p">)</span>
+    
+    <span class="c"># Rotational constant: Be</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="p">((</span><span class="n">m1</span><span class="o">*</span><span class="n">m2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">m1</span><span class="o">+</span><span class="n">m2</span><span class="p">))</span> <span class="o">*</span> <span class="n">psi_amu2kg</span> <span class="o">*</span> <span class="p">(</span><span class="n">optx</span> <span class="o">*</span> <span class="n">angstrom_to_meter</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">psi_h</span> <span class="o">/</span> <span class="p">(</span><span class="mf">8.0</span> <span class="o">*</span> <span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">psi_c</span> <span class="o">*</span> <span class="n">I</span><span class="p">)</span>
+    
+    <span class="c"># alpha_e and quartic centrifugal distortion constant</span>
+    <span class="n">ae</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mf">6.0</span> <span class="o">*</span> <span class="n">B</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">we</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mf">1.05052209e-3</span><span class="o">*</span><span class="n">we</span><span class="o">*</span><span class="n">third</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">B</span> <span class="o">*</span> <span class="n">secd</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span><span class="o">+</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">de</span> <span class="o">=</span> <span class="mf">4.0</span><span class="o">*</span><span class="n">B</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="n">we</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="c"># B0 and r0 (plus re check using Be)</span>
+    <span class="n">B0</span> <span class="o">=</span> <span class="n">B</span> <span class="o">-</span> <span class="n">ae</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">r0</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">psi_h</span> <span class="o">/</span> <span class="p">(</span><span class="mf">8.0</span> <span class="o">*</span> <span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">psi_c</span> <span class="o">*</span> <span class="n">B0</span><span class="p">))</span>
+    <span class="n">recheck</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">psi_h</span> <span class="o">/</span> <span class="p">(</span><span class="mf">8.0</span> <span class="o">*</span> <span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">psi_c</span> <span class="o">*</span> <span class="n">B</span><span class="p">))</span>
+    <span class="n">r0</span> <span class="o">/=</span> <span class="n">angstrom_to_meter</span><span class="p">;</span> 
+    <span class="n">recheck</span> <span class="o">/=</span> <span class="n">angstrom_to_meter</span><span class="p">;</span>
+    
+    <span class="c"># Fundamental frequency nu</span>
+    <span class="n">nu</span> <span class="o">=</span> <span class="n">we</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">wexe</span><span class="p">;</span>
+    <span class="n">zpve_nu</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">we</span> <span class="o">-</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">wexe</span><span class="p">;</span>
+
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">re     = </span><span class="si">%10.6f</span><span class="s"> A  check: </span><span class="si">%10.6f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">optx</span><span class="p">,</span> <span class="n">recheck</span><span class="p">))</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;r0       = </span><span class="si">%10.6f</span><span class="s"> A</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">r0</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;we       = </span><span class="si">%10.4f</span><span class="s"> cm-1</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">we</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;wexe     = </span><span class="si">%10.4f</span><span class="s"> cm-1</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">wexe</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;nu       = </span><span class="si">%10.4f</span><span class="s"> cm-1</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">nu</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;ZPVE(nu) = </span><span class="si">%10.4f</span><span class="s"> cm-1</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">zpve_nu</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;Be       = </span><span class="si">%10.4f</span><span class="s"> cm-1</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">B</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;B0       = </span><span class="si">%10.4f</span><span class="s"> cm-1</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">B0</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;ae       = </span><span class="si">%10.4f</span><span class="s"> cm-1</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ae</span><span class="p">)</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&quot;De       = </span><span class="si">%10.7f</span><span class="s"> cm-1</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">de</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+               <span class="s">&quot;re&quot;</span>               <span class="p">:</span>  <span class="n">optx</span><span class="p">,</span>
+               <span class="s">&quot;r0&quot;</span>               <span class="p">:</span>  <span class="n">r0</span><span class="p">,</span>
+               <span class="s">&quot;we&quot;</span>               <span class="p">:</span>  <span class="n">we</span><span class="p">,</span>
+               <span class="s">&quot;wexe&quot;</span>             <span class="p">:</span>  <span class="n">wexe</span><span class="p">,</span>
+               <span class="s">&quot;nu&quot;</span>               <span class="p">:</span>  <span class="n">nu</span><span class="p">,</span>
+               <span class="s">&quot;ZPVE(harmonic)&quot;</span>   <span class="p">:</span>  <span class="n">zpve_nu</span><span class="p">,</span>
+               <span class="s">&quot;ZPVE(anharmonic)&quot;</span> <span class="p">:</span>  <span class="n">zpve_nu</span><span class="p">,</span>
+               <span class="s">&quot;Be&quot;</span>               <span class="p">:</span>  <span class="n">B</span><span class="p">,</span>
+               <span class="s">&quot;B0&quot;</span>               <span class="p">:</span>  <span class="n">B0</span><span class="p">,</span>
+               <span class="s">&quot;ae&quot;</span>               <span class="p">:</span>  <span class="n">ae</span><span class="p">,</span>
+               <span class="s">&quot;De&quot;</span>               <span class="p">:</span>  <span class="n">de</span>
+              <span class="p">}</span>
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Mar 20, 2014.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

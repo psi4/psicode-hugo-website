@@ -1,0 +1,824 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OCC: Orbital-Optimized Coupled-Cluster and Møller–Plesset Perturbation Theories &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="CC: Coupled Cluster Methods" href="cc.html" />
+    <link rel="prev" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory" href="dfmp2.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cc.html" title="CC: Coupled Cluster Methods"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfmp2.html" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<span class="target" id="index-0"></span><div class="section" id="occ-orbital-optimized-coupled-cluster-and-mo-slashller-plesset-perturbation-theories">
+<span id="sec-occ"></span><span id="index-1"></span><h1>OCC: Orbital-Optimized Coupled-Cluster and Møller&#8211;Plesset Perturbation Theories<a class="headerlink" href="#occ-orbital-optimized-coupled-cluster-and-mo-slashller-plesset-perturbation-theories" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Ugur Bozkaya</em></p>
+<p><em>Section author: Ugur Bozkaya</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__occ.html#apdx-occ"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__occ.html#apdx-occ-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/src/bin/occ">OCC</a></p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Orbital-optimized methods have several advantages over non-optimized counterparts.
+Once the orbitals are optimized, the wave function will obey the Hellmann-Feynman theorem
+for orbital rotation parameters. Therefore, there is no need for orbital response terms
+in the evaluation of analytic gradients. In other words, it is unnecessary to solve the
+first order coupled-perturbed CC and many-body perturbation theory (MBPT) equations.
+Further, computation of one-electron properties is easier because there are no response contributions to the particle
+density matrices (PDMs). Moreover, active space approximations can be readily incorporated into the CC methods
+<a class="reference internal" href="bibliography.html#krylov-2000-vod">[Krylov:2000:vod]</a>. Additionally, orbital-optimized coupled-cluster avoids spurious second-order
+poles in its response function, and its transition dipole moments are gauge invarianti <a class="reference internal" href="bibliography.html#pedersen-1999-od">[Pedersen:1999:od]</a>.</p>
+<p>Another advantage is that the orbital-optimized methods does not suffer from the artifactual symmetry-breaking
+instabilities <a class="reference internal" href="bibliography.html#sherrill-1998-od">[Sherrill:1998:od]</a>, <a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>, and <a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a>.
+Further, Kurlancheek and Head-Gordon <a class="reference internal" href="bibliography.html#kurlancek-2009">[Kurlancek:2009]</a> demonstrated that first order properties such as
+forces or dipole moments are discontinuous along nuclear coordinates when such a symmetry breaking occurs.
+They also observed that although the energy appears well behaved, the MP2 method can have natural occupation
+numbers greater than 2 or less than 0, hence may violate the N-representability condition. They further
+discussed that the orbital response equations generally have a singularity problem at the unrestriction point
+where spin-restricted orbitals become unstable to unrestriction. This singularity yields to extremely large or
+small eigenvalues of the one-particle density matrix (OPDM). These abnormal eigenvalues may lead to unphysical
+molecular properties such as vibrational frequencies. However, orbital optimized MP2 (hence Orbital optimized MP3)
+will solve this N-representability problem by disregarding orbital response contribution of one-partical
+density matrix.</p>
+<p>Although the performance of coupled-cluster singles and doubles (CCSD) and orbital-optimized
+CCD (OD) is similar, the situation is different in the case of triples corrections, especially at stretched
+geometries <a class="reference internal" href="bibliography.html#bozkaya-2012-odtl">[Bozkaya:2012:odtl]</a>. Bozkaya and Schaefer demonstrated that orbital-optimized coupled cluster based
+triple corrections, especially those of asymmetrics, provide significantly better potential energy curves than
+CCSD based triples corrections.</p>
+</div>
+<div class="section" id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<p>What follows is a very basic description of orbital-optimized Møller&#8211;Plesset perturbation
+theory as implemented in PSI4.  We will follow our previous presentations (<a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>,
+<a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a>, and <a class="reference internal" href="bibliography.html#bozkaya-2012-odtl">[Bozkaya:2012:odtl]</a>)</p>
+<p>The orbital variations may be expressed by means of an exponential unitary operator</p>
+<div class="math">
+<p><img src="_images/math/890436ae663f18ee74fc6b9ae2aa21cc5ac91751.png" alt="\widetilde{\hat{p}}^{\dagger} &amp;= e^{\hat{K}} \hat{p}^{\dagger} e^{-\hat{K}}\\
+\widetilde{\hat{p}} &amp;= e^{\hat{K}} \ \hat{p} \ e^{-\hat{K}} \\
+| \widetilde{p} \rangle &amp;= e^{\hat{K}} \ | p \rangle"/></p>
+</div><p>where <img class="math" src="_images/math/5973a31a373b957f8929a0484cea8288ec0a9333.png" alt="\hat{K}" style="vertical-align: 0px"/> is the orbital rotation operator</p>
+<div class="math">
+<p><img src="_images/math/4918438b455004bdd5f45598710ec56d8a64268b.png" alt="\hat{K} &amp;= \sum_{p,q}^{} K_{pq} \ \hat{E}_{pq} = \sum_{p&gt;q}^{} \kappa_{pq} \ \hat{E}_{pq}^{-} \\
+\hat{E}_{pq}  &amp;= \hat{p}^{\dagger} \hat{q} \\
+\hat{E}_{pq}^{-} &amp;= \hat{E}_{pq} \ - \ \hat{E}_{qp} \\
+{\bf K} &amp;= Skew({\bf \kappa})"/></p>
+</div><p>The effect of the orbital rotations on the MO coefficients can be written as</p>
+<div class="math">
+<p><img src="_images/math/a3b84be389ec7624f74ef0458560cf3678a37c64.png" alt="{\bf C({\bf \kappa})} = {\bf C^{(0)}} \ e^{{\bf K}}"/></p>
+</div><p>where <img class="math" src="_images/math/28d8bfc5331f6b6ac69fa676c20e3e21bb871e2d.png" alt="{\bf C^{(0)}}" style="vertical-align: 0px"/> is the initial MO coefficient matrix and <img class="math" src="_images/math/ce265d9939703cdaf92acb234d2e429f62400984.png" alt="{\bf C({\bf \kappa})}" style="vertical-align: -4px"/> is the new
+MO coefficient matrix as a function of <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/>.
+Now, let us define a variational energy functional (Lagrangian) as a function of <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/></p>
+<ul class="simple">
+<li>OMP2</li>
+</ul>
+<div class="math">
+<p><img src="_images/math/65cea45bdfc2e11884a438efccc72ab80ec95334.png" alt="\widetilde{E}({\bf \kappa}) &amp;= \langle 0| \hat{H}^{\kappa} | 0 \rangle \\
+&amp;+  \langle 0| \big(\hat{W}_{N}^{\kappa}\hat{T}_{2}^{(1)}\big)_{c} | 0 \rangle \\
+&amp;+  \langle 0| \{\hat{\Lambda}_{2}^{(1)} \ \big(\hat{f}_{N}^{\kappa} \hat{T}_{2}^{(1)}
+\ + \ \hat{W}_{N}^{\kappa} \big)_{c}\}_{c} | 0 \rangle"/></p>
+</div><ul class="simple">
+<li>OMP3</li>
+</ul>
+<div class="math">
+<p><img src="_images/math/b3dfcfaec81d5533065d5901616e42cb40a8e67d.png" alt="\widetilde{E}({\bf \kappa}) &amp;= \langle 0| \hat{H}^{\kappa} | 0 \rangle \\
+&amp;+ \langle 0| \big(\hat{W}_{N}^{\kappa}\hat{T}_{2}^{(1)}\big)_{c} | 0 \rangle
+\ + \ \langle 0| \big(\hat{W}_{N}^{\kappa}\hat{T}_{2}^{(2)}\big)_{c} | 0 \rangle \\
+&amp;+  \langle 0| \{\hat{\Lambda}_{2}^{(1)} \ \big(\hat{f}_{N}^{\kappa} \hat{T}_{2}^{(1)}
+\ + \ \hat{W}_{N}^{\kappa} \big)_{c}\}_{c} | 0 \rangle \\
+&amp;+ \langle 0| \{\hat{\Lambda}_{2}^{(1)} \ \big(\hat{f}_{N}^{\kappa} \hat{T}_{2}^{(2)}
+\ + \ \hat{W}_{N}^{\kappa}\hat{T}_{2}^{(1)} \big)_{c}\}_{c} | 0 \rangle \\
+&amp;+ \langle 0| \{\hat{\Lambda}_{2}^{(2)} \ \big(\hat{f}_{N}^{\kappa} \hat{T}_{2}^{(1)}
+\ + \ \hat{W}_{N}^{\kappa} \big)_{c}\}_{c} | 0 \rangle"/></p>
+</div><ul class="simple">
+<li>OCEPA</li>
+</ul>
+<div class="math">
+<p><img src="_images/math/1b8f6ab11286c65e6f876a1c1c9b8f5d21b9a977.png" alt="\widetilde{E}({\bf \kappa}) &amp;= \langle 0| \hat{H}^{\kappa} | 0 \rangle
+\ + \ \langle 0| \big(\hat{W}_{N}^{\kappa}\hat{T}_{2}\big)_{c} | 0 \rangle \\
+&amp;+ \langle 0| \{\hat{\Lambda}_{2} \ \big(\hat{W}_{N}^{\kappa} \ + \ \hat{H}_{N}^{\kappa}\hat{T}_{2} \big)_{c}\}_{c}  | 0 \rangle"/></p>
+</div><p>where subscript c means only connected diagrams are allowed, and
+<img class="math" src="_images/math/937ef37903cc49d4bb5abd0e7f8b07459321e006.png" alt="\hat{H}^{\kappa}" style="vertical-align: 0px"/>, <img class="math" src="_images/math/0c6cd43ab58370b4473425a6e5678fba9e3b40f9.png" alt="\hat{f}_{N}^{\kappa}" style="vertical-align: -5px"/>, and <img class="math" src="_images/math/ed90df104ef6bbdfcc8a42f32b42f26a4a97438d.png" alt="\hat{W}_{N}^{\kappa}" style="vertical-align: -5px"/> defined as</p>
+<div class="math">
+<p><img src="_images/math/36a85a81cd1684d35ae0aa4e913a2413fc8cf175.png" alt="\hat{H}^{\kappa} &amp;=  e^{-\hat{K}} \hat{H} e^{\hat{K}} \\
+\hat{f}_{N}^{\kappa} &amp;=  e^{-\hat{K}} \hat{f}_{N}^{d} e^{\hat{K}} \\
+\hat{W}_{N}^{\kappa} &amp;=  e^{-\hat{K}} \hat{W}_{N} e^{\hat{K}}"/></p>
+</div><p>where <img class="math" src="_images/math/8254f4f4fa37ccd3bb6a3e79764bd996b9160b89.png" alt="\hat{f}_{N}" style="vertical-align: -4px"/>, and <img class="math" src="_images/math/38fbb28d5ad832d6d7ec4bf083faeb735465024f.png" alt="\hat{W}_{N}" style="vertical-align: -3px"/> are the one- and two-electron components of normal-ordered Hamiltonian. Then,
+first and second derivatives of the energy with respect to the <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/> parameter at <img class="math" src="_images/math/cb43a3f3e1fda2eee3348228f4df5e8aecf4e3aa.png" alt="{\bf \kappa} = 0" style="vertical-align: 0px"/></p>
+<div class="math">
+<p><img src="_images/math/0f5d52829fa20f758cf1229eff7ff51cd1ad33d2.png" alt="w_{pq} = \frac{\partial \widetilde{E}}{\partial \kappa_{pq}}"/></p>
+</div><div class="math">
+<p><img src="_images/math/693111113813ea11f57dcec46a9c2b564b39b31e.png" alt="A_{pq,rs} = \frac{\partial^2 \widetilde{E}}{\partial \kappa_{pq} \partial \kappa_{rs}}"/></p>
+</div><p>Then the energy can be expanded up to second-order as follows</p>
+<div class="math">
+<p><img src="_images/math/c57ca189ae0746cb7fd5bbde571fa074d41bf41c.png" alt="\widetilde{E}^{(2)}({\bf \kappa}) = \widetilde{E}^{(0)} + {\bf \kappa^{\dagger} w}  + \frac{1}{2}~{\bf \kappa^{\dagger} A \kappa}"/></p>
+</div><p>where <img class="math" src="_images/math/617e8d9a63e644648e5c0ea450662ac513a01982.png" alt="{\bf w}" style="vertical-align: 0px"/> is the MO gradient vector, <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/> is the MO rotation vector,
+and <img class="math" src="_images/math/83c3c7c699d02fb20e6cd05765b0dbfae0444c10.png" alt="{\bf A}" style="vertical-align: -1px"/> is the MO Hessian matrix. Therefore, minimizing the energy with respect to <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/>
+yields</p>
+<div class="math">
+<p><img src="_images/math/7c33a7e8f89667f6bbbcab2aef6ac013bccfc521.png" alt="{\bf \kappa} = -{\bf A^{-1}w}"/></p>
+</div><p>This final equation corresponds to the usual Newton-Raphson step.</p>
+<p>Publications resulting from the use of the OMP2 code should cite the following publication(s):</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>.</p>
+<p>Publications resulting from the use of the OMP3 code should cite the following publications:</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a> and <a class="reference internal" href="bibliography.html#bozkaya-2013-omp3">[Bozkaya:2013:omp3]</a>.</p>
+<p>Publications resulting from the use of the OMP2.5 code should cite the following publications:</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a> and <a class="reference internal" href="bibliography.html#bozkaya-2013-omp3">[Bozkaya:2013:omp3]</a>.</p>
+<p>Publications resulting from the use of the OCEPA code should cite the following publication(s):</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>.</p>
+<p>Publications resulting from the use of the MP2 code should cite the following publication(s):</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>.</p>
+<p>Publications resulting from the use of the MP3 code should cite the following publications:</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a> and <a class="reference internal" href="bibliography.html#bozkaya-2013-omp3">[Bozkaya:2013:omp3]</a>.</p>
+<p>Publications resulting from the use of the MP2.5 code should cite the following publications:</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a> and <a class="reference internal" href="bibliography.html#bozkaya-2013-omp3">[Bozkaya:2013:omp3]</a>.</p>
+<p>Publications resulting from the use of the CEPA0 code should cite the following publication(s):</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>.</p>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>The conventional and orbital-optimized MP2 methods currently supported in PSI4 are outlined in Table <a class="reference internal" href="#table-omp2-calls"><em>OMP2 Methods</em></a>.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-omp2-calls">
+<colgroup>
+<col width="19%" />
+<col width="48%" />
+<col width="7%" />
+<col width="8%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Calls Method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>conv-mp2</td>
+<td>MP2</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/ROHF/UHF</td>
+</tr>
+<tr class="row-odd"><td>omp2</td>
+<td>Orbital-Optimized MP2</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>scs-omp2</td>
+<td>Spin-Component Scaled Orbital-Optimized MP2</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>sos-omp2</td>
+<td>Spin-Opposite Scaled Orbital-Optimized MP2</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>scsn-omp2</td>
+<td>A special version of SCS-OMP2 for nucleobase interactions</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scs-omp2-vdw</td>
+<td>A special version of SCS-OMP2 (from ethene dimers)</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>sos-pi-omp2</td>
+<td>A special version of SOS-OMP2 for <img class="math" src="_images/math/f2ca003a7da0de4994b4733e203b74ff52d42553.png" alt="\pi" style="vertical-align: 0px"/>-systems</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The conventional and orbital-optimized MP3 methods currently supported in PSI4 are outlined in Table <a class="reference internal" href="#table-omp3-calls"><em>OMP3 Methods</em></a>.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-omp3-calls">
+<colgroup>
+<col width="19%" />
+<col width="48%" />
+<col width="7%" />
+<col width="8%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Calls Method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>mp3</td>
+<td>MP3</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/UHF</td>
+</tr>
+<tr class="row-odd"><td>omp3</td>
+<td>Orbital-Optimized MP3</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>scs-omp3</td>
+<td>Spin-Component Scaled Orbital-Optimized MP3</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>sos-omp3</td>
+<td>Spin-Opposite Scaled Orbital-Optimized MP3</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>scsn-omp3</td>
+<td>A special version of SCS-OMP3 for nucleobase interactions</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scs-omp3-vdw</td>
+<td>A special version of SCS-OMP3 (from ethene dimers)</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>sos-pi-omp3</td>
+<td>A special version of SOS-OMP3 for <img class="math" src="_images/math/f2ca003a7da0de4994b4733e203b74ff52d42553.png" alt="\pi" style="vertical-align: 0px"/>-systems</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The conventional and orbital-optimized MP2.5 methods currently supported in PSI4 are outlined in Table <a class="reference internal" href="#table-omp2-5-calls"><em>OMP2.5 Methods</em></a>.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-omp2-5-calls">
+<colgroup>
+<col width="19%" />
+<col width="48%" />
+<col width="7%" />
+<col width="8%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Calls Method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>mp2.5</td>
+<td>MP2.5</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/UHF</td>
+</tr>
+<tr class="row-odd"><td>omp2.5</td>
+<td>Orbital-Optimized MP2.5</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The conventional and orbital-optimized CEPA methods currently supported in PSI4 are outlined in Table <a class="reference internal" href="#table-ocepa-calls"><em>OCEPA Methods</em></a>.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-ocepa-calls">
+<colgroup>
+<col width="19%" />
+<col width="48%" />
+<col width="7%" />
+<col width="8%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Calls Method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>ocepa</td>
+<td>Orbital-Optimized CEPA</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scs-ocepa</td>
+<td>Spin-Component Scaled Orbital-Optimized CEPA</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>sos-ocepa</td>
+<td>Spin-Opposite Scaled Orbital-Optimized CEPA</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/ROHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>cepa0</td>
+<td>CEPA(0) (identical to Linearized CCD)</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/UHF</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<span class="target" id="index-2"></span><span class="target" id="index-3"></span><span class="target" id="index-4"></span></div>
+<div class="section" id="basic-keywords">
+<span id="index-5"></span><h2>Basic Keywords<a class="headerlink" href="#basic-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="e-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-occ"><em class="xref std std-term">E_CONVERGENCE</em></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for energy. See Table <a class="reference internal" href="scf.html#table-conv-corl"><em>Post-SCF Convergence</em></a> for default convergence criteria for different calculation types.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-8</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="r-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-occ"><em class="xref std std-term">R_CONVERGENCE</em></a><a class="headerlink" href="#r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for amplitudes (residuals).</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-5</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="rms-mograd-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-rms-mograd-convergence-occ"><em class="xref std std-term">RMS_MOGRAD_CONVERGENCE</em></a><a class="headerlink" href="#rms-mograd-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for RMS orbital gradient. Default adjusts depending on <a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-occ"><em class="xref std std-term">E_CONVERGENCE</em></a></p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-6</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="max-mograd-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-max-mograd-convergence-occ"><em class="xref std std-term">MAX_MOGRAD_CONVERGENCE</em></a><a class="headerlink" href="#max-mograd-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for maximum orbital gradient</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-3</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mo-maxiter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mo-maxiter-occ"><em class="xref std std-term">MO_MAXITER</em></a><a class="headerlink" href="#mo-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of iterations to determine the orbitals</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 50</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="wfn-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-wfn-type-occ"><em class="xref std std-term">WFN_TYPE</em></a><a class="headerlink" href="#wfn-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Type of the wavefunction.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: OMP2, OMP3, OCEPA, OMP2.5</li>
+<li><strong>Default</strong>: OMP2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="orb-opt">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-orb-opt-occ"><em class="xref std std-term">ORB_OPT</em></a><a class="headerlink" href="#orb-opt" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do optimize the orbitals?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="advanced-keywords">
+<h2>Advanced Keywords<a class="headerlink" href="#advanced-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="opt-method">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-opt-method-occ"><em class="xref std std-term">OPT_METHOD</em></a><a class="headerlink" href="#opt-method" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The optimization algorithm. Modified Steepest-Descent (MSD) takes a Newton-Raphson (NR) step with a crude approximation to diagonal elements of the MO Hessian. The ORB_RESP option obtains the orbital rotation parameters by solving the orbital-reponse (coupled-perturbed CC) equations. Additionally, for both methods a DIIS extrapolation will be performed with the DO_DIIS = TRUE option.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: MSD, ORB_RESP</li>
+<li><strong>Default</strong>: ORB_RESP</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mo-diis-num-vecs">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mo-diis-num-vecs-occ"><em class="xref std std-term">MO_DIIS_NUM_VECS</em></a><a class="headerlink" href="#mo-diis-num-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of vectors used in orbital DIIS</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 6</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="lineq-solver">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-lineq-solver-occ"><em class="xref std std-term">LINEQ_SOLVER</em></a><a class="headerlink" href="#lineq-solver" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The solver will be used for simultaneous linear equations.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: CDGESV, FLIN, POPLE</li>
+<li><strong>Default</strong>: CDGESV</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="orth-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-orth-type-occ"><em class="xref std std-term">ORTH_TYPE</em></a><a class="headerlink" href="#orth-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The algorithm for orthogonalization of MOs</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: GS, MGS</li>
+<li><strong>Default</strong>: MGS</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-os-scale">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-os-scale-occ"><em class="xref std std-term">MP2_OS_SCALE</em></a><a class="headerlink" href="#mp2-os-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 opposite-spin scaling value</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 6.0/5.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-ss-scale">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-ss-scale-occ"><em class="xref std std-term">MP2_SS_SCALE</em></a><a class="headerlink" href="#mp2-ss-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 same-spin scaling value</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.0/3.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-sos-scale">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-sos-scale-occ"><em class="xref std std-term">MP2_SOS_SCALE</em></a><a class="headerlink" href="#mp2-sos-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 Spin-opposite scaling (SOS) value</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.3</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-sos-scale2">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-sos-scale2-occ"><em class="xref std std-term">MP2_SOS_SCALE2</em></a><a class="headerlink" href="#mp2-sos-scale2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Spin-opposite scaling (SOS) value for optimized-MP2 orbitals</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="nat-orbs">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-nat-orbs-occ"><em class="xref std std-term">NAT_ORBS</em></a><a class="headerlink" href="#nat-orbs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute natural orbitals?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="occ-orbs-print">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-occ-orbs-print-occ"><em class="xref std std-term">OCC_ORBS_PRINT</em></a><a class="headerlink" href="#occ-orbs-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do print OCC orbital energies?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="tpdm-abcd-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-tpdm-abcd-type-occ"><em class="xref std std-term">TPDM_ABCD_TYPE</em></a><a class="headerlink" href="#tpdm-abcd-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>How to take care of the TPDM VVVV-block. The COMPUTE option means it will be computed via an IC/OOC algoritm. The DIRECT option (default) means it will not be computed and stored, instead its contribution will be directly added to Generalized-Fock Matrix.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: DIRECT, COMPUTE</li>
+<li><strong>Default</strong>: DIRECT</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="do-diis">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-do-diis-occ"><em class="xref std std-term">DO_DIIS</em></a><a class="headerlink" href="#do-diis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do apply DIIS extrapolation?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="do-level-shift">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-do-level-shift-occ"><em class="xref std std-term">DO_LEVEL_SHIFT</em></a><a class="headerlink" href="#do-level-shift" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do apply level shifting?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="occ-conventional-mo-slashller-plesset-perturbation-theories">
+<span id="sec-convocc"></span><h1>OCC: Conventional Møller&#8211;Plesset Perturbation Theories<a class="headerlink" href="#occ-conventional-mo-slashller-plesset-perturbation-theories" title="Permalink to this headline">¶</a></h1>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__occ.html#apdx-occ"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__occ.html#apdx-occ-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/src/bin/occ">OCC</a></p>
+<p>PSI4 also has a non-density-fitted MP2 algorithm for RHF and UHF
+energies and gradients. The
+density-fitted module DFMP2 is always the default, so to access the
+conventional MP2 code, set <a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-type-occ"><em class="xref std std-term">MP2_TYPE</em></a> to <tt class="docutils literal"><span class="pre">conv</span></tt> and call as usual
+<tt class="docutils literal"><span class="pre">energy('mp2')</span></tt>/<tt class="docutils literal"><span class="pre">optimize('mp2')</span></tt>.</p>
+<div class="section" id="id23">
+<h2>Basic Keywords<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mp2-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-type-occ"><em class="xref std std-term">MP2_TYPE</em></a><a class="headerlink" href="#mp2-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Algorithm to use for non-OO MP2 computation</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: DF, CONV</li>
+<li><strong>Default</strong>: DF</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id24">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-os-scale-occ"><em class="xref std std-term">MP2_OS_SCALE</em></a><a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 opposite-spin scaling value</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 6.0/5.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id25">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-ss-scale-occ"><em class="xref std std-term">MP2_SS_SCALE</em></a><a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 same-spin scaling value</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.0/3.0</li>
+</ul>
+</div></blockquote>
+<p>Non-orbital-optimized counterparts to higher order MPn methods are also
+available. Summarizing from tables above, the following methods are
+available and can be controlled through OCC keywards.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-nonoo">
+<colgroup>
+<col width="19%" />
+<col width="48%" />
+<col width="7%" />
+<col width="8%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Calls Method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>conv-mp2</td>
+<td>MP2</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/ROHF/UHF</td>
+</tr>
+<tr class="row-odd"><td>mp3</td>
+<td>MP3</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/UHF</td>
+</tr>
+<tr class="row-even"><td>mp2.5</td>
+<td>MP2.5</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/UHF</td>
+</tr>
+<tr class="row-odd"><td>cepa0</td>
+<td>CEPA(0) (identical to Linearized CCD)</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/UHF</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">OCC: Orbital-Optimized Coupled-Cluster and Møller&#8211;Plesset Perturbation Theories</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#theory">Theory</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#basic-keywords">Basic Keywords</a><ul>
+<li><a class="reference internal" href="#e-convergence"><tt class="docutils literal"><span class="pre">E_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#r-convergence"><tt class="docutils literal"><span class="pre">R_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#rms-mograd-convergence"><tt class="docutils literal"><span class="pre">RMS_MOGRAD_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#max-mograd-convergence"><tt class="docutils literal"><span class="pre">MAX_MOGRAD_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#mo-maxiter"><tt class="docutils literal"><span class="pre">MO_MAXITER</span></tt></a></li>
+<li><a class="reference internal" href="#wfn-type"><tt class="docutils literal"><span class="pre">WFN_TYPE</span></tt></a></li>
+<li><a class="reference internal" href="#orb-opt"><tt class="docutils literal"><span class="pre">ORB_OPT</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-keywords">Advanced Keywords</a><ul>
+<li><a class="reference internal" href="#opt-method"><tt class="docutils literal"><span class="pre">OPT_METHOD</span></tt></a></li>
+<li><a class="reference internal" href="#mo-diis-num-vecs"><tt class="docutils literal"><span class="pre">MO_DIIS_NUM_VECS</span></tt></a></li>
+<li><a class="reference internal" href="#lineq-solver"><tt class="docutils literal"><span class="pre">LINEQ_SOLVER</span></tt></a></li>
+<li><a class="reference internal" href="#orth-type"><tt class="docutils literal"><span class="pre">ORTH_TYPE</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-os-scale"><tt class="docutils literal"><span class="pre">MP2_OS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-ss-scale"><tt class="docutils literal"><span class="pre">MP2_SS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-sos-scale"><tt class="docutils literal"><span class="pre">MP2_SOS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-sos-scale2"><tt class="docutils literal"><span class="pre">MP2_SOS_SCALE2</span></tt></a></li>
+<li><a class="reference internal" href="#nat-orbs"><tt class="docutils literal"><span class="pre">NAT_ORBS</span></tt></a></li>
+<li><a class="reference internal" href="#occ-orbs-print"><tt class="docutils literal"><span class="pre">OCC_ORBS_PRINT</span></tt></a></li>
+<li><a class="reference internal" href="#tpdm-abcd-type"><tt class="docutils literal"><span class="pre">TPDM_ABCD_TYPE</span></tt></a></li>
+<li><a class="reference internal" href="#do-diis"><tt class="docutils literal"><span class="pre">DO_DIIS</span></tt></a></li>
+<li><a class="reference internal" href="#do-level-shift"><tt class="docutils literal"><span class="pre">DO_LEVEL_SHIFT</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#occ-conventional-mo-slashller-plesset-perturbation-theories">OCC: Conventional Møller&#8211;Plesset Perturbation Theories</a><ul>
+<li><a class="reference internal" href="#id23">Basic Keywords</a><ul>
+<li><a class="reference internal" href="#mp2-type"><tt class="docutils literal"><span class="pre">MP2_TYPE</span></tt></a></li>
+<li><a class="reference internal" href="#id24"><tt class="docutils literal"><span class="pre">MP2_OS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#id25"><tt class="docutils literal"><span class="pre">MP2_SS_SCALE</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dfmp2.html"
+                        title="previous chapter">DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cc.html"
+                        title="next chapter">CC: Coupled Cluster Methods</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/occ.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cc.html" title="CC: Coupled Cluster Methods"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfmp2.html" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Apr 25, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

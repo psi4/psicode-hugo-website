@@ -1,0 +1,1011 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basis Sets &mdash; PSI4 [beta2] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <link rel="top" title="PSI4 [beta2] documentation" href="index.html" />
+    <link rel="next" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="prev" title="Psithon: Structuring an Input File" href="psithoninput.html" /> 
+    <script type="text/javascript" src="_static/copybutton.js"></script> 
+
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="methods.html" title="Theoretical Methods: SCF to FCI"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="psithoninput.html" title="Psithon: Structuring an Input File"
+             accesskey="P">previous</a> |</li>
+    <li><a href="index.html">PSI4 [beta2]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="basis-sets">
+<span id="sec-basisbuiltin"></span><span id="index-0"></span><h1>Basis Sets<a class="headerlink" href="#basis-sets" title="Permalink to this headline">¶</a></h1>
+<p>Basis sets in PSI4 are Gaussian functions (not Slater-type functions or plane waves),
+all-electron [no effective core potentials (ECPs)],
+and of Gaussian94 format (for ease of export from <a class="reference external" href="https://bse.pnl.gov/bse/portal">EMSL</a>).
+Both spherical harmonic (5D/7F) and Cartesian (6D/10F) Gaussian functions are supported,
+but their mixtures are not, neither within a basis set (<em>e.g.</em>, 6D/7F) nor within a calculation
+(<em>e.g.</em>, cartesian for the orbital basis and spherical for the fitting basis).
+For built-in basis sets, the correct <tt class="docutils literal"><span class="pre">spherical</span></tt>/<tt class="docutils literal"><span class="pre">cartesian</span></tt> value for <a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><em class="xref std std-term">PUREAM</em></a>
+is set internally from the orbital basis.</p>
+<ul class="simple">
+<li><a class="reference internal" href="psithoninput.html#sec-jobcontrol"><em>Specifying basis sets</em></a></li>
+<li>Built-in basis sets by family (below)</li>
+<li><a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><em>Built-in basis sets by element</em></a></li>
+<li><a class="reference internal" href="quickaddbasis.html#sec-basisuserdefined"><em>User-Defined basis sets</em></a></li>
+</ul>
+<p>Tables <a class="reference internal" href="#table-basispopleorbital"><em>Pople</em></a>,
+<a class="reference internal" href="#table-basisdunningorbital"><em>Dunning</em></a>,
+<a class="reference internal" href="#table-basisdunningdk"><em>Dunning (Douglas-Kroll)</em></a>, and
+<a class="reference internal" href="#table-basisother"><em>Other</em></a> summarize the orbital basis sets available in
+PSI4.  These tables are arranged so that columns indicate degree of
+augmentation by diffuse functions (generally necessary for anions, excited
+states, and noncovalent interactions) and DTQ56 indicate the <img class="math" src="_images/math/3dfd84e68893894e23c1caccf52f34c85a5c21d6.png" alt="X\;=\zeta" style="vertical-align: -4px"/> levels
+available.  Several intermediate levels of diffuse space between the customary
+non-augmented and augmented versions have been supplied for each basis set,
+including heavy-augmented and Truhlar&#8217;s <a class="reference internal" href="bibliography.html#papajak-2011-10">[Papajak:2011:10]</a> calendar
+truncations described in Table <a class="reference internal" href="#table-basismonths"><em>Months Bases</em></a>.  Fitting bases
+in Tables <a class="reference internal" href="#table-basisdunningjkfit"><em>JKFIT</em></a>,
+<a class="reference internal" href="#table-basisdunningmp2fit"><em>RI</em></a>, and <a class="reference internal" href="#table-basisdunningdual"><em>DUAL</em></a>
+are available for methods incorporating density-fitting or dual-basis
+approximations. JKFIT sets are appropriate for fitting <img class="math" src="_images/math/f0597ce0701769bd6cc96dd6514d2549a1586d03.png" alt="(oo|" style="vertical-align: -5px"/>-type products,
+such as encountered in SCF theory and the electrostatics/exchange terms of SAPT.
+RI sets are appropriate for fitting <img class="math" src="_images/math/e739088f283164cd34db5572b5b6c1fc816c19cc.png" alt="(ov|" style="vertical-align: -5px"/>-type products, such as encountered in
+MP2 and most SAPT terms.  Citations for basis sets can be found in their
+definition files at <a class="reference external" href="http://sirius.chem.vt.edu/psi4sources/4.0b2/lib/basis">psi4/lib/basis</a> in the source.  For basis set availability by
+element and the default value for keyword <a class="reference internal" href="autodoc_glossary_options_c.html#term-puream-globals"><em class="xref std std-term">PUREAM</em></a>, consult
+Appendix <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><em>Basis Sets by Element</em></a>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-basispopleorbital">
+<caption>Summary of Pople-style orbital basis sets available in PSI4 <a class="footnote-reference" href="#f1" id="id2">[1]</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="14%" />
+<col width="18%" />
+<col width="15%" />
+<col width="19%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">no diffuse</th>
+<th class="head" colspan="2">heavy-augmented</th>
+<th class="head" colspan="2">augmented</th>
+</tr>
+<tr class="row-even"><th class="head">basis set</th>
+<th class="head">[alias]</th>
+<th class="head">basis set</th>
+<th class="head">[alias]</th>
+<th class="head">basis set</th>
+<th class="head">[alias]</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>STO-3G</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>3-21G</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>6-31G</td>
+<td>&nbsp;</td>
+<td>6-31+G</td>
+<td>&nbsp;</td>
+<td>6-31++G</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6-31G(d)</td>
+<td>[6-31G*]</td>
+<td>6-31+G(d)</td>
+<td>[6-31+G*]</td>
+<td>6-31++G(d)</td>
+<td>[6-31++G*]</td>
+</tr>
+<tr class="row-even"><td>6-31G(d_p)</td>
+<td>[6-31G**]</td>
+<td>6-31+G(d_p)</td>
+<td>[6-31+G**]</td>
+<td>6-31++G(d_p)</td>
+<td>[6-31++G**]</td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>6-311G</td>
+<td>&nbsp;</td>
+<td>6-311+G</td>
+<td>&nbsp;</td>
+<td>6-311++G</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6-311G(d)</td>
+<td>[6-311G*]</td>
+<td>6-311+G(d)</td>
+<td>[6-311+G*]</td>
+<td>6-311++G(d)</td>
+<td>[6-311++G*]</td>
+</tr>
+<tr class="row-even"><td>6-311G(d_p)</td>
+<td>[6-311G**]</td>
+<td>6-311+G(d_p)</td>
+<td>[6-311+G**]</td>
+<td>6-311++G(d_p)</td>
+<td>[6-311++G**]</td>
+</tr>
+<tr class="row-odd"><td>6-311G(2d)</td>
+<td>&nbsp;</td>
+<td>6-311+G(2d)</td>
+<td>&nbsp;</td>
+<td>6-311++G(2d)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>6-311G(2d_p)</td>
+<td>&nbsp;</td>
+<td>6-311+G(2d_p)</td>
+<td>&nbsp;</td>
+<td>6-311++G(2d_p)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6-311G(2d_2p)</td>
+<td>&nbsp;</td>
+<td>6-311+G(2d_2p)</td>
+<td>&nbsp;</td>
+<td>6-311++G(2d_2p)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>6-311G(2df)</td>
+<td>&nbsp;</td>
+<td>6-311+G(2df)</td>
+<td>&nbsp;</td>
+<td>6-311++G(2df)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6-311G(2df_p)</td>
+<td>&nbsp;</td>
+<td>6-311+G(2df_p)</td>
+<td>&nbsp;</td>
+<td>6-311++G(2df_p)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>6-311G(2df_2p)</td>
+<td>&nbsp;</td>
+<td>6-311+G(2df_2p)</td>
+<td>&nbsp;</td>
+<td>6-311++G(2df_2p)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6-311G(2df_2pd)</td>
+<td>&nbsp;</td>
+<td>6-311+G(2df_2pd)</td>
+<td>&nbsp;</td>
+<td>6-311++G(2df_2pd)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>6-311G(3df)</td>
+<td>&nbsp;</td>
+<td>6-311+G(3df)</td>
+<td>&nbsp;</td>
+<td>6-311++G(3df)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6-311G(3df_p)</td>
+<td>&nbsp;</td>
+<td>6-311+G(3df_p)</td>
+<td>&nbsp;</td>
+<td>6-311++G(3df_p)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>6-311G(3df_2p)</td>
+<td>&nbsp;</td>
+<td>6-311+G(3df_2p)</td>
+<td>&nbsp;</td>
+<td>6-311++G(3df_2p)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6-311G(3df_2pd)</td>
+<td>&nbsp;</td>
+<td>6-311+G(3df_2pd)</td>
+<td>&nbsp;</td>
+<td>6-311++G(3df_2pd)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>6-311G(3df_3pd)</td>
+<td>&nbsp;</td>
+<td>6-311+G(3df_3pd)</td>
+<td>&nbsp;</td>
+<td>6-311++G(3df_3pd)</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-basismonths">
+<caption>Levels of truncation for diffuse functions in standard basis sets</caption>
+<colgroup>
+<col width="12%" />
+<col width="41%" />
+<col width="21%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">augmentation level</th>
+<th class="head" colspan="2">angular momenta in the diffuse space <a class="footnote-reference" href="#f4" id="id3">[4]</a></th>
+<th class="head" colspan="3">valid basis sets</th>
+</tr>
+<tr class="row-even"><th class="head">&nbsp;</th>
+<th class="head">Li-Kr main group</th>
+<th class="head">H &amp; He</th>
+<th class="head">D<img class="math" src="_images/math/fda38f45a64bbd4451aedeeb4584e01d91239172.png" alt="\zeta" style="vertical-align: -4px"/></th>
+<th class="head">T<img class="math" src="_images/math/fda38f45a64bbd4451aedeeb4584e01d91239172.png" alt="\zeta" style="vertical-align: -4px"/></th>
+<th class="head">Q<img class="math" src="_images/math/fda38f45a64bbd4451aedeeb4584e01d91239172.png" alt="\zeta" style="vertical-align: -4px"/></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>aug-cc-pVXZ</td>
+<td>s, p, <img class="math" src="_images/math/087594ea26fa196b8e61bc20a36228270dc695f8.png" alt="\cdots" style="vertical-align: 4px"/>, <img class="math" src="_images/math/c5818932662607deee5635c53e1957a231e02cee.png" alt="\ell_{max}-2" style="vertical-align: -3px"/>, <img class="math" src="_images/math/1f86f09b20f0407bea19670bd47c7c3516bcaad0.png" alt="\ell_{max}-1" style="vertical-align: -3px"/>, <img class="math" src="_images/math/c849e010e6df9343cfb570468add8b6748628b37.png" alt="\ell_{max}" style="vertical-align: -3px"/></td>
+<td>s, p, <img class="math" src="_images/math/087594ea26fa196b8e61bc20a36228270dc695f8.png" alt="\cdots" style="vertical-align: 4px"/>, <img class="math" src="_images/math/1f86f09b20f0407bea19670bd47c7c3516bcaad0.png" alt="\ell_{max}-1" style="vertical-align: -3px"/></td>
+<td>aDZ</td>
+<td>aTZ</td>
+<td>aQZ</td>
+</tr>
+<tr class="row-even"><td>heavy-aug-cc-pVXZ <a class="footnote-reference" href="#f2" id="id4">[2]</a></td>
+<td>s, p, <img class="math" src="_images/math/087594ea26fa196b8e61bc20a36228270dc695f8.png" alt="\cdots" style="vertical-align: 4px"/>, <img class="math" src="_images/math/c5818932662607deee5635c53e1957a231e02cee.png" alt="\ell_{max}-2" style="vertical-align: -3px"/>, <img class="math" src="_images/math/1f86f09b20f0407bea19670bd47c7c3516bcaad0.png" alt="\ell_{max}-1" style="vertical-align: -3px"/>, <img class="math" src="_images/math/c849e010e6df9343cfb570468add8b6748628b37.png" alt="\ell_{max}" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>haDZ</td>
+<td>haTZ</td>
+<td>haQZ</td>
+</tr>
+<tr class="row-odd"><td>jun-cc-pVXZ</td>
+<td>s, p, <img class="math" src="_images/math/087594ea26fa196b8e61bc20a36228270dc695f8.png" alt="\cdots" style="vertical-align: 4px"/>, <img class="math" src="_images/math/c5818932662607deee5635c53e1957a231e02cee.png" alt="\ell_{max}-2" style="vertical-align: -3px"/>, <img class="math" src="_images/math/1f86f09b20f0407bea19670bd47c7c3516bcaad0.png" alt="\ell_{max}-1" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>jaDZ</td>
+<td>jaTZ</td>
+<td>jaQZ</td>
+</tr>
+<tr class="row-even"><td>may-cc-pVXZ</td>
+<td>s, p, <img class="math" src="_images/math/087594ea26fa196b8e61bc20a36228270dc695f8.png" alt="\cdots" style="vertical-align: 4px"/>, <img class="math" src="_images/math/c5818932662607deee5635c53e1957a231e02cee.png" alt="\ell_{max}-2" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>maTZ</td>
+<td>maQZ</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/087594ea26fa196b8e61bc20a36228270dc695f8.png" alt="\cdots" style="vertical-align: 4px"/></td>
+<td>s, p</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>aaQZ</td>
+</tr>
+<tr class="row-even"><td>cc-pVXZ</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DZ</td>
+<td>TZ</td>
+<td>QZ</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-basisdunningorbital">
+<caption>Summary of Dunning orbital basis sets available in PSI4</caption>
+<colgroup>
+<col width="17%" />
+<col width="14%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="7%" />
+<col width="8%" />
+<col width="21%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">basis set</th>
+<th class="head">no diffuse</th>
+<th class="head">feb</th>
+<th class="head">mar</th>
+<th class="head">apr</th>
+<th class="head">may</th>
+<th class="head">jun</th>
+<th class="head">heavy-aug <a class="footnote-reference" href="#f2" id="id5">[2]</a></th>
+<th class="head">aug</th>
+<th class="head">d-aug</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cc-pVXZ</td>
+<td>DTQ56</td>
+<td>6</td>
+<td>56</td>
+<td>Q56</td>
+<td>TQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+</tr>
+<tr class="row-odd"><td>cc-pV(X+d)Z</td>
+<td>DTQ56</td>
+<td>6</td>
+<td>56</td>
+<td>Q56</td>
+<td>TQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+</tr>
+<tr class="row-even"><td>cc-pCVXZ</td>
+<td>DTQ56</td>
+<td>6</td>
+<td>56</td>
+<td>Q56</td>
+<td>TQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+</tr>
+<tr class="row-odd"><td>cc-pCV(X+d)Z</td>
+<td>DTQ56</td>
+<td>6</td>
+<td>56</td>
+<td>Q56</td>
+<td>TQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+</tr>
+<tr class="row-even"><td>cc-pwCVXZ</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+<td>5</td>
+<td>Q5</td>
+<td>TQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+</tr>
+<tr class="row-odd"><td>cc-pwCV(X+d)Z</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+<td>5</td>
+<td>Q5</td>
+<td>TQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-basisdunningdk">
+<caption>Summary of Dunning Douglas-Kroll orbital basis sets available in PSI4</caption>
+<colgroup>
+<col width="20%" />
+<col width="14%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="20%" />
+<col width="9%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">basis set</th>
+<th class="head">no diffuse</th>
+<th class="head">feb</th>
+<th class="head">mar</th>
+<th class="head">apr</th>
+<th class="head">may</th>
+<th class="head">jun</th>
+<th class="head">heavy-aug <a class="footnote-reference" href="#f2" id="id6">[2]</a></th>
+<th class="head">aug</th>
+<th class="head">d-aug</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cc-pVXZ-DK</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pV(X+d)Z-DK</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>cc-pCVXZ-DK</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pCV(X+d)Z-DK</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>cc-pwCVXZ-DK</td>
+<td>&#8211;TQ5</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&#8211;TQ5</td>
+<td>&#8211;TQ5</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pwCV(X+d)Z-DK</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-basisdunningjkfit">
+<caption>Summary of Dunning JK-fitting basis sets available in PSI4</caption>
+<colgroup>
+<col width="26%" />
+<col width="13%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="20%" />
+<col width="7%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">basis set</th>
+<th class="head">no diffuse</th>
+<th class="head">feb</th>
+<th class="head">mar</th>
+<th class="head">apr</th>
+<th class="head">may</th>
+<th class="head">jun</th>
+<th class="head">heavy-aug <a class="footnote-reference" href="#f2" id="id7">[2]</a></th>
+<th class="head">aug</th>
+<th class="head">d-aug</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cc-pVXZ-JKFIT <a class="footnote-reference" href="#f3" id="id8">[3]</a></td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+<td>5</td>
+<td>Q5</td>
+<td>TQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pV(X+d)Z-JKFIT</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+<td>5</td>
+<td>Q5</td>
+<td>TQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>cc-pCVXZ-JKFIT <a class="footnote-reference" href="#f3" id="id9">[3]</a></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pCV(X+d)Z-JKFIT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>cc-pwCVXZ-JKFIT <a class="footnote-reference" href="#f3" id="id10">[3]</a></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pwCV(X+d)Z-JKFIT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-basisdunningmp2fit">
+<caption>Summary of Dunning MP2-fitting basis sets available in PSI4</caption>
+<colgroup>
+<col width="20%" />
+<col width="13%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="7%" />
+<col width="8%" />
+<col width="20%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">basis set</th>
+<th class="head">no diffuse</th>
+<th class="head">feb</th>
+<th class="head">mar</th>
+<th class="head">apr</th>
+<th class="head">may</th>
+<th class="head">jun</th>
+<th class="head">heavy-aug <a class="footnote-reference" href="#f2" id="id11">[2]</a></th>
+<th class="head">aug</th>
+<th class="head">d-aug</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cc-pVXZ-RI</td>
+<td>DTQ56</td>
+<td>6</td>
+<td>56</td>
+<td>Q56</td>
+<td>TQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pV(X+d)Z-RI</td>
+<td>DTQ56</td>
+<td>6</td>
+<td>56</td>
+<td>Q56</td>
+<td>TQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>DTQ56</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>cc-pCVXZ-RI</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pCV(X+d)Z-RI</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>cc-pwCVXZ-RI</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+<td>5</td>
+<td>Q5</td>
+<td>TQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pwCV(X+d)Z-RI</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+<td>5</td>
+<td>Q5</td>
+<td>TQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>DTQ5</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-basisdunningdual">
+<caption>Summary of Dunning dual-basis helper basis sets available in PSI4</caption>
+<colgroup>
+<col width="25%" />
+<col width="13%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="20%" />
+<col width="6%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">basis set</th>
+<th class="head">no diffuse</th>
+<th class="head">feb</th>
+<th class="head">mar</th>
+<th class="head">apr</th>
+<th class="head">may</th>
+<th class="head">jun</th>
+<th class="head">heavy-aug <a class="footnote-reference" href="#f2" id="id12">[2]</a></th>
+<th class="head">aug</th>
+<th class="head">d-aug</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cc-pVXZ-DUAL</td>
+<td>TQ</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>TQ</td>
+<td>DTQ</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pV(X+d)Z-DUAL</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>cc-pCVXZ-DUAL</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pCV(X+d)Z-DUAL</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>cc-pwCVXZ-DUAL</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>cc-pwCV(X+d)Z-DUAL</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-basisother">
+<caption>Summary of other orbital basis sets available in PSI4</caption>
+<colgroup>
+<col width="33%" />
+<col width="30%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">Karlsruhe</th>
+<th class="head">other</th>
+</tr>
+<tr class="row-even"><th class="head">no diffuse</th>
+<th class="head">augmented</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>def2-SV(P)</td>
+<td>&nbsp;</td>
+<td>DZP</td>
+</tr>
+<tr class="row-even"><td>def2-SVP</td>
+<td>def2-SVPD</td>
+<td>TZ2P</td>
+</tr>
+<tr class="row-odd"><td>def2-TZVP</td>
+<td>def2-TZVPD</td>
+<td>TZ2PF</td>
+</tr>
+<tr class="row-even"><td>def2-TZVPP</td>
+<td>def2-TZVPPD</td>
+<td>Sadlej-LPol-ds</td>
+</tr>
+<tr class="row-odd"><td>def2-QZVP</td>
+<td>def2-QZVPD</td>
+<td>Sadlej-LPol-dl</td>
+</tr>
+<tr class="row-even"><td>def2-QZVPP</td>
+<td>def2-QZVPPD</td>
+<td>Sadlej-LPol-fs</td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>Sadlej-LPol-fl</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>Absolutely no commas are allowed in basis set specification. Use the underscore character instead.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id4">1</a>, <a class="fn-backref" href="#id5">2</a>, <a class="fn-backref" href="#id6">3</a>, <a class="fn-backref" href="#id7">4</a>, <a class="fn-backref" href="#id11">5</a>, <a class="fn-backref" href="#id12">6</a>)</em> The heavy-aug-cc-<em>stub</em> and jul-cc-<em>stub</em> basis sets are identical.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id8">1</a>, <a class="fn-backref" href="#id9">2</a>, <a class="fn-backref" href="#id10">3</a>)</em> The JKFIT basis sets are designed in the cc-<em>stub</em>(X+d)Z
+framework that includes an additional set of
+<em>d</em>-fuctions for second-row <em>p</em>-block elements. Identical basis sets
+with the cc-<em>stub</em>XZ-JKFIT label are provided for convenience.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[4]</a></td><td>D<img class="math" src="_images/math/fda38f45a64bbd4451aedeeb4584e01d91239172.png" alt="\zeta" style="vertical-align: -4px"/> has <img class="math" src="_images/math/663487305ef4d5415df4d4e4b4d14562507d7e47.png" alt="\ell_{max}=2" style="vertical-align: -3px"/> or d.
+T<img class="math" src="_images/math/fda38f45a64bbd4451aedeeb4584e01d91239172.png" alt="\zeta" style="vertical-align: -4px"/> has <img class="math" src="_images/math/21e052ccfdb8d5911e9c233d15afeed19dab624e.png" alt="\ell_{max}=3" style="vertical-align: -3px"/> or f.
+Q<img class="math" src="_images/math/fda38f45a64bbd4451aedeeb4584e01d91239172.png" alt="\zeta" style="vertical-align: -4px"/> has <img class="math" src="_images/math/2e0470267b0c43c79cc3d70ac245c120e4f007ec.png" alt="\ell_{max}=4" style="vertical-align: -3px"/> or g, <em>etc</em>.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="psithoninput.html"
+                        title="previous chapter">Psithon: Structuring an Input File</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="methods.html"
+                        title="next chapter">Theoretical Methods: SCF to FCI</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/basissets.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="methods.html" title="Theoretical Methods: SCF to FCI"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="psithoninput.html" title="Psithon: Structuring an Input File"
+             >previous</a> |</li>
+    <li><a href="index.html">PSI4 [beta2]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Psi4 Project.
+      Last updated on Sep 30, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

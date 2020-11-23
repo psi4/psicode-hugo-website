@@ -1,0 +1,510 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Optimize &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="index.html" />
+    <link rel="up" title="Psithon Functions: Invoking a Calculation" href="psithonfunc.html" />
+    <link rel="next" title="Frequency" href="freq.html" />
+    <link rel="prev" title="Counterpoise Correct" href="cp.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="freq.html" title="Frequency"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cp.html" title="Counterpoise Correct"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="optimize">
+<span id="sec-opt"></span><span id="index-0"></span><h1>Optimize<a class="headerlink" href="#optimize" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="driver.optimize">
+<tt class="descname">optimize</tt><big>(</big><em>name</em><span class="optional">[</span>, <em>func</em>, <em>mode</em>, <em>dertype</em>, <em>molecule</em><span class="optional">]</span><big>)</big><a class="reference internal" href="_modules/driver.html#optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#driver.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to perform a geometry optimization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Aliases :</th><td class="field-body">opt()</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<em>float</em>) Total electronic energy of optimized structure in Hartrees.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Psi variables:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<table class="hlist"><tr><td><ul class="simple">
+<li><a class="reference internal" href="glossary_psivariables.html#psivar-CURRENTENERGY"><tt class="xref std std-psivar docutils literal"><span class="pre">CURRENT</span> <span class="pre">ENERGY</span></tt></a></li>
+</ul>
+</td></tr></table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Analytic gradients area available for all methods in the table
+below. Optimizations with other methods in the energy table proceed
+by finite differences.</p>
+</div>
+<table border="1" class="docutils" id="table-grad-gen">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>scf</td>
+<td>Hartree&#8211;Fock (HF) or density functional theory (DFT) <a class="reference internal" href="scf.html#sec-scf"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-odd"><td>dcft</td>
+<td>density cumulant functional theory <a class="reference internal" href="dcft.html#sec-dcft"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-even"><td>mp2</td>
+<td>2nd-order Moller-Plesset perturbation theory (MP2) <a class="reference internal" href="dfmp2.html#sec-dfmp2"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-odd"><td>df-mp2</td>
+<td>MP2 with density fitting <a class="reference internal" href="dfmp2.html#sec-dfmp2"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-even"><td>conv-mp2</td>
+<td>conventional MP2 (non-density-fitting) <a class="reference internal" href="occ.html#sec-convocc"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-odd"><td>mp2.5</td>
+<td>MP2.5 <a class="reference internal" href="occ.html#sec-convocc"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-even"><td>mp3</td>
+<td>third-order MP perturbation theory <a class="reference internal" href="occ.html#sec-convocc"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-odd"><td>omp2</td>
+<td>orbital-optimized second-order MP perturbation theory <a class="reference internal" href="occ.html#sec-occ"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-even"><td>omp2.5</td>
+<td>orbital-optimized MP2.5 <a class="reference internal" href="occ.html#sec-occ"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-odd"><td>omp3</td>
+<td>orbital-optimized third-order MP perturbation theory <a class="reference internal" href="occ.html#sec-occ"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-even"><td>ocepa</td>
+<td>orbital-optimized coupled electron pair approximation <a class="reference internal" href="occ.html#sec-occ"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-odd"><td>cepa0</td>
+<td>coupled electron pair approximation(0) <a class="reference internal" href="occ.html#sec-convocc"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-even"><td>ccsd</td>
+<td>coupled cluster singles and doubles (CCSD) <a class="reference internal" href="cc.html#sec-cc"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-odd"><td>ccsd(t)</td>
+<td>CCSD with perturbative triples (CCSD(T)) <a class="reference internal" href="cc.html#sec-cc"><em>[manual]</em></a></td>
+</tr>
+<tr class="row-even"><td>eom-ccsd</td>
+<td>equation of motion (EOM) CCSD <a class="reference internal" href="cc.html#sec-eomcc"><em>[manual]</em></a></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="table-opt-dft">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method DFT <a class="reference internal" href="dft.html#sec-dft"><em>[manual]</em></a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>b3lyp</td>
+<td>B3LYP Hybrid-GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>b3lyp-chg</td>
+<td>B3LYP Hybrid-GGA Exchange-Correlation Functional w/ Chai and Head-Gordon Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>b3lyp-d</td>
+<td>B3LYP Hybrid-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D2 Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>b3lyp-d1</td>
+<td>B3LYP Hybrid-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D1 Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>b3lyp-d3</td>
+<td>B3LYP Hybrid-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>b3lyp-d3bj</td>
+<td>B3LYP Hybrid-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (BJ-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>b3_x</td>
+<td>Becke88 GGA Exchange (B3LYP weighting)</td>
+</tr>
+<tr class="row-odd"><td>b88_x</td>
+<td>Becke88 GGA Exchange</td>
+</tr>
+<tr class="row-even"><td>b97-0</td>
+<td>B97-0 Hybrid-GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>b97-1</td>
+<td>B97-1 Hybrid-GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-even"><td>b97-2</td>
+<td>B97-2 Hybrid-GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>b97-d</td>
+<td>B97-D Pure-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D2 Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>b97-d3</td>
+<td>B97-D Pure-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>b97-d3bj</td>
+<td>B97-D Pure-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (BJ-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>blyp</td>
+<td>BLYP GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>blyp-d</td>
+<td>BLYP GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D2 Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>blyp-d1</td>
+<td>B3LYP Hybrid-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D1 Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>blyp-d3</td>
+<td>BLYP GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>blyp-d3bj</td>
+<td>BLYP GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (BJ-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>bp86</td>
+<td>BP86 GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-even"><td>bp86-d</td>
+<td>BP86 GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D2 Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>bp86-d1</td>
+<td>B3LYP Hybrid-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D1 Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>bp86-d3</td>
+<td>BP86 GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>bp86-d3bj</td>
+<td>BP86 GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (BJ-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>ft97</td>
+<td>FT97 GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>ft97b_x</td>
+<td>Filitov and Theil 1997 Exchange</td>
+</tr>
+<tr class="row-even"><td>ft97_c</td>
+<td>FT97 Correlation (Involves Ei functions)</td>
+</tr>
+<tr class="row-odd"><td>hcth</td>
+<td>HCTH Pure-GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-even"><td>hcth120</td>
+<td>HCTH120 Pure-GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>hcth120-d3</td>
+<td>HCTH120 Pure-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>hcth120-d3bj</td>
+<td>HCTH120 Pure-GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (BJ-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>hcth147</td>
+<td>HCTH147 Pure-GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-even"><td>hcth407</td>
+<td>HCTH407 Pure-GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>hf+d</td>
+<td>w/ Podeszwa and Szalewicz Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>lyp_c</td>
+<td>LYP Correlation</td>
+</tr>
+<tr class="row-odd"><td>m05</td>
+<td>Heavily Parameterized Hybrid Meta-GGA XC Functional</td>
+</tr>
+<tr class="row-even"><td>m05-2x</td>
+<td>Heavily Parameterized Hybrid Meta-GGA XC Functional</td>
+</tr>
+<tr class="row-odd"><td>m05-2x-d3</td>
+<td>Heavily Parameterized Hybrid Meta-GGA XC Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>m05-d3</td>
+<td>Heavily Parameterized Hybrid Meta-GGA XC Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>p86_c</td>
+<td>P86 Correlation (PZ81 LSDA + P86 GGA)</td>
+</tr>
+<tr class="row-even"><td>pbe</td>
+<td>PBE GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>pbe-d</td>
+<td>PBE GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D2 Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>pbe-d1</td>
+<td>PBE GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D1 Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>pbe-d3</td>
+<td>PBE GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>pbe-d3bj</td>
+<td>PBE GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (BJ-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>pbe0</td>
+<td>PBE0 Hybrid GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-even"><td>pbe0-d</td>
+<td>PBE0 Hybrid GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D2 Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>pbe0-d3</td>
+<td>PBE0 Hybrid GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (zero-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>pbe0-d3bj</td>
+<td>PBE0 Hybrid GGA Exchange-Correlation Functional w/ Grimme&#8217;s -D3 (BJ-damping) Dispersion Correction</td>
+</tr>
+<tr class="row-odd"><td>pbesol_x</td>
+<td>PBEsol GGA Exchange Hole (Parameter Free)</td>
+</tr>
+<tr class="row-even"><td>pbe_c</td>
+<td>PBE Correlation</td>
+</tr>
+<tr class="row-odd"><td>pbe_x</td>
+<td>PBE GGA Exchange Hole (Parameter Free)</td>
+</tr>
+<tr class="row-even"><td>pw91</td>
+<td>PW91 GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>pw91_c</td>
+<td>PW91 Correlation</td>
+</tr>
+<tr class="row-even"><td>pw91_x</td>
+<td>PW91 Parameterized GGA Exchange</td>
+</tr>
+<tr class="row-odd"><td>pw92_c</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>pz81_c</td>
+<td>PZ81 Correlation</td>
+</tr>
+<tr class="row-odd"><td>rpbe_x</td>
+<td>RPBE GGA Exchange Hole (Parameter Free)</td>
+</tr>
+<tr class="row-even"><td>sogga</td>
+<td>Second Order GGA Exchange-Correlation Functional</td>
+</tr>
+<tr class="row-odd"><td>sogga_x</td>
+<td>Second Order GGA Exchange Hole (Parameter Free)</td>
+</tr>
+<tr class="row-even"><td>svwn</td>
+<td>SVWN3 (RPA) LSDA Functional</td>
+</tr>
+<tr class="row-odd"><td>s_x</td>
+<td>Slater LSDA Exchange</td>
+</tr>
+<tr class="row-even"><td>vwn3rpa_c</td>
+<td>VWN3 (RPA) LSDA Correlation</td>
+</tr>
+<tr class="row-odd"><td>vwn3_c</td>
+<td>VWN3 LSDA Correlation</td>
+</tr>
+<tr class="row-even"><td>vwn5rpa_c</td>
+<td>VWN5 (RPA) LSDA Correlation</td>
+</tr>
+<tr class="row-odd"><td>vwn5_c</td>
+<td>VWN5 LSDA Correlation</td>
+</tr>
+<tr class="row-even"><td>dldf</td>
+<td>Dispersionless Hybrid Meta-GGA XC Functional</td>
+</tr>
+<tr class="row-odd"><td>dldf+d</td>
+<td>Dispersionless Hybrid Meta-GGA XC Functional w/ Podeszwa and Szalewicz Dispersion Correction</td>
+</tr>
+<tr class="row-even"><td>dldf+d09</td>
+<td>Dispersionless Hybrid Meta-GGA XC Functional w/ Podeszwa and Szalewicz Dispersion Correction</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Optimizations where the molecule is specified in Z-matrix format 
+with dummy atoms will result in the geometry being converted to a Cartesian representation.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; <p><tt class="docutils literal"><span class="pre">'scf'</span></tt> || <tt class="docutils literal"><span class="pre">'df-mp2'</span></tt> || <tt class="docutils literal"><span class="pre">'ci5'</span></tt> || etc.</p>
+<p>First argument, usually unlabeled. Indicates the computational method
+to be applied to the database. May be any valid argument to
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><tt class="xref py py-func docutils literal"><span class="pre">energy()</span></tt></a>.</p>
+</li>
+<li><strong>func</strong> (<a class="reference internal" href="notes_py.html#op-py-function"><em>function</em></a>) &#8211; <p><img class="math" src="_images/math/843622567e12d686e4e2f94ddfcb444e8ecde0d2.png" alt="\Rightarrow" style="vertical-align: -1px"/> <tt class="docutils literal"><span class="pre">gradient</span></tt> <img class="math" src="_images/math/d773375e7bd7f973b121cd9403ad90d3806d6996.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <tt class="docutils literal"><span class="pre">energy</span></tt> || <tt class="docutils literal"><span class="pre">cbs</span></tt></p>
+<p>Indicates the type of calculation to be performed on the molecule.
+The default dertype accesses <tt class="docutils literal"><span class="pre">'gradient'</span></tt> or <tt class="docutils literal"><span class="pre">'energy'</span></tt>, while
+<tt class="docutils literal"><span class="pre">'cbs'</span></tt> performs a multistage finite difference calculation.
+If a nested series of python functions is intended (see <a class="reference internal" href="intercalls.html#sec-intercalls"><em>Function Intercalls</em></a>),
+use keyword <tt class="docutils literal"><span class="pre">opt_func</span></tt> instead of <tt class="docutils literal"><span class="pre">func</span></tt>.</p>
+</li>
+<li><strong>mode</strong> (<em>string</em>) &#8211; <p><img class="math" src="_images/math/843622567e12d686e4e2f94ddfcb444e8ecde0d2.png" alt="\Rightarrow" style="vertical-align: -1px"/> <tt class="docutils literal"><span class="pre">'continuous'</span></tt> <img class="math" src="_images/math/d773375e7bd7f973b121cd9403ad90d3806d6996.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <tt class="docutils literal"><span class="pre">'sow'</span></tt> || <tt class="docutils literal"><span class="pre">'reap'</span></tt></p>
+<p>For a finite difference of energies optimization, indicates whether
+the calculations required to complete the
+optimization are to be run in one file (<tt class="docutils literal"><span class="pre">'continuous'</span></tt>) or are to be
+farmed out in an embarrassingly parallel fashion
+(<tt class="docutils literal"><span class="pre">'sow'</span></tt>/<tt class="docutils literal"><span class="pre">'reap'</span></tt>).  For the latter, run an initial job with
+<tt class="docutils literal"><span class="pre">'sow'</span></tt> and follow instructions in its output file.</p>
+</li>
+<li><strong>dertype</strong> (<a class="reference internal" href="notes_py.html#op-py-dertype"><em>dertype</em></a>) &#8211; <p><tt class="docutils literal"><span class="pre">'gradient'</span></tt> || <tt class="docutils literal"><span class="pre">'energy'</span></tt></p>
+<p>Indicates whether analytic (if available) or finite difference
+optimization is to be performed.</p>
+</li>
+<li><strong>molecule</strong> (<a class="reference internal" href="notes_py.html#op-py-molecule"><em>molecule</em></a>) &#8211; <p><tt class="docutils literal"><span class="pre">h2o</span></tt> || etc.</p>
+<p>The target molecule, if not the last molecule defined.</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># [1] Analytic scf optimization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="p">(</span><span class="s">&#39;scf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># [2] Finite difference mp5 optimization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">opt</span><span class="p">(</span><span class="s">&#39;mp5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># [3] Forced finite difference ccsd optimization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="p">(</span><span class="s">&#39;ccsd&#39;</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>For further discussion of geometry optimization, see
+Sec. <a class="reference internal" href="optking.html#sec-optking"><em>Geometry Optimization</em></a>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cp.html"
+                        title="previous chapter">Counterpoise Correct</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="freq.html"
+                        title="next chapter">Frequency</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/opt.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="freq.html" title="Frequency"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cp.html" title="Counterpoise Correct"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Apr 25, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

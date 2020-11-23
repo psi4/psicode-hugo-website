@@ -1,0 +1,608 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>A PSI4 Tutorial &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="index.html" />
+    <link rel="next" title="Psithon: Structuring an Input File" href="psithoninput.html" />
+    <link rel="prev" title="Installation and Runtime Configuration" href="external.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psithoninput.html" title="Psithon: Structuring an Input File"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="external.html" title="Installation and Runtime Configuration"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="a-psifour-tutorial">
+<span id="sec-tutorial"></span><h1>A PSI4 Tutorial<a class="headerlink" href="#a-psifour-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basic-input-file-structure">
+<h2>Basic Input File Structure<a class="headerlink" href="#basic-input-file-structure" title="Permalink to this headline">¶</a></h2>
+<p>PSI4 reads input from a text file, which can be prepared in any standard
+text editor.  The default input file name is <tt class="docutils literal"><span class="pre">input.dat</span></tt> and the
+default output file name is <tt class="docutils literal"><span class="pre">output.dat</span></tt>.  So that you can give your
+files meaningful names, these defaults can be changed by specifying
+the input file name and output file name on the the command line.
+The syntax is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="nb">input</span><span class="o">-</span><span class="n">name</span> <span class="n">output</span><span class="o">-</span><span class="n">name</span>
+</pre></div>
+</div>
+<p>If you give an input name but no output name, then the output name will
+be the same as the input name (subtracting any &#8221;.in&#8221; or &#8221;.dat&#8221; suffix),
+plus a &#8221;.out&#8221; suffix.</p>
+</div>
+<div class="section" id="running-a-basic-hartree-fock-calculation">
+<h2>Running a Basic Hartree&#8211;Fock Calculation<a class="headerlink" href="#running-a-basic-hartree-fock-calculation" title="Permalink to this headline">¶</a></h2>
+<p>In our first example, we will consider a Hartree&#8211;Fock SCF computation
+for the water molecule using a cc-pVDZ basis set.  We will specify the
+geometry of our water molecule using a standard Z-matrix.</p>
+<div class="highlight-python"><pre># Any line starting with the # character is a comment line
+#! Sample HF/cc-pVDZ H2O computation
+
+memory 250 mb
+
+molecule h2o {
+  O 
+  H 1 0.96
+  H 1 0.96 2 104.5
+}
+
+set basis cc-pVDZ
+energy('scf')
+
+</pre>
+</div>
+<p>For your convenience, this example can be found in
+<a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/samples/tu1-h2o-energy/input.dat">tu1-h2o-energy</a>.
+You can run it if you wish.
+Once PSI4 is in your path (see the <a class="reference internal" href="installfile.html#sec-install-iii-7"><em>User Configuration</em></a>
+section of the installation instructions), you can run this computation by typing</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="nb">input</span><span class="o">.</span><span class="n">dat</span> <span class="n">output</span><span class="o">.</span><span class="n">dat</span>
+</pre></div>
+</div>
+<p>If everything goes well, the computation should complete and should report
+a final restricted Hartree&#8211;Fock energy in a section like this:</p>
+<div class="highlight-python"><pre>Energy converged.
+
+@RHF Final Energy:   -76.02663273410671</pre>
+</div>
+<p>By default, the energy should be converged to about <img class="math" src="_images/math/eef7accfec9ad97272e91d7bfebf7ac5f5ca5c39.png" alt="1.0 \times 10^{-6}" style="vertical-align: -1px"/>, so agreement
+is only expected for about the first 6 digits after the decimal.  If the
+computation does not complete, there is probably a problem with the
+compilation or installation of the program (see the installation
+instructions in Sec. <a class="reference internal" href="external.html#sec-installfile"><em>Compiling and Installing</em></a>).</p>
+<p>This very simple input is sufficient to run the requested information.
+Notice that we didn&#8217;t tell the program some otherwise useful information
+like the charge on the molecule (0, it&#8217;s neutral), the spin multiplicity
+(1 for a closed-shell molecule with all electrons paired), or the reference
+wavefunction to use (restricted Hartree&#8211;Fock, or RHF, is usually
+appropriate for a closed-shell molecule).  The program correctly guessed
+all of these options for us.  We can change the default behavior through
+additional keywords.</p>
+<p>Let&#8217;s consider what we would do for an open-shell molecule, where
+not all electrons are paired.  For example, let&#8217;s run a computation
+on methylene (CH<sub>2</sub>), whose ground electronic state has two unpaired
+electrons (triplet electronic state, or a spin multiplicity <img class="math" src="_images/math/1d6408be232d6ad5e1f4b1979229e9004f0b8f9e.png" alt="2S+1 = 3" style="vertical-align: -1px"/>).
+In this case, the default spin multiplicity (1) is not correct, so we
+need to tell the program the true value (3).  Like many programs, PSI4
+can get the charge and multiplicity as the first two integers in the
+Z-matrix.  Note the line with <tt class="docutils literal"><span class="pre">0</span> <span class="pre">3</span></tt> at the beginning of the molecule
+specification below.  In this example we will also specify the bond length
+and bond angle as variables (<img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R" style="vertical-align: 0px"/> and <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A" style="vertical-align: 0px"/>), whose values are given
+at the end of the Z-matrix specification.</p>
+<div class="highlight-python"><pre>#! Sample UHF/6-31G** CH2 computation
+
+memory 250 mb
+
+molecule ch2 {
+  0 3
+  C 
+  H 1 R
+  H 1 R 2 A
+
+  R = 1.075
+  A = 133.93
+}
+
+set basis 6-31G**
+set reference uhf
+energy ('scf')
+
+</pre>
+</div>
+<p>This sample input can be found in
+<a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/samples/tu2-ch2-energy/input.dat">tu2-ch2-energy</a> and as
+before it can be run through the command <tt class="docutils literal"><span class="pre">psi4</span> <span class="pre">input.dat</span> <span class="pre">output.dat</span></tt>
+(actually, because <tt class="docutils literal"><span class="pre">psi4</span></tt> by default looks for an input file named
+<tt class="docutils literal"><span class="pre">input.dat</span></tt> and writes by default to a file called <tt class="docutils literal"><span class="pre">output.dat</span></tt>, in this
+case one could also just type <tt class="docutils literal"><span class="pre">psi4</span></tt>).  If it works, it should print
+the final energy as</p>
+<div class="highlight-python"><pre>@UHF Final Energy:   -38.92533462456894</pre>
+</div>
+<p>Notice we added a new keyword, <tt class="docutils literal"><span class="pre">set</span> <span class="pre">reference</span> <span class="pre">uhf</span></tt>, to the input.  For
+open-shell molecules, we have a choice of unrestricted orbitals
+(unrestricted Hartree&#8211;Fock, or UHF), or restricted orbitals (restricted
+open-shell Hartree&#8211;Fock, or ROHF).  Usually, UHF is a little easier to
+converge (although it may be more susceptible to spin contamination than
+ROHF).</p>
+</div>
+<div class="section" id="geometry-optimization-and-vibrational-frequency-analysis">
+<h2>Geometry Optimization and Vibrational Frequency Analysis<a class="headerlink" href="#geometry-optimization-and-vibrational-frequency-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The above examples were simple single-point energy computations
+(as specified by the <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><tt class="xref py py-func docutils literal"><span class="pre">energy()</span></tt></a> function).  Of course there are other
+kinds of computations to perform, such as geometry optimizations and
+vibrational frequency computations.  These can be specified by replacing
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><tt class="xref py py-func docutils literal"><span class="pre">energy()</span></tt></a> with <a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><tt class="xref py py-func docutils literal"><span class="pre">optimize()</span></tt></a> or <a class="reference internal" href="freq.html#driver.frequency" title="driver.frequency"><tt class="xref py py-func docutils literal"><span class="pre">frequency()</span></tt></a>, respectively.</p>
+<p>Here&#8217;s an example of optimizing the H<sub>2</sub>O molecule using Hartree&#8211;Fock with
+a cc-pVDZ basis set (located in
+<a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/samples/tu3-h2o-opt/input.dat">tu3-h2o-opt</a>).</p>
+<div class="highlight-python"><pre>#! Optimize H2O HF/cc-pVDZ
+
+memory 250 mb
+
+
+molecule h2o {
+  O 
+  H 1 0.96
+  H 1 0.96 2 104.5
+}
+
+set basis cc-pVDZ
+optimize('scf')
+
+</pre>
+</div>
+<p>This should perform a series of gradient computations.  The gradient points
+which way is downhill in energy, and the optimizer then modifies the
+geometry to follow the gradient.  After a few cycles, the geometry should
+converge with a message like <tt class="docutils literal"><span class="pre">Optimization</span> <span class="pre">is</span> <span class="pre">complete!</span></tt>.  As indicated
+in the following table (printed by the optimizer at the end of the
+computation and grep-able with <tt class="docutils literal"><span class="pre">~</span></tt>), the energy decreases with each step,
+and the maximum force on each atom also decreases with each step (in
+principle these numbers could increase in some iterations, but here they do
+not).</p>
+<div class="highlight-python"><pre>--------------------------------------------------------------------------------------------------------------- ~
+ Step         Total Energy             Delta E       MAX Force       RMS Force        MAX Disp        RMS Disp  ~
+--------------------------------------------------------------------------------------------------------------- ~
+    1     -76.026632734857    -76.026632734857      0.01523505      0.01245744      0.02742199      0.02277500  ~
+    2     -76.027022668419     -0.000389933562      0.00178749      0.00142923      0.01007985      0.00594840  ~
+    3     -76.027032729361     -0.000010060942      0.00014016      0.00008485      0.00077279      0.00044621  ~
+--------------------------------------------------------------------------------------------------------------- ~</pre>
+</div>
+<p>To get harmonic vibrational frequencies, <em>first we must set up an input
+using the OPTIMIZED GEOMETRY</em>.  We can easily get the optimized geometry
+from the previous computation.  Looking at the output from running the
+previous example, we see that the OH bond length is about 0.9463 Ångstroms,
+and the bond angle is about 104.575 degrees.  It&#8217;s good to give this many
+digits (or more) to make sure there&#8217;s not significant roundoff error in the
+geometry when running a frequency computation.  So, our frequency
+computation input (which can be found as test case
+<a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/samples/tu4-h2o-freq/input.dat">tu4-h2o-freq</a>) is:</p>
+<div class="highlight-python"><pre>#! Frequencies for H2O HF/cc-pVDZ at optimized geometry
+
+memory 250 mb
+
+molecule h2o {
+  O 
+  H 1 0.9463
+  H 1 0.9463 2 104.575
+}
+
+set basis cc-pVDZ
+set scf_type pk
+frequencies('scf')
+
+
+</pre>
+</div>
+<p>Alternatively, it&#8217;s also possible for PSI4 to use Cartesian coordinate
+input.  Here, the Cartesian coordinates of the optimized geometry can be
+extracted from the <em>bottom</em> of the optimization output.  The input
+would then look like this:</p>
+<div class="highlight-python"><pre>molecule h2o {
+   O     0.0000000000   0.0000000000  -0.0647163165
+   H     0.0000000000  -0.7490459647   0.5135474533
+   H     0.0000000000   0.7490459647   0.5135474533
+}
+
+set basis cc-pVDZ
+frequencies('scf')</pre>
+</div>
+<p>If either of the inputs above are run, the program should do some
+computations and then finally report the following harmonic vibrational
+frequencies (roundoff errors of around 0.1 cm<sup>-1</sup> may exist):</p>
+<div class="highlight-python"><pre>  Irrep      Harmonic Frequency
+                  (cm-1)
+-----------------------------------------------
+     A1         1776.2423
+     A1         4113.7717
+     B2         4211.8290
+-----------------------------------------------</pre>
+</div>
+<p>Notice that the symmetry type of the normal modes is specified (A1, A1,
+B2).  The program also prints out the normal modes in terms of Cartesian
+coordinates of each atom.  For example, the normal mode at 1776 cm<sup>-1</sup>
+is:</p>
+<div class="highlight-python"><pre> Frequency:       1776.24
+ Force constant:   0.1194
+       X       Y       Z           mass
+O        0.000   0.000  -0.270      15.994915
+H        0.000   0.418   0.538       1.007825
+H        0.000  -0.418   0.538       1.007825</pre>
+</div>
+<p>where the table shows the displacements in the X, Y, and Z dimensions for
+each atom along the normal mode coordinate.  (This information could be used
+to animate the vibrational frequency using visualization software.)</p>
+</div>
+<div class="section" id="analysis-of-intermolecular-interactions">
+<h2>Analysis of Intermolecular Interactions<a class="headerlink" href="#analysis-of-intermolecular-interactions" title="Permalink to this headline">¶</a></h2>
+<p>Now let&#8217;s consider something a little more interesting.  PSI4
+contains code to analyze the nature of intermolecular interactions
+between two molecules, via symmetry-adapted perturbation theory
+(SAPT) <a class="reference internal" href="bibliography.html#jeziorski-1994-1887">[Jeziorski:1994:1887]</a>.  This kind of analysis gives a lot
+of insight into the nature of intermolecular interactions, and PSI4
+makes these computations easier than ever.</p>
+<p>For a SAPT computation, the input needs to provide information on two
+distinct molecules.  This is very easy, we just give a Z-matrix or set of
+Cartesian coordinates for each molecule, and separate the two with two
+dashes, like this:</p>
+<div class="highlight-python"><pre># Example SAPT computation for ethene*ethine (i.e., ethylene*acetylene),
+# test case 16 from the S22 database
+
+molecule dimer {
+0 1
+C   0.000000  -0.667578  -2.124659
+C   0.000000   0.667578  -2.124659
+H   0.923621  -1.232253  -2.126185
+H  -0.923621  -1.232253  -2.126185
+H  -0.923621   1.232253  -2.126185
+H   0.923621   1.232253  -2.126185
+--
+0 1
+C   0.000000   0.000000   2.900503
+C   0.000000   0.000000   1.693240
+H   0.000000   0.000000   0.627352
+H   0.000000   0.000000   3.963929
+units angstrom
+
+no_reorient
+symmetry c1
+}</pre>
+</div>
+<p>Notice we have a couple of new keywords in the molecule specification.
+<tt class="docutils literal"><span class="pre">no_reorient</span></tt> tells the program not to reorient the molecule
+to a different coordinate system (this is important for SAPT to make
+sure the same coordinate frame is used for the computations of the two
+monomers and for the dimer).  The next keyword <tt class="docutils literal"><span class="pre">symmetry</span> <span class="pre">c1</span></tt> tells PSI4 to run
+in C1 point-group symmetry (i.e., without using symmetry), even if a
+higher symmetry is detected.  SAPT computations know to turn off
+symmetry and fix orientation even without the user specifying these
+molecule keywords.</p>
+<p>Here&#8217;s the second half of the input:</p>
+<div class="highlight-python"><pre>set {
+    basis jun-cc-pVDZ
+    scf_type DF
+    freeze_core True
+}
+
+energy('sapt0')</pre>
+</div>
+<p>Before, we have been setting keywords individually with commands like
+<tt class="docutils literal"><span class="pre">set</span> <span class="pre">basis</span> <span class="pre">cc-pVDZ</span></tt>.  Because we have a few more options now, it&#8217;s
+convenient to place them together into the <tt class="docutils literal"><span class="pre">set</span></tt> or <tt class="docutils literal"><span class="pre">set</span> <span class="pre">globals</span></tt>
+block, bounded by <tt class="docutils literal"><span class="pre">{...}</span></tt>.  This
+will set all of these options as &#8220;global&#8221; options (meaning that they are
+visible to all parts of the program).  Most common PSI4 options can be
+set in a <tt class="docutils literal"><span class="pre">globals</span></tt> section like this.  If an option needs to be visible
+only to one part of the program (e.g., we only want to increase the
+energy convergence in the SCF code, but not the rest of the
+code), it can be placed in a section of input visible to that part of the
+program (e.g., <tt class="docutils literal"><span class="pre">set</span> <span class="pre">scf</span> <span class="pre">e_convergence</span> <span class="pre">1.0E-8</span></tt>).</p>
+<p>Back to our SAPT example, we have found that for basic-level SAPT
+computations (i.e., SAPT0), a good error cancellation is found
+<a class="reference internal" href="bibliography.html#hohenstein-2012-wires">[Hohenstein:2012:WIREs]</a> with the jun-cc-pVDZ basis (this is the
+usual aug-cc-pVDZ basis, but without diffuse functions on hydrogen and
+without diffuse <img class="math" src="_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d" style="vertical-align: 0px"/> functions on heavy atoms) <a class="reference internal" href="bibliography.html#papajak-2011-10">[Papajak:2011:10]</a>. So,
+we&#8217;ll use that as our standard basis set.  The SAPT code is designed to
+use density fitting techniques, because they introduce minimal errors
+while providing much faster computations <a class="reference internal" href="bibliography.html#hohenstein-2010-184111">[Hohenstein:2010:184111]</a>
+<a class="reference internal" href="bibliography.html#hohenstein-2010-014101">[Hohenstein:2010:014101]</a>. Since we&#8217;re using density fitting for the SAPT,
+we might as well also use it for the Hartree&#8211;Fock computations that are
+performed as part of the SAPT.  We can specify that with
+<tt class="docutils literal"><span class="pre">scf_type</span> <span class="pre">DF</span></tt>.</p>
+<p>Density fitting procedures require the use of auxiliary basis sets that
+pair with the primary basis set.  Fortunately, PSI4 is usually smart
+enough to figure out what auxiliary basis sets are needed for a given
+computation.  In this case, jun-cc-pVDZ is a standard enough basis set
+(just a simple truncation of the very popular aug-cc-pVDZ basis set)
+that PSI4 correctly guesses that we want the jun-cc-pVDZ-JKFIT
+auxiliary basis for the Hartree&#8211;Fock, and the jun-cc-pVDZ-RI basis set
+for the SAPT procedure.</p>
+<p>To speed up the computation a little, we also tell the SAPT procedure to
+freeze the core electrons with <tt class="docutils literal"><span class="pre">freeze_core</span> <span class="pre">True</span></tt>.  The SAPT
+procedure is invoked with the simple call, <tt class="docutils literal"><span class="pre">energy('sapt0')</span></tt>.  This
+call knows to automatically run two monomer computations and a dimer
+computation and then use these results to perform the SAPT analysis.  The
+various energy components are printed at the end of the output, in addition
+to the total SAPT0 interaction energy.  An explanation of the various
+energy components can be found in the review by Jeziorski, Moszynski, and
+Szalewicz <a class="reference internal" href="bibliography.html#jeziorski-1994-1887">[Jeziorski:1994:1887]</a>, and this is discussed in more detail
+in the SAPT section later in this manual.  For now, we&#8217;ll note that most of
+the SAPT energy components are negative; this means those are attractive
+contributions (the zero of energy in a SAPT computation is defined as
+non-interacting monomers).  The exchange contributions are positive
+(repulsive).   In this example, the most attractive contribution between
+ethylene and acetylene is an electrostatic term of -2.12 kcal mol<sup>-1</sup>
+(<tt class="docutils literal"><span class="pre">Elst10,r</span></tt> where the 1 indicates the first-order
+perturbation theory result with respect to the intermolecular interaction,
+and the 0 indicates zeroth-order with respect to intramolecular electron
+correlation).  The next most attractive contribution is the <tt class="docutils literal"><span class="pre">Disp20</span></tt>
+term (2nd order intermolecular dispersion, which looks like an MP2 in which
+one excitation is placed on each monomer), contributing an attraction of
+-1.21 kcal mol<sup>-1</sup>.  It is not surprising that the electrostatic
+contribution is dominant, because the geometry chosen for this example has the
+acetylene perpendicular to the ethylene, with the acetylene hydrogen
+pointing directly at the double bond in ethylene; this will be attractive
+because the H atoms in acetylene bear a partial positive charge, while the
+electron-rich double bond in ethylene bears a partial negative charge.  At
+the same time, the dispersion interaction should be smaller because the
+perpendicular geometry does not allow much overlap between the monomers.
+Hence, the SAPT analysis helps clarify (and quantify) our physical
+understanding about the interaction between the two monomers.</p>
+</div>
+<div class="section" id="potential-surface-scans-and-counterpoise-correction-made-easy-with-psithon">
+<h2>Potential Surface Scans and Counterpoise Correction Made Easy with Psithon<a class="headerlink" href="#potential-surface-scans-and-counterpoise-correction-made-easy-with-psithon" title="Permalink to this headline">¶</a></h2>
+<p>Finally, let&#8217;s consider an example that shows how the Python driver
+in PSI4 simplifies some routine tasks.  PSI4 can interpret
+valid Python code in addition to the computational chemistry directives
+we&#8217;ve seen in the previous examples; we call this mixture Psithon.
+The Python computer language is very easy to pick up, and even users
+previously unfamiliar with Python can use it to simplify tasks by
+modifying some of the example input files supplied with PSI4
+in the <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/samples">psi4/samples</a> directory.</p>
+<p>Suppose you want to do a limited potential energy surface scan, such as
+computing the interaction energy between two neon atoms at various
+interatomic distances.  One simple but unappealing way to do this is to
+create separate input files for each distance to be studied.  But most of
+these input files are identical, except that the interatomic distance is
+different.  Psithon lets you specify all this in a single input file,
+looping over the different distances with an array like this:
+<tt class="docutils literal"><span class="pre">Rvals=[2.5,</span> <span class="pre">3.0,</span> <span class="pre">4.0]</span></tt>.</p>
+<p>Let&#8217;s also suppose you want to do counterpoise (CP) corrected energies.
+Counterpoise correction involves computing the dimer energy and then
+subtracting out the energies of the two monomers, each evaluated in the
+dimer basis.  Again, each of these computations could be run in a separate
+input file, but because counterpoise correction is a fairly standard
+procedure for intermolecular interactions, PSI4 knows about it and has
+a built-in routine to perform counterpoise correction.  It only needs to
+know what method you want to do the counterpoise correction on (here, let&#8217;s
+consider CCSD(T)), and it needs to know what&#8217;s monomer A and what&#8217;s monomer
+B.  This last issue of specifying the monomers separately was already dealt
+with in the previous SAPT example, where we saw that two dashes in the
+<tt class="docutils literal"><span class="pre">molecule</span></tt> block can be used to separate monomers.</p>
+<p>So, we&#8217;re going to do counterpoise-corrected CCSD(T) energies for Ne<sub>2</sub> at
+a series of different interatomic distances.  And let&#8217;s print out a table
+of the interatomic distances we&#8217;ve considered, and the CP-corrected CCSD(T)
+interaction energies (in kcal mol<sup>-1</sup>) at each geometry.  Doing all this
+in a single input is surprisingly easy in PSI4.  Here&#8217;s the input
+(available as <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/samples/tu6-cp-ne2/input.dat">tu6-cp-ne2</a>).</p>
+<div class="highlight-python"><pre>#! Example potential energy surface scan and CP-correction for Ne2
+
+memory 250 mb
+
+molecule dimer {
+  Ne
+--
+  Ne 1 R
+}
+
+Rvals=[2.5, 3.0, 4.0]
+
+
+set basis aug-cc-pVDZ
+set freeze_core True
+
+# Initialize a blank dictionary of counterpoise corrected energies
+# (Need this for the syntax below to work)
+ecp = {}
+
+for R in Rvals:
+  dimer.R = R
+  ecp[R] = cp('ccsd(t)')
+
+PsiMod.print_out("\n")
+PsiMod.print_out("CP-corrected CCSD(T)/aug-cc-pVDZ interaction energies\n\n")
+PsiMod.print_out("        R (Ang)         E_int (kcal/mol)             \n")
+PsiMod.print_out("-----------------------------------------------------\n")
+for R in Rvals:
+  e = ecp[R] * 627.5095
+  PsiMod.print_out("        %3.1f            %10.6f\n" % (R, e))
+
+</pre>
+</div>
+<p>First, you can see the <tt class="docutils literal"><span class="pre">molecule</span></tt> block has a couple dashes to
+separate the monomers from each other.  Also note we&#8217;ve used a Z-matrix to
+specify the geometry, and we&#8217;ve used a variable (<tt class="docutils literal"><span class="pre">R</span></tt>) as the
+interatomic distance.  We have <em>not</em> specified the value of <tt class="docutils literal"><span class="pre">R</span></tt> in
+the <tt class="docutils literal"><span class="pre">molecule</span></tt> block like we normally would.  That&#8217;s because we&#8217;re
+going to vary it during the scan across the potential energy surface.
+Below the <tt class="docutils literal"><span class="pre">molecule</span></tt> block, you can see the <tt class="docutils literal"><span class="pre">Rvals</span></tt> array
+specified.  This is a Python array holding the interatomic distances we
+want to consider.  In Python, arrays are surrounded by square brackets, and
+elements are separated by commas.</p>
+<p>The next lines, <tt class="docutils literal"><span class="pre">set</span> <span class="pre">basis</span> <span class="pre">aug-cc-pVDZ</span></tt> and <tt class="docutils literal"><span class="pre">set</span> <span class="pre">freeze_core</span> <span class="pre">True</span></tt>,
+are familiar from previous test cases.  Next comes a slightly
+unusual-looking line, <tt class="docutils literal"><span class="pre">ecp</span> <span class="pre">=</span> <span class="pre">{}</span></tt>.  This is Python&#8217;s way of initializing
+a &#8220;dictionary&#8221;.  We&#8217;re going to use this dictionary to store the
+counterpoise-corrected energies as they become available.  A dictionary is
+like an array, but we can index it using strings or floating-point numbers
+instead of integers if we want.  Here, we will index it using
+floating-point numbers, namely, the <tt class="docutils literal"><span class="pre">R</span></tt> values.  This winds up being
+slightly more elegant than a regular array in later parts of the input
+file.</p>
+<p>The next section, beginning with <tt class="docutils literal"><span class="pre">for</span> <span class="pre">R</span> <span class="pre">in</span> <span class="pre">Rvals:</span></tt>, loops over the
+interatomic distances, <tt class="docutils literal"><span class="pre">R</span></tt>, in our array <tt class="docutils literal"><span class="pre">Rvals</span></tt>.  In Python,
+loops need to be indented, and each line in the loop has to be indented
+by the same amount.  The first line in the loop, <tt class="docutils literal"><span class="pre">dimer.R</span> <span class="pre">=</span> <span class="pre">R</span></tt>,
+sets the Z-matrix variable <tt class="docutils literal"><span class="pre">R</span></tt> of the molecule called <tt class="docutils literal"><span class="pre">dimer</span></tt>
+to the <tt class="docutils literal"><span class="pre">R</span></tt> value extracted from the <tt class="docutils literal"><span class="pre">Rvals</span></tt> array.  The next line,
+<tt class="docutils literal"><span class="pre">ecp[R]</span> <span class="pre">=</span> <span class="pre">cp('ccsd(t)')</span></tt>, computes the counterpoise-corrected
+CCSD(T) energy and places it in the <tt class="docutils literal"><span class="pre">ecp</span></tt> dictionary with <tt class="docutils literal"><span class="pre">R</span></tt> as
+the index.  Note we didn&#8217;t need to specify ghost atoms, and we didn&#8217;t need
+to call the monomer and dimer computations separately.  The built-in
+Psithon function <a class="reference internal" href="cp.html#wrappers.cp" title="wrappers.cp"><tt class="xref py py-func docutils literal"><span class="pre">cp()</span></tt></a> does it all for us, automatically.</p>
+<p>And that&#8217;s it!  The only remaining part of the example input is a little table
+of the different R values and the CP-corrected CCSD(T) energies, converted from
+atomic units (hartree) to kcal mol<sup>-1</sup> by multiplying by the
+automatically-defined conversion factor <tt class="docutils literal"><span class="pre">psi_hartree2kcalmol</span></tt>, which is
+defined in Sec. <a class="reference internal" href="external.html#sec-psirc"><em>Scratch Files and the ~/.psi4rc File</em></a>.  Notice the loop over <img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R" style="vertical-align: 0px"/> to create
+the table looks just like the loop over <tt class="docutils literal"><span class="pre">R</span></tt> to run the different
+computations, and the CP-corrected energies <tt class="docutils literal"><span class="pre">ecp[R]</span></tt> are accessed the same
+way they were stored.  The <tt class="docutils literal"><span class="pre">print</span></tt> line at the end just specifies some
+formatting for the printed table (first element is a floating point number 3
+spaces wide with one digit after the decimal, and the second element is a
+floating point number 10 spaces wide with 6 digits after the decimal); the
+format strings are the same as in the C programming language.  For tables more
+complicated than the simple one used here, Psithon has built-in support for
+tables (see the next section).</p>
+<p>The following section goes over Psithon in much more detail, but
+hopefully this example already makes it clear that many complex tasks
+can be done very easily in PSI4.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">A PSI4 Tutorial</a><ul>
+<li><a class="reference internal" href="#basic-input-file-structure">Basic Input File Structure</a></li>
+<li><a class="reference internal" href="#running-a-basic-hartree-fock-calculation">Running a Basic Hartree&#8211;Fock Calculation</a></li>
+<li><a class="reference internal" href="#geometry-optimization-and-vibrational-frequency-analysis">Geometry Optimization and Vibrational Frequency Analysis</a></li>
+<li><a class="reference internal" href="#analysis-of-intermolecular-interactions">Analysis of Intermolecular Interactions</a></li>
+<li><a class="reference internal" href="#potential-surface-scans-and-counterpoise-correction-made-easy-with-psithon">Potential Surface Scans and Counterpoise Correction Made Easy with Psithon</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="external.html"
+                        title="previous chapter">Installation and Runtime Configuration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="psithoninput.html"
+                        title="next chapter">Psithon: Structuring an Input File</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/tutorial.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psithoninput.html" title="Psithon: Structuring an Input File"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="external.html" title="Installation and Runtime Configuration"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Mar 20, 2014.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

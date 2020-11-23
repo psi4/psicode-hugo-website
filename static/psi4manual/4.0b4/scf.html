@@ -1,0 +1,839 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>HF: Hartree–Fock Theory &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="DFT: Density Functional Theory" href="dft.html" />
+    <link rel="prev" title="Notes on Options" href="notes_c.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dft.html" title="DFT: Density Functional Theory"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="notes_c.html" title="Notes on Options"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="hf-hartree-fock-theory">
+<span id="sec-scf"></span><span id="index-0"></span><h1>HF: Hartree&#8211;Fock Theory<a class="headerlink" href="#hf-hartree-fock-theory" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Justin M. Turney, Robert M. Parrish, and Andrew C. Simmonett</em></p>
+<p><em>Section author: Robert M. Parrish</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__scf.html#apdx-scf"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__scf.html#apdx-scf-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/src/lib/libscf_solver">LIBSCF_SOLVER</a>, <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/src/lib/libmints">LIBMINTS</a>, <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/src/lib/libfock">LIBFOCK</a>, <a class="reference external" href="https://github.com/psi4/psi4.0b4/blob/master/src/lib/libdiis">LIBDIIS</a></p>
+<div class="section" id="introduction">
+<span id="sec-scfintro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Self-Consistent-Field (SCF) theory forms the cornerstone of <em>ab initio</em> quantum
+chemistry. Here SCF refers both to conventional Hartree&#8211;Fock (HF) molecular
+orbital theory and also to generalized Kohn&#8211;Sham Density Functional Theory
+(KS-DFT). PSI4 contains a wholly rewritten SCF code, including many of the
+most popular spin specializations, several efficient numerical methods for
+treating Fock Matrix construction, and a brand new KS-DFT code featuring many of
+the most popular DFT functional technologies.</p>
+<p>An illustrative example of using the SCF module is as follows:</p>
+<div class="highlight-python"><pre>molecule {
+0 3
+O
+O 1 1.21
+}
+
+set {
+basis cc-pvdz
+guess sad
+reference uhf
+scf_type pk
+}
+
+energy('scf')</pre>
+</div>
+<p>This will run a UHF computation for triplet molecular oxygen (the ground state)
+using a PK algorithm for the Electron Repulsion Integrals (ERI) and starting
+from a Superposition of Atomic Densities (SAD) guess. DF integrals are
+automatically used to converge the DF-SCF solution before the PK algorithm is
+activated.  After printing all manner of titles, geometries, sizings, and
+algorithm choices, the SCF finally reaches the iterations:</p>
+<div class="highlight-python"><pre>                     Total Energy        Delta E     RMS |[F,P]|
+
+@UHF iter   0:  -149.76816019169962   -1.49768e+02   1.36000e-01
+@UHF iter   1:  -149.59759112756984    1.70569e-01   2.42437e-02
+@UHF iter   2:  -149.62372414554761   -2.61330e-02   6.10239e-03 DIIS
+@UHF iter   3:  -149.62643112722810   -2.70698e-03   2.17299e-03 DIIS
+@UHF iter   4:  -149.62690062294968   -4.69496e-04   5.66895e-04 DIIS
+@UHF iter   5:  -149.62694151409750   -4.08911e-05   1.26359e-04 DIIS
+@UHF iter   6:  -149.62694337042228   -1.85632e-06   1.84114e-05 DIIS
+@UHF iter   7:  -149.62694340901407   -3.85918e-08   2.91692e-06 DIIS
+@UHF iter   8:  -149.62694340999002   -9.75945e-10   3.11857e-07 DIIS
+
+DF guess converged.
+...
+
+@UHF iter   9:  -149.62730705470665   -3.63645e-04   8.63718e-05 DIIS
+@UHF iter  10:  -149.62730737347948   -3.18773e-07   1.50227e-05 DIIS
+@UHF iter  11:  -149.62730738537107   -1.18916e-08   3.80497e-06 DIIS
+@UHF iter  12:  -149.62730738624032   -8.69250e-10   7.06690e-07 DIIS</pre>
+</div>
+<p>The first set of iterations are from the DF portion of the computation, the
+second set use the exact (but much slower) PK algorithm. Within the DF portion
+of the computation, the zeroth-iteration uses a non-idempotent density matrix
+obtained from the SAD guess, so the energy is unphysically low. However, the
+first true iteration is quite close to the final DF energy, highlighting the
+efficiency of the SAD guess. Pulay&#8217;s DIIS procedure is then used to accelerate
+SCF convergence, with the DF phase reaching convergence in eight true
+iterations. When used together, SAD and DIIS are usually sufficient to converge
+the SCF for all but the most difficult systems. Additional convergence
+techniques are available for more difficult cases, and are detailed below. At
+this point, the code switches on the requested PK integrals technology, which
+requires only four full iterations to reach convergence, starting from the DF
+guess. This hybrid DF/conventional procedure can significantly accelerate SCF
+computations requiring exact integrals, especially when used in concert with the
+integral-direct conventional algorithm.</p>
+<p>After the iterations are completed, a number of one-electron properties are
+printed, and some bookkeeping is performed to set up possible correlated
+computations. Additional one-electron properties are available by increasing the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-print-globals"><em class="xref std std-term">PRINT</em></a> option. Also printed are the occupied and virtual orbital energies,
+which are useful in elucidating the stability and reactivity of the system.</p>
+</div>
+<div class="section" id="theory">
+<span id="index-1"></span><h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<p>The objective of Hartree-Fock (HF) Theory is to produce the optimized Molecular
+Orbitals (MOs) <img class="math" src="_images/math/85aa35b96c5dea72060bfa2bedf80ac4577a3cce.png" alt="\{\psi_i\}" style="vertical-align: -5px"/>,</p>
+<div class="math">
+<p><img src="_images/math/57eecbaaee34e6bf3b57699eac455f236d3dbd10.png" alt="\psi_i(\vec x_1) = C_{\mu i} \phi_{\mu} (\vec x_1)."/></p>
+</div><p>Here, <img class="math" src="_images/math/d1792530cc3e23d1667c4799847888bebee2bd04.png" alt="\{\phi_{\mu}\}" style="vertical-align: -6px"/> are the basis functions, which, in PSI4 are
+contracted cartesian Gaussian functions often referred to as Atomic Orbitals
+(AOs). The matrix <img class="math" src="_images/math/3a6c0986e7652c150e4953f0b38abc3de52b46c7.png" alt="C_{\mu i}" style="vertical-align: -6px"/> contains the MO coefficients, which are the
+constrained variational parameters in Hartree-Fock. The molecular orbitals, are
+used to build the simplest possible antisymmetric wavefunction, a single Slater
+determinant,</p>
+<div class="math">
+<p><img src="_images/math/db7567bc8c96062934fc97d608917712590b1abe.png" alt="| \Psi_0 \rangle =
+\frac{1}{\sqrt{N!}} \left | \begin{array}{cccc}
+\psi_1 (\vec x_1) &amp; \psi_2(\vec x_1) &amp; \ldots &amp; \psi_N (\vec x_1) \\
+\psi_1 (\vec x_2) &amp; \psi_2(\vec x_2) &amp; \ldots &amp; \psi_N (\vec x_2) \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\psi_1 (\vec x_N) &amp; \psi_2(\vec x_N) &amp; \ldots &amp; \psi_N (\vec x_N) \\
+\end{array}\right |"/></p>
+</div><p>This form for the Hartree-Fock wavefunction is actually entirely equivalent to
+treating the electron correlation as a mean field repulsion in
+<img class="math" src="_images/math/a23cb1dc0e2f89694a2052f0a2076db4d40f89f0.png" alt="\mathbb{R}^6" style="vertical-align: 0px"/> instead of a more complicated effect in
+<img class="math" src="_images/math/294405a576c19894e8cc6c7d7e20ed1ebbbf4be7.png" alt="\mathbb{R}^N" style="vertical-align: 0px"/>.</p>
+<p>Considering the electronic Hamiltonian,</p>
+<div class="math">
+<p><img src="_images/math/8d37d9d8ca856fc546fbbed0e9142fa80635ab96.png" alt="\hat H = \sum_{i} -\frac{1}{2} \nabla_i^2 + \sum_{i} \sum_{A} -
+\frac{Z_A}{r_{iA}} + \sum_{i&gt;j} \frac{1}{r_{ij}},"/></p>
+</div><p>the Hartree-Fock energy is, by Slater&#8217;s rules,</p>
+<div class="math">
+<p><img src="_images/math/6eddc70832ca9a0f75dc8b64c1d09577279b738a.png" alt="E_{\mathrm{HF}} =
+\langle \Psi_0 | \hat H | \Psi_0 \rangle
+= \sum_{i} \langle i | \hat h | i \rangle
++ \frac 1 2 \sum_{i,j} [ii|jj] - [ij|ji]"/></p>
+</div><div class="math">
+<p><img src="_images/math/385c32cc1cee2a76c9a8d70bef2fd89d99a44d62.png" alt="=
+D_{\mu\nu}^\alpha \left(H_{\mu\nu} + F_{\mu\nu}^{\alpha} \right)
++ D_{\mu\nu}^\beta \left(H_{\mu\nu} + F_{\mu\nu}^{\beta} \right)"/></p>
+</div><p>Here <img class="math" src="_images/math/b1902d279ba37d60bdce4e0e987b7cd19d48974e.png" alt="H" style="vertical-align: 0px"/> is the AO-basis one-electron potential, encapsulating both
+electron-nuclear attraction and kinetic energy,</p>
+<div class="math">
+<p><img src="_images/math/181f6047448894d164f0ca4820e6f7531e75c884.png" alt="H_{\mu\nu} =
+\left(\mu \left| -\frac{1}{2} \nabla^2 + \sum_{A} -\frac{Z_A}{r_{1A}} \right
+| \nu \right),"/></p>
+</div><p><img class="math" src="_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D" style="vertical-align: 0px"/> is the AO-basis density matrix, build from the occupied orbital
+coefficients,</p>
+<div class="math">
+<p><img src="_images/math/9821f379eeb5452f11e55baaacf905847f1ed25e.png" alt="D_{\mu\nu}^{\alpha} =
+C_{\mu i}^{\alpha} C_{\nu i}^{\alpha},"/></p>
+</div><p>and <img class="math" src="_images/math/a055f405829e64a3b70253ab67cb45ed6ed5bb29.png" alt="F" style="vertical-align: 0px"/> is the Fock matrix, which is the effective one-body potential at
+the current value of the density,</p>
+<div class="math">
+<p><img src="_images/math/979f273866aaf9d0c174ac89e90bfef4157779f5.png" alt="F_{\mu\nu}^{\alpha} = H_{\mu\nu}
++ \underbrace{\left(D_{\lambda\sigma}^{\alpha} + D_{\lambda\sigma}^{\beta}\right)
+(\mu\nu|\lambda\sigma)}_{J}
++ \underbrace{D_{\lambda\sigma}^{\alpha} (\mu\lambda|\sigma\nu)}_{K^{\alpha}}"/></p>
+</div><p>Here the tensor <img class="math" src="_images/math/6d226b386c7154758bd8d057981564e67aa5a550.png" alt="(\mu\nu|\lambda\sigma)" style="vertical-align: -5px"/> is an AO Electron-Repulsion
+Integral (ERI) in chemists&#8217; notation,</p>
+<div class="math">
+<p><img src="_images/math/1c3c55c8423a9d2f4b29d929edef206bcf3f7152.png" alt="(\mu\nu|\lambda\sigma) = \iint_{\mathbb{R}^6}
+\phi_{\mu} (\vec r_1)
+\phi_{\nu} (\vec r_1)
+\frac{1}{r_{12}}
+\phi_{\lambda} (\vec r_2)
+\phi_{\sigma} (\vec r_2)
+\ \mathrm{d}^3 r_1
+\ \mathrm{d}^3 r_2."/></p>
+</div><p>The MO coefficients are found as the generalized eigenvectors of the Fock Matrix,</p>
+<div class="math">
+<p><img src="_images/math/2bd10828d6c8be7c448cfbc498ade3d7c5ea6bee.png" alt="F^\alpha C^\alpha = S C^\alpha \epsilon^\alpha"/></p>
+</div><p>The eigenvalues <img class="math" src="_images/math/eaf4418fbe935c15a606516d8f55dc380cd8e822.png" alt="\epsilon" style="vertical-align: 0px"/> are the orbital energies, and the metric matrix
+<img class="math" src="_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S" style="vertical-align: 0px"/> is the AO-basis overlap matrix</p>
+<div class="math">
+<p><img src="_images/math/98cde25a294f0262a3daf6a836b53e5b2efa2a06.png" alt="S_{\mu\nu} = (\mu | \nu )"/></p>
+</div><p>Note that the Fock Matrix depends on the density (both alpha and beta), and
+therefore the orbitals. Because of this, SCF is a nonlinear procedure, which
+terminates when the generating orbitals are self-consistent with the Fock matrix
+they generate.</p>
+<p>The formation of the Coulomb matrix <img class="math" src="_images/math/abb5588023cfa1ac14643e9778699f03eecc57a3.png" alt="J" style="vertical-align: 0px"/> and the exchange matrix
+<img class="math" src="_images/math/01b78a8ac0c324d36691785b40edcce385282f27.png" alt="K^{\alpha}" style="vertical-align: 0px"/> dominate the computational effort of the SCF procedure. For
+very large systems, diagonalization of the Fock matrix can also present a
+significant hurdle.</p>
+</div>
+<div class="section" id="minimal-input">
+<h2>Minimal Input<a class="headerlink" href="#minimal-input" title="Permalink to this headline">¶</a></h2>
+<p>Minimal input for a Hartree-Fock computation is a molecule block, basis set
+option, and a call to <tt class="docutils literal"><span class="pre">energy('scf')</span></tt>:</p>
+<div class="highlight-python"><pre>molecule {
+He
+}
+
+set basis sto-3g
+
+energy('scf')</pre>
+</div>
+<p>This will run a Restricted Hartree-Fock (RHF) on neutral singlet Helium in
+<img class="math" src="_images/math/e31911778ea202b962c6d919d57a3d4a7fa44865.png" alt="D_{2h}" style="vertical-align: -3px"/> spatial symmetry with a minimal <tt class="docutils literal"><span class="pre">STO-3G</span></tt> basis, 1.0E-6
+energy and 1.0E-5 density convergence criteria (since single-point, see
+<a class="reference internal" href="#table-conv-scf"><em>SCF Convergence &amp; Algorithm</em></a>), a DF ERI algorithm, symmetric
+orthogonalization, DIIS, and a core Hamiltonian guess. For more
+information on any of these options, see the relevant section below.</p>
+</div>
+<div class="section" id="spin-symmetry-treatment">
+<h2>Spin/Symmetry Treatment<a class="headerlink" href="#spin-symmetry-treatment" title="Permalink to this headline">¶</a></h2>
+<p>PSI4 implements the most popular spin specializations of Hartree-Fock
+theory, including:</p>
+<dl class="docutils">
+<dt>Restricted Hartree-Fock (RHF) [Default]</dt>
+<dd>Appropriate only for closed-shell singlet systems, but twice as efficient
+as the other flavors, as the alpha and beta densities are constrained to be
+identical.</dd>
+<dt>Unrestricted Hartree-Fock (UHF)</dt>
+<dd>Appropriate for most open-shell systems, and fairly easy to converge.
+The spatial parts of the alpha and beta orbitals are fully independent of each
+other, which allows a considerable amount of flexibility in the wavefunction.
+However, this flexibility comes at the cost of spin symmetry; UHF wavefunctions
+need not be eigenfunctions of the <img class="math" src="_images/math/b856d2a926738b123ba3ec84cc4e0ad955d63a41.png" alt="\hat S^2" style="vertical-align: 0px"/> operator. The deviation of
+this operator from its expectation value is printed on the output file. If the
+deviation is greater than a few hundredths, it is advisable to switch to an
+ROHF to avoid this &#8220;spin-contamination&#8221; problem.</dd>
+<dt>Restricted Open-Shell Hartree-Fock (ROHF)</dt>
+<dd>Appropriate for open-shell systems where spin-contamination is problem.
+Sometimes more difficult to converge, and assumes uniformly positive spin
+polarization (the alpha and beta doubly-occupied orbitals are identical).</dd>
+<dt>Constrained Unrestricted Hartree-Fock (CUHF)</dt>
+<dd>A variant of ROHF that starts from a UHF ansatz, and is therefore often
+easier to converge.</dd>
+</dl>
+<p>These can be invoked by the <a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-scf"><em class="xref std std-term">REFERENCE</em></a> keyword, which defaults to <tt class="docutils literal"><span class="pre">RHF</span></tt>.
+The charge and multiplicity may either be specified in the molecule definition:</p>
+<div class="highlight-python"><pre>molecule h {
+0 2 # Neutral doublet
+H
+}</pre>
+</div>
+<p>or, dynamically, by setting the relevant attributes in the Python molecule
+object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">h</span><span class="o">.</span><span class="n">set_molecular_charge</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">set_multiplicity</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Abelian spatial symmetry is fully supported in PSI4, and can be used to
+obtain physical interpretation of the molecular orbitals, to assist in difficult
+convergence cases, and, in some methods, to obtain significant performance
+gains. The point group of the molecule is inferred when reading the molecule
+section, and may be overridden by the <tt class="docutils literal"><span class="pre">symmetry</span></tt> flag, as in:</p>
+<div class="highlight-python"><pre>molecule h {
+0 2
+H
+symmetry c1
+}</pre>
+</div>
+<p>or by the <tt class="docutils literal"><span class="pre">set_point_group</span></tt> Python molecule attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">h</span><span class="o">.</span><span class="n">set_point_group</span><span class="p">(</span><span class="s">&#39;c2v&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>During the SCF procedure, the occupation of orbitals is typically determined by
+the Aufbau principal across all spatial symmetries. This may result in the
+occupation shifting between iterations. If the occupations are known <em>a priori</em>,
+they may be clamped throughout the procedure by using the <a class="reference internal" href="autodoc_glossary_options_c.html#term-docc-globals"><em class="xref std std-term">DOCC</em></a> and
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-socc-globals"><em class="xref std std-term">SOCC</em></a> options. For instance, all good quantum chemists know that
+<img class="math" src="_images/math/24ba218ac02f2682546d4cd0cf94054133642258.png" alt="C_{2v}" style="vertical-align: -3px"/> water is
+actually,:</p>
+<div class="highlight-python"><pre>molecule h2o {
+0 1
+O
+H 1 1.0
+H 1 1.0 2 104.5
+}
+
+set {
+docc [3,0,1,1] # 1A1 2A1 1B1 3A1 1B2
+basis cc-pvdz
+}
+
+energy('scf')</pre>
+</div>
+</div>
+<div class="section" id="broken-symmetry">
+<h2>Broken Symmetry<a class="headerlink" href="#broken-symmetry" title="Permalink to this headline">¶</a></h2>
+<p>For certain problems, such diradicals, allowing the spin-up and spin-down orbitals to differ in closed-shell computations can be advantageous; this is known as symmetry breaking.  The resulting wavefunction will often provide superior energetics, due to the increased flexibility, but will suffer non-physicical spin contamination from higher multiplicity states.  PSI4 can compute a high-spin triplet wavefunction and then use this as a guess for the broken-symmetry low spin state.  To do this, you request broken symmetry in the <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><tt class="xref py py-func docutils literal"><span class="pre">energy()</span></tt></a> call, using one of the following::</p>
+<div class="highlight-python"><pre>energy('uhf', brokensymmetry=True)
+
+or, equivalently
+
+set reference uhf
+energy('scf', brokensymmetry=True)</pre>
+</div>
+</div>
+<div class="section" id="orthogonalization">
+<h2>Orthogonalization<a class="headerlink" href="#orthogonalization" title="Permalink to this headline">¶</a></h2>
+<p>One of the first steps in the SCF procedure is the determination of an
+orthogonal basis (known as the OSO basis) from the atomic orbital basis (known
+as the AO basis). The Molecular Orbital basis (MO basis) is then built as a
+particular unitary transformation of the OSO basis. In PSI4, the
+determination of the OSO basis is accomplished via either symmetric or canonical
+orthogonalization. Symmetric orthogonalization uses the symmetric inverse square
+root of the overlap matrix for the orthogonalization matrix. Use of symmetric
+orthogonalization always yields the same number of OSO functions (and thereby
+MOs) as AO functions. However, this may lead to numerical problems if the
+overlap matrix has small eigenvalues, which may occur for large systems or for
+systems where diffuse basis sets are used. This problem may be avoided by using
+canonical orthogonalization, in which an asymmetric inverse square root of the
+overlap matrix is formed, with numerical stability enhanced by the elimination
+of eigenvectors corresponding to very small eigenvalues. As a few combinations
+of AO basis functions may be discarded, the number of canonical-orthogonalized
+OSOs and MOs may be slightly smaller than the number of AOs. In PSI4,
+symmetric orthogonalization is used by default, unless the smallest overlap
+eigenvalue falls below the user-supplied double option <a class="reference internal" href="autodoc_glossary_options_c.html#term-s-tolerance-scf"><em class="xref std std-term">S_TOLERANCE</em></a>, which
+defaults to 1E-7. If the smallest eigenvalue is below this cutoff, canonical
+orthogonalization is forced, and all eigenvectors corresponding to eigenvalues
+below the cutoff are eliminated.  Use of canonical orthogonalization can be
+forced by setting the <a class="reference internal" href="autodoc_glossary_options_c.html#term-s-orthogonalization-scf"><em class="xref std std-term">S_ORTHOGONALIZATION</em></a> option to <tt class="docutils literal"><span class="pre">CANONICAL</span></tt>. Note
+that in practice, the MOs and OSOs are built separately within each irrep from
+the symmetry-adapted combinations of AOs known as Unique Symmetry Orbitals
+(USOs).  For canonical orthogonalization, this implies that the number of MOs
+and OSOs per irrep may be slightly smaller than the number of USOs per irrep.</p>
+<p>A contrived example demonstrating OSOs/MOs vs. AOs with symmetry is shown
+below:</p>
+<div class="highlight-python"><pre>molecule h2o {
+0 1
+O
+H 1 1.0
+H 1 1.0 2 104.5
+symmetry c2 # Two irreps is easier to comprehend
+}
+
+set {
+s_tolerance 0.0001      # Set an unreasonably tight
+                        # tolerance to force canonical
+basis aug-cc-pv5z       # This diffuse basis will have
+                        # small-ish eigenvalues for even H2O
+}
+
+energy('scf')</pre>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>... Initialization ...
+
+==&gt; Pre-Iterations &lt;==
+
+Minimum eigenvalue in the overlap matrix is 1.6888059293E-05.
+Using Canonical Orthogonalization with cutoff of 1.0000000000E-04.
+Overall, 3 of 287 possible MOs eliminated.
+
+... Initial Orbital Guess Information ...
+
+ -------------------------------------------------------
+  Irrep   Nso     Nmo     Nalpha   Nbeta   Ndocc  Nsocc
+ -------------------------------------------------------
+   A        145     144       3       3       3       0
+   B        142     140       2       2       2       0
+ -------------------------------------------------------
+  Total     287     284       5       5       5       0
+ -------------------------------------------------------</pre>
+</div>
+<p>In this example, there are 287 AO basis functions after spherical harmonics are
+applied. These are used to produce 287 symmetry adapted USOs, 145 of which are
+assigned to irrep A, and 142 of which are assigned to irrep B. Within irrep A,
+144 OSOs fall above the eigenvalue cutoff, and within irrep B 140 OSOs fall
+above the eigenvalue cutoff. In total, 284 molecular orbitals are chosen from
+287 AOs/USOs. The table also shows the initial assignment of electrons to
+irreps.</p>
+</div>
+<div class="section" id="initial-guess-convergence-stabilization">
+<h2>Initial Guess/Convergence Stabilization<a class="headerlink" href="#initial-guess-convergence-stabilization" title="Permalink to this headline">¶</a></h2>
+<p>In each step of the SCF procedure, a new Fock or Kohn&#8211;Sham potential is built
+according to the previous density, following which the potential is diagonalized
+to produce new molecular orbitals, from which a new density is computed. This
+procedure is continued until either convergence is reached or a preset maximum
+number of iterations is exceeded. Convergence is determined by both change in
+energy and root-mean-square change in density matrix values, which must be below
+the user-specified <a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-scf"><em class="xref std std-term">E_CONVERGENCE</em></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-d-convergence-scf"><em class="xref std std-term">D_CONVERGENCE</em></a>, respectively.
+The maximum number of iterations is specified by the <a class="reference internal" href="autodoc_glossary_options_c.html#term-maxiter-scf"><em class="xref std std-term">MAXITER</em></a> option. It
+should be noted that SCF is a chaotic process, and, as such, often requires
+careful selection of initial orbitals and damping during iterations to ensure
+convergence. This is particularly likely for large systems, metallic systems,
+multireference systems, open-shell systems, anions, and systems with diffuse
+basis sets.</p>
+<p>For initial orbital selection, several options are available. These include:</p>
+<dl class="docutils">
+<dt>CORE [Default]</dt>
+<dd>Diagonalization of the core Hamiltonian, removing even mean-field electron
+repulsion. Simple, but often too far from the final solution for larger
+systems.   READ becomes the default for the second and later iterations
+of geometry optimizations.</dd>
+<dt>SAD</dt>
+<dd>Superposition of Atomic Densities. Builds the initial density as the
+spin-averaged sum of atomic UHF computations in the current basis. If an
+open-shell system, uniform scaling of the spin-averaged density matrices is
+performed. If orbitals are needed (e.g., in density fitting), a partial
+Cholesky factorization of the density matrices is used. Often extremely
+accurate, particularly for closed-shell systems.</dd>
+<dt>GWH</dt>
+<dd>Generalized Wolfsberg-Helmholtz, a simple Huckel-Theory-like method based on
+the overlap and core Hamiltonian matrices. May be useful in open-shell systems.</dd>
+<dt>READ</dt>
+<dd>Read the previous orbitals from a checkpoint file, casting from one basis to
+another if needed. Useful for starting anion computations from neutral
+orbitals, or after small geometry changes. At present, casting from a
+different molecular point group is not supported.  This becomes the
+default for the second and later iterations of geometry optimizations.</dd>
+</dl>
+<p>These are all set by the <a class="reference internal" href="autodoc_glossary_options_c.html#term-guess-scf"><em class="xref std std-term">GUESS</em></a> keyword. Also, an automatic Python
+procedure has been developed for converging the SCF in a small basis, and then
+casting up to the true basis. This can be done by adding
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-guess-scf"><em class="xref std std-term">BASIS_GUESS</em></a> = SMALL_BASIS to the options list. We recommend the
+3-21G basis for the small basis due to its efficient mix of flexibility and
+compactness. An example of performing an RHF solution of water by SAD guessing
+in a 3-21G basis and then casting up to cc-pVTZ is shown below:</p>
+<div class="highlight-python"><pre>molecule h2o {
+0 1
+O
+H 1 1.0
+H 1 1.0 2 104.5
+}
+
+set {
+basis cc-pvtz
+basis_guess 3-21G
+guess sad
+}
+
+energy('scf')</pre>
+</div>
+<p>With regard to convergence stabilization, Pulay&#8217;s Direct Inversion of the
+Iterative Subspace (DIIS) extrapolation,  Gill&#8217;s Maximum Overlap Method (MOM),
+and damping are all implemented. A summary of each is presented below,</p>
+<dl class="docutils">
+<dt>DIIS [On by Default]</dt>
+<dd>DIIS uses previous iterates of the Fock Matrix together
+with an error criterion based on the orbital gradient to produce an informed
+estimate of the next Fock Matrix. DIIS is almost always necessary to converge
+the SCF procedure and is therefore turned on by default. In rare cases, the
+DIIS algorithm may need to be modified or turned off altogether, which may be
+accomplished via the options detailed below.</dd>
+<dt>MOM [Off by Default]</dt>
+<dd>MOM was developed to combat a particular class of convergence failure:
+occupation flipping. In some cases, midway though the SCF procedure, a partially
+converged orbital which should be occupied in the fully-optimized SCF solution
+has a slightly higher orbital eigenvalue than some other orbital which should be
+destined to be a virtual orbital. This results in the virtual orbital being
+spuriously occupied for one or more iterations. Sometimes this resolves itself
+without help, other times the occupation flips back and forth between two, four,
+or more orbitals. This is typically visible in the output as a non-converging
+SCF which eventually settles down to steady oscillation between two (or more)
+different total energies. This behavior can be ameliorated by choosing occupied
+orbitals by &#8220;shape&#8221; instead of by orbital eigenvalue, i.e., by choosing the set
+of new orbitals which looks most like some previously known &#8220;good&#8221; set.  The
+&#8220;good&#8221; set is typically the occupied orbitals from an one of the oscillating
+iterations with the lowest total energy. For an oscillating system where the
+lowest total energy occurs on iterations <img class="math" src="_images/math/7bb50501218c33e19229abb759c19eef684ed7bb.png" alt="N,N+2,\ldots" style="vertical-align: -4px"/>, invoking
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-mom-start-scf"><em class="xref std std-term">MOM_START</em></a> <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N" style="vertical-align: 0px"/> can often rescue the convergence of the SCF. MOM can
+be used in concert with DIIS, though care should be taken to not turn MOM on
+until the oscillatory behavior begins.</dd>
+<dt>Damping [Off by Default]</dt>
+<dd>In some cases, a static mixing of Fock Matrices from adjacent iterations can
+quench oscillations. This mixing, known as &#8220;damping&#8221; can be activated by setting
+the <a class="reference internal" href="autodoc_glossary_options_c.html#term-damping-percentage-scf"><em class="xref std std-term">DAMPING_PERCENTAGE</em></a> keyword to a nonzero percent.</dd>
+</dl>
+</div>
+<div class="section" id="eri-algorithms">
+<h2>ERI Algorithms<a class="headerlink" href="#eri-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>The key difficulty in the SCF procedure is treatment of the four-index ERI
+contributions to the Fock Matrix. A number of algorithms are available in
+PSI4 for these terms. The algorithm is selected by the <a class="reference internal" href="autodoc_glossary_options_c.html#term-scf-type-scf"><em class="xref std std-term">SCF_TYPE</em></a>
+keyword, which may be one of the following</p>
+<dl class="docutils">
+<dt>PK [<a class="reference internal" href="#table-conv-scf"><em>Default</em></a>]</dt>
+<dd>An out-of-core, presorted algorithm using exact ERIs. Quite fast
+for a zero-error algorithm if enough memory is available. Integrals are
+generated only once, and symmetry is utilized to reduce number of integrals.</dd>
+<dt>OUT_OF_CORE</dt>
+<dd>An out-of-core, unsorted algorithm using exact
+ERIs. Overcomes the memory bottleneck of the current PK algorithm. Integrals are
+generated only once, and symmetry is utilized to reduce number of integrals.</dd>
+<dt>DIRECT</dt>
+<dd>A threaded, sieved, integral-direct algorithm, with full permutational
+symmetry. This algorithm is brand new, but seems to be reasonably fast up to
+1500 basis function, uses zero disk, and can obtain significant speedups with
+negligible error loss if the <a class="reference internal" href="autodoc_glossary_options_c.html#term-ints-tolerance-scf"><em class="xref std std-term">INTS_TOLERANCE</em></a> value is set to 1.0E-8 or so.</dd>
+<dt>DF [<a class="reference internal" href="#table-conv-scf"><em>Default</em></a>]</dt>
+<dd>A density-fitted algorithm designed for computations with thousands of basis
+functions. This algorithm is highly optimized, and is threaded with a mixture of
+parallel BLAS and OpenMP. Note that this algorithm should use the -JKFIT series
+of auxiliary bases, <em>not</em> the -RI or -MP2FIT bases. The default guess for
+auxiliary basis set should work for all Dunning bases, otherwise the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-scf-scf"><em class="xref std std-term">DF_BASIS_SCF</em></a> keyword can be used to manually specify the auxiliary basis.
+This algorithm is preferred unless either absolute accuracy is required
+[<img class="math" src="_images/math/8a5fb40587a28da24fbfce12ebd8dc3040a8461d.png" alt="\gtrsim" style="vertical-align: -5px"/>CCSD(T)] or a -JKFIT auxiliary basis is unavailable for the
+primary basis/atoms involved.</dd>
+</dl>
+<p>For some of these algorithms, Schwarz and/or density sieving can be used to
+identify negligible integral contributions in extended systems. To activate
+sieving, set the <a class="reference internal" href="autodoc_glossary_options_c.html#term-ints-tolerance-scf"><em class="xref std std-term">INTS_TOLERANCE</em></a> keyword to your desired cutoff
+(1.0E-12 is recommended for most applications).</p>
+<p>Recently, we have added the automatic capability to use the extremely fast DF
+code for intermediate convergence of the orbitals, for <a class="reference internal" href="autodoc_glossary_options_c.html#term-scf-type-scf"><em class="xref std std-term">SCF_TYPE</em></a> other
+than <tt class="docutils literal"><span class="pre">DF</span></tt>. At the moment, the code defaults to cc-pVDZ-JKFIT as the
+auxiliary basis, unless the user specifies <a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-scf-scf"><em class="xref std std-term">DF_BASIS_SCF</em></a> manually. For
+some atoms, cc-pVDZ-JKFIT is not defined, so this procedure will fail. In these
+cases, you will see an error message of the form:</p>
+<div class="highlight-python"><pre>RuntimeError: sanity check failed! Gaussian94BasisSetParser::parser:
+Unable to find the basis set for HE</pre>
+</div>
+<p>This failure can be fixed by either setting <a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-scf-scf"><em class="xref std std-term">DF_BASIS_SCF</em></a> to an auxiliary
+basis set defined for all atoms in the system, or by setting <a class="reference internal" href="autodoc_glossary_options_c.html#term-df-scf-guess-scf"><em class="xref std std-term">DF_SCF_GUESS</em></a>
+to false, which disables this acceleration entirely.</p>
+</div>
+<div class="section" id="convergence-and-algorithm-defaults">
+<h2>Convergence and Algorithm Defaults<a class="headerlink" href="#convergence-and-algorithm-defaults" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils" id="table-conv-scf">
+<caption>SCF algorithm and convergence criteria defaults by calculation type <a class="footnote-reference" href="#f1" id="id1">[1]</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="22%" />
+<col width="22%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><em>Ab Initio</em> Method</th>
+<th class="head">Calculation Type</th>
+<th class="head"><a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-scf"><em class="xref std std-term">E_CONVERGENCE</em></a></th>
+<th class="head"><a class="reference internal" href="autodoc_glossary_options_c.html#term-d-convergence-scf"><em class="xref std std-term">D_CONVERGENCE</em></a></th>
+<th class="head"><a class="reference internal" href="autodoc_glossary_options_c.html#term-scf-type-scf"><em class="xref std std-term">SCF_TYPE</em></a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td rowspan="3">SCF of HF or DFT</td>
+<td>energy</td>
+<td>6</td>
+<td>6</td>
+<td rowspan="3">DF</td>
+</tr>
+<tr class="row-odd"><td>optimization</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr class="row-even"><td>frequency <a class="footnote-reference" href="#f7" id="id2">[7]</a></td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr class="row-odd"><td rowspan="4">SCF of post-HF</td>
+<td>energy</td>
+<td>8</td>
+<td>8</td>
+<td rowspan="4">PK <a class="footnote-reference" href="#f3" id="id3">[3]</a></td>
+</tr>
+<tr class="row-even"><td>optimization</td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr class="row-odd"><td>frequency <a class="footnote-reference" href="#f7" id="id4">[7]</a></td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr class="row-even"><td>CC property <a class="footnote-reference" href="#f2" id="id5">[2]</a></td>
+<td>10</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="table-conv-corl">
+<caption>Post-SCF convergence criteria defaults by calculation type <a class="footnote-reference" href="#f4" id="id6">[4]</a></caption>
+<colgroup>
+<col width="23%" />
+<col width="23%" />
+<col width="25%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><em>Ab Initio</em> Method</th>
+<th class="head">Calculation Type</th>
+<th class="head">E_CONVERGENCE <a class="footnote-reference" href="#f5" id="id7">[5]</a></th>
+<th class="head">R_CONVERGENCE <a class="footnote-reference" href="#f6" id="id8">[6]</a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td rowspan="4">post-HF of post-HF</td>
+<td>energy</td>
+<td>6</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>optimization</td>
+<td>8</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>frequency <a class="footnote-reference" href="#f7" id="id9">[7]</a></td>
+<td>8</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>CC property <a class="footnote-reference" href="#f2" id="id10">[2]</a></td>
+<td>8</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Note that this table applies only the SCF module,
+not to the final convergence criteria for post-HF methods or to methods
+that use an alternate starting point, like MCSCF. SAPT computations, too,
+set tighter values.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id5">1</a>, <a class="fn-backref" href="#id10">2</a>)</em> This applies to properties computed through the <a class="reference internal" href="prop.html#driver.property" title="driver.property"><tt class="xref py py-func docutils literal"><span class="pre">property()</span></tt></a> function.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Post-HF methods that do not rely upon the usual 4-index AO integrals use a density-
+fitted SCF reference. That is, for DF-MP2 and SAPT, the default <a class="reference internal" href="autodoc_glossary_options_c.html#term-scf-type-scf"><em class="xref std std-term">SCF_TYPE</em></a> is DF.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[4]</a></td><td>Note that this table applies to the final convergence criteria for
+all the post-SCF modules that define a <a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-cceom"><em class="xref std std-term">E_CONVERGENCE</em></a> keyword.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[5]</a></td><td>The E_CONVERGENCE keyword is implemented for most post-SCF modules.
+See a list beginning at <a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-cceom"><em class="xref std std-term">E_CONVERGENCE</em></a>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[6]</a></td><td>The R_CONVERGENCE keyword places a convergence check on an internal
+residual error measure and is implemented for several post-SCF
+modules (see list beginning at <a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-ccenergy"><em class="xref std std-term">R_CONVERGENCE</em></a>). It is defined
+according to the quantum chemical method and so its default value is set
+by each module individually.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[7]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id4">2</a>, <a class="fn-backref" href="#id9">3</a>)</em> For frequency computations by finite difference of energies,
+convergence criteria are tightened further still to 10 for
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-scf"><em class="xref std std-term">E_CONVERGENCE</em></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-d-convergence-scf"><em class="xref std std-term">D_CONVERGENCE</em></a> for SCF of HF or DFT, 11
+for <a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-scf"><em class="xref std std-term">E_CONVERGENCE</em></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-d-convergence-scf"><em class="xref std std-term">D_CONVERGENCE</em></a> for SCF of post-HF,
+and 10 for E_CONVERGENCE for post-HF of post-HF.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="recommendations">
+<h2>Recommendations<a class="headerlink" href="#recommendations" title="Permalink to this headline">¶</a></h2>
+<p>The SCF code is already quite flexible and powerful, with new features being
+added weekly. We have tried as much as possible to keep the number of options to
+a minimum, and to allow all options to be used in the presence of all other
+options. Below are some rough words of advice about using the SCF code for
+practical calculations:</p>
+<ul class="simple">
+<li>For <a class="reference internal" href="autodoc_glossary_options_c.html#term-guess-scf"><em class="xref std std-term">GUESS</em></a>, the <tt class="docutils literal"><span class="pre">SAD</span></tt> guess is usually your
+friend, even for open-shell systems (at the very least, it gets the right
+number of electrons, unlike some other programs). For instance, we have found
+that a simple SAD guess is often as good as doing a full SCF in a 3-21G basis
+and then performing a cast-up, at a fraction of the cost.  However, SAD and
+DOCC/SOCC arrays do not play very well together at the moment. Also, the SAD
+UHF guess is very slow in large basis sets, so you may want to cast up for
+&gt;TZ.</li>
+<li>For wall time, <tt class="docutils literal"><span class="pre">DF</span></tt> may be a factor of ten or more faster than the exact
+integral technologies available in PSI4.
+Use <tt class="docutils literal"><span class="pre">DF</span></tt> unless you need absolute accuracy or do not
+have a -JKFIT auxiliary set for your primary basis/atom type. Then use
+<tt class="docutils literal"><span class="pre">DIRECT</span></tt>.</li>
+<li>Don&#8217;t mess with the DIIS convergence options unless convergence is a problem.
+We have optimized the parameters for efficiency over a wide array of system
+types.</li>
+<li>Buy a developer a beer!</li>
+</ul>
+<p>The &#8220;best-practice&#8221; input file for HF is:</p>
+<div class="highlight-python"><pre>memory 1 GB # As much as you've got, the DF algorithm can use
+
+molecule {
+O
+H 1 1.0
+H 1 1.0 2 104.5
+}
+
+set {
+basis cc-pvdz
+scf_type df
+guess sad
+ints_tolerance 1.0E-10 # Even this is epically tight, 1.0E-8 is OK
+}
+
+energy('scf')</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HF: Hartree&#8211;Fock Theory</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#theory">Theory</a></li>
+<li><a class="reference internal" href="#minimal-input">Minimal Input</a></li>
+<li><a class="reference internal" href="#spin-symmetry-treatment">Spin/Symmetry Treatment</a></li>
+<li><a class="reference internal" href="#broken-symmetry">Broken Symmetry</a></li>
+<li><a class="reference internal" href="#orthogonalization">Orthogonalization</a></li>
+<li><a class="reference internal" href="#initial-guess-convergence-stabilization">Initial Guess/Convergence Stabilization</a></li>
+<li><a class="reference internal" href="#eri-algorithms">ERI Algorithms</a></li>
+<li><a class="reference internal" href="#convergence-and-algorithm-defaults">Convergence and Algorithm Defaults</a></li>
+<li><a class="reference internal" href="#recommendations">Recommendations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="notes_c.html"
+                        title="previous chapter">Notes on Options</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dft.html"
+                        title="next chapter">DFT: Density Functional Theory</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/scf.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dft.html" title="DFT: Density Functional Theory"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="notes_c.html" title="Notes on Options"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Apr 25, 2013.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>
