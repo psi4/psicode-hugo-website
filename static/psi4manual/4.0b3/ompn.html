@@ -1,0 +1,590 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OMPn: Orbital-Optimized Møller–Plesset Perturbation Theory &mdash; PSI4 [beta3] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta3] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="ADC: Ab Initio Polarization Propagator" href="adc.html" />
+    <link rel="prev" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory" href="dfmp2.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adc.html" title="ADC: Ab Initio Polarization Propagator"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfmp2.html" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<span class="target" id="index-0"></span><div class="section" id="ompn-orbital-optimized-mo-slashller-plesset-perturbation-theory">
+<span id="sec-ompn"></span><span id="index-1"></span><h1>OMP<em>n</em>: Orbital-Optimized Møller&#8211;Plesset Perturbation Theory<a class="headerlink" href="#ompn-orbital-optimized-mo-slashller-plesset-perturbation-theory" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Ugur Bozkaya</em></p>
+<p><em>Section author: Ugur Bozkaya</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__omp2.html#apdx-omp2"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__omp2.html#apdx-omp2-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/omp2">OMP2</a></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__omp3.html#apdx-omp3"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__omp3.html#apdx-omp3-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/omp3">OMP3</a></p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Orbital-optimized methods have several advantages over non-optimized counterparts.
+Once the orbitals are optimized, the wave function will obey the Hellmann-Feynman theorem
+for orbital rotation parameters. Therefore, there is no need for orbital response terms
+in the evaluation of analytic gradients. In other words, it is unnecessary to solve the
+first order coupled-perturbed CC and many-body perturbation theory (MBPT) equations.
+Further, computation of one-electron properties is easier because there are no response contributions to the particle
+density matrices (PDMs). Moreover, active space approximations can be readily incorporated into the CC methods
+<a class="reference internal" href="bibliography.html#krylov-2000-vod">[Krylov:2000:vod]</a>. Additionally, orbital-optimized coupled-cluster avoids spurious second-order
+poles in its response function, and its transition dipole moments are gauge invarianti <a class="reference internal" href="bibliography.html#pedersen-1999-od">[Pedersen:1999:od]</a>.</p>
+<p>Another advantage is that the orbital-optimized methods does not suffer from the artifactual symmetry-breaking
+instabilities <a class="reference internal" href="bibliography.html#sherrill-1998-od">[Sherrill:1998:od]</a>, <a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>, and <a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a>.
+Further, Kurlancheek and Head-Gordon <a class="reference internal" href="bibliography.html#kurlancek-2009">[Kurlancek:2009]</a> demonstrated that first order properties such as
+forces or dipole moments are discontinuous along nuclear coordinates when such a symmetry breaking occurs.
+They also observed that although the energy appears well behaved, the MP2 method can have natural occupation
+numbers greater than 2 or less than 0, hence may violate the N-representability condition. They further
+discussed that the orbital response equations generally have a singularity problem at the unrestriction point
+where spin-restricted orbitals become unstable to unrestriction. This singularity yields to extremely large or
+small eigenvalues of the one-particle density matrix (OPDM). These abnormal eigenvalues may lead to unphysical
+molecular properties such as vibrational frequencies. However, orbital optimized MP2 (hence Orbital optimized MP3)
+will solve this N-representability problem by disregarding orbital response contribution of one-partical
+density matrix.</p>
+<p>Although the performance of coupled-cluster singles and doubles (CCSD) and orbital-optimized
+CCD (OD) is similar, the situation is different in the case of triples corrections, especially at stretched
+geometries <a class="reference internal" href="bibliography.html#bozkaya-2012-odtl">[Bozkaya:2012:odtl]</a>. Bozkaya and Schaefer demonstrated that orbital-optimized coupled cluster based
+triple corrections, especially those of asymmetrics, provide significantly better potential energy curves than
+CCSD based triples corrections.</p>
+</div>
+<div class="section" id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<p>What follows is a very basic description of orbital-optimized Møller&#8211;Plesset perturbation
+theory as implemented in PSI4.  We will follow our previous presentations (<a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>,
+<a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a>, and <a class="reference internal" href="bibliography.html#bozkaya-2012-odtl">[Bozkaya:2012:odtl]</a>)</p>
+<p>The orbital variations may be expressed by means of an exponential unitary operator</p>
+<div class="math">
+<p><img src="_images/math/890436ae663f18ee74fc6b9ae2aa21cc5ac91751.png" alt="\widetilde{\hat{p}}^{\dagger} &amp;= e^{\hat{K}} \hat{p}^{\dagger} e^{-\hat{K}}\\
+\widetilde{\hat{p}} &amp;= e^{\hat{K}} \ \hat{p} \ e^{-\hat{K}} \\
+| \widetilde{p} \rangle &amp;= e^{\hat{K}} \ | p \rangle"/></p>
+</div><p>where <img class="math" src="_images/math/5973a31a373b957f8929a0484cea8288ec0a9333.png" alt="\hat{K}" style="vertical-align: 0px"/> is the orbital rotation operator</p>
+<div class="math">
+<p><img src="_images/math/4918438b455004bdd5f45598710ec56d8a64268b.png" alt="\hat{K} &amp;= \sum_{p,q}^{} K_{pq} \ \hat{E}_{pq} = \sum_{p&gt;q}^{} \kappa_{pq} \ \hat{E}_{pq}^{-} \\
+\hat{E}_{pq}  &amp;= \hat{p}^{\dagger} \hat{q} \\
+\hat{E}_{pq}^{-} &amp;= \hat{E}_{pq} \ - \ \hat{E}_{qp} \\
+{\bf K} &amp;= Skew({\bf \kappa})"/></p>
+</div><p>The effect of the orbital rotations on the MO coefficients can be written as</p>
+<div class="math">
+<p><img src="_images/math/a3b84be389ec7624f74ef0458560cf3678a37c64.png" alt="{\bf C({\bf \kappa})} = {\bf C^{(0)}} \ e^{{\bf K}}"/></p>
+</div><p>where <img class="math" src="_images/math/28d8bfc5331f6b6ac69fa676c20e3e21bb871e2d.png" alt="{\bf C^{(0)}}" style="vertical-align: 0px"/> is the initial MO coefficient matrix and <img class="math" src="_images/math/ce265d9939703cdaf92acb234d2e429f62400984.png" alt="{\bf C({\bf \kappa})}" style="vertical-align: -4px"/> is the new
+MO coefficient matrix as a function of <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/>.
+Now, let us define a variational energy functional (Lagrangian) as a function of <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/></p>
+<ul class="simple">
+<li>OMP2</li>
+</ul>
+<div class="math">
+<p><img src="_images/math/65cea45bdfc2e11884a438efccc72ab80ec95334.png" alt="\widetilde{E}({\bf \kappa}) &amp;= \langle 0| \hat{H}^{\kappa} | 0 \rangle \\
+&amp;+  \langle 0| \big(\hat{W}_{N}^{\kappa}\hat{T}_{2}^{(1)}\big)_{c} | 0 \rangle \\
+&amp;+  \langle 0| \{\hat{\Lambda}_{2}^{(1)} \ \big(\hat{f}_{N}^{\kappa} \hat{T}_{2}^{(1)}
+\ + \ \hat{W}_{N}^{\kappa} \big)_{c}\}_{c} | 0 \rangle"/></p>
+</div><ul class="simple">
+<li>OMP3</li>
+</ul>
+<div class="math">
+<p><img src="_images/math/b3dfcfaec81d5533065d5901616e42cb40a8e67d.png" alt="\widetilde{E}({\bf \kappa}) &amp;= \langle 0| \hat{H}^{\kappa} | 0 \rangle \\
+&amp;+ \langle 0| \big(\hat{W}_{N}^{\kappa}\hat{T}_{2}^{(1)}\big)_{c} | 0 \rangle
+\ + \ \langle 0| \big(\hat{W}_{N}^{\kappa}\hat{T}_{2}^{(2)}\big)_{c} | 0 \rangle \\
+&amp;+  \langle 0| \{\hat{\Lambda}_{2}^{(1)} \ \big(\hat{f}_{N}^{\kappa} \hat{T}_{2}^{(1)}
+\ + \ \hat{W}_{N}^{\kappa} \big)_{c}\}_{c} | 0 \rangle \\
+&amp;+ \langle 0| \{\hat{\Lambda}_{2}^{(1)} \ \big(\hat{f}_{N}^{\kappa} \hat{T}_{2}^{(2)}
+\ + \ \hat{W}_{N}^{\kappa}\hat{T}_{2}^{(1)} \big)_{c}\}_{c} | 0 \rangle \\
+&amp;+ \langle 0| \{\hat{\Lambda}_{2}^{(2)} \ \big(\hat{f}_{N}^{\kappa} \hat{T}_{2}^{(1)}
+\ + \ \hat{W}_{N}^{\kappa} \big)_{c}\}_{c} | 0 \rangle"/></p>
+</div><p>where <img class="math" src="_images/math/937ef37903cc49d4bb5abd0e7f8b07459321e006.png" alt="\hat{H}^{\kappa}" style="vertical-align: 0px"/>, <img class="math" src="_images/math/0c6cd43ab58370b4473425a6e5678fba9e3b40f9.png" alt="\hat{f}_{N}^{\kappa}" style="vertical-align: -5px"/>, and <img class="math" src="_images/math/ed90df104ef6bbdfcc8a42f32b42f26a4a97438d.png" alt="\hat{W}_{N}^{\kappa}" style="vertical-align: -5px"/> defined as</p>
+<div class="math">
+<p><img src="_images/math/36a85a81cd1684d35ae0aa4e913a2413fc8cf175.png" alt="\hat{H}^{\kappa} &amp;=  e^{-\hat{K}} \hat{H} e^{\hat{K}} \\
+\hat{f}_{N}^{\kappa} &amp;=  e^{-\hat{K}} \hat{f}_{N}^{d} e^{\hat{K}} \\
+\hat{W}_{N}^{\kappa} &amp;=  e^{-\hat{K}} \hat{W}_{N} e^{\hat{K}}"/></p>
+</div><p>and first and second derivatives of the energy with respect to the <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/> parameter at <img class="math" src="_images/math/cb43a3f3e1fda2eee3348228f4df5e8aecf4e3aa.png" alt="{\bf \kappa} = 0" style="vertical-align: 0px"/></p>
+<div class="math">
+<p><img src="_images/math/0f5d52829fa20f758cf1229eff7ff51cd1ad33d2.png" alt="w_{pq} = \frac{\partial \widetilde{E}}{\partial \kappa_{pq}}"/></p>
+</div><div class="math">
+<p><img src="_images/math/693111113813ea11f57dcec46a9c2b564b39b31e.png" alt="A_{pq,rs} = \frac{\partial^2 \widetilde{E}}{\partial \kappa_{pq} \partial \kappa_{rs}}"/></p>
+</div><p>Then the energy can be expanded up to second-order as follows</p>
+<div class="math">
+<p><img src="_images/math/c57ca189ae0746cb7fd5bbde571fa074d41bf41c.png" alt="\widetilde{E}^{(2)}({\bf \kappa}) = \widetilde{E}^{(0)} + {\bf \kappa^{\dagger} w}  + \frac{1}{2}~{\bf \kappa^{\dagger} A \kappa}"/></p>
+</div><p>where <img class="math" src="_images/math/617e8d9a63e644648e5c0ea450662ac513a01982.png" alt="{\bf w}" style="vertical-align: 0px"/> is the MO gradient vector, <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/> is the MO rotation vector,
+and <img class="math" src="_images/math/83c3c7c699d02fb20e6cd05765b0dbfae0444c10.png" alt="{\bf A}" style="vertical-align: -1px"/> is the MO Hessian matrix. Therefore, minimizing the energy with respect to <img class="math" src="_images/math/898bcf024df895554f0ae8a08cd8654f95065ffc.png" alt="{\bf \kappa}" style="vertical-align: 0px"/>
+yields</p>
+<div class="math">
+<p><img src="_images/math/7c33a7e8f89667f6bbbcab2aef6ac013bccfc521.png" alt="{\bf \kappa} = -{\bf A^{-1}w}"/></p>
+</div><p>This final equation corresponds to the usual Newton-Raphson step.</p>
+<p>Publications resulting from the use of the OMP2 code should cite the following publication(s):</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a>.</p>
+<p>Publications resulting from the use of the OMP3 code should cite the following publications:</p>
+<p><a class="reference internal" href="bibliography.html#bozkaya-2011-omp2">[Bozkaya:2011:omp2]</a> and <a class="reference internal" href="bibliography.html#bozkaya-2011-omp3">[Bozkaya:2011:omp3]</a>.</p>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>The orbital-optimized MP2 methods currently supported in PSI4 are outlined in Table <a class="reference internal" href="#table-omp2-calls"><em>OMP2 Methods</em></a>.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-omp2-calls">
+<colgroup>
+<col width="20%" />
+<col width="50%" />
+<col width="7%" />
+<col width="8%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Calls Method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>omp2</td>
+<td>Orbital-Optimized MP2</td>
+<td>Y</td>
+<td>Y</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scs-omp2</td>
+<td>Spin-Component Scaled Orbital-Optimized MP2</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>sos-omp2</td>
+<td>Spin-Opposite Scaled Orbital-Optimized MP2</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scsn-omp2</td>
+<td>A special version of SCS-OMP2 for nucleobase interactions</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>scs-mi-omp2</td>
+<td>A special version of SCS-OMP2 (from S22 database)</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scs-omp2-vdw</td>
+<td>A special version of SCS-OMP2 (from ethene dimers)</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>sos-pi-omp2</td>
+<td>A special version of SOS-OMP2 for <img class="math" src="_images/math/f2ca003a7da0de4994b4733e203b74ff52d42553.png" alt="\pi" style="vertical-align: 0px"/>-systems</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The orbital-optimized MP3 methods currently supported in PSI4 are outlined in Table <a class="reference internal" href="#table-omp3-calls"><em>OMP3 Methods</em></a>.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-omp3-calls">
+<colgroup>
+<col width="20%" />
+<col width="50%" />
+<col width="7%" />
+<col width="8%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Calls Method</th>
+<th class="head">Energy</th>
+<th class="head">Gradient</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>omp3</td>
+<td>Orbital-Optimized MP3</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scs-omp3</td>
+<td>Spin-Component Scaled Orbital-Optimized MP3</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>sos-omp3</td>
+<td>Spin-Opposite Scaled Orbital-Optimized MP3</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scsn-omp3</td>
+<td>A special version of SCS-OMP3 for nucleobase interactions</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>scs-mi-omp3</td>
+<td>A special version of SCS-OMP3 (from S22 database)</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-odd"><td>scs-omp3-vdw</td>
+<td>A special version of SCS-OMP3 (from ethene dimers)</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+<tr class="row-even"><td>sos-pi-omp3</td>
+<td>A special version of SOS-OMP3 for <img class="math" src="_images/math/f2ca003a7da0de4994b4733e203b74ff52d42553.png" alt="\pi" style="vertical-align: 0px"/>-systems</td>
+<td>Y</td>
+<td>N</td>
+<td>RHF/UHF/RKS/UKS</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<span class="target" id="index-2"></span></div>
+<div class="section" id="basic-keywords">
+<span id="index-3"></span><h2>Basic Keywords<a class="headerlink" href="#basic-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="e-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-omp2"><em class="xref std std-term">E_CONVERGENCE</em></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for energy.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-8</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="r-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-omp2"><em class="xref std std-term">R_CONVERGENCE</em></a><a class="headerlink" href="#r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for amplitudes (residuals).</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-5</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="rms-mograd-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-rms-mograd-convergence-omp2"><em class="xref std std-term">RMS_MOGRAD_CONVERGENCE</em></a><a class="headerlink" href="#rms-mograd-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for RMS orbital gradient.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-5</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="max-mograd-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-max-mograd-convergence-omp2"><em class="xref std std-term">MAX_MOGRAD_CONVERGENCE</em></a><a class="headerlink" href="#max-mograd-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for maximum orbital gradient</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-4</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mo-maxiter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mo-maxiter-omp2"><em class="xref std std-term">MO_MAXITER</em></a><a class="headerlink" href="#mo-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of iterations to determine the orbitals</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 50</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="advanced-keywords">
+<h2>Advanced Keywords<a class="headerlink" href="#advanced-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="opt-method">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-opt-method-omp2"><em class="xref std std-term">OPT_METHOD</em></a><a class="headerlink" href="#opt-method" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The optimization algorithm</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: MSD, DIIS</li>
+<li><strong>Default</strong>: MSD</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="diis-max-vecs">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-diis-max-vecs-omp2"><em class="xref std std-term">DIIS_MAX_VECS</em></a><a class="headerlink" href="#diis-max-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of vectors used in DIIS</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 4</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="lineq-solver">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-lineq-solver-omp2"><em class="xref std std-term">LINEQ_SOLVER</em></a><a class="headerlink" href="#lineq-solver" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The solver will be used for simultaneous linear equations.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: CDGESV, FLIN, POPLE</li>
+<li><strong>Default</strong>: CDGESV</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="orth-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-orth-type-omp2"><em class="xref std std-term">ORTH_TYPE</em></a><a class="headerlink" href="#orth-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The algorithm for orthogonalization of MOs</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: GS, MGS</li>
+<li><strong>Default</strong>: MGS</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-os-scale">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-os-scale-omp2"><em class="xref std std-term">MP2_OS_SCALE</em></a><a class="headerlink" href="#mp2-os-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 opposite-spin scaling value</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 6.0/5.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-ss-scale">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-ss-scale-omp2"><em class="xref std std-term">MP2_SS_SCALE</em></a><a class="headerlink" href="#mp2-ss-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 same-spin scaling value</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.0/3.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="sos-scale">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-sos-scale-omp2"><em class="xref std std-term">SOS_SCALE</em></a><a class="headerlink" href="#sos-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Spin-opposite scaling (SOS) value for SCF orbitals</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.3</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="sos-scale2">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-sos-scale2-omp2"><em class="xref std std-term">SOS_SCALE2</em></a><a class="headerlink" href="#sos-scale2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Spin-opposite scaling (SOS) value for optimized-MP2 orbitals</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="nat-orbs">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-nat-orbs-omp2"><em class="xref std std-term">NAT_ORBS</em></a><a class="headerlink" href="#nat-orbs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute natural orbitals?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="omp2-orbs-print">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-omp2-orbs-print-omp2"><em class="xref std std-term">OMP2_ORBS_PRINT</em></a><a class="headerlink" href="#omp2-orbs-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do print OMP2 orbital energies?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="omp3-orbs-print">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-omp3-orbs-print-omp3"><em class="xref std std-term">OMP3_ORBS_PRINT</em></a><a class="headerlink" href="#omp3-orbs-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do print OMP3 orbital energies?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="tpdm-abcd-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-tpdm-abcd-type-omp3"><em class="xref std std-term">TPDM_ABCD_TYPE</em></a><a class="headerlink" href="#tpdm-abcd-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>How to take care of the TPDM VVVV-block. The COMPUTE option means it will be computed via an IC/OOC algoritm. The DIRECT option (default) means it will not be computed and stored, instead its contribution will be directly added to Generalized-Fock Matrix.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: DIRECT, COMPUTE</li>
+<li><strong>Default</strong>: DIRECT</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">OMP<em>n</em>: Orbital-Optimized Møller&#8211;Plesset Perturbation Theory</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#theory">Theory</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#basic-keywords">Basic Keywords</a><ul>
+<li><a class="reference internal" href="#e-convergence"><tt class="docutils literal"><span class="pre">E_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#r-convergence"><tt class="docutils literal"><span class="pre">R_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#rms-mograd-convergence"><tt class="docutils literal"><span class="pre">RMS_MOGRAD_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#max-mograd-convergence"><tt class="docutils literal"><span class="pre">MAX_MOGRAD_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#mo-maxiter"><tt class="docutils literal"><span class="pre">MO_MAXITER</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-keywords">Advanced Keywords</a><ul>
+<li><a class="reference internal" href="#opt-method"><tt class="docutils literal"><span class="pre">OPT_METHOD</span></tt></a></li>
+<li><a class="reference internal" href="#diis-max-vecs"><tt class="docutils literal"><span class="pre">DIIS_MAX_VECS</span></tt></a></li>
+<li><a class="reference internal" href="#lineq-solver"><tt class="docutils literal"><span class="pre">LINEQ_SOLVER</span></tt></a></li>
+<li><a class="reference internal" href="#orth-type"><tt class="docutils literal"><span class="pre">ORTH_TYPE</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-os-scale"><tt class="docutils literal"><span class="pre">MP2_OS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#mp2-ss-scale"><tt class="docutils literal"><span class="pre">MP2_SS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#sos-scale"><tt class="docutils literal"><span class="pre">SOS_SCALE</span></tt></a></li>
+<li><a class="reference internal" href="#sos-scale2"><tt class="docutils literal"><span class="pre">SOS_SCALE2</span></tt></a></li>
+<li><a class="reference internal" href="#nat-orbs"><tt class="docutils literal"><span class="pre">NAT_ORBS</span></tt></a></li>
+<li><a class="reference internal" href="#omp2-orbs-print"><tt class="docutils literal"><span class="pre">OMP2_ORBS_PRINT</span></tt></a></li>
+<li><a class="reference internal" href="#omp3-orbs-print"><tt class="docutils literal"><span class="pre">OMP3_ORBS_PRINT</span></tt></a></li>
+<li><a class="reference internal" href="#tpdm-abcd-type"><tt class="docutils literal"><span class="pre">TPDM_ABCD_TYPE</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dfmp2.html"
+                        title="previous chapter">DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="adc.html"
+                        title="next chapter">ADC: Ab Initio Polarization Propagator</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ompn.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adc.html" title="ADC: Ab Initio Polarization Propagator"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfmp2.html" title="DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, The Psi4 Project.
+      Last updated on Oct 21, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

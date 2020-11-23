@@ -1,0 +1,251 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Theoretical Methods: SCF to FCI &mdash; PSI4 [beta3] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta3] documentation" href="index.html" />
+    <link rel="next" title="Notes on Options" href="notes_c.html" />
+    <link rel="prev" title="Basis Sets" href="basissets.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="notes_c.html" title="Notes on Options"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="basissets.html" title="Basis Sets"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="theoretical-methods-scf-to-fci">
+<span id="sec-methods"></span><h1>Theoretical Methods: SCF to FCI<a class="headerlink" href="#theoretical-methods-scf-to-fci" title="Permalink to this headline">¶</a></h1>
+<p>Several electronic structure methods are available in the PSI4
+package, from Hartree&#8211;Fock molecular orbital theory to coupled-cluster
+theory to full configuration interaction.  This section introduces
+the methods available and some of their most common input parameters.
+A complete list of standard keywords is provided in Appendix
+<a class="reference internal" href="autodoc_options_c_bymodule.html#apdx-options-c-module"><em>Keywords by Module</em></a>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notes_c.html">Notes on Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scf.html">HF: Hartree&#8211;Fock Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#theory">Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#minimal-input">Minimal Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#spin-symmetry-treatment">Spin/Symmetry Treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#broken-symmetry">Broken Symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#orthogonalization">Orthogonalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#initial-guess-convergence-stabilization">Initial Guess/Convergence Stabilization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#eri-algorithms">ERI Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#convergence-and-algorithm-defaults">Convergence and Algorithm Defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scf.html#recommendations">Recommendations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dft.html">DFT: Density Functional Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#theory">Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#minimal-input">Minimal Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#spin-symmetry-treatment">Spin/Symmetry Treatment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#functional-selection">Functional Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#grid-selection">Grid Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#eri-algorithms">ERI Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#ip-fitting">IP Fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#fractional-particle-curves">Fractional Particle Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#dispersion-corrections">Dispersion Corrections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dft.html#recommendations">Recommendations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dfmp2.html">DF-MP2: Density-Fitted Second-Order Møller-Plesset Perturbation Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dfmp2.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dfmp2.html#theory">Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dfmp2.html#recommendations">Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dfmp2.html#conventional-mp2">Conventional MP2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ompn.html">OMP<em>n</em>: Orbital-Optimized Møller&#8211;Plesset Perturbation Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ompn.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ompn.html#theory">Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ompn.html#methods">Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ompn.html#basic-keywords">Basic Keywords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ompn.html#advanced-keywords">Advanced Keywords</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="adc.html">ADC: Ab Initio Polarization Propagator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="adc.html#partial-renormalization-scheme">Partial Renormalization Scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adc.html#using-the-adc-2-code">Using the ADC(2) code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adc.html#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sapt.html">SAPT: Symmetry-Adapted Perturbation Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sapt.html#a-first-example">A First Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sapt.html#sapt0">SAPT0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sapt.html#higher-order-sapt">Higher-Order SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sapt.html#mp2-natural-orbitals">MP2 Natural Orbitals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sapt.html#charge-transfer-in-sapt">Charge-Transfer in SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sapt.html#interpreting-sapt-results">Interpreting SAPT Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cepa.html">CEPA: Coupled-Pair Methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cepa.html#basic-coupled-pair-keywords">Basic Coupled Pair Keywords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cepa.html#advanced-coupled-pair-keywords">Advanced Coupled Pair Keywords</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cc.html">CC: Coupled Cluster Methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cc.html#basic-keywords">Basic Keywords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cc.html#larger-calculations">Larger Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cc.html#excited-state-coupled-cluster-calculations">Excited State Coupled Cluster Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cc.html#linear-response-cclr-calculations">Linear Response (CCLR) Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="psimrcc.html">PSIMRCC Implementation of Mk-MRCC Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="psimrcc.html#a-simple-example">A Simple Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psimrcc.html#orbital-ordering-and-selection-of-the-model-space">Orbital ordering and selection of the model space</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mrcc.html">Interface to MRCC by M. Kállay</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mrcc.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrcc.html#running-mrcc">Running MRCC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="detci.html">CI: Configuration Interaction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="detci.html#basic-detci-keywords">Basic DETCI Keywords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detci.html#arbitrary-order-perturbation-theory">Arbitrary Order Perturbation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detci.html#arbitrary-order-coupled-cluster-theory">Arbitrary Order Coupled-Cluster Theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="optking.html">Geometry Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optking.html#basic-keywords">Basic Keywords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optking.html#optimizing-minima">Optimizing Minima</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optking.html#hessian">Hessian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optking.html#transition-states-reaction-paths-and-constrained-optimizations">Transition States, Reaction Paths, and Constrained Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optking.html#convergence-criteria">Convergence Criteria</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optking.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="oeprop.html">Evaluation of One-Electron Properties</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="oeprop.html#basic-keywords">Basic Keywords</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="basissets.html"
+                        title="previous chapter">Basis Sets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="notes_c.html"
+                        title="next chapter">Notes on Options</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/methods.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="notes_c.html" title="Notes on Options"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="basissets.html" title="Basis Sets"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, The Psi4 Project.
+      Last updated on Oct 21, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

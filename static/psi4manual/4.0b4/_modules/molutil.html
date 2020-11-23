@@ -1,0 +1,585 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>molutil &mdash; PSI4 [beta4] documentation</title>
+    
+    <link rel="stylesheet" href="../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'beta4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta4] documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for molutil</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Module with utility functions that act on molecule objects.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">PsiMod</span>
+<span class="kn">import</span> <span class="nn">physconst</span>
+<span class="kn">from</span> <span class="nn">text</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">dashparam</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="extract_clusters"><a class="viewcode-back" href="../autodoc_driver.html#molutil.extract_clusters">[docs]</a><span class="k">def</span> <span class="nf">extract_clusters</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">ghost</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">cluster_size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return all subclusters of the molecule *mol* of</span>
+<span class="sd">    real size *cluster_size* and all other atoms ghosted if *ghost*</span>
+<span class="sd">    equals true, all other atoms discarded if *ghost* is false. If</span>
+<span class="sd">    *cluster_size* = 0, returns all possible combinations of cluster size.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># How many levels of clusters are possible?</span>
+    <span class="n">nfrag</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">nfragments</span><span class="p">()</span>
+
+    <span class="c"># Initialize the cluster array</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c"># scope the arrays</span>
+    <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ghosts</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c"># counter</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c"># loop over all possible cluster sizes</span>
+    <span class="k">for</span> <span class="n">nreal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfrag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="c"># if a specific cluster size size is requested, only do that</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nreal</span> <span class="o">!=</span> <span class="n">cluster_size</span> <span class="ow">and</span> <span class="n">cluster_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="c"># initialize the reals list</span>
+        <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># setup first combination [3,2,1] lexical ordering</span>
+        <span class="c"># fragments indexing is 1&#39;s based, bloody hell</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">reals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="c"># start loop through lexical promotion</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+
+            <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c"># Generate cluster from last iteration</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ghost</span><span class="p">):</span>
+                <span class="n">ghosts</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfrag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">g</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reals</span><span class="p">):</span>
+                        <span class="n">ghosts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+                <span class="c">#print &quot;Cluster #%d: %s reals, %s ghosts&quot; % (counter,str(reals), str(ghosts))</span>
+                <span class="n">clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">extract_subsets</span><span class="p">(</span><span class="n">reals</span><span class="p">,</span> <span class="n">ghosts</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c">#print &quot;Cluster #%d: %s reals&quot; % (counter,str(reals))</span>
+                <span class="n">clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">extract_subsets</span><span class="p">(</span><span class="n">reals</span><span class="p">))</span>
+
+            <span class="c"># reset rank</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c"># look for lexical promotion opportunity</span>
+            <span class="c"># i.e.: [4 2 1] has a promotion opportunity at</span>
+            <span class="c">#   index 1 to produce [4 3 1]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">reals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">!=</span> <span class="n">reals</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">rank</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">break</span>
+
+            <span class="c"># do the promotion</span>
+            <span class="n">reals</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">reals</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c"># demote the right portion of the register</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">reals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c"># boundary condition is promotion into</span>
+            <span class="c"># [nfrag+1 nfrag-1 ...]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">reals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nfrag</span><span class="p">):</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">clusters</span>
+
+</div>
+<div class="viewcode-block" id="extract_cluster_indexing"><a class="viewcode-back" href="../autodoc_driver.html#molutil.extract_cluster_indexing">[docs]</a><span class="k">def</span> <span class="nf">extract_cluster_indexing</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">cluster_size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to returns a LIST of all subclusters of the molecule *mol* of</span>
+<span class="sd">    real size *cluster_size*. If *cluster_size* = 0, returns all possible</span>
+<span class="sd">    combinations of cluster size.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">copy</span>
+
+    <span class="c"># How many levels of clusters are possible?</span>
+    <span class="n">nfrag</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">nfragments</span><span class="p">()</span>
+
+    <span class="c"># Initialize the cluster array</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c"># scope the arrays</span>
+    <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c"># counter</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c"># loop over all possible cluster sizes</span>
+    <span class="k">for</span> <span class="n">nreal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfrag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="c"># if a specific cluster size size is requested, only do that</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">nreal</span> <span class="o">!=</span> <span class="n">cluster_size</span> <span class="ow">and</span> <span class="n">cluster_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="c"># initialize the reals list</span>
+        <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># setup first combination [3,2,1] lexical ordering</span>
+        <span class="c"># fragments indexing is 1&#39;s based, bloody hell</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">reals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="c"># start loop through lexical promotion</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+
+            <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c"># Generate cluster from last iteration</span>
+            <span class="n">clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">reals</span><span class="p">))</span>
+
+            <span class="c"># reset rank</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c"># look for lexical promotion opportunity</span>
+            <span class="c"># i.e.: [4 2 1] has a promotion opportunity at</span>
+            <span class="c">#   index 1 to produce [4 3 1]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">reals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">!=</span> <span class="n">reals</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">rank</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">break</span>
+
+            <span class="c"># do the promotion</span>
+            <span class="n">reals</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">reals</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c"># demote the right portion of the register</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreal</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">reals</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c"># boundary condition is promotion into</span>
+            <span class="c"># [nfrag+1 nfrag-1 ...]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">reals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nfrag</span><span class="p">):</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">clusters</span>
+
+</div>
+<div class="viewcode-block" id="new_set_attr"><a class="viewcode-back" href="../autodoc_driver.html#molutil.new_set_attr">[docs]</a><span class="k">def</span> <span class="nf">new_set_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to redefine set_attr method of molecule class.&quot;&quot;&quot;</span>
+    <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;is_variable&quot;</span><span class="p">)</span>
+    <span class="n">isvar</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">isvar</span><span class="p">:</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;set_variable&quot;</span><span class="p">)</span>
+        <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="nb">object</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="new_get_attr"><a class="viewcode-back" href="../autodoc_driver.html#molutil.new_get_attr">[docs]</a><span class="k">def</span> <span class="nf">new_get_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to redefine get_attr method of molecule class.&quot;&quot;&quot;</span>
+    <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;is_variable&quot;</span><span class="p">)</span>
+    <span class="n">isvar</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">isvar</span><span class="p">:</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;get_variable&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="BFS"><a class="viewcode-back" href="../autodoc_driver.html#molutil.BFS">[docs]</a><span class="k">def</span> <span class="nf">BFS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform a breadth-first search (BFS) on the real atoms</span>
+<span class="sd">    in molecule, returning an array of atom indices of fragments.</span>
+<span class="sd">    Relies upon van der Waals radii and so faulty for close</span>
+<span class="sd">    (esp. hydrogen-bonded) fragments. Original code from</span>
+<span class="sd">    Michael S. Marshall.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vdW_diameter</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;H&#39;</span><span class="p">:</span>  <span class="mf">1.001</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;HE&#39;</span><span class="p">:</span> <span class="mf">1.012</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;LI&#39;</span><span class="p">:</span> <span class="mf">0.825</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;BE&#39;</span><span class="p">:</span> <span class="mf">1.408</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;B&#39;</span><span class="p">:</span>  <span class="mf">1.485</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;C&#39;</span><span class="p">:</span>  <span class="mf">1.452</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;N&#39;</span><span class="p">:</span>  <span class="mf">1.397</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;O&#39;</span><span class="p">:</span>  <span class="mf">1.342</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;F&#39;</span><span class="p">:</span>  <span class="mf">1.287</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;NE&#39;</span><span class="p">:</span> <span class="mf">1.243</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;NA&#39;</span><span class="p">:</span> <span class="mf">1.144</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;MG&#39;</span><span class="p">:</span> <span class="mf">1.364</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;AL&#39;</span><span class="p">:</span> <span class="mf">1.639</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;SI&#39;</span><span class="p">:</span> <span class="mf">1.716</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;P&#39;</span><span class="p">:</span>  <span class="mf">1.705</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;S&#39;</span><span class="p">:</span>  <span class="mf">1.683</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;CL&#39;</span><span class="p">:</span> <span class="mf">1.639</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s">&#39;AR&#39;</span><span class="p">:</span> <span class="mf">1.595</span> <span class="o">/</span> <span class="mf">1.5</span><span class="p">}</span>
+
+    <span class="n">Queue</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">White</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">())</span>  <span class="c"># untouched</span>
+    <span class="n">Black</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c"># touched and all edges discovered</span>
+    <span class="n">Fragment</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c"># stores fragments</span>
+
+    <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c"># starts with the first atom in the list</span>
+    <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+
+    <span class="c"># Simply start with the first atom, do a BFS when done, go to any</span>
+    <span class="c">#   untouched atom and start again iterate until all atoms belong</span>
+    <span class="c">#   to a fragment group</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">White</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">Queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c"># Iterates to the next fragment</span>
+        <span class="n">Fragment</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">Queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>                <span class="c"># BFS within a fragment</span>
+            <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">Queue</span><span class="p">:</span>                  <span class="c"># find all (still white) nearest neighbors to vertex u</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">White</span><span class="p">:</span>
+                    <span class="n">dist</span> <span class="o">=</span> <span class="n">physconst</span><span class="o">.</span><span class="n">psi_bohr2angstroms</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> \
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">vdW_diameter</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">u</span><span class="p">)]</span> <span class="o">+</span> <span class="n">vdW_diameter</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">(</span><span class="n">i</span><span class="p">)]:</span>
+                        <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>      <span class="c"># if you find you, put in the queue</span>
+                        <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>      <span class="c"># and remove it from the untouched list</span>
+            <span class="n">Queue</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>                  <span class="c"># remove focus from Queue</span>
+            <span class="n">Black</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">Fragment</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">u</span><span class="p">))</span>      <span class="c"># add to group (0-indexed)</span>
+            <span class="n">Fragment</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>              <span class="c"># preserve original atom ordering</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">White</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>                  <span class="c"># can&#39;t move White -&gt; Queue if no more exist</span>
+            <span class="n">Queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">White</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">White</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">White</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">Fragment</span>
+
+</div>
+<div class="viewcode-block" id="run_dftd3"><a class="viewcode-back" href="../dftd3.html#molutil.run_dftd3">[docs]</a><span class="k">def</span> <span class="nf">run_dftd3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dashlvl</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dashparam</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to call Grimme&#39;s dftd3 program (http://toc.uni-muenster.de/DFTD3/)</span>
+<span class="sd">    to compute the -D correction of level *dashlvl* using parameters for</span>
+<span class="sd">    the functional *func*. The dictionary *dashparam* can be used to supply</span>
+<span class="sd">    a full set of dispersion parameters in the absense of *func* or to supply</span>
+<span class="sd">    individual overrides in the presence of *func*. Returns energy if *dertype* is 0,</span>
+<span class="sd">    gradient if *dertype* is 1, else tuple of energy and gradient if *dertype*</span>
+<span class="sd">    unspecified. The dftd3 executable must be independently compiled and found in </span>
+<span class="sd">    :envvar:`PATH`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Validate arguments</span>
+    <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">PsiMod</span><span class="o">.</span><span class="n">get_active_molecule</span><span class="p">()</span>
+
+    <span class="n">dashlvl</span> <span class="o">=</span> <span class="n">dashlvl</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">dashlvl</span> <span class="o">=</span> <span class="n">dash_alias</span><span class="p">[</span><span class="s">&#39;-&#39;</span> <span class="o">+</span> <span class="n">dashlvl</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="p">(</span><span class="s">&#39;-&#39;</span> <span class="o">+</span> <span class="n">dashlvl</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dash_alias</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">dashlvl</span>
+    <span class="k">if</span> <span class="n">dashlvl</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dashcoeff</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;&quot;&quot;-D correction level </span><span class="si">%s</span><span class="s"> is not available. Choose among </span><span class="si">%s</span><span class="s">.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dashlvl</span><span class="p">,</span> <span class="n">dashcoeff</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+    <span class="k">if</span> <span class="n">dertype</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dertype</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">der0th</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dertype</span><span class="p">)):</span>
+        <span class="n">dertype</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">der1st</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dertype</span><span class="p">)):</span>
+        <span class="n">dertype</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">der2nd</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dertype</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;Requested derivative level </span><span class="se">\&#39;</span><span class="s">dertype</span><span class="se">\&#39;</span><span class="s"> </span><span class="si">%s</span><span class="s"> not valid for run_dftd3.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dertype</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;Requested derivative level </span><span class="se">\&#39;</span><span class="s">dertype</span><span class="se">\&#39;</span><span class="s"> </span><span class="si">%s</span><span class="s"> not valid for run_dftd3.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dertype</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dashparam</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># defunct case</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;&quot;&quot;Parameters for -D correction missing. Provide a func or a dashparam kwarg.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># case where all param read from dashparam dict (which must have all correct keys)</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="s">&#39;custom&#39;</span>
+            <span class="n">dashcoeff</span><span class="p">[</span><span class="n">dashlvl</span><span class="p">][</span><span class="n">func</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">dashparam</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dashparam</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dashcoeff</span><span class="p">[</span><span class="n">dashlvl</span><span class="p">][</span><span class="s">&#39;b3lyp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dashparam</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">dashcoeff</span><span class="p">[</span><span class="n">dashlvl</span><span class="p">][</span><span class="n">func</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">dashparam</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;&quot;&quot;Parameter </span><span class="si">%s</span><span class="s"> is missing from dashparam dict </span><span class="si">%s</span><span class="s">.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dashparam</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">func</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dashcoeff</span><span class="p">[</span><span class="n">dashlvl</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&quot;&quot;&quot;Functional </span><span class="si">%s</span><span class="s"> is not available for -D level </span><span class="si">%s</span><span class="s">.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dashlvl</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">dashparam</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># (normal) case where all param taken from dashcoeff above</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># case where items in dashparam dict can override param taken from dashcoeff above</span>
+            <span class="n">dashparam</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dashparam</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dashcoeff</span><span class="p">[</span><span class="n">dashlvl</span><span class="p">][</span><span class="s">&#39;b3lyp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dashparam</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">dashcoeff</span><span class="p">[</span><span class="n">dashlvl</span><span class="p">][</span><span class="n">func</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">dashparam</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="c"># Move ~/.dftd3par.&lt;hostname&gt; out of the way so it won&#39;t interfere</span>
+    <span class="n">defaultfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&#39;~&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;/.dftd3par.&#39;</span> <span class="o">+</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+    <span class="n">defmoved</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">defaultfile</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">defaultfile</span><span class="p">,</span> <span class="n">defaultfile</span> <span class="o">+</span> <span class="s">&#39;_hide&#39;</span><span class="p">)</span>
+        <span class="n">defmoved</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="c"># Setup unique scratch directory and move in</span>
+    <span class="n">current_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">psioh</span> <span class="o">=</span> <span class="n">PsiMod</span><span class="o">.</span><span class="n">IOManager</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span>
+    <span class="n">psio</span> <span class="o">=</span> <span class="n">PsiMod</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">psioh</span><span class="o">.</span><span class="n">get_default_path</span><span class="p">())</span>
+    <span class="n">dftd3_tmpdir</span> <span class="o">=</span> <span class="s">&#39;psi.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span> <span class="o">+</span> <span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="n">psio</span><span class="o">.</span><span class="n">get_default_namespace</span><span class="p">()</span> <span class="o">+</span> \
+        <span class="s">&#39;.dftd3.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99999</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dftd3_tmpdir</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dftd3_tmpdir</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">dftd3_tmpdir</span><span class="p">)</span>
+
+    <span class="c"># Write dftd3_parameters file that governs dispersion calc</span>
+    <span class="n">paramfile</span> <span class="o">=</span> <span class="s">&#39;./dftd3_parameters&#39;</span>
+    <span class="n">pfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">paramfile</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dash_server</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">dashlvl</span><span class="p">,</span> <span class="s">&#39;dftd3&#39;</span><span class="p">))</span>
+    <span class="n">pfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c"># Write dftd3_geometry file that supplies geometry to dispersion calc</span>
+    <span class="n">geomfile</span> <span class="o">=</span> <span class="s">&#39;./dftd3_geometry.xyz&#39;</span>
+    <span class="n">gfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">geomfile</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">numAtoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">()</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_string_xyz</span><span class="p">()</span>
+    <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+      <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;Gh&#39;</span><span class="p">:</span>
+        <span class="n">numAtoms</span> <span class="o">-=</span> <span class="mi">1</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">reals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        
+    <span class="n">gfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">numAtoms</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reals</span><span class="p">:</span>
+      <span class="n">gfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">gfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c"># Call dftd3 program</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dashout</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&#39;dftd3&#39;</span><span class="p">,</span> <span class="n">geomfile</span><span class="p">,</span> <span class="s">&#39;-grad&#39;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;Program dftd3 not found in path.&#39;</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">dashout</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+
+    <span class="c"># Parse output (could go further and break into E6, E8, E10 and Cn coeff)</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39; Edisp /kcal,au&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+            <span class="n">sline</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">dashd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sline</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39; normal termination of dftd3&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;Program dftd3 did not complete successfully.&#39;</span><span class="p">)</span>
+
+    <span class="c"># Parse grad output</span>
+    <span class="n">derivfile</span> <span class="o">=</span> <span class="s">&#39;./dftd3_gradient&#39;</span>
+    <span class="n">dfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">derivfile</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">dashdderiv</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+      <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;Gh&#39;</span><span class="p">:</span>
+          <span class="n">dashdderiv</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">temp</span> <span class="o">=</span> <span class="n">dfile</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+          <span class="n">dashdderiv</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;D&#39;</span><span class="p">,</span> <span class="s">&#39;E&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">temp</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
+    <span class="n">dfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dashdderiv</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;Program dftd3 gradient file has </span><span class="si">%d</span><span class="s"> atoms- </span><span class="si">%d</span><span class="s"> expected.&#39;</span> <span class="o">%</span> \
+            <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dashdderiv</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">()))</span>
+    <span class="n">psi_dashdderiv</span> <span class="o">=</span> <span class="n">PsiMod</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">(),</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">psi_dashdderiv</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">dashdderiv</span><span class="p">)</span>
+
+    <span class="c"># Print program output to file if verbose</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">PsiMod</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s">&#39;SCF&#39;</span><span class="p">,</span> <span class="s">&#39;PRINT&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">  ==&gt; DFTD3 Output &lt;==</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">dfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">derivfile</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">dfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;D&#39;</span><span class="p">,</span> <span class="s">&#39;E&#39;</span><span class="p">))</span>
+        <span class="n">dfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">PsiMod</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+    <span class="c"># Clean up files and remove scratch directory</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">paramfile</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">geomfile</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">derivfile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">defmoved</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">defaultfile</span> <span class="o">+</span> <span class="s">&#39;_hide&#39;</span><span class="p">,</span> <span class="n">defaultfile</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s">&#39;..&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dftd3_tmpdir</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">ValidationError</span><span class="p">(</span><span class="s">&#39;Unable to remove dftd3 temporary directory </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">e</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_directory</span><span class="p">)</span>
+
+    <span class="c"># return -D &amp; d(-D)/dx</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s">&#39;DISPERSION CORRECTION ENERGY&#39;</span><span class="p">,</span> <span class="n">dashd</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dertype</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dashd</span><span class="p">,</span> <span class="n">dashdderiv</span>
+    <span class="k">elif</span> <span class="n">dertype</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dashd</span>
+    <span class="k">elif</span> <span class="n">dertype</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">psi_dashdderiv</span>
+
+</div>
+<div class="viewcode-block" id="dynamic_variable_bind"><a class="viewcode-back" href="../autodoc_driver.html#molutil.dynamic_variable_bind">[docs]</a><span class="k">def</span> <span class="nf">dynamic_variable_bind</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to dynamically add extra members to</span>
+<span class="sd">    the PsiMod.Molecule class.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cls</span><span class="o">.</span><span class="n">__setattr__</span> <span class="o">=</span> <span class="n">new_set_attr</span>
+    <span class="n">cls</span><span class="o">.</span><span class="n">__getattr__</span> <span class="o">=</span> <span class="n">new_get_attr</span>
+    <span class="n">cls</span><span class="o">.</span><span class="n">BFS</span> <span class="o">=</span> <span class="n">BFS</span>
+    <span class="n">cls</span><span class="o">.</span><span class="n">run_dftd3</span> <span class="o">=</span> <span class="n">run_dftd3</span>
+
+</div>
+<span class="n">dynamic_variable_bind</span><span class="p">(</span><span class="n">PsiMod</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span>  <span class="c"># pass class type, not class instance</span>
+
+
+<span class="c">#</span>
+<span class="c"># Define geometry to be used by PSI4.</span>
+<span class="c"># The molecule created by this will be set in options.</span>
+<span class="c">#</span>
+<span class="c"># geometry(&quot;</span>
+<span class="c">#   O  1.0 0.0 0.0</span>
+<span class="c">#   H  0.0 1.0 0.0</span>
+<span class="c">#   H  0.0 0.0 0.0</span>
+<span class="c">#</span>
+<div class="viewcode-block" id="geometry"><a class="viewcode-back" href="../autodoc_driver.html#molutil.geometry">[docs]</a><span class="k">def</span> <span class="nf">geometry</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;default&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to create a molecule object of name *name*</span>
+<span class="sd">    from the geometry in string *geom*.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">molecule</span> <span class="o">=</span> <span class="n">PsiMod</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">create_molecule_from_string</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">molecule</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">activate</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">molecule</span>
+
+</div>
+<div class="viewcode-block" id="activate"><a class="viewcode-back" href="../autodoc_driver.html#molutil.activate">[docs]</a><span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to set molecule object *mol* as the current active molecule.&quot;&quot;&quot;</span>
+    <span class="n">PsiMod</span><span class="o">.</span><span class="n">set_active_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="c">#PsiMod.IO.set_default_namespace(mol.get_name())</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">PSI4 [beta4]</a> &raquo; </li>
+
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, The Psi4 Project.
+      Last updated on Mar 20, 2014.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

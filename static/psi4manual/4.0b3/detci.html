@@ -1,0 +1,461 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CI: Configuration Interaction &mdash; PSI4 [beta3] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta3] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="Geometry Optimization" href="optking.html" />
+    <link rel="prev" title="Interface to MRCC by M. Kállay" href="mrcc.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optking.html" title="Geometry Optimization"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="mrcc.html" title="Interface to MRCC by M. Kállay"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<span class="target" id="sec-ci"></span><span class="target" id="index-0"></span><div class="section" id="ci-configuration-interaction">
+<span id="index-1"></span><h1>CI: Configuration Interaction<a class="headerlink" href="#ci-configuration-interaction" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: C. David Sherrill and Matthew L. Leininger</em></p>
+<p><em>Section author: C. David Sherrill</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__detci.html#apdx-detci"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__detci.html#apdx-detci-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/detci">DETCI</a></p>
+<p>Configuration interaction (CI) is one of the most general ways to
+improve upon Hartree&#8211;Fock theory by adding a description of the
+correlated motions of electrons.  Simply put, a CI wavefunction
+is a linear combination of Slater determinants (or spin-adapted
+configuration state functions), with the linear coefficients being
+determined variationally via diagonalization of the Hamiltonian in the
+given subspace of determinants.  For a &#8220;single-reference&#8221; CI based
+on reference function <img class="math" src="_images/math/0b8ffb85da5c65799506f476221f34cd5d1424a3.png" alt="| \Phi_0 \rangle" style="vertical-align: -5px"/>, we can write the CI expansion as
+follows:</p>
+<div class="math" id="equation-CIexpansion">
+<p><span class="eqno">(1)</span><img src="_images/math/2be2c3bd4b7be9f0db28d91549a01355a769e1db.png" alt="| \Psi \rangle = c_0 | \Phi_0 \rangle
++ \sum_i^{\rm occ} \sum_a^{\rm vir} c_i^a | \Phi_i^a \rangle
++ \sum_{i&lt;j}^{\rm occ} \sum_{a&lt;b}^{\rm vir} c_{ij}^{ab}
+| \Phi_{ij}^{ab} \rangle
++ \sum_{i&lt;j&lt;k}^{\rm occ} \sum_{a&lt;b&lt;c}^{\rm vir} c_{ijk}^{abc}
+| \Phi_{ijk}^{abc} \rangle + \cdots"/></p>
+</div><p>The simplest standard CI method that improves upon Hartree&#8211;Fock is a CI
+that adds all singly <img class="math" src="_images/math/25195e3cb151a576b73c725dfa5ecd9330ae8cec.png" alt="| \Phi_i^a \rangle" style="vertical-align: -5px"/> and doubly
+<img class="math" src="_images/math/6162680ad2a9bb6c5e4b2e3433584f41a4bd22a2.png" alt="| \Phi_{ij}^{ab} \rangle" style="vertical-align: -8px"/>
+substituted determinants (CISD) to the reference determinant
+<img class="math" src="_images/math/0b8ffb85da5c65799506f476221f34cd5d1424a3.png" alt="| \Phi_0 \rangle" style="vertical-align: -5px"/>.  The CISD wavefunction has fallen out of favor
+because truncated CI wavefunctions are not size-extensive, meaning
+that their quality degrades for larger molecules.  MP2 is a less
+expensive alternative giving results similar to those of CISD for small
+molecules, but the quality of MP2 does not degrade for larger molecules.
+Coupled-cluster singles and doubles (CCSD) is another size-extensive
+alternative; it is only slightly more costly computationally than CISD,
+but it typically provides significantly more accurate results.</p>
+<p>The CI code in PSI4 is described in detail in
+<a class="reference internal" href="bibliography.html#sherrill-1999-ci">[Sherrill:1999:CI]</a>.  For the reasons stated above, the CI code in
+PSI4 is not optimized for CISD computations.  Instead, emphasis
+has been placed on developing a very efficient program to handle more
+general CI wavefunctions which may be helpful in more challenging cases
+such as highly strained molecules or bond breaking reactions.  The CI
+code is based on the fast, determinant-based string formalism
+of Handy <a class="reference internal" href="bibliography.html#handy-1980">[Handy:1980]</a>.  It can solve for restricted active space
+configuration interaction (RAS CI) wavefunctions as described by Olsen,
+Roos, Jorgensen, and Aa. Jensen <a class="reference internal" href="bibliography.html#olsen-1988">[Olsen:1988]</a>.  Excitation-class
+selected multi-reference CI wavefunctions, such as second-order CI,
+can be formulated as RAS CI&#8217;s.  A RAS CI selects determinants for the
+model space as those which have no more than <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n" style="vertical-align: 0px"/> holes in the lowest set
+of orbitals (called RAS I) and no more than <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m" style="vertical-align: 0px"/> electrons in the highest
+set of orbitals (called RAS III).  An intermediate set of orbitals, if
+present (RAS II), has no restrictions placed upon it.  All determinants
+satisfying these rules are included in the CI.</p>
+<p>The DETCI module is also very efficient at computing full configuration
+interaction
+wavefunctions, and it is used in this capacity in the complete-active-space
+self-consistent-field (CASSCF) code.  Use of DETCI for CASSCF
+wavefunctions is described in another section of this manual.</p>
+<p>As just mentioned, the DETCI module is designed for challenging
+chemical systems for which simple CISD is not suitable.  Because
+CI wavefunctions which go beyond CISD (such as RAS CI) are fairly complex,
+typically the DETCI code will be used in cases where the
+tradeoffs between computational expense and completeness of the
+model space are nontrivial.  Hence, the user is advised to develop
+a good working knowledge of multi-reference and RAS CI methods before
+attempting to use the program for a production-level project.  This user&#8217;s
+manual will provide only an elementary introduction to the most
+important keywords.  Additional information is available in the complete
+list of keywords for DETCI provided in Appendix <a class="reference internal" href="autodir_options_c/module__detci.html#apdx-detci"><em>DETCI</em></a>.</p>
+<p>The division of the molecular orbitals into various subspaces such as
+RAS spaces, or frozen <em>vs.</em> active orbitals, <em>etc.</em>, needs to be clear not
+only to detci, but also at least to the transformation program
+(and in the case of MCSCF, to other programs as well).  Thus, orbital
+subspace keywords such as <a class="reference internal" href="autodoc_glossary_options_c.html#term-ras1-detci"><em class="xref std std-term">RAS1</em></a>,
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-ras2-detci"><em class="xref std std-term">RAS2</em></a>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-ras3-detci"><em class="xref std std-term">RAS3</em></a>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-docc-globals"><em class="xref std std-term">FROZEN_DOCC</em></a>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-uocc-globals"><em class="xref std std-term">FROZEN_UOCC</em></a>,
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-active-detci"><em class="xref std std-term">ACTIVE</em></a>, etc., should be set
+in the global section of input so they may also be read by other modules.</p>
+<p>For single-reference CI computations, the easiest way to invoke a CI
+computation with DETCI is simply to call <tt class="docutils literal"><span class="pre">energy()</span></tt>, <tt class="docutils literal"><span class="pre">optimize()</span></tt>, etc.,
+with the common name for that CI wavefunction, like <tt class="docutils literal"><span class="pre">energy('cisd')</span></tt>
+for a CISD single-point energy.  The Python driver
+recognizes <tt class="docutils literal"><span class="pre">cisd</span></tt>, <tt class="docutils literal"><span class="pre">cisdt</span></tt>, and <tt class="docutils literal"><span class="pre">cisdtq</span></tt>.  Higher order
+single-refernce CI wavefunctions, like those including singles through
+6-fold excitations, can be invoked using numbers, like <tt class="docutils literal"><span class="pre">ci6</span></tt>.  A full
+CI can be specifed by <tt class="docutils literal"><span class="pre">fci</span></tt>.  More complicated CI computations, like
+RASCI, can be performed by setting the appropriate keywords and calling the
+module generically like <tt class="docutils literal"><span class="pre">energy('detci')</span></tt>.  The latter approach
+will also work for any of the previously-mentioned CI wavefunctions for
+which the driver has built-in shortcuts, so long as the relevant options
+(especially <a class="reference internal" href="autodoc_glossary_options_c.html#term-ex-level-detci"><em class="xref std std-term">EX_LEVEL</em></a>) are set appropriately.  Some
+examples of single-refence CI, RASCI, and full CI computations are provided
+in <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/samples">psi4/samples</a>.</p>
+<div class="section" id="basic-detci-keywords">
+<span id="index-2"></span><h2>Basic DETCI Keywords<a class="headerlink" href="#basic-detci-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="reference">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-detci"><em class="xref std std-term">REFERENCE</em></a><a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Reference wavefunction type</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: RHF, ROHF</li>
+<li><strong>Default</strong>: RHF</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="r-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-detci"><em class="xref std std-term">R_CONVERGENCE</em></a><a class="headerlink" href="#r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for CI residual vector in the Davidson algorithm (RMS error). The default is 1e-4 for energies and 1e-7 for gradients.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><em>conv double</em></a></li>
+<li><strong>Default</strong>: 1e-4</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ex-level">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-ex-level-detci"><em class="xref std std-term">EX_LEVEL</em></a><a class="headerlink" href="#ex-level" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The CI excitation level</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="fci">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-fci-detci"><em class="xref std std-term">FCI</em></a><a class="headerlink" href="#fci" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do a full CI (FCI)? If TRUE, overrides the value of <a class="reference internal" href="autodoc_glossary_options_c.html#term-ex-level-detci"><em class="xref std std-term">EX_LEVEL</em></a></p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="frozen-docc">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-docc-globals"><em class="xref std std-term">FROZEN_DOCC</em></a><a class="headerlink" href="#frozen-docc" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>An array containing the number of frozen doubly-occupied orbitals per irrep (these are not excited in a correlated wavefunction, nor can they be optimized in MCSCF</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="frozen-uocc">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-uocc-globals"><em class="xref std std-term">FROZEN_UOCC</em></a><a class="headerlink" href="#frozen-uocc" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>An array containing the number of frozen unoccupied orbitals per irrep (these are not populated in a correlated wavefunction, nor can they be optimized in MCSCF</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="maxiter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-maxiter-detci"><em class="xref std std-term">MAXITER</em></a><a class="headerlink" href="#maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of iterations to diagonalize the Hamiltonian</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 12</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="num-roots">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-num-roots-detci"><em class="xref std std-term">NUM_ROOTS</em></a><a class="headerlink" href="#num-roots" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>number of CI roots to find</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 1</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="icore">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-icore-detci"><em class="xref std std-term">ICORE</em></a><a class="headerlink" href="#icore" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Specifies how to handle buffering of CI vectors. A value of 0 makes the program perform I/O one RAS subblock at a time; 1 uses entire CI vectors at a time; and 2 uses one irrep block at a time. Values of 0 or 2 cause some inefficiency in the I/O (requiring multiple reads of the C vector when constructing H in the iterative subspace if <a class="reference internal" href="autodoc_glossary_options_c.html#term-diag-method-detci"><em class="xref std std-term">DIAG_METHOD</em></a> = SEM), but require less core memory.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 1</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="diag-method">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-diag-method-detci"><em class="xref std std-term">DIAG_METHOD</em></a><a class="headerlink" href="#diag-method" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>This specifies which method is to be used in diagonalizing the Hamiltonian. The valid options are: <tt class="docutils literal"><span class="pre">RSP</span></tt>, to form the entire H matrix and diagonalize using libciomr to obtain all eigenvalues (n.b. requires HUGE memory); <tt class="docutils literal"><span class="pre">OLSEN</span></tt>, to use Olsen&#8217;s preconditioned inverse subspace method (1990); <tt class="docutils literal"><span class="pre">MITRUSHENKOV</span></tt>, to use a 2x2 Olsen/Davidson method; and <tt class="docutils literal"><span class="pre">DAVIDSON</span></tt> (or <tt class="docutils literal"><span class="pre">SEM</span></tt>) to use Liu&#8217;s Simultaneous Expansion Method, which is identical to the Davidson method if only one root is to be found. There also exists a SEM debugging mode, <tt class="docutils literal"><span class="pre">SEMTEST</span></tt>. The <tt class="docutils literal"><span class="pre">SEM</span></tt> method is the most robust, but it also requires <img class="math" src="_images/math/6bd2af84cd5ada378c54a39e94578b341a0dfbcd.png" alt="2NM+1" style="vertical-align: -1px"/> CI vectors on disk, where <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N" style="vertical-align: 0px"/> is the maximum number of iterations and <img class="math" src="_images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M" style="vertical-align: 0px"/> is the number of roots.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: RSP, OLSEN, MITRUSHENKOV, DAVIDSON, SEM, SEMTEST</li>
+<li><strong>Default</strong>: SEM</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="opdm">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-opdm-detci"><em class="xref std std-term">OPDM</em></a><a class="headerlink" href="#opdm" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute one-particle density matrix if not otherwise required?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="tdm">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-tdm-detci"><em class="xref std std-term">TDM</em></a><a class="headerlink" href="#tdm" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute the transition density? Note: only transition densities between roots of the same symmetry will be evaluated. DETCI does not compute states of different irreps within the same computation; to do this, lower the symmetry of the computation.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dipmom">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dipmom-detci"><em class="xref std std-term">DIPMOM</em></a><a class="headerlink" href="#dipmom" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute the dipole moment?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mpn">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mpn-detci"><em class="xref std std-term">MPN</em></a><a class="headerlink" href="#mpn" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute the MPn series out to kth order where k is determined by <a class="reference internal" href="autodoc_glossary_options_c.html#term-max-num-vecs-detci"><em class="xref std std-term">MAX_NUM_VECS</em></a> ? For open-shell systems  <a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-detci"><em class="xref std std-term">REFERENCE</em></a> is ROHF, <a class="reference internal" href="autodoc_glossary_options_c.html#term-wfn-detci"><em class="xref std std-term">WFN</em></a> is ZAPTN), DETCI will compute the ZAPTn series. <a class="reference internal" href="autodoc_glossary_options_c.html#term-guess-vector-detci"><em class="xref std std-term">GUESS_VECTOR</em></a> must be set to UNIT, <a class="reference internal" href="autodoc_glossary_options_c.html#term-hd-otf-detci"><em class="xref std std-term">HD_OTF</em></a> must be set to TRUE, and <a class="reference internal" href="autodoc_glossary_options_c.html#term-hd-avg-detci"><em class="xref std std-term">HD_AVG</em></a> must be set to orb_ener; these should happen by default for MPN = TRUE.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+<p>For larger computations, additional keywords may be required, as
+described in the DETCI section of the Appendix <a class="reference internal" href="autodir_options_c/module__detci.html#apdx-detci"><em>DETCI</em></a>.</p>
+</div>
+</div>
+<div class="section" id="arbitrary-order-perturbation-theory">
+<span id="index-3"></span><h2>Arbitrary Order Perturbation Theory<a class="headerlink" href="#arbitrary-order-perturbation-theory" title="Permalink to this headline">¶</a></h2>
+<p>The DETCI module is capable of computing energies for arbitrary
+order Møller&#8211;Plesset perturbation theory (MPn, for closed-shell
+systems with an RHF reference) and for Z-averaged perturbation theory
+(ZAPTn, open-shell systems with an ROHF reference).  However, please
+note that these computations are essentially doing high-order CI (up to
+full CI) computations to obtain these results, and hence they will only
+be possible for very small systems (generally a dozen electrons or less).</p>
+<p>The simplest way to run high-order perturbation theory computations is to
+call, <em>e.g.</em>, <tt class="docutils literal"><span class="pre">energy('mp10')</span></tt> to invoke a MP10 computation or
+<tt class="docutils literal"><span class="pre">energy('zapt25')</span></tt> to invoke a ZAPT25 computation.  This will
+automatically set several additional user options to their appropriate
+values.  The program uses the Wigner (2n+1) rule to obtain higher-order
+energies from lower-order wavefunctions.</p>
+<p>For the interested reader, the additional user options that are
+automatically set up by the calls above are as follows.  A call like
+<tt class="docutils literal"><span class="pre">energy('mp10')</span></tt> sets <a class="reference internal" href="autodoc_glossary_options_c.html#term-mpn-detci"><em class="xref std std-term">MPN</em></a> to TRUE.
+The program uses the Wigner (2n+1) rule by default
+(<a class="reference internal" href="autodoc_glossary_options_c.html#term-mpn-wigner-detci"><em class="xref std std-term">MPN_WIGNER</em></a> = TRUE)
+and figures out what order of wavefunction is
+necessary to reach the desired order in the energy.  The program then
+sets <a class="reference internal" href="autodoc_glossary_options_c.html#term-max-num-vecs-detci"><em class="xref std std-term">MAX_NUM_VECS</em></a> to the required order in the
+wavefunction.
+By default, the requested n-th order energy is saved as the current
+energy to the process environment.   ZAPTN works essentially the same
+way for an ROHF reference.</p>
+</div>
+<div class="section" id="arbitrary-order-coupled-cluster-theory">
+<span id="index-4"></span><h2>Arbitrary Order Coupled-Cluster Theory<a class="headerlink" href="#arbitrary-order-coupled-cluster-theory" title="Permalink to this headline">¶</a></h2>
+<p><em>This DETCI-based version of this feature is not yet released.  However,
+the current version of the code does include an interface to</em>
+<a class="reference internal" href="mrcc.html#sec-mrcc"><em>Kallay&#8217;s MRCC</em></a> <em>code.</em></p>
+<p>The DETCI module is also capable of computing arbitrary-order
+coupled-cluster energies, using an approach similar to that of Hirata
+and Bartlett <a class="reference internal" href="bibliography.html#hirata-2000-216">[Hirata:2000:216]</a>, or of Olsen <a class="reference internal" href="bibliography.html#olsen-2000-7140">[Olsen:2000:7140]</a>.
+Notably, the approach in DETCI also allows arbitrary-order
+<em>active space</em> coupled-cluster procedures.  The general algorithm
+for doing this in DETCI is inefficient compared to optimized
+lower-order coupled-cluster codes and should not be used for CCSD,
+where the CCENERGY module is much more efficient.  For higher-order
+CC (like CCSDT and beyond), the code is also not as efficient as the
+MRCC code by Kállay, to which PSI4 can interface (see Section
+<a class="reference internal" href="mrcc.html#sec-mrcc"><em>Interface to MRCC by M. Kállay</em></a>); however, it may allow certain truncations of the model
+space that might not be available presently in MRCC.  For very small
+systems, the code can be useful for testing of, for example, CCSDTQ or
+its active-space CCSDtq analog <a class="reference internal" href="bibliography.html#piecuch-1999-6103">[Piecuch:1999:6103]</a>.</p>
+<p>To perform arbitrary-order coupled-cluster, set the DETCI
+option <a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-detci"><em class="xref std std-term">CC</em></a> to TRUE, and set
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-ex-level-detci"><em class="xref std std-term">CC_EX_LEVEL</em></a> (note: not <a class="reference internal" href="autodoc_glossary_options_c.html#term-ex-level-detci"><em class="xref std std-term">EX_LEVEL</em></a>)
+to the desired coupled-cluster excitation level, and invoke
+<tt class="docutils literal"><span class="pre">energy('detci')</span></tt>.  Various other DETCI options have a similar
+option for coupled-cluster, usually named beginning with CC.  The full
+list of options is given in Appendix <a class="reference internal" href="autodir_options_c/module__detci.html#apdx-detci"><em>DETCI</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CI: Configuration Interaction</a><ul>
+<li><a class="reference internal" href="#basic-detci-keywords">Basic DETCI Keywords</a><ul>
+<li><a class="reference internal" href="#reference"><tt class="docutils literal"><span class="pre">REFERENCE</span></tt></a></li>
+<li><a class="reference internal" href="#r-convergence"><tt class="docutils literal"><span class="pre">R_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#ex-level"><tt class="docutils literal"><span class="pre">EX_LEVEL</span></tt></a></li>
+<li><a class="reference internal" href="#fci"><tt class="docutils literal"><span class="pre">FCI</span></tt></a></li>
+<li><a class="reference internal" href="#frozen-docc"><tt class="docutils literal"><span class="pre">FROZEN_DOCC</span></tt></a></li>
+<li><a class="reference internal" href="#frozen-uocc"><tt class="docutils literal"><span class="pre">FROZEN_UOCC</span></tt></a></li>
+<li><a class="reference internal" href="#maxiter"><tt class="docutils literal"><span class="pre">MAXITER</span></tt></a></li>
+<li><a class="reference internal" href="#num-roots"><tt class="docutils literal"><span class="pre">NUM_ROOTS</span></tt></a></li>
+<li><a class="reference internal" href="#icore"><tt class="docutils literal"><span class="pre">ICORE</span></tt></a></li>
+<li><a class="reference internal" href="#diag-method"><tt class="docutils literal"><span class="pre">DIAG_METHOD</span></tt></a></li>
+<li><a class="reference internal" href="#opdm"><tt class="docutils literal"><span class="pre">OPDM</span></tt></a></li>
+<li><a class="reference internal" href="#tdm"><tt class="docutils literal"><span class="pre">TDM</span></tt></a></li>
+<li><a class="reference internal" href="#dipmom"><tt class="docutils literal"><span class="pre">DIPMOM</span></tt></a></li>
+<li><a class="reference internal" href="#mpn"><tt class="docutils literal"><span class="pre">MPN</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#arbitrary-order-perturbation-theory">Arbitrary Order Perturbation Theory</a></li>
+<li><a class="reference internal" href="#arbitrary-order-coupled-cluster-theory">Arbitrary Order Coupled-Cluster Theory</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mrcc.html"
+                        title="previous chapter">Interface to MRCC by M. Kállay</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="optking.html"
+                        title="next chapter">Geometry Optimization</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/detci.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optking.html" title="Geometry Optimization"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="mrcc.html" title="Interface to MRCC by M. Kállay"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, The Psi4 Project.
+      Last updated on Oct 16, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

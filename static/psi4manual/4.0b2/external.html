@@ -1,0 +1,419 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration: Preparing PSI4’s Environment &mdash; PSI4 [beta2] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <link rel="top" title="PSI4 [beta2] documentation" href="index.html" />
+    <link rel="next" title="Psithon: Structuring an Input File" href="psithoninput.html" />
+    <link rel="prev" title="A PSI4 Tutorial" href="tutorial.html" /> 
+    <script type="text/javascript" src="_static/copybutton.js"></script> 
+
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="psithoninput.html" title="Psithon: Structuring an Input File"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="A PSI4 Tutorial"
+             accesskey="P">previous</a> |</li>
+    <li><a href="index.html">PSI4 [beta2]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="configuration-preparing-psifours-environment">
+<span id="sec-config"></span><h1>Configuration: Preparing PSI4&#8217;s Environment<a class="headerlink" href="#configuration-preparing-psifours-environment" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="scratch-files-and-the-psirc-file">
+<span id="sec-psirc"></span><span id="index-0"></span><h2>Scratch Files and the <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> File<a class="headerlink" href="#scratch-files-and-the-psirc-file" title="Permalink to this headline">¶</a></h2>
+<p>One very important part of user configuration at the end of the
+installation process is to tell PSI4 where to write its temporary
+(&#8220;scratch&#8221;) files.  Electronic structure packages like PSI4 can
+create rather large temporary disk files.  It is very important to
+ensure that PSI4 is writing its temporary files to a disk drive
+phsyically attached to the computer running the computation.  If it
+is not, it will significantly slow down the program and the network.
+By default, PSI4 will write temporary files to <tt class="docutils literal"><span class="pre">/tmp</span></tt>, but this
+directory is often not large enough for typical computations.  Therefore,
+you need to (a) make sure there is a sufficiently large directory on a
+locally attached disk drive (100GB–1TB or more, depending on the size of
+the molecules to be studied) and (b) tell PSI4 the path to this
+directory.  The PSI4 installation instructions explain how to set up a
+resource file, <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> (example <a class="reference external" href="http://sirius.chem.vt.edu/psi4sources/4.0b2/samples/example_psi4rc_file">psi4/samples/example_psi4rc_file</a>),
+for each user providing this information.</p>
+<p>For convenience, the Python interpreter will execute the contents of the
+<tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> file in the current user&#8217;s home area (if present) before performing any
+tasks in the input file. The primary use of the <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> file is to control the
+handling of scratch files.  PSI4 has a number of utilities that manage
+input and output (I/O) of quantities to and from the hard disk.  Most
+quantities, such as molecular integrals, are intermediates that are not of
+interest to the user and can be deleted after the computation finishes, but
+pertinent details of computations are also written to a checkpoint file and
+might be useful in subsequent computations.  All files are sequentially
+numbered and are written to <tt class="docutils literal"><span class="pre">/tmp</span></tt>, then deleted at the end of the computation,
+unless otherwise instructed by the user.</p>
+<p>A Python callable handle to the PSI4 I/O management routines is available,
+and is called <tt class="docutils literal"><span class="pre">psi4_io</span></tt>.  To instruct the I/O manager to send all files to
+another location, say <tt class="docutils literal"><span class="pre">/scratch/user</span></tt>, add the following command to the <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt>
+file (note the trailing &#8220;/&#8221;):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">psi4_io</span><span class="o">.</span><span class="n">set_default_path</span><span class="p">(</span><span class="s">&#39;/scratch/user/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For batch jobs running through a queue, it might be more convenient to use an
+environmental variable (in this case <tt class="docutils literal"><span class="pre">$MYSCRATCH</span></tt>) to set the scratch directory;
+the following code will do that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">scratch_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;MYSCRATCH&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">scratch_dir</span><span class="p">:</span>
+    <span class="n">psi4_io</span><span class="o">.</span><span class="n">set_default_path</span><span class="p">(</span><span class="n">scratch_dir</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Individual files can be send to specific locations.  For example, file 32 is
+the checkpoint file that the user might want to retain in the working directory
+(<em>i.e.</em>, where PSI4 was launched from) for restart purposes.  This is
+accomplished by the commands below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">psi4_io</span><span class="o">.</span><span class="n">set_specific_path</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s">&#39;./&#39;</span><span class="p">)</span>
+<span class="n">psi4_io</span><span class="o">.</span><span class="n">set_specific_retention</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To circumvent difficulties with running multiple jobs in the same scratch, the
+process ID (PID) of the PSI4 instance is incorporated into the full file
+name; therefore, it is safe to use the same scratch directory for calculations
+running simultaneously.</p>
+<p>To override any of these defaults for selected jobs, simply place the
+appropriate commands from the snippets above in the input file itself.  During
+excecution, the <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> defaults will be loaded in first, but then the commands
+in the input file will be executed.  Executing PSI4 with the <a class="reference internal" href="#cmdoption-psi4-m"><em class="xref std std-option">psi4 -m</em></a> (for
+messy) flag will prevent files being deleted at the end of the run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">psi4</span> <span class="o">-</span><span class="n">m</span>
+</pre></div>
+</div>
+<p>Alternately, the scratch directory can be set through the environment
+variable <span class="target" id="index-1"></span><a class="reference internal" href="#envvar-PSI_SCRATCH"><tt class="xref std std-envvar docutils literal"><span class="pre">PSI_SCRATCH</span></tt></a> (overrides <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> settings).</p>
+<p>The <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> file can also be used to define constants that are accessible
+in input files or to place any Python statements that should be executed
+with every PSI4 instance.</p>
+</div>
+<div class="section" id="threading">
+<span id="sec-threading"></span><span id="index-2"></span><h2>Threading<a class="headerlink" href="#threading" title="Permalink to this headline">¶</a></h2>
+<p>Most new modules in PSI4 are designed to run efficiently on SMP architectures
+via application of several thread models. The de facto standard for PSI4
+involves using threaded BLAS/LAPACK (particularly Intel&#8217;s excellent MKL package)
+for most tensor-like operations, OpenMP for more general operations, and Boost
+Threads for some special-case operations. Note: Using OpenMP alone is a really
+bad idea. The developers make little to no effort to explicitly parallelize
+operations which are already easily threaded by MKL or other threaded BLAS. Less
+than 20% of the threaded code in PSI4 uses OpenMP, the rest is handled by
+parallel DGEMM and other library routines. From this point forward, it is
+assumed that you have compiled PSI4 with OpenMP and MKL (Note that it is
+possible to use g++ or another compiler and yet still link against MKL).</p>
+<p>Control of threading in PSI4 can be accomplished at a variety of levels,
+ranging from global environment variables to direct control of thread count in
+the input file, to even directives specific to each model. This hierarchy is
+explained below. Note that each deeper level trumps all previous levels.</p>
+<p class="rubric">(1) OpenMP/MKL Environment Variables</p>
+<p>The easiest/least visible way to thread PSI4 is to set the standard OpenMP/MKL
+environment variables <span class="target" id="index-3"></span><a class="reference internal" href="#envvar-OMP_NUM_THREADS"><tt class="xref std std-envvar docutils literal"><span class="pre">OMP_NUM_THREADS</span></tt></a> and <span class="target" id="index-4"></span><a class="reference internal" href="#envvar-MKL_NUM_THREADS"><tt class="xref std std-envvar docutils literal"><span class="pre">MKL_NUM_THREADS</span></tt></a>.
+For instance, in tcsh:</p>
+<div class="highlight-python"><pre>setenv OMP_NUM_THREADS 4
+setenv MKL_NUM_THREADS 4</pre>
+</div>
+<p>PSI4 then detects these value via the API routines in <tt class="docutils literal"><span class="pre">&lt;omp.h&gt;</span></tt> and
+<tt class="docutils literal"><span class="pre">&lt;mkl.h&gt;</span></tt>, and runs all applicable code with 4 threads. These environment
+variables are typically defined in a <tt class="docutils literal"><span class="pre">.tcshrc</span></tt> or <tt class="docutils literal"><span class="pre">.bashrc</span></tt>.</p>
+<p class="rubric">(2) The -n Command Line Flag</p>
+<p>To change the number of threads at runtime, the <a class="reference internal" href="#cmdoption-psi4-n"><em class="xref std std-option">psi4 -n</em></a> flag may be used. An
+example is:</p>
+<div class="highlight-python"><pre>psi4 -i input.dat -o output.dat -n 4</pre>
+</div>
+<p>which will run on four threads.</p>
+<p class="rubric">(3) Setting Thread Numbers in an Input</p>
+<p>For more explicit control, the Process::environment class in PSI4 can
+override the number of threads set by environment variables. This functionality
+is accessed via the <a class="reference internal" href="autodoc_driver.html#util.set_num_threads" title="util.set_num_threads"><tt class="xref py py-func docutils literal"><span class="pre">set_num_threads()</span></tt></a> Psithon function, which controls
+both MKL and OpenMP thread numbers. The number of threads may be changed
+multiple times in a PSI4 input file. An example input for this feature is:</p>
+<div class="highlight-python"><pre># A bit small-ish, but you get the idea
+molecule h2o {
+0 1
+O
+H 1 1.0
+H 1 1.0 2 90.0
+}
+
+set scf {
+basis cc-pvdz
+scf_type df
+}
+
+# Run from 1 to 4 threads, for instance, to record timings
+for nthread in range(1,5):
+    set_num_threads(nthread)
+    energy('scf')</pre>
+</div>
+<p class="rubric">(4) Method-Specific Control</p>
+<p>Even more control is possible in certain circumstances. For instance, the
+threaded generation of AO density-fitted integrals involves a memory requirement
+proportional to the number of threads. This requirement may exceed the total
+memory of a small-memory node if all threads are involved in the generation of
+these integrals. For general DF algorithms, the user may specify:</p>
+<div class="highlight-python"><pre>set MODULE_NAME df_ints_num_threads n</pre>
+</div>
+<p>to explicitly control the number of threads used for integral formation. Setting
+this variable to 0 (the default) uses the number of threads specified by the
+<a class="reference internal" href="autodoc_driver.html#util.set_num_threads" title="util.set_num_threads"><tt class="xref py py-func docutils literal"><span class="pre">set_num_threads()</span></tt></a> Psithon method or the default environmental variables.</p>
+</div>
+<div class="section" id="command-line-options">
+<span id="sec-commandlineoptions"></span><h2>Command Line Options<a class="headerlink" href="#command-line-options" title="Permalink to this headline">¶</a></h2>
+<p>PSI4 can be invoked with no command line arguments, as it takes as input
+by default the file &#8220;input.dat&#8221; and directs output by default to &#8220;output.dat&#8221;.
+The set of three commands below are completely equivalent, while the fourth is,
+perhaps, the most common usage.</p>
+<div class="highlight-python"><pre>psi4
+psi4 -i input.dat -o output.dat
+psi4 input.dat output.dat
+
+psi4 descriptive_filename.in descriptive_filename.out</pre>
+</div>
+<p>Command-line arguments to PSI4 can be accessed through <em class="xref std std-option">psi4 --help</em>.</p>
+<dl class="option">
+<dt id="cmdoption-psi4-a">
+<tt class="descname">-a</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--append</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-psi4-a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append results to output file. Default: Truncate first</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-h">
+<tt class="descname">-h</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--help</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-psi4-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the command-line options and usage information.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-i">
+<tt class="descname">-i</tt><tt class="descclassname"> &lt;filename&gt;</tt><tt class="descclassname">, </tt><tt class="descname">--input</tt><tt class="descclassname"> &lt;filename&gt;</tt><a class="headerlink" href="#cmdoption-psi4-i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input file name. Default: input.dat</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-o">
+<tt class="descname">-o</tt><tt class="descclassname"> &lt;filename&gt;</tt><tt class="descclassname">, </tt><tt class="descname">--output</tt><tt class="descclassname"> &lt;filename&gt;</tt><a class="headerlink" href="#cmdoption-psi4-o" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output file name. Use <tt class="docutils literal"><span class="pre">stdout</span></tt> as &lt;filename&gt; to redirect
+to the screen. Default: output.dat</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-m">
+<tt class="descname">-m</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--messy</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-psi4-m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leave temporary files after the run is completed.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-n">
+<tt class="descname">-n</tt><tt class="descclassname"> &lt;threads&gt;</tt><tt class="descclassname">, </tt><tt class="descname">--nthread</tt><tt class="descclassname"> &lt;threads&gt;</tt><a class="headerlink" href="#cmdoption-psi4-n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of threads to use (overrides <span class="target" id="index-5"></span><a class="reference internal" href="#envvar-OMP_NUM_THREADS"><tt class="xref std std-envvar docutils literal"><span class="pre">OMP_NUM_THREADS</span></tt></a>)</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4--new-plugin">
+<tt class="descname">--new-plugin</tt><tt class="descclassname"> &lt;name&gt;</tt><a class="headerlink" href="#cmdoption-psi4--new-plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new directory &lt;name&gt; with files for writing a
+new plugin. An additional argument specifies a template
+to use, for example: <tt class="docutils literal"><span class="pre">--new-plugin</span> <span class="pre">name</span> <span class="pre">+mointegrals</span></tt>.
+See Sec. <a class="reference internal" href="plugins.html#sec-plugins"><em>Plugins: Adding New Functionality to PSI4</em></a> for available templates.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-p">
+<tt class="descname">-p</tt><tt class="descclassname"> &lt;prefix&gt;</tt><tt class="descclassname">, </tt><tt class="descname">--prefix</tt><tt class="descclassname"> &lt;prefix&gt;</tt><a class="headerlink" href="#cmdoption-psi4-p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prefix for psi files. Default: psi</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-v">
+<tt class="descname">-v</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--verbose</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-psi4-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a lot of information</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-d">
+<tt class="descname">-d</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--debug</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-psi4-d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush the outfile at every fprintf. Default: true iff <tt class="docutils literal"><span class="pre">--with-debug</span></tt></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-V">
+<tt class="descname">-V</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--version</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-psi4-V" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print version information.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-psi4-w">
+<tt class="descname">-w</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--wipe</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-psi4-w" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean out scratch area.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="environment-variables">
+<span id="sec-environmentvariables"></span><h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>These environment variables will influence PSI4&#8217;s behavior.</p>
+<dl class="envvar">
+<dt id="envvar-MKL_NUM_THREADS">
+<tt class="descname">MKL_NUM_THREADS</tt><a class="headerlink" href="#envvar-MKL_NUM_THREADS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of threads to use by operations with Intel threaded BLAS libraries.</p>
+</dd></dl>
+
+<dl class="envvar">
+<dt id="envvar-OMP_NESTED">
+<tt class="descname">OMP_NESTED</tt><a class="headerlink" href="#envvar-OMP_NESTED" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do access nested DGEMM in OpenMP sections in DFMP2 for multi-socket
+platforms. This is very low-level access to OpenMP functions for
+experienced programmers. Users should leave this variable unset or set
+to <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
+</dd></dl>
+
+<dl class="envvar">
+<dt id="envvar-OMP_NUM_THREADS">
+<tt class="descname">OMP_NUM_THREADS</tt><a class="headerlink" href="#envvar-OMP_NUM_THREADS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of threads to use by modules with OpenMP threading.</p>
+</dd></dl>
+
+<dl class="envvar">
+<dt id="envvar-PATH">
+<tt class="descname">PATH</tt><a class="headerlink" href="#envvar-PATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path for executables. To run Kállay&#8217;s MRCC program
+(see <a class="reference internal" href="mrcc.html#sec-mrcc"><em>MRCC</em></a>), the <tt class="docutils literal"><span class="pre">dmrcc</span></tt> executable must be in <span class="target" id="index-6"></span><a class="reference internal" href="#envvar-PATH"><tt class="xref std std-envvar docutils literal"><span class="pre">PATH</span></tt></a></p>
+</dd></dl>
+
+<dl class="envvar">
+<dt id="envvar-PSI_SCRATCH">
+<tt class="descname">PSI_SCRATCH</tt><a class="headerlink" href="#envvar-PSI_SCRATCH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directory where scratch files are written. Overrides settings in <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt>.</p>
+</dd></dl>
+
+<dl class="envvar">
+<dt id="envvar-PYTHONPATH">
+<tt class="descname">PYTHONPATH</tt><a class="headerlink" href="#envvar-PYTHONPATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path in which the Python interpreter looks for modules to import. For
+PSI4, these are generally plugins (see <a class="reference internal" href="plugins.html#sec-plugins"><em>Plugins: Adding New Functionality to PSI4</em></a>).</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration: Preparing PSI4&#8217;s Environment</a><ul>
+<li><a class="reference internal" href="#scratch-files-and-the-psirc-file">Scratch Files and the <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> File</a></li>
+<li><a class="reference internal" href="#threading">Threading</a></li>
+<li><a class="reference internal" href="#command-line-options">Command Line Options</a></li>
+<li><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tutorial.html"
+                        title="previous chapter">A PSI4 Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="psithoninput.html"
+                        title="next chapter">Psithon: Structuring an Input File</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/external.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="psithoninput.html" title="Psithon: Structuring an Input File"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="A PSI4 Tutorial"
+             >previous</a> |</li>
+    <li><a href="index.html">PSI4 [beta2]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Psi4 Project.
+      Last updated on Sep 30, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

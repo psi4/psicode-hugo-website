@@ -1,0 +1,584 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Geometry Optimization &mdash; PSI4 [beta3] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="top" title="PSI4 [beta3] documentation" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="Evaluation of One-Electron Properties" href="oeprop.html" />
+    <link rel="prev" title="CI: Configuration Interaction" href="detci.html" /> 
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="oeprop.html" title="Evaluation of One-Electron Properties"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="detci.html" title="CI: Configuration Interaction"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="geometry-optimization">
+<span id="sec-optking"></span><span id="index-0"></span><h1>Geometry Optimization<a class="headerlink" href="#geometry-optimization" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Rollin A. King</em></p>
+<p><em>Section author: Rollin A. King and Lori A. Burns</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__optking.html#apdx-optking"><em>Keywords</em></a>, <a class="reference internal" href="autodir_psivariables/module__optking.html#apdx-optking-psivar"><em>PSI Variables</em></a>, <a class="reference external" href="http://sirius.chem.vt.edu/trac/browser/src/bin/optking">OPTKING</a></p>
+<p>PSI4 carries out molecular optimizations using a module called
+optking.  The optking program takes as input nuclear gradients and,
+optionally, nuclear second derivatives — both in Cartesian coordinates.
+The default minimization algorithm employs an empirical model Hessian,
+redundant internal coordinates, a RFO step, and the BFGS Hessian update.</p>
+<p>The principal literature references include the introduction of redundant
+internal coordinates by Peng et al. <a class="reference internal" href="bibliography.html#peng-1996-49">[Peng:1996:49]</a>.
+The general approach employed in this code
+is similar to the &#8220;model Hessian plus RF method&#8221; described and tested by Bakken and
+Helgaker <a class="reference internal" href="bibliography.html#bakken-2002-9160">[Bakken:2002:9160]</a>. (However, for separated
+fragments, we have chosen not to employ by default their &#8220;extra-redundant&#8221;
+coordinates defined by their &#8220;auxiliary interfragment&#8221; bonds.  These can be
+included via the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-add-auxiliary-bonds-optking"><em class="xref std std-term">ADD_AUXILIARY_BONDS</em></a>).</p>
+<p>The internal coordinates are generated automatically based on an assumed bond
+connectivity.  The connectivity is determined by testing if the interatomic
+distance is less than the sum of atomic radii times the value of
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-covalent-connect-optking"><em class="xref std std-term">COVALENT_CONNECT</em></a>. If the user finds that some
+connectivity is lacking by default, then this value may be increased.
+Otherwise, the internal coordinate definitions may be modified.  If one
+desires to see or modify the internal coordinates being used, then one can set
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-intcos-generate-exit-optking"><em class="xref std std-term">INTCOS_GENERATE_EXIT</em></a> to true.  The internal coordinate
+definitions are provided in the file named &#8220;intco.dat&#8221;.  See the <a class="reference internal" href="#sec-optkingexamples"><em>Optimizing Minima</em></a>
+section for more detail.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">For the present, file <tt class="docutils literal"><span class="pre">intco.dat</span></tt> is lodged in the submission
+directory and defines the internal coordinates for an optimization.
+Thus, it is unsafe to run multiple optimizations from a single
+directory. Also, <tt class="docutils literal"><span class="pre">intco.dat</span></tt> can linger, so, unless you&#8217;ve
+deliberately constructed it, be sure to clear it out before starting a
+new optimization.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Optimizations where the molecule is specified in Z-matrix format
+with dummy atoms will result in the molecule being converted to a Cartesian representation.</p>
+</div>
+<p>The ongoing development of optking is providing for unique treatment of
+coordinates which connect distinct molecular fragments.  Thus, several keywords
+relate to &#8220;interfragment modes&#8221;, though many of these capabilities are
+still under development.  Presently by default, separate fragments are bonded by
+nearest atoms, and the whole system is treated as if it were part of one
+molecule.  However, with the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-frag-mode-optking"><em class="xref std std-term">FRAG_MODE</em></a>, fragments
+may instead be related by a unique set of interfragment coordinates defined by
+reference points within each fragment.  The reference points can be atomic
+positions (current default), linear combinations of
+atomic positions, or located on the principal axes (not yet working).</p>
+<div class="section" id="basic-keywords">
+<h2>Basic Keywords<a class="headerlink" href="#basic-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="opt-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-opt-type-optking"><em class="xref std std-term">OPT_TYPE</em></a><a class="headerlink" href="#opt-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Specifies minimum search, transition-state search, or IRC following</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: MIN, TS, IRC</li>
+<li><strong>Default</strong>: MIN</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="step-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-step-type-optking"><em class="xref std std-term">STEP_TYPE</em></a><a class="headerlink" href="#step-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Geometry optimization step type, either Newton-Raphson or Rational Function Optimization</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: RFO, NR, SD</li>
+<li><strong>Default</strong>: RFO</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="geom-maxiter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-geom-maxiter-optking"><em class="xref std std-term">GEOM_MAXITER</em></a><a class="headerlink" href="#geom-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of geometry optimization steps</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 50</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="g-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-g-convergence-optking"><em class="xref std std-term">G_CONVERGENCE</em></a><a class="headerlink" href="#g-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Set of optimization criteria. Specification of any MAX_*_G_CONVERGENCE or RMS_*_G_CONVERGENCE options will append to overwrite the criteria set here unless <a class="reference internal" href="autodoc_glossary_options_c.html#term-flexible-g-convergence-optking"><em class="xref std std-term">FLEXIBLE_G_CONVERGENCE</em></a> is also on. See Table <a class="reference internal" href="#table-optkingconv"><em>Geometry Convergence</em></a> for details.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: QCHEM, MOLPRO, GAU, GAU_LOOSE, GAU_TIGHT, GAU_VERYTIGHT, TURBOMOLE, CFOUR, NWCHEM_LOOSE</li>
+<li><strong>Default</strong>: QCHEM</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="full-hess-every">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-full-hess-every-optking"><em class="xref std std-term">FULL_HESS_EVERY</em></a><a class="headerlink" href="#full-hess-every" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Frequency with which to compute the full Hessian in the course of a geometry optimization. 0 means to compute the initial Hessian only, 1 means recompute every step, and N means recompute every N steps. The default (-1) is to never compute the full Hessian.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: -1</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="intcos-generate-exit">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-intcos-generate-exit-optking"><em class="xref std std-term">INTCOS_GENERATE_EXIT</em></a><a class="headerlink" href="#intcos-generate-exit" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do only generate the internal coordinates and then stop?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><em>boolean</em></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="optimizing-minima">
+<span id="sec-optkingexamples"></span><span id="index-1"></span><h2>Optimizing Minima<a class="headerlink" href="#optimizing-minima" title="Permalink to this headline">¶</a></h2>
+<p>First, define the molecule and basis in the input.</p>
+<div class="highlight-python"><pre>molecule h2o {
+  O
+  H 1 1.0
+  H 1 1.0 2 105.0
+}
+
+set basis dz</pre>
+</div>
+<p>Then the following are examples of various types of calculations that can be completed.</p>
+<ul>
+<li><p class="first">Optimize a geometry using default methods (RFO step):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">optimize</span><span class="p">(</span><span class="s">&#39;scf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Optimize using Newton-Raphson steps instead of RFO steps:</p>
+<div class="highlight-python"><pre>set step_type nr
+optimize('scf')</pre>
+</div>
+</li>
+<li><p class="first">Optimize using energy points instead of gradients:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">optimize</span><span class="p">(</span><span class="s">&#39;scf&#39;</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="s">&#39;energy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Optimize while limiting the initial step size to 0.1 au:</p>
+<div class="highlight-python"><pre>set intrafrag_step_limit 0.1
+optimize('scf')</pre>
+</div>
+</li>
+<li><p class="first">Optimize while always limiting the step size to 0.1 au:</p>
+<div class="highlight-python"><pre>set {
+  intrafrag_step_limit     0.1
+  intrafrag_step_limit_min 0.1
+  intrafrag_step_limit_max 0.1
+}
+
+optimize('scf')</pre>
+</div>
+</li>
+<li><p class="first">Optimize while calculating the Hessian at every step:</p>
+<div class="highlight-python"><pre>set full_hess_every 1
+optimize('scf')</pre>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="hessian">
+<h2>Hessian<a class="headerlink" href="#hessian" title="Permalink to this headline">¶</a></h2>
+<p>If Cartesian second derivatives are available, optking can read them
+and transform them into internal coordinates to make an initial Hessian in
+internal coordinates.  Otherwise, several empirical Hessians are available,
+including those of Schlegel <a class="reference internal" href="bibliography.html#schlegel-1984-333">[Schlegel:1984:333]</a> and Fischer and Almlof
+<a class="reference internal" href="bibliography.html#fischer-1992-9770">[Fischer:1992:9770]</a>.
+Either of these or a simple diagonal Hessian may be selected using the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-intrafrag-hess-optking"><em class="xref std std-term">INTRAFRAG_HESS</em></a> keyword.</p>
+<p>All the common Hessian update schemes are available.  For formulas, see
+Schlegel <a class="reference internal" href="bibliography.html#schlegel-1987-aimqc">[Schlegel:1987:AIMQC]</a> and Bofill <a class="reference internal" href="bibliography.html#bofill-1994-1">[Bofill:1994:1]</a>.</p>
+<p>The Hessian may be computed during an optimization using the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-full-hess-every-optking"><em class="xref std std-term">FULL_HESS_EVERY</em></a> keyword.</p>
+</div>
+<div class="section" id="transition-states-reaction-paths-and-constrained-optimizations">
+<span id="index-2"></span><h2>Transition States, Reaction Paths, and Constrained Optimizations<a class="headerlink" href="#transition-states-reaction-paths-and-constrained-optimizations" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Calculate a starting Hessian and optimize the &#8220;transition state&#8221; of
+linear water (note that without a reasonable starting geometry and
+Hessian, such a straightforward search often fails):</p>
+<div class="highlight-python"><pre>molecule h2o {
+   O
+   H 1 1.0
+   H 1 1.0 2 160.0
+}
+
+set {
+   basis dz
+   full_hess_every 0
+   opt_type ts
+}
+
+optimize('scf')</pre>
+</div>
+</li>
+<li><p class="first">At a transition state (planar HOOH), compute the second derivative, and
+then follow the intrinsic reaction path to the minimum:</p>
+<div class="highlight-python"><pre>molecule hooh {
+   symmetry c1
+   H
+   O 1 0.946347
+   O 2 1.397780 1  107.243777
+   H 3 0.946347 2  107.243777   1 0.0
+}
+
+set {
+   basis dzp
+   opt_type irc
+   geom_maxiter 50
+}
+
+frequencies('scf')
+optimize('scf')</pre>
+</div>
+</li>
+<li><p class="first">Generate the internal coordinates and then stop:</p>
+<div class="highlight-python"><pre>set intcos_generate_exit true
+optimize('scf')</pre>
+</div>
+<p>The coordinates may then be found in the file &#8220;intco.dat&#8221;.  In this case, the file contains:</p>
+<div class="highlight-python"><pre>F 1 3
+R      1     2
+R      1     3
+B      2     1     3</pre>
+</div>
+<p>The first line indicates a fragment containing atoms 1-3.  The following lines define
+two distance coordinates (bonds) and one bend coordinate.  This file can be modified, and if present,
+is used in subsequent optimizations.  Since the multiple-fragment coordinates are still under
+development, they are not documented here.  However, if desired, one can change the value
+of <a class="reference internal" href="autodoc_glossary_options_c.html#term-frag-mode-optking"><em class="xref std std-term">FRAG_MODE</em></a>, generate the internal coordinates, and see how multiple
+fragment systems are defined.</p>
+<p>Coordinates may be frozen or fixed by adding an asterisk after the letter of the coordinate.
+To optimize with the bond lengths fixed at their initial values, it is currently necessary to
+generate and then modify the internal coordinate definitions as follows:</p>
+<div class="highlight-python"><pre>F 1 3
+R*     1     2
+R*     1     3
+B      2     1     3</pre>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="convergence-criteria">
+<span id="index-3"></span><h2>Convergence Criteria<a class="headerlink" href="#convergence-criteria" title="Permalink to this headline">¶</a></h2>
+<p>Optking monitors five quantities to evaluate the progress of a geometry
+optimization. These are (with their keywords) the change in energy
+(<a class="reference internal" href="autodoc_glossary_options_c.html#term-max-energy-g-convergence-optking"><em class="xref std std-term">MAX_ENERGY_G_CONVERGENCE</em></a>), the maximum element of
+the gradient (<a class="reference internal" href="autodoc_glossary_options_c.html#term-max-force-g-convergence-optking"><em class="xref std std-term">MAX_FORCE_G_CONVERGENCE</em></a>), the root-mean-square
+of the gradient (<a class="reference internal" href="autodoc_glossary_options_c.html#term-rms-force-g-convergence-optking"><em class="xref std std-term">RMS_FORCE_G_CONVERGENCE</em></a>), the maximum element
+of displacement (<a class="reference internal" href="autodoc_glossary_options_c.html#term-max-disp-g-convergence-optking"><em class="xref std std-term">MAX_DISP_G_CONVERGENCE</em></a>), and the
+root-mean-square of displacement (<a class="reference internal" href="autodoc_glossary_options_c.html#term-rms-disp-g-convergence-optking"><em class="xref std std-term">RMS_DISP_G_CONVERGENCE</em></a>),
+all in internal coordinates and atomic units. Usually, these options will not
+be set directly. Primary control for geometry convergence lies with the keyword
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-g-convergence-optking"><em class="xref std std-term">G_CONVERGENCE</em></a> which sets the aforementioned in accordance
+with Table <a class="reference internal" href="#table-optkingconv"><em>Geometry Convergence</em></a>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="table-optkingconv">
+<caption>Summary of sets of geometry optimization criteria available in PSI4</caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><a class="reference internal" href="autodoc_glossary_options_c.html#term-g-convergence-optking"><em class="xref std std-term">G_CONVERGENCE</em></a></th>
+<th class="head">Max Energy</th>
+<th class="head">Max Force</th>
+<th class="head">RMS Force</th>
+<th class="head">Max Disp</th>
+<th class="head">RMS Disp</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>NWCHEM_LOOSE <a class="footnote-reference" href="#fd" id="id7">[4]</a></td>
+<td>&nbsp;</td>
+<td><img class="math" src="_images/math/2a1a89a0226fca58e195fd414b8197900d93bfeb.png" alt="4.5 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/f9f522b87e460fb900f8b010e1639df65323672b.png" alt="3.0 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/f8b0922a054e8edb43cb25ba4ed1a6e3afdb6ec3.png" alt="5.4 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/bd614c0f06322a11b54dcf3f84f22551bc3ea71a.png" alt="3.6 \times 10^{-3}" style="vertical-align: -1px"/></td>
+</tr>
+<tr class="row-odd"><td>GAU_LOOSE <a class="footnote-reference" href="#ff" id="id8">[6]</a></td>
+<td>&nbsp;</td>
+<td><img class="math" src="_images/math/23edd3c46ca85f4d4ba066ad03551f730f74ceab.png" alt="2.5 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/7cbe50ad56d49c40763a8dbf7e286a9b0ab4c172.png" alt="1.7 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/f80f8ffc155e66727963fafb8d0cc00350570526.png" alt="1.0 \times 10^{-2}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/5d0bd7a9c49cf46bdeb7a07a2bb8da2156213208.png" alt="6.7 \times 10^{-3}" style="vertical-align: -1px"/></td>
+</tr>
+<tr class="row-even"><td>TURBOMOLE <a class="footnote-reference" href="#fd" id="id9">[4]</a></td>
+<td><img class="math" src="_images/math/eef7accfec9ad97272e91d7bfebf7ac5f5ca5c39.png" alt="1.0 \times 10^{-6}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/8113690b0e1b319376aec7f5be19bc38d7fc16ff.png" alt="1.0 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/16f118f0f6fc3b53f0b2c6e13edbdb1320d4e7e3.png" alt="5.0 \times 10^{-4}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/8113690b0e1b319376aec7f5be19bc38d7fc16ff.png" alt="1.0 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/16f118f0f6fc3b53f0b2c6e13edbdb1320d4e7e3.png" alt="5.0 \times 10^{-4}" style="vertical-align: -1px"/></td>
+</tr>
+<tr class="row-odd"><td>GAU <a class="footnote-reference" href="#fc" id="id10">[3]</a> <a class="footnote-reference" href="#ff" id="id11">[6]</a></td>
+<td>&nbsp;</td>
+<td><img class="math" src="_images/math/ff315429a9cba88c704efe86f2505ea3df139ff8.png" alt="4.5 \times 10^{-4}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/81463bb07b8a9a32f1d6d9f2a530b20f5096067a.png" alt="3.0 \times 10^{-4}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/bb420d415d0a5a0b4407fc281e32075eb95ab2c7.png" alt="1.8 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/a7840d863eaae2401c9e94fd870bf6a2988efccf.png" alt="1.2 \times 10^{-3}" style="vertical-align: -1px"/></td>
+</tr>
+<tr class="row-even"><td>CFOUR <a class="footnote-reference" href="#fd" id="id12">[4]</a></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td><img class="math" src="_images/math/ea27662369b0f31cfaa14dd8a203b5f0ef475904.png" alt="1.0 \times 10^{-4}" style="vertical-align: -1px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>QCHEM <a class="footnote-reference" href="#fa" id="id13">[1]</a> <a class="footnote-reference" href="#fe" id="id14">[5]</a></td>
+<td><img class="math" src="_images/math/eef7accfec9ad97272e91d7bfebf7ac5f5ca5c39.png" alt="1.0 \times 10^{-6}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/81463bb07b8a9a32f1d6d9f2a530b20f5096067a.png" alt="3.0 \times 10^{-4}" style="vertical-align: -1px"/></td>
+<td>&nbsp;</td>
+<td><img class="math" src="_images/math/a7840d863eaae2401c9e94fd870bf6a2988efccf.png" alt="1.2 \times 10^{-3}" style="vertical-align: -1px"/></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>MOLPRO <a class="footnote-reference" href="#fb" id="id15">[2]</a> <a class="footnote-reference" href="#fe" id="id16">[5]</a></td>
+<td><img class="math" src="_images/math/eef7accfec9ad97272e91d7bfebf7ac5f5ca5c39.png" alt="1.0 \times 10^{-6}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/81463bb07b8a9a32f1d6d9f2a530b20f5096067a.png" alt="3.0 \times 10^{-4}" style="vertical-align: -1px"/></td>
+<td>&nbsp;</td>
+<td><img class="math" src="_images/math/81463bb07b8a9a32f1d6d9f2a530b20f5096067a.png" alt="3.0 \times 10^{-4}" style="vertical-align: -1px"/></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>GAU_TIGHT <a class="footnote-reference" href="#fc" id="id17">[3]</a> <a class="footnote-reference" href="#ff" id="id18">[6]</a></td>
+<td>&nbsp;</td>
+<td><img class="math" src="_images/math/8c786053c3e6be9511ab6db1a5f8b7816f6662fc.png" alt="1.5 \times 10^{-5}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/776d0f9b0885898dcf46145fa1727fe1df4d5ab6.png" alt="1.0 \times 10^{-5}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/a30fed4ad2530e607a8afc0ab145901cc564ff19.png" alt="6.0 \times 10^{-5}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/452f369455a69b19cfeedaedecf68fdf8c861d5f.png" alt="4.0 \times 10^{-5}" style="vertical-align: -1px"/></td>
+</tr>
+<tr class="row-even"><td>GAU_VERYTIGHT <a class="footnote-reference" href="#ff" id="id19">[6]</a></td>
+<td>&nbsp;</td>
+<td><img class="math" src="_images/math/b0bf7be6ac5db2b9ca9b3e4a4134c9ae6b7f7a65.png" alt="2.0 \times 10^{-6}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/eef7accfec9ad97272e91d7bfebf7ac5f5ca5c39.png" alt="1.0 \times 10^{-6}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/801ffaa8eb25be8226402aa44600d47f224b1236.png" alt="6.0 \times 10^{-6}" style="vertical-align: -1px"/></td>
+<td><img class="math" src="_images/math/0ef8b2b4b348bbe703bae9d7845d872e0da9eefd.png" alt="4.0 \times 10^{-6}" style="vertical-align: -1px"/></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="fa" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id13">[1]</a></td><td>Default</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="fb" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id15">[2]</a></td><td>Baker convergence criteria are the same.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="fc" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id10">1</a>, <a class="fn-backref" href="#id17">2</a>)</em> Counterpart NWCHEM convergence criteria are the same.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="fd" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[4]</td><td><em>(<a class="fn-backref" href="#id7">1</a>, <a class="fn-backref" href="#id9">2</a>, <a class="fn-backref" href="#id12">3</a>)</em> Convergence achieved when all active criteria are fulfilled.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="fe" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[5]</td><td><em>(<a class="fn-backref" href="#id14">1</a>, <a class="fn-backref" href="#id16">2</a>, <a class="fn-backref" href="#id20">3</a>)</em> Convergence achieved when <strong>Max Force</strong> and one of <strong>Max Energy</strong> or <strong>Max Disp</strong> are fulfilled.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ff" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[6]</td><td><em>(<a class="fn-backref" href="#id8">1</a>, <a class="fn-backref" href="#id11">2</a>, <a class="fn-backref" href="#id18">3</a>, <a class="fn-backref" href="#id19">4</a>, <a class="fn-backref" href="#id21">5</a>)</em> Normal convergence achieved when all four criteria (<strong>Max Force</strong>, <strong>RMS Force</strong>,
+<strong>Max Disp</strong>, and <strong>RMS Disp</strong>) are fulfilled. To help with flat
+potential surfaces, alternate convergence achieved when 100<img class="math" src="_images/math/bac4dbe1c696d11e8dc43dd7f613199b2120daa1.png" alt="\times" style="vertical-align: 0px"/><em>rms force</em> is less
+than <strong>RMS Force</strong> criterion.</td></tr>
+</tbody>
+</table>
+<p>For ultimate control, specifying a value for any of the five monitored options activates that
+criterium and overwrites/appends it to the criteria set by <a class="reference internal" href="autodoc_glossary_options_c.html#term-g-convergence-optking"><em class="xref std std-term">G_CONVERGENCE</em></a>.
+Note that this revokes the special convergence arrangements detailed in notes <a class="footnote-reference" href="#fe" id="id20">[5]</a> and <a class="footnote-reference" href="#ff" id="id21">[6]</a>
+and instead requires all active criteria to be fulfilled to
+achieve convergence. To avoid this revokation, turn on keyword <a class="reference internal" href="autodoc_glossary_options_c.html#term-flexible-g-convergence-optking"><em class="xref std std-term">FLEXIBLE_G_CONVERGENCE</em></a>.</p>
+</div>
+<div class="section" id="output">
+<span id="index-4"></span><h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>The progress of a geometry optimization can be monitored by grepping the output file for the
+tilde character (<tt class="docutils literal"><span class="pre">~</span></tt>). This produces a table like the one below that shows
+for each iteration the value for each of the five quantities and whether the criterion
+is active and fulfilled (<tt class="docutils literal"><span class="pre">*</span></tt>), active and unfulfilled ( ),  or inactive (<tt class="docutils literal"><span class="pre">o</span></tt>).</p>
+<div class="highlight-python"><pre>--------------------------------------------------------------------------------------------- ~
+ Step     Total Energy     Delta E     MAX Force     RMS Force      MAX Disp      RMS Disp    ~
+--------------------------------------------------------------------------------------------- ~
+  Convergence Criteria    1.00e-06 *    3.00e-04 *             o    1.20e-03 *             o  ~
+--------------------------------------------------------------------------------------------- ~
+    1     -38.91591820   -3.89e+01      6.91e-02      5.72e-02 o    1.42e-01      1.19e-01 o  ~
+    2     -38.92529543   -9.38e-03      6.21e-03      3.91e-03 o    2.00e-02      1.18e-02 o  ~
+    3     -38.92540669   -1.11e-04      4.04e-03      2.46e-03 o    3.63e-02      2.12e-02 o  ~
+    4     -38.92548668   -8.00e-05      2.30e-04 *    1.92e-04 o    1.99e-03      1.17e-03 o  ~
+    5     -38.92548698   -2.98e-07 *    3.95e-05 *    3.35e-05 o    1.37e-04 *    1.05e-04 o  ~</pre>
+</div>
+<p>The full list of keywords for optking is provided in Appendix <a class="reference internal" href="autodir_options_c/module__optking.html#apdx-optking"><em>OPTKING</em></a>.</p>
+<p>Information on the Psithon function that drives geometry optimizations is provided
+at <a class="reference internal" href="opt.html#driver.optimize" title="driver.optimize"><tt class="xref py py-func docutils literal"><span class="pre">optimize()</span></tt></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Geometry Optimization</a><ul>
+<li><a class="reference internal" href="#basic-keywords">Basic Keywords</a><ul>
+<li><a class="reference internal" href="#opt-type"><tt class="docutils literal"><span class="pre">OPT_TYPE</span></tt></a></li>
+<li><a class="reference internal" href="#step-type"><tt class="docutils literal"><span class="pre">STEP_TYPE</span></tt></a></li>
+<li><a class="reference internal" href="#geom-maxiter"><tt class="docutils literal"><span class="pre">GEOM_MAXITER</span></tt></a></li>
+<li><a class="reference internal" href="#g-convergence"><tt class="docutils literal"><span class="pre">G_CONVERGENCE</span></tt></a></li>
+<li><a class="reference internal" href="#full-hess-every"><tt class="docutils literal"><span class="pre">FULL_HESS_EVERY</span></tt></a></li>
+<li><a class="reference internal" href="#intcos-generate-exit"><tt class="docutils literal"><span class="pre">INTCOS_GENERATE_EXIT</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#optimizing-minima">Optimizing Minima</a></li>
+<li><a class="reference internal" href="#hessian">Hessian</a></li>
+<li><a class="reference internal" href="#transition-states-reaction-paths-and-constrained-optimizations">Transition States, Reaction Paths, and Constrained Optimizations</a></li>
+<li><a class="reference internal" href="#convergence-criteria">Convergence Criteria</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="detci.html"
+                        title="previous chapter">CI: Configuration Interaction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="oeprop.html"
+                        title="next chapter">Evaluation of One-Electron Properties</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/optking.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="oeprop.html" title="Evaluation of One-Electron Properties"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="detci.html" title="CI: Configuration Interaction"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PSI4 [beta3]</a> &raquo; </li>
+
+          <li><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, The Psi4 Project.
+      Last updated on Oct 16, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

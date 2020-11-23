@@ -1,0 +1,926 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Psithon: Structuring an Input File &mdash; PSI4 [beta2] documentation</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="#" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'beta2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <link rel="top" title="PSI4 [beta2] documentation" href="index.html" />
+    <link rel="next" title="Basis Sets" href="basissets.html" />
+    <link rel="prev" title="Configuration: Preparing PSI4’s Environment" href="external.html" /> 
+    <script type="text/javascript" src="_static/copybutton.js"></script> 
+
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="basissets.html" title="Basis Sets"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="external.html" title="Configuration: Preparing PSI4’s Environment"
+             accesskey="P">previous</a> |</li>
+    <li><a href="index.html">PSI4 [beta2]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="PSI4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" />
+<div class="section" id="psithon-structuring-an-input-file">
+<span id="sec-psithoninput"></span><h1>Psithon: Structuring an Input File<a class="headerlink" href="#psithon-structuring-an-input-file" title="Permalink to this headline">¶</a></h1>
+<p>To allow arbitrarily complex computations to be performed, PSI4 was built
+upon the Python interpreter. However, to make the input syntax simpler, some
+pre-processing of the input file is performed before it is interpreted,
+resulting in Python syntax that is customized for PSI, termed Psithon.  In
+this section we will describe the essential features of the Psithon language.
+PSI4 is distributed with an extensive test suite, described in section
+<a class="reference internal" href="testsuite.html#apdx-testsuite"><em>Test Suite and Sample Inputs</em></a>; the input files for these test cases can be found in the
+samples subdirectory of the top-level PSI4 source directory, and should
+serve as useful examples.</p>
+<div class="section" id="physical-constants">
+<span id="sec-physicalconstants"></span><span id="index-0"></span><h2>Physical Constants<a class="headerlink" href="#physical-constants" title="Permalink to this headline">¶</a></h2>
+<p>For convenience, the Python interpreter will execute the contents of the
+<tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> file in the current user&#8217;s home area (if present) before performing any
+tasks in the input file.  This allows frequently used python variables to be
+automatically defined in all input files.  For example, if we repeatedly make
+use of the universal gravitational constant, the following line could be placed
+in the <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> file</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">UGC</span> <span class="o">=</span> <span class="mf">6.67384E-11</span> <span class="c"># m^3 / kg^-1 s^-2</span>
+</pre></div>
+</div>
+<p>which would make the variable <tt class="docutils literal"><span class="pre">UGC</span></tt> available in all PSI4 input files.
+For convenience, the physical constants used within the PSI4 code (which
+are obtained from the 3rd edition of the IUPAC Green
+book <a class="reference internal" href="bibliography.html#cohen-greenbook-2008">[Cohen:GreenBook:2008]</a>) are also automatically loaded as Psithon
+variables (before <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> is loaded, so that <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> values can be overridden by
+the user).</p>
+<p id="table-physconst">The physical constants used within PSI4, which are automatically
+made available within all PSI4 input files.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">psi_h</span>                        <span class="o">=</span> <span class="mf">6.62606896E-34</span>       <span class="c"># The Planck constant (Js)               </span>
+<span class="n">psi_c</span>                        <span class="o">=</span> <span class="mf">2.99792458E8</span>         <span class="c"># Speed of light (ms$^{-1}$)             </span>
+<span class="n">psi_kb</span>                       <span class="o">=</span> <span class="mf">1.3806504E-23</span>        <span class="c"># The Boltzmann constant (JK$^{-1}$)     </span>
+<span class="n">psi_R</span>                        <span class="o">=</span> <span class="mf">8.314472</span>             <span class="c"># Universal gas constant (JK$^{-1}$mol$^{-1}$) </span>
+<span class="n">psi_bohr2angstroms</span>           <span class="o">=</span> <span class="mf">0.52917720859</span>        <span class="c"># Bohr to Angstroms conversion factor    </span>
+<span class="n">psi_bohr2m</span>                   <span class="o">=</span> <span class="mf">0.52917720859E-10</span>    <span class="c"># Bohr to meters conversion factor       </span>
+<span class="n">psi_bohr2cm</span>                  <span class="o">=</span> <span class="mf">0.52917720859E-8</span>     <span class="c"># Bohr to centimeters conversion factor  </span>
+<span class="n">psi_amu2g</span>                    <span class="o">=</span> <span class="mf">1.660538782E-24</span>      <span class="c"># Atomic mass units to grams conversion factor </span>
+<span class="n">psi_amu2kg</span>                   <span class="o">=</span> <span class="mf">1.660538782E-27</span>      <span class="c"># Atomic mass units to kg conversion factor </span>
+<span class="n">psi_au2amu</span>                   <span class="o">=</span> <span class="mf">5.485799097E-4</span>       <span class="c"># Atomic units (m$@@e$) to atomic mass units conversion factor </span>
+<span class="n">psi_hartree2J</span>                <span class="o">=</span> <span class="mf">4.359744E-18</span>         <span class="c"># Hartree to joule conversion factor     </span>
+<span class="n">psi_hartree2aJ</span>               <span class="o">=</span> <span class="mf">4.359744</span>             <span class="c"># Hartree to attojoule (10$^{-18}$J) conversion factor </span>
+<span class="n">psi_cal2J</span>                    <span class="o">=</span> <span class="mf">4.184</span>                <span class="c"># Calorie to joule conversion factor     </span>
+<span class="n">psi_dipmom_au2si</span>             <span class="o">=</span> <span class="mf">8.47835281E-30</span>       <span class="c"># Atomic units to SI units (Cm) conversion factor for dipoles </span>
+<span class="n">psi_dipmom_au2debye</span>          <span class="o">=</span> <span class="mf">2.54174623</span>           <span class="c"># Atomic units to Debye conversion factor for dipoles </span>
+<span class="n">psi_dipmom_debye2si</span>          <span class="o">=</span> <span class="mf">3.335640952E-30</span>      <span class="c"># Debye to SI units (Cm) conversion factor for dipoles </span>
+<span class="n">psi_c_au</span>                     <span class="o">=</span> <span class="mf">137.035999679</span>        <span class="c"># Speed of light in atomic units         </span>
+<span class="n">psi_hartree2ev</span>               <span class="o">=</span> <span class="mf">27.21138</span>             <span class="c"># Hartree to eV conversion factor        </span>
+<span class="n">psi_hartree2wavenumbers</span>      <span class="o">=</span> <span class="mf">219474.6</span>             <span class="c"># Hartree to cm$^{-1}$ conversion factor </span>
+<span class="n">psi_hartree2kcalmol</span>          <span class="o">=</span> <span class="mf">627.5095</span>             <span class="c"># Hartree to kcal mol$^{-1}$ conversion factor </span>
+<span class="n">psi_hartree2MHz</span>              <span class="o">=</span> <span class="mf">6.579684E9</span>           <span class="c"># Hartree to MHz conversion factor       </span>
+<span class="n">psi_kcalmol2wavenumbers</span>      <span class="o">=</span> <span class="mf">349.7551</span>             <span class="c"># kcal mol$^{-1}$ to cm$^{-1}$ conversion factor </span>
+<span class="n">psi_e0</span>                       <span class="o">=</span> <span class="mf">8.854187817E-12</span>      <span class="c"># Vacuum permittivity (Fm$^{-1}$)        </span>
+<span class="n">psi_na</span>                       <span class="o">=</span> <span class="mf">6.02214179E23</span>        <span class="c"># Avagadro&#39;s number                      </span>
+<span class="n">psi_me</span>                       <span class="o">=</span> <span class="mf">9.10938215E-31</span>       <span class="c"># Electron rest mass (in kg)             </span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">psi_</span></tt> prefix is to prevent clashes with user-defined variables in
+PSI4 input files.</p>
+</div>
+<div class="section" id="molecule-specification">
+<span id="sec-moleculespecification"></span><span id="index-1"></span><h2>Molecule Specification<a class="headerlink" href="#molecule-specification" title="Permalink to this headline">¶</a></h2>
+<p>PSI4 has a very flexible input parser that allows the user to provide
+geometries as Cartesian coordinates, Z-matrix variables, or a combination of
+both. The use of fixed values and variables are supported for both. For
+example, the geometry for H<sub>2</sub> can be specified a number of ways, using the
+<tt class="docutils literal"><span class="pre">molecule</span></tt> keyword:</p>
+<div class="highlight-python"><pre>molecule{
+  H
+  H 1 0.9
+}
+
+ or
+
+molecule{
+  H
+  H 1 r
+  r = 0.9
+}
+
+ or
+
+molecule{
+  H1
+  H2 H1 0.9
+}
+
+ or
+
+molecule{
+  H 0.0 0.0 0.0
+  H 0.0 0.0 0.9
+}
+
+ or
+
+molecule{
+  H 0.0 0.0 0.0
+  H 0.0 0.0 r
+  r = 0.9
+}
+
+ or
+
+molecule{
+  H 0.0 0.0 -r
+  H 0.0 0.0 r
+  r = 0.45
+}</pre>
+</div>
+<p>Blank lines are ignored and, unlike regular Python syntax, indentation within
+the <tt class="docutils literal"><span class="pre">molecule</span></tt> block does not matter, although the <tt class="docutils literal"><span class="pre">molecule</span></tt> keyword itself must
+be aligned within the input according to standard Python syntax. For more
+examples of geometry specification, see the <a class="reference external" href="http://sirius.chem.vt.edu/psi4sources/4.0b2/samples/mints1/input.dat">mints1</a> input file in the samples
+folder. It is also possible to mix Cartesian and Z-matrix geometry
+specifications, as demonstrated in the <a class="reference external" href="http://sirius.chem.vt.edu/psi4sources/4.0b2/samples/mints4/input.dat">mints4</a> sample input file.</p>
+<div class="section" id="multiple-molecules">
+<span id="sec-multiplemolecules"></span><span id="index-2"></span><h3>Multiple Molecules<a class="headerlink" href="#multiple-molecules" title="Permalink to this headline">¶</a></h3>
+<p>To facilitate more elaborate computations, it is possible to provide a name for
+each molecule, and tell PSI4 which one should be used in a given
+calculation. For example, consider the following input file:</p>
+<div class="highlight-python"><pre>molecule h2{
+  H
+  H 1 0.9
+}
+
+
+set basis cc-pvdz
+set reference rhf
+energy('scf')
+
+molecule h{
+  H
+}
+
+set basis cc-pvdz
+set reference uhf
+energy('scf')</pre>
+</div>
+<p>Here, two separate jobs are performed on two different molecules; the first is
+performed on H<sub>2</sub>, while the second is for H atom. The last molecule to be
+specified is the &#8220;active&#8221; molecule by default. To explicitly activate a named
+molecule, the activate keyword is provided. Using this keyword, the above input
+file can be equivalently written as follows:</p>
+<div class="highlight-python"><pre>molecule h2{
+  H
+  H 1 0.9
+}
+
+molecule h{
+  H
+}
+
+activate(h2)
+set basis cc-pvdz
+set reference rhf
+energy('scf')
+
+activate(h)
+set basis cc-pvdz
+set reference uhf
+energy('scf')</pre>
+</div>
+<p>Note that whenever the molecule is changed, the basis set must be specified
+again. The following section provides more details about the job control
+keywords used in the above examples.</p>
+</div>
+<div class="section" id="molecule-keywords">
+<span id="sec-moleculekeywords"></span><span id="index-3"></span><h3>Molecule Keywords<a class="headerlink" href="#molecule-keywords" title="Permalink to this headline">¶</a></h3>
+<p>In addition to specifying the geometry, additional information can be provided
+in the <tt class="docutils literal"><span class="pre">molecule</span></tt> block. If two integers are encountered on any line of the
+<tt class="docutils literal"><span class="pre">molecule</span></tt> block, they are interpreted as the molecular charge and multiplicity
+(<img class="math" src="_images/math/4fea57685838552cdcfbb8518fb46c2c41cea929.png" alt="2 \times M_s + 1" style="vertical-align: -3px"/>), respectively.  The symmetry can be specified by a line reading
+<tt class="samp docutils literal"><span class="pre">symmetry</span> <em><span class="pre">symbol</span></em></tt>, where <tt class="samp docutils literal"><em><span class="pre">symbol</span></em></tt> is
+the Schönflies symbol of the (Abelian) point group to use for the
+computation; see Sec. <a class="reference internal" href="#sec-symmetry"><em>Symmetry</em></a> for more details. This need not be
+specified, as the molecular symmetry is automatically detected by PSI4.
+Certain computations require that the molecule is not reoriented; this can be
+achieved by adding either <tt class="docutils literal"><span class="pre">no_reorient</span></tt> or <tt class="docutils literal"><span class="pre">noreorient</span></tt>. By default,
+Ångström units are used; this is changed by adding a line that reads
+<tt class="samp docutils literal"><span class="pre">units</span> <em><span class="pre">spec</span></em></tt>, where <tt class="samp docutils literal"><em><span class="pre">spec</span></em></tt> is one of <tt class="docutils literal"><span class="pre">ang</span></tt>,
+<tt class="docutils literal"><span class="pre">angstrom</span></tt>, <tt class="docutils literal"><span class="pre">a.u.</span></tt>, <tt class="docutils literal"><span class="pre">au</span></tt>, or <tt class="docutils literal"><span class="pre">bohr</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="geometries-from-the-pubchem-database">
+<span id="sec-pubchem"></span><span id="index-4"></span><h2>Geometries from the <a class="reference external" href="http://pubchem.ncbi.nlm.nih.gov/">PubChem</a> Database<a class="headerlink" href="#geometries-from-the-pubchem-database" title="Permalink to this headline">¶</a></h2>
+<p>Obtaining rough starting guess geometries can be burdensome.  The Z-matrix
+coordinate system was designed to provide chemists with an intuitive method for
+guessing structures in terms of bond lengths and angles.  While Z-matrix input is
+intuitive for small molecules with few degrees of freedom, it quickly becomes
+laborious as the system size grows.  To obtain a reasonable starting guess
+geometry, PSI4 can take a chemical name as input; this is then used
+to attempt to retrieve Cartesian coordinates from the <a class="reference internal" href="bibliography.html#pubchem">[PubChem]</a> database.</p>
+<p>For example, to run a computation on benzene, we can use the following molecule specification:</p>
+<div class="highlight-python"><pre>molecule benzene {
+    pubchem:benzene
+}</pre>
+</div>
+<p>If the computer is connected to the internet, the above code will instruct
+PSI4 to search PubChem for a starting structure.  The search is actually
+performed for compounds whose name <em>contains</em> &#8220;benzene&#8221;, so multiple
+entries will be returned.  If the name provided (&#8220;benzene&#8221; in the above
+example) exactly matches one of the results, that entry will be used.  If no
+exact match is found the results, along with a unique chemical identifier
+(CID), are printed to the output file, prompting the user to provide a more
+specific name.  For example, if we know that we want to run a computation on a
+compound whose name(s) contain &#8220;benzene&#8221;, but we&#8217;re not sure of the exact IUPAC
+name, the following input can be used:</p>
+<div class="highlight-python"><pre>molecule benzene {
+    pubchem:benzene*
+}</pre>
+</div>
+<p>Appending the &#8220;*&#8221; prevents an exact match from being found and, at the time
+of writing, the following results are displayed in the output file:</p>
+<div class="highlight-python"><pre>Chemical ID     IUPAC Name
+         241   benzene
+        7371   benzenesulfonic acid
+       91526   benzenesulfonate
+         244   phenylmethanol
+         727   1,2,3,4,5,6-hexachlorocyclohexane
+         240   benzaldehyde
+       65723   benzenesulfonohydrazide
+       74296   N-phenylbenzenesulfonamide
+         289   benzene-1,2-diol
+         243   benzoic acid
+        7370   benzenesulfonamide
+      636822   1,2,4-trimethoxy-5-[(E)-prop-1-enyl]benzene
+        7369   benzenesulfonyl chloride
+       12932   N-[2-di(propan-2-yloxy)phosphinothioylsulfanylethyl]benzenesulfonamide
+        7505   benzonitrile
+       78438   N-[anilino(phenyl)phosphoryl]aniline
+       12581   3-phenylpropanenitrile
+      517327   sodium benzenesulfonate
+      637563   1-methoxy-4-[(E)-prop-1-enyl]benzene
+      252325   [(E)-prop-1-enyl]benzene</pre>
+</div>
+<p>Note that some of these results do not contain the string &#8220;benzene&#8221;; these
+compounds have synonyms containing that text.  We can now replace the
+&#8220;benzene*&#8221; in the input file with one of the above compounds using either the
+IUPAC name or the CID provided in the list, <em>viz</em>:</p>
+<div class="highlight-python"><pre>molecule benzene {
+    pubchem:637563
+}
+
+ or
+
+molecule benzene {
+    pubchem:1-methoxy-4-[(E)-prop-1-enyl]benzene
+}</pre>
+</div>
+<p>Some of the structures in the database are quite loosely optimized and do not
+have the correct symmetry.  Before starting the computation, PSI4 will
+check to see if the molecule is close to having each of the possible
+symmetries, and will adjust the structure accordingly so that the maximum
+symmetry is utilized.</p>
+<p>The standard keywords, described in Sec. <a class="reference internal" href="#sec-moleculekeywords"><em>Molecule Keywords</em></a>, can be
+used in conjuction to specify charge, multiplicity, symmetry to use, <em>etc.</em> .</p>
+</div>
+<div class="section" id="symmetry">
+<span id="sec-symmetry"></span><span id="index-5"></span><h2>Symmetry<a class="headerlink" href="#symmetry" title="Permalink to this headline">¶</a></h2>
+<p>For efficiency, PSI4 can utilize the largest Abelian subgroup of the full
+point group of the molecule.  Concomitantly a number of quantities, such as
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-socc-globals"><em class="xref std std-term">SOCC</em></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-docc-globals"><em class="xref std std-term">DOCC</em></a>, are arrays whose entries pertain to irreducible
+representations (irreps) of the molecular point group.  Ordering of irreps
+follows the convention used in Cotton&#8217;s <cite>Chemical Applications of Group
+Theory</cite>, as detailed in Table <a class="reference internal" href="#table-irrepordering"><em>Irreps</em></a>.  We refer to this
+convention as &#8220;Cotton Ordering&#8221; hereafter.</p>
+<table border="1" class="docutils" id="table-irrepordering">
+<caption>Ordering of irreducible representations (irreps) used in PSI4</caption>
+<colgroup>
+<col width="12%" />
+<col width="9%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Point Group</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">3</th>
+<th class="head">4</th>
+<th class="head">5</th>
+<th class="head">6</th>
+<th class="head">7</th>
+<th class="head">8</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><img class="math" src="_images/math/70b97eb4ad6e4e7a5a97e2547d9ed6e965960d0c.png" alt="C_1" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A" style="vertical-align: 0px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/c117e8403b3b9cf74d2f63f6627aa17c1995e3bc.png" alt="C_i" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/5a93d5c86ba2b880a88a0eb64d47d03ca5d5d702.png" alt="A_g" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/1dbc50906c462f15acdc42d4a9c327911a66c312.png" alt="A_u" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><img class="math" src="_images/math/b65e6facfe122c182fe14d503aeace2c52a9739d.png" alt="C_2" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A" style="vertical-align: 0px"/></td>
+<td><img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B" style="vertical-align: 0px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/de071f600b82b5d82ddb3e956a83698595d7217e.png" alt="C_s" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/1090530ae883b627e090bfb5e450ef796febca40.png" alt="A'" style="vertical-align: 0px"/></td>
+<td><img class="math" src="_images/math/81ecc8352ed830fa97109845526d1ff032b5e583.png" alt="A''" style="vertical-align: 0px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><img class="math" src="_images/math/4d01cc94a123a0c2b5239d4342be2e6ce7f3fc53.png" alt="D_2" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A" style="vertical-align: 0px"/></td>
+<td><img class="math" src="_images/math/243af6fad28c15abb3e11996374ba60e745bf543.png" alt="B_1" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/368b6f971b418d731c62ff2cb59f51c527d22849.png" alt="B_2" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/c48424701a2c36b4d4d6956d8c41e2798d8b32a8.png" alt="B_3" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/24ba218ac02f2682546d4cd0cf94054133642258.png" alt="C_{2v}" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/36c7f3f828cf12ab9cafeffad282468a95219600.png" alt="A_1" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/e3a8ae66ded7f33f9385a37c9cadfb82720013d8.png" alt="A_2" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/243af6fad28c15abb3e11996374ba60e745bf543.png" alt="B_1" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/368b6f971b418d731c62ff2cb59f51c527d22849.png" alt="B_2" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><img class="math" src="_images/math/ce05ff6f627b4ce21c6542194ef09e4858698c07.png" alt="C_{2h}" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/5a93d5c86ba2b880a88a0eb64d47d03ca5d5d702.png" alt="A_g" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/3dd99ee31297e747251f88be6e66f73804a030a1.png" alt="B_g" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/1dbc50906c462f15acdc42d4a9c327911a66c312.png" alt="A_u" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/dba076e08636c55b0800f792fc8bd20609670091.png" alt="B_u" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/e31911778ea202b962c6d919d57a3d4a7fa44865.png" alt="D_{2h}" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/5a93d5c86ba2b880a88a0eb64d47d03ca5d5d702.png" alt="A_g" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/ebffddef9b4976a2f15caa81f97a56b733902a7a.png" alt="B_{1g}" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/9a272243b889ecdfae20fa4e35f8face34ff432f.png" alt="B_{2g}" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/f4ab51c6a81f079c59e98d4ff5b3247c7ac1e30b.png" alt="B_{3g}" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/1dbc50906c462f15acdc42d4a9c327911a66c312.png" alt="A_u" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/0024272e3a4eddd6c5ea1e00beaebf0ab51fa13c.png" alt="B_{1u}" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/07806efdcbcda89a9fbc140988210ac44925a6c8.png" alt="B_{2u}" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/6189578ba6c4f9b1833e44e74a41c029c5195f85.png" alt="B_{3u}" style="vertical-align: -3px"/></td>
+</tr>
+</tbody>
+</table>
+<p>For example, water (<img class="math" src="_images/math/24ba218ac02f2682546d4cd0cf94054133642258.png" alt="C_{2v}" style="vertical-align: -3px"/> symmetry) has 3 doubly occupied <img class="math" src="_images/math/36c7f3f828cf12ab9cafeffad282468a95219600.png" alt="A_1" style="vertical-align: -4px"/>
+orbitals, as well as 1 each of <img class="math" src="_images/math/243af6fad28c15abb3e11996374ba60e745bf543.png" alt="B_1" style="vertical-align: -4px"/> and <img class="math" src="_images/math/368b6f971b418d731c62ff2cb59f51c527d22849.png" alt="B_2" style="vertical-align: -3px"/> symmetry; the
+corresponding <a class="reference internal" href="autodoc_glossary_options_c.html#term-docc-globals"><em class="xref std std-term">DOCC</em></a> array is therefore:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DOCC</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Although PSI4 will detect the symmetry automatically, and use the largest
+possible Abelian subgroup, the user might want to run in a lower point group.
+To do this the <tt class="docutils literal"><span class="pre">symmetry</span></tt> keyword can be used when inputting the molecule
+(see Sec. <a class="reference internal" href="#sec-moleculespecification"><em>Molecule Specification</em></a>).  In most cases the standard
+Schönflies symbol (one of <tt class="docutils literal"><span class="pre">c1</span></tt>, <tt class="docutils literal"><span class="pre">c2</span></tt>, <tt class="docutils literal"><span class="pre">ci</span></tt>, <tt class="docutils literal"><span class="pre">cs</span></tt>, <tt class="docutils literal"><span class="pre">d2</span></tt>,
+<tt class="docutils literal"><span class="pre">c2h</span></tt>, <tt class="docutils literal"><span class="pre">c2v</span></tt>, <tt class="docutils literal"><span class="pre">d2h</span></tt> will suffice.
+For certain computations, the user might want to specify which particular
+subgroup is to be used by appending a unique axis specifier.  For example when
+running a computation on a molecule with <img class="math" src="_images/math/e31911778ea202b962c6d919d57a3d4a7fa44865.png" alt="D_{2h}" style="vertical-align: -3px"/> symmetry in <img class="math" src="_images/math/24ba218ac02f2682546d4cd0cf94054133642258.png" alt="C_{2v}" style="vertical-align: -3px"/>, the
+<img class="math" src="_images/math/b65e6facfe122c182fe14d503aeace2c52a9739d.png" alt="C_2" style="vertical-align: -3px"/> axis can be chosen as either the <img class="math" src="_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x" style="vertical-align: 0px"/>, the <img class="math" src="_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y" style="vertical-align: -4px"/>, or the <img class="math" src="_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z" style="vertical-align: 0px"/>; these can
+be specified by requesing the symmetry as <tt class="docutils literal"><span class="pre">c2vx</span></tt>, <tt class="docutils literal"><span class="pre">c2vy</span></tt>, or <tt class="docutils literal"><span class="pre">c2vz</span></tt>, respectively.
+Likewise the <tt class="docutils literal"><span class="pre">c2x</span></tt>, <tt class="docutils literal"><span class="pre">c2y</span></tt>, <tt class="docutils literal"><span class="pre">c2z</span></tt>, <tt class="docutils literal"><span class="pre">c2hx</span></tt>, <tt class="docutils literal"><span class="pre">c2hy</span></tt>, and <tt class="docutils literal"><span class="pre">c2hz</span></tt>
+labels are valid.  For <img class="math" src="_images/math/de071f600b82b5d82ddb3e956a83698595d7217e.png" alt="C_s" style="vertical-align: -3px"/> symmetry the labels <tt class="docutils literal"><span class="pre">csx</span></tt>, <tt class="docutils literal"><span class="pre">csy</span></tt>, and
+<tt class="docutils literal"><span class="pre">csz</span></tt> request the <img class="math" src="_images/math/5d379b13c2338ee58a27252096b2544c9e8e37c7.png" alt="yz" style="vertical-align: -4px"/>, <img class="math" src="_images/math/2dd70347c7940f63ff9417e383548564fd92aff7.png" alt="xz" style="vertical-align: 0px"/>, and <img class="math" src="_images/math/3f79c3676b62fb47243e0d357c87115b6f3395e4.png" alt="xy" style="vertical-align: -4px"/> planes be used as the mirror plane,
+respectively.  If no unique axis is specified, PSI4 will choose an appropriate
+subgroup.</p>
+<p>Certain types of finite difference computations, such as numerical vibrational
+frequencies, might lower the symmetry of the molecule.  When this happens
+symmetry-dependent arrays, such as <a class="reference internal" href="autodoc_glossary_options_c.html#term-socc-globals"><em class="xref std std-term">SOCC</em></a>, are automatically remapped
+to the lower symmetry.  For example, if we were to investigate the <img class="math" src="_images/math/b58121024d3aa0dad3969efdac088eff12d8299b.png" alt="^2B_1" style="vertical-align: -4px"/>
+state of water cation, we can specify</p>
+<blockquote>
+<div>SOCC = [0, 0, 1, 0]</div></blockquote>
+<p>in the input file.  If any ensuing computations lower the symmetry, the above
+array will be appropriately remapped.  For example, reducing the symmetry to
+<img class="math" src="_images/math/de071f600b82b5d82ddb3e956a83698595d7217e.png" alt="C_s" style="vertical-align: -3px"/> (with the molecular plane defining the mirror plane), the above
+array will be automatically interpreted as:</p>
+<blockquote>
+<div>SOCC = [0, 1]</div></blockquote>
+<p>Some caution is required, however.  The <img class="math" src="_images/math/2da30e6497fc0cb17ae30f1623fec7339b031d8d.png" alt="^2A_1" style="vertical-align: -4px"/> state can be obtained with
+the</p>
+<blockquote>
+<div>SOCC = [1, 0, 0, 0]</div></blockquote>
+<p>specification, which would become</p>
+<blockquote>
+<div>SOCC = [1, 0]</div></blockquote>
+<p>under the above-mentioned reduction in symmetry.  The <img class="math" src="_images/math/315181858493585693add030d64cf82a93098b91.png" alt="^2B_2" style="vertical-align: -3px"/> state,
+whose singly-occupied orbitals are</p>
+<blockquote>
+<div>SOCC = [0, 0, 0, 1]</div></blockquote>
+<p>would be mapped to</p>
+<blockquote>
+<div>SOCC = [1, 0]</div></blockquote>
+<p>which is the same occupation as the <img class="math" src="_images/math/2da30e6497fc0cb17ae30f1623fec7339b031d8d.png" alt="^2A_1" style="vertical-align: -4px"/> state.  In this case, the
+<img class="math" src="_images/math/2da30e6497fc0cb17ae30f1623fec7339b031d8d.png" alt="^2A_1" style="vertical-align: -4px"/> state is lower in energy, and is not problematic.  The distorted
+geometries for the <img class="math" src="_images/math/315181858493585693add030d64cf82a93098b91.png" alt="^2B_2" style="vertical-align: -3px"/> state are excited states that are subject to
+variational collapse.  One way to obtain reliable energies for these states is
+to use a multi-state method; in this case it&#8217;s easier to run the entire
+computation in the lowest symmetry needed during the finite difference
+procedure.</p>
+</div>
+<div class="section" id="non-covalently-bonded-molecule-fragments">
+<span id="sec-fragments"></span><span id="index-6"></span><h2>Non-Covalently Bonded Molecule Fragments<a class="headerlink" href="#non-covalently-bonded-molecule-fragments" title="Permalink to this headline">¶</a></h2>
+<p>PSI4 has an extensive range of tools for treating non-covalent
+intermolecular forces, including counterpoise corrections and symmetry adapted
+perturbation theory methods. These require the definition of which fragments
+are interacting within the complex. PSI4 provides a very simple mechanism
+for doing so; simply define the complex&#8217;s geometry using the standard
+Cartesian, Z-matrix, or mixture thereof, specifications and then place two
+dashes between nonbonded fragements. For example, to study the interaction
+energy of ethane and ethyne molecules, we can use the following molecule
+block:</p>
+<div class="highlight-python"><pre>molecule{
+  0 1
+  C  0.000000 -0.667578  -2.124659
+  C  0.000000  0.667578  -2.124659
+  H  0.923621 -1.232253  -2.126185
+  H -0.923621 -1.232253  -2.126185
+  H -0.923621  1.232253  -2.126185
+  H  0.923621  1.232253  -2.126185
+  --
+  0 1
+  C 0.000000 0.000000 2.900503
+  C 0.000000 0.000000 1.693240
+  H 0.000000 0.000000 0.627352
+  H 0.000000 0.000000 3.963929
+}</pre>
+</div>
+<p>In this case, the charge and multiplicity of each interacting fragment is
+explicitly specified. If the charge and multiplicity are specified for the
+first fragment, it is assumed to be the same for all fragments. When
+considering interacting fragments, the overall charge is simply the sum of all
+fragment charges, and any unpaired electrons are assumed to be coupled to
+yield the highest possible <img class="math" src="_images/math/729765889d328c09ca5bc896289db544d4c6bd80.png" alt="M_s" style="vertical-align: -3px"/> value.</p>
+</div>
+<div class="section" id="job-control">
+<span id="sec-jobcontrol"></span><span id="index-7"></span><h2>Job Control<a class="headerlink" href="#job-control" title="Permalink to this headline">¶</a></h2>
+<p>PSI4 comprises a number of modules, written in C++, that each perform
+specific tasks and are callable directly from the Python front end. Each module
+recognizes specific keywords in the input file, detailed in Appendix <a class="reference internal" href="autodoc_options_c_bymodule.html#apdx-options-c-module"><em>Keywords by Module</em></a>, which
+control its function. The keywords can be made global, or scoped to apply to
+certain specific modules. The following examples demonstrate some of the ways
+that global keywords can be specified:</p>
+<div class="highlight-python"><pre>set globals basis cc-pVDZ
+
+ or
+
+set basis cc-pVDZ
+
+ or
+
+set globals basis = cc-pVDZ
+
+ or
+
+set basis = cc-pVDZ
+
+ or
+
+set globals{
+  basis cc-pVDZ
+}
+
+ or
+
+set{
+  basis cc-pVDZ
+}
+
+ or
+
+set{
+  basis = cc-pVDZ
+}</pre>
+</div>
+<p>Note the lack of quotes around <tt class="docutils literal"><span class="pre">cc-pVDZ</span></tt>, even though it is a string. The
+Psithon preprocessor automatically wraps any string values in <tt class="docutils literal"><span class="pre">set</span></tt> commands in
+strings. The last three examples provide a more convenient way for specifying
+multiple keywords:</p>
+<div class="highlight-python"><pre>set{
+  basis = cc-pVDZ
+  print = 1
+  reference = rhf
+}</pre>
+</div>
+<p>For arguments that require an array input, standard Python list syntax should
+be used, <em>viz.</em>:</p>
+<div class="highlight-python"><pre>set{
+  docc = [3, 0, 1, 1]
+}</pre>
+</div>
+<p>List/matrix inputs may span multiple lines, as long as the opening <tt class="docutils literal"><span class="pre">[</span></tt> is
+on the same line as the name of the keyword.</p>
+<p>Any of the above keyword specifications can be scoped to individual modules,
+by adding the name of the module after the <tt class="docutils literal"><span class="pre">set</span></tt> keyword. Omitting the module
+name, or using the name <tt class="docutils literal"><span class="pre">global</span></tt> or <tt class="docutils literal"><span class="pre">globals</span></tt> will result in the keyword being
+applied to all modules. For example, in the following input</p>
+<div class="highlight-python"><pre>molecule{
+  o
+  h 1 roh
+  h 1 roh 2 ahoh
+
+  roh = 0.957
+  ahoh = 104.5
+}
+
+set basis cc-pVDZ
+set ccenergy print 3
+set scf print 1
+energy('ccsd')</pre>
+</div>
+<p>the basis set is set to cc-pVDZ throughout, the SCF code will have a print
+level of 1 and the ccenergy code, which performs coupled cluster computations,
+will use a print level of 3. In this example a full CCSD computation is
+performed by running the SCF code first, then the coupled cluster modules;
+the <tt class="docutils literal"><span class="pre">energy()</span></tt> Python helper function ensures that this is performed correctly.
+Note that the Python interpreter executes commands in the order they appear in
+the input file, so if the last four commands in the above example were to read</p>
+<div class="highlight-python"><pre>set basis cc-pVDZ
+energy('ccsd')
+set ccenergy print 3
+set scf print 1</pre>
+</div>
+<p>the commands that set the print level would be ineffective, as they would be
+processed after the CCSD computation completes.</p>
+</div>
+<div class="section" id="assigning-basis-sets">
+<span id="sec-psithonbasissets"></span><span id="index-8"></span><h2>Assigning Basis Sets<a class="headerlink" href="#assigning-basis-sets" title="Permalink to this headline">¶</a></h2>
+<p>While the above syntax will suffice for specifying basis sets in most cases,
+the user may need to assign basis sets to specific atoms.  To achieve this, a
+<tt class="docutils literal"><span class="pre">basis</span></tt> block can be used.  We use a snippet from the <a class="reference external" href="http://sirius.chem.vt.edu/psi4sources/4.0b2/samples/mints2/input.dat">mints2</a> sample
+input file, which performs a benzene SCF computation, to demonstrate this
+feature.</p>
+<div class="highlight-python"><pre>basis {
+   assign DZ
+   assign C 3-21G
+   assign H1 sto-3g
+   assign C1 sto-3g
+}</pre>
+</div>
+<p>The first line in this block assigns the DZ basis set to all atoms.  The next
+line then assigns 3-21G to all carbon atoms, leaving the hydrogens with the DZ
+basis set.  On the third line, the hydrogen atoms which have been specifically
+labelled as <tt class="docutils literal"><span class="pre">H1</span></tt> are given the STO-3G basis set, leaving the unlabelled hydrogen
+atoms with the DZ basis set.  Likewise, the fourth line assigns the STO-3G
+basis set to just the carbon atoms labelled <tt class="docutils literal"><span class="pre">C1</span></tt>.  This bizzare example was
+constructed to demonstrate the syntax, but the flexibility of the basis set
+specification is advantageous, for example, when selectivily omitting diffuse
+functions to make computations more tractable.</p>
+<p id="index-9">In the above example the basis sets have been assigned asymmetrically, reducing
+the effective symmetry from <img class="math" src="_images/math/8e12ff9a0eddba3bb7f77e832d160ef92d172ac1.png" alt="D_{6h}" style="vertical-align: -3px"/> to <img class="math" src="_images/math/24ba218ac02f2682546d4cd0cf94054133642258.png" alt="C_{2v}" style="vertical-align: -3px"/>; PSI4 will detect this
+automatically and run in the appropriate point group.  The same syntax can be
+used to specify basis sets other than that used to define orbitals.  For
+example,</p>
+<div class="highlight-python"><pre>set df_basis_mp2 cc-pvdz-ri
+
+ or
+
+basis {
+   assign cc-pVDZ-RI df_basis_mp2
+}</pre>
+</div>
+<p>are both equivalent ways to set the auxiliary basis set for density fitted MP2
+computations.  To assign the aug-cc-pVDZ-RI to carbon atoms, the following
+command is used:</p>
+<div class="highlight-python"><pre>basis {
+   assign C aug-cc-pVDZ-RI df_basis_mp2
+}</pre>
+</div>
+<p>When Dunning&#8217;s correlation consistent basis sets (cc-pV*X*Z), and core-valence
+and diffuse variants thereof, are being used the SCF and DF-MP2 codes will
+chose the appropriate auxiliary basis set automatically, unless instructed
+otherwise by setting the auxiliary basis set in the input.  Finally, we note
+that the <tt class="docutils literal"><span class="pre">basis</span></tt> block may also be used for defining basis sets, as
+detailed in Sec. <a class="reference internal" href="quickaddbasis.html#sec-basisuserdefined"><em>User-Defined Basis Sets</em></a>.</p>
+</div>
+<div class="section" id="memory-specification">
+<span id="sec-memory"></span><span id="index-10"></span><h2>Memory Specification<a class="headerlink" href="#memory-specification" title="Permalink to this headline">¶</a></h2>
+<p>By default, PSI4 assumes that 256 Mb of memory are available. While this is
+enough for many computations, many of the algorithms will perform better if
+more is available. To specify memory, the <tt class="docutils literal"><span class="pre">memory</span></tt> keyword should be used. The following
+lines are all equivalent methods for specifying that 2 Gb of RAM is available
+to PSI4:</p>
+<div class="highlight-python"><pre>memory 2 Gb
+
+ or
+
+memory 2000 Mb
+
+ or
+
+memory 2000000 Kb</pre>
+</div>
+<p>One convenient way to override the PSI4 default memory is to place a memory
+command in the <tt class="docutils literal"><span class="pre">~/.psi4rc</span></tt> file, as detailed in Sec. <a class="reference internal" href="external.html#sec-psirc"><em>Scratch Files and the ~/.psi4rc File</em></a>.</p>
+</div>
+<div class="section" id="return-values-and-psi-variables">
+<span id="sec-psivariables"></span><h2>Return Values and PSI Variables<a class="headerlink" href="#return-values-and-psi-variables" title="Permalink to this headline">¶</a></h2>
+<p>To harness the power of Python, PSI4 makes the most pertinent results of
+each computation are made available to the Python interpreter for
+post-processing. To demonstrate, we can embellish the previous example of H<sub>2</sub>
+and H atom:</p>
+<div class="highlight-python"><pre>molecule h2{
+  H
+  H 1 0.9
+}
+
+set basis cc-pvdz
+set reference rhf
+h2_energy = energy('scf')
+
+molecule h{
+  H
+}
+
+set basis cc-pvdz
+set reference uhf
+h_energy = energy('scf')
+
+D_e = psi_hartree2kcalmol*(2*h_energy - h2_energy)
+print"De=%f"%D_e</pre>
+</div>
+<p>The <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><tt class="xref py py-func docutils literal"><span class="pre">energy()</span></tt></a> function returns the final result of the computation, which we
+assign to a Python variable. The two energies are then converted to a
+dissociation energy and printed to the output file using standard Python
+notation. Sometimes there are multiple quantities of interest; these can be
+accessed through the <tt class="docutils literal"><span class="pre">get_variable()</span></tt> function. For example, after performing a
+density fitted MP2 computation, both the spin component scaled energy and the
+unscaled MP2 energy are made available:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">e_mp2</span><span class="o">=</span><span class="n">get_variable</span><span class="p">(</span><span class="s">&#39;DF-MP2 TOTAL ENERGY&#39;</span><span class="p">)</span>
+<span class="n">e_scs_mp2</span><span class="o">=</span><span class="n">get_variable</span><span class="p">(</span><span class="s">&#39;SCS-DF-MP2 TOTAL ENERGY&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each module and the Python driver set PSI variables over the course of
+a calculation.  The values for all can be printed in the output file
+with the input file command <tt class="docutils literal"><span class="pre">print_variables()</span></tt>. Note that
+PSI variables accumulate over a PSI4 instance and are not cleared by
+<tt class="docutils literal"><span class="pre">clean()</span></tt>. So if you run in a single input file a STO-3G FCI
+followed by a aug-cc-pVQZ SCF followed by a <tt class="docutils literal"><span class="pre">print_variables()</span></tt>
+command, the last will include both <a class="reference internal" href="glossary_psivariables.html#psivar-SCFTOTALENERGY"><tt class="xref std std-psivar docutils literal"><span class="pre">SCF</span> <span class="pre">TOTAL</span> <span class="pre">ENERGY</span></tt></a> and
+<a class="reference internal" href="glossary_psivariables.html#psivar-FCITOTALENERGY"><tt class="xref std std-psivar docutils literal"><span class="pre">FCI</span> <span class="pre">TOTAL</span> <span class="pre">ENERGY</span></tt></a>. Don&#8217;t get excited that you got a high-quality calculation
+cheaply. Refer to Appendix <a class="reference internal" href="autodoc_psivariables_bymodule.html#apdx-psivariables-module"><em>PSI Variables by Module</em></a> for a listing of the
+variables set by each module.</p>
+</div>
+<div class="section" id="loops">
+<span id="sec-loops"></span><h2>Loops<a class="headerlink" href="#loops" title="Permalink to this headline">¶</a></h2>
+<p>Python provides many control structures, which can be used within PSI4
+input files. For example, to loop over three basis sets, the following code can
+be used:</p>
+<div class="highlight-python"><pre>basis_sets=["cc-pVDZ","cc-pVTZ","cc-pVQZ"]
+for basis_set in basis_sets:
+    set basis = $basis_set
+    energy('scf')</pre>
+</div>
+<p>The declaration of <tt class="docutils literal"><span class="pre">basis_set</span></tt> is completely standard Python, as is the next
+line, which iterates over the list. However, because the Psithon preprocessor
+wraps strings in quotes by default, we have to tell it that <tt class="docutils literal"><span class="pre">basis_set</span></tt> is a
+Python variable, not a string, by prefixing it with a dollar sign. The geometry
+specification supports delayed initialization of variable, which permits
+potential energy scans. As an example, we can scan both the angle and bond
+length in water:</p>
+<div class="highlight-python"><pre>molecule h2o{
+  O
+  H1 R
+  H1 R2 A
+}
+
+Rvals=[0.9,1.0,1.1]
+Avals=range(102,106,2)
+
+set basis cc-pvdz
+set scf e_convergence=11
+for R in Rvals:
+    h2o.R = R
+    for A in Avals:
+        h2o.A = A
+        energy('scf')</pre>
+</div>
+<p>The declarations of <tt class="docutils literal"><span class="pre">Rvals</span></tt> and <tt class="docutils literal"><span class="pre">Avals</span></tt> are both completely standard Python syntax.
+Having named our molecule <tt class="docutils literal"><span class="pre">h2o</span></tt> we can then set the values of <tt class="docutils literal"><span class="pre">R</span></tt> and <tt class="docutils literal"><span class="pre">A</span></tt> within
+the loops. Note that we do not need the dollar sign to access the Python
+variable in this example; that is required only when using Python variables
+with the <tt class="docutils literal"><span class="pre">set</span></tt> keyword.</p>
+</div>
+<div class="section" id="tables-of-results">
+<span id="sec-resultstables"></span><h2>Tables of Results<a class="headerlink" href="#tables-of-results" title="Permalink to this headline">¶</a></h2>
+<p>The results of computations can be compactly tabulated with the <a class="reference internal" href="autodoc_driver.html#text.Table" title="text.Table"><tt class="xref py py-func docutils literal"><span class="pre">Table()</span></tt></a> Psithon
+function. For example, in the following potential energy surface scan for water</p>
+<div class="highlight-python"><pre>molecule h2o {
+  O
+  H 1 R
+  H 1 R 2 A
+}
+
+Rvals=[0.9,1.0,1.1]
+Avals=range(100,102,2)
+
+table=Table(rows=["R","A"], cols=["E(SCF)","E(SCS)","E(DFMP2)"])
+
+set basis cc-pvdz
+
+for R in Rvals:
+    h2o.R = R
+    for A in Avals:
+        h2o.A = A
+        energy('df-mp2')
+        escf = get_variable('SCF TOTAL ENERGY')
+        edfmp2 = get_variable('DF-MP2 TOTAL ENERGY')
+        escsmp2 = get_variable('SCS-DF-MP2 TOTAL ENERGY')
+        table[R][A] = [escf, escsmp2, edfmp2]
+
+print table
+relative=table.copy()
+relative.absolute_to_relative()
+print relative</pre>
+</div>
+<p>we first define a table (on line 10) with two row indices and three column
+indices. As the potential energy scan is performed, the results are stored
+(line 22) and the final table is printed to the output file (line 24). The
+table is converted from absolute energies to relative energies (in kcal mol<sup>-1</sup>)
+on line 26, before being printed again. The relative energies are reported with
+respect to the lowest value in each column. More examples of how to control the
+formatting of the tables can be found in the sample input files provided; see
+Appendix <a class="reference internal" href="testsuite.html#apdx-testsuite"><em>Test Suite and Sample Inputs</em></a> for a complete listing.</p>
+</div>
+<div class="section" id="python-wrappers">
+<span id="sec-wrappers"></span><h2>Python Wrappers<a class="headerlink" href="#python-wrappers" title="Permalink to this headline">¶</a></h2>
+<p>The Python foundations of the PSI4 driver and Psithon syntax permit
+many commonly performed post-processing procedures to be integrated into
+the PSI4 suite.
+Among these are automated computations of interaction energies through
+<a class="reference internal" href="cp.html#wrappers.cp" title="wrappers.cp"><tt class="xref py py-func docutils literal"><span class="pre">cp()</span></tt></a>, of a model chemistry applied to a database of systems through
+<a class="reference internal" href="db.html#wrappers.database" title="wrappers.database"><tt class="xref py py-func docutils literal"><span class="pre">database()</span></tt></a>, and of several model chemistries together approximating greater
+accuracy through <tt class="xref py py-func docutils literal"><span class="pre">cbs()</span></tt>.
+These are discussed separately in section <a class="reference internal" href="psithonfunc.html#sec-psithonfunc"><em>Psithon Functions: Invoking a Calculation</em></a>.
+Note that the options documented for Python functions are placed as arguments
+in the command that calls the function
+not in the <tt class="docutils literal"><span class="pre">set</span> <span class="pre">globals</span></tt> block or with any other <tt class="docutils literal"><span class="pre">set</span></tt> command.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Psithon: Structuring an Input File</a><ul>
+<li><a class="reference internal" href="#physical-constants">Physical Constants</a></li>
+<li><a class="reference internal" href="#molecule-specification">Molecule Specification</a><ul>
+<li><a class="reference internal" href="#multiple-molecules">Multiple Molecules</a></li>
+<li><a class="reference internal" href="#molecule-keywords">Molecule Keywords</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geometries-from-the-pubchem-database">Geometries from the PubChem Database</a></li>
+<li><a class="reference internal" href="#symmetry">Symmetry</a></li>
+<li><a class="reference internal" href="#non-covalently-bonded-molecule-fragments">Non-Covalently Bonded Molecule Fragments</a></li>
+<li><a class="reference internal" href="#job-control">Job Control</a></li>
+<li><a class="reference internal" href="#assigning-basis-sets">Assigning Basis Sets</a></li>
+<li><a class="reference internal" href="#memory-specification">Memory Specification</a></li>
+<li><a class="reference internal" href="#return-values-and-psi-variables">Return Values and PSI Variables</a></li>
+<li><a class="reference internal" href="#loops">Loops</a></li>
+<li><a class="reference internal" href="#tables-of-results">Tables of Results</a></li>
+<li><a class="reference internal" href="#python-wrappers">Python Wrappers</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="external.html"
+                        title="previous chapter">Configuration: Preparing PSI4&#8217;s Environment</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="basissets.html"
+                        title="next chapter">Basis Sets</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/psithoninput.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="basissets.html" title="Basis Sets"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="external.html" title="Configuration: Preparing PSI4’s Environment"
+             >previous</a> |</li>
+    <li><a href="index.html">PSI4 [beta2]</a> &raquo; </li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Psi4 Project.
+      Last updated on Sep 30, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
