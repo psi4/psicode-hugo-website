@@ -1,0 +1,532 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Harmonic Vibrational Analysis and Visualization of Normal Modes — frequency() and hessian()</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+
+    
+    
+     
+        <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Database — database()" href="db.html" />
+    <link rel="prev" title="Geometry Optimization — optimize() and gradient()" href="opt.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="db.html" title="Database — database()"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="opt.html" title="Geometry Optimization — optimize() and gradient()"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/freq.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="harmonic-vibrational-analysis-and-visualization-of-normal-modes-w-w-frequency-and-hessian">
+<span id="sec-freq"></span><span id="index-0"></span><h1>Harmonic Vibrational Analysis and Visualization of Normal Modes — <a class="reference internal" href="#psi4.frequency" title="psi4.frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">frequency()</span></code></a> and <a class="reference internal" href="#psi4.hessian" title="psi4.hessian"><code class="xref py py-func docutils literal notranslate"><span class="pre">hessian()</span></code></a><a class="headerlink" href="#harmonic-vibrational-analysis-and-visualization-of-normal-modes-w-w-frequency-and-hessian" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="#table-freq-gen"><span class="std std-ref">Psi4 Native Hessian Methods</span></a></li>
+</ul>
+<p>For further discussion of vibrational and thermochemical analysis,
+see Sec. <a class="reference internal" href="thermo.html#sec-thermo"><span class="std std-ref">Vibrational and Thermochemical Analysis</span></a>.</p>
+<p><a class="reference internal" href="#psi4.frequency" title="psi4.frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">frequency()</span></code></a> is the only command most users will ever
+need to access directly to perform frequency calculations. Behind
+the scenes, <a class="reference internal" href="#psi4.frequency" title="psi4.frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">frequency()</span></code></a> is a light wrapper over
+<a class="reference internal" href="#psi4.hessian" title="psi4.hessian"><code class="xref py py-func docutils literal notranslate"><span class="pre">hessian()</span></code></a> that computes the Hessian then adds a
+thermochemical analysis.</p>
+<dl class="function">
+<dt id="psi4.frequency">
+<code class="descclassname">psi4.</code><code class="descname">frequency</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>molecule</em>, <em>return_wfn</em>, <em>func</em>, <em>mode</em>, <em>dertype</em>, <em>irrep</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/driver.html#frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#psi4.frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to compute harmonic vibrational frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Aliases:</th><td class="field-body"><p class="first">frequencies(), freq()</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>float</em> – Total electronic energy in Hartrees.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(<em>float</em>, <a class="reference internal" href="psi4api.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>) – energy and wavefunction when <strong>return_wfn</strong> specified.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) – <p><code class="docutils literal notranslate"><span class="pre">'scf'</span></code> || <code class="docutils literal notranslate"><span class="pre">'mp2'</span></code> || <code class="docutils literal notranslate"><span class="pre">'ci5'</span></code> || etc.</p>
+<p>First argument, usually unlabeled. Indicates the computational method
+to be applied to the system.</p>
+</li>
+<li><strong>molecule</strong> (<a class="reference internal" href="notes_py.html#op-py-molecule"><span class="std std-ref">molecule</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">h2o</span></code> || etc.</p>
+<p>The target molecule, if not the last molecule defined.</p>
+</li>
+<li><strong>return_wfn</strong> (<a class="reference internal" href="notes_py.html#op-py-boolean"><span class="std std-ref">boolean</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">'on'</span></code> || <span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">'off'</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span></p>
+<p>Indicate to additionally return the <a class="reference internal" href="psi4api.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>
+calculation result as the second element (after <em>float</em> energy) of a tuple.
+Arrays of frequencies and the Hessian can be accessed through the wavefunction.</p>
+</li>
+<li><strong>func</strong> (<a class="reference internal" href="notes_py.html#op-py-function"><span class="std std-ref">function</span></a>) – <p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">gradient</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span> || <code class="docutils literal notranslate"><span class="pre">energy</span></code> || <code class="docutils literal notranslate"><span class="pre">cbs</span></code></p>
+<p>Indicates the type of calculation to be performed on the molecule.
+The default dertype accesses <code class="docutils literal notranslate"><span class="pre">'gradient'</span></code> or <code class="docutils literal notranslate"><span class="pre">'energy'</span></code>, while
+<code class="docutils literal notranslate"><span class="pre">'cbs'</span></code> performs a multistage finite difference calculation.
+If a nested series of python functions is intended (see <a class="reference internal" href="intercalls.html#sec-intercalls"><span class="std std-ref">Function Intercalls</span></a>),
+use keyword <code class="docutils literal notranslate"><span class="pre">freq_func</span></code> instead of <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p>
+</li>
+<li><strong>dertype</strong> (<a class="reference internal" href="notes_py.html#op-py-dertype"><span class="std std-ref">dertype</span></a>) – <p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">'hessian'</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span> || <code class="docutils literal notranslate"><span class="pre">'gradient'</span></code> || <code class="docutils literal notranslate"><span class="pre">'energy'</span></code></p>
+<p>Indicates whether analytic (if available- they’re not), finite
+difference of gradients (if available) or finite difference of
+energies is to be performed.</p>
+</li>
+<li><strong>irrep</strong> (<em>int</em><em> or </em><em>string</em>) – <p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">-1</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span> || <code class="docutils literal notranslate"><span class="pre">1</span></code> || <code class="docutils literal notranslate"><span class="pre">'b2'</span></code> || <code class="docutils literal notranslate"><span class="pre">'App'</span></code> || etc.</p>
+<p>Indicates which symmetry block (<a class="reference internal" href="psithonmol.html#table-irrepordering"><span class="std std-ref">Cotton</span></a> ordering) of vibrational
+frequencies to be computed. <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">'1'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'a1'</span></code> represents
+<span class="math notranslate nohighlight">\(a_1\)</span>, requesting only the totally symmetric modes.
+<code class="docutils literal notranslate"><span class="pre">-1</span></code> indicates a full frequency calculation.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Analytic hessians are only available for RHF. For all other methods, Frequencies will
+proceed through finite differences according to availability of gradients or energies.</p>
+</div>
+<table border="1" class="docutils" id="table-freq-gen">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>scf</td>
+<td>Hartree–Fock (HF) <a class="reference internal" href="scf.html#sec-scf"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Frequency calculation for all modes through highest available derivatives</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frequency</span><span class="p">(</span><span class="s1">&#39;ccsd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [2] Frequency calculation for b2 modes through finite difference of gradients</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     printing lowest mode frequency to screen and Hessian to output</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">irrep</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">wfn</span><span class="o">.</span><span class="n">frequencies</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wfn</span><span class="o">.</span><span class="n">hessian</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [3] Frequency calculation at default conditions and Hessian reuse at STP</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">freq</span><span class="p">(</span><span class="s1">&#39;mp2&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">t</span> <span class="mf">273.15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">p</span> <span class="mi">100000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">thermo</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="n">wfn</span><span class="o">.</span><span class="n">frequencies</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [4] Opt+Freq, skipping the gradient recalc at the start of the Hessian</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;hf&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frequencies</span><span class="p">(</span><span class="s1">&#39;hf&#39;</span><span class="p">,</span> <span class="n">ref_gradient</span><span class="o">=</span><span class="n">wfn</span><span class="o">.</span><span class="n">gradient</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="psi4.hessian">
+<code class="descclassname">psi4.</code><code class="descname">hessian</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>molecule</em>, <em>return_wfn</em>, <em>func</em>, <em>dertype</em>, <em>irrep</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/driver.html#hessian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#psi4.hessian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function complementary to <a class="reference internal" href="#psi4.frequency" title="psi4.frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">frequency()</span></code></a>. Computes force
+constants, deciding analytic, finite difference of gradients, or
+finite difference of energies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="psi4api.html#psi4.core.Matrix" title="psi4.core.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> – Total non-mass-weighted electronic Hessian in Hartrees/Bohr/Bohr.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<a class="reference internal" href="psi4api.html#psi4.core.Matrix" title="psi4.core.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a>, <a class="reference internal" href="psi4api.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>) – Hessian and wavefunction when <strong>return_wfn</strong> specified.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Frequency calculation without thermochemical analysis</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hessian</span><span class="p">(</span><span class="s1">&#39;mp3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [2] Frequency calc w/o thermo analysis getting the Hessian</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     in file, core.Matrix, and np.array forms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">hessian_write</span> <span class="n">on</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">hessian</span><span class="p">(</span><span class="s1">&#39;ccsd&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wfn</span><span class="o">.</span><span class="n">hessian</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>It’s handy to collect the wavefunction after a frequency
+calculation through <code class="docutils literal notranslate"><span class="pre">e,</span> <span class="pre">wfn</span> <span class="pre">=</span> <span class="pre">psi4.frequency(...,</span>
+<span class="pre">return_wfn=True)</span></code> as the frequencies can be accessed through
+<a class="reference internal" href="psi4api.html#psi4.core.Wavefunction.frequencies" title="psi4.core.Wavefunction.frequencies"><code class="xref py py-func docutils literal notranslate"><span class="pre">psi4.core.Wavefunction.frequencies()</span></code></a>, the Hessian through
+<a class="reference internal" href="psi4api.html#psi4.core.Wavefunction.hessian" title="psi4.core.Wavefunction.hessian"><code class="xref py py-func docutils literal notranslate"><span class="pre">psi4.core.Wavefunction.hessian()</span></code></a>, and much other computation
+info through <code class="docutils literal notranslate"><span class="pre">psi4.core.Wavefunction.frequency_analysis</span></code>
+(note no parentheses). Examples of using this data
+structure can be found <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/fd-freq-gradient/input.dat">fd-freq-gradient</a> and
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/python/vibanalysis/input.py">python/vibanalysis</a>. Formatted printing of vibrational
+results is available through <code class="xref py py-func docutils literal notranslate"><span class="pre">qcdb.vib.print_vibs()</span></code>.</p>
+<span id="table-frequency-analysis"></span><table border="1" class="docutils" id="id1">
+<caption><span class="caption-text">Results accessible through <code class="docutils literal notranslate"><span class="pre">psi4.core.Wavefunction.frequency_analysis</span></code></span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="12%" />
+<col width="35%" />
+<col width="9%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">key</th>
+<th class="head">description (lbl &amp; comment)</th>
+<th class="head">units</th>
+<th class="head">data (real/imaginary modes)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>omega</td>
+<td>frequency</td>
+<td>cm^-1</td>
+<td>nd.array(ndof) complex (real/imag)</td>
+</tr>
+<tr class="row-odd"><td>q</td>
+<td>normal mode, normalized mass-weighted</td>
+<td>a0 u^1/2</td>
+<td>ndarray(ndof, ndof) float</td>
+</tr>
+<tr class="row-even"><td>w</td>
+<td>normal mode, un-mass-weighted</td>
+<td>a0</td>
+<td>ndarray(ndof, ndof) float</td>
+</tr>
+<tr class="row-odd"><td>x</td>
+<td>normal mode, normalized un-mass-weighted</td>
+<td>a0</td>
+<td>ndarray(ndof, ndof) float</td>
+</tr>
+<tr class="row-even"><td>degeneracy</td>
+<td>degree of degeneracy</td>
+<td>&#160;</td>
+<td>ndarray(ndof) int</td>
+</tr>
+<tr class="row-odd"><td>TRV</td>
+<td>translation/rotation/vibration</td>
+<td>&#160;</td>
+<td>ndarray(ndof) str ‘TR’ or ‘V’ or ‘-‘ for partial</td>
+</tr>
+<tr class="row-even"><td>gamma</td>
+<td>irreducible representation</td>
+<td>&#160;</td>
+<td>ndarray(ndof) str irrep or None if unclassifiable</td>
+</tr>
+<tr class="row-odd"><td>mu</td>
+<td>reduced mass</td>
+<td>u</td>
+<td>ndarray(ndof) float (+/+)</td>
+</tr>
+<tr class="row-even"><td>k</td>
+<td>force constant</td>
+<td>mDyne/A</td>
+<td>ndarray(ndof) float (+/-)</td>
+</tr>
+<tr class="row-odd"><td>DQ0</td>
+<td>RMS deviation v=0</td>
+<td>a0 u^1/2</td>
+<td>ndarray(ndof) float (+/0)</td>
+</tr>
+<tr class="row-even"><td>Qtp0</td>
+<td>Turning point v=0</td>
+<td>a0 u^1/2</td>
+<td>ndarray(ndof) float (+/0)</td>
+</tr>
+<tr class="row-odd"><td>Xtp0</td>
+<td>Turning point v=0</td>
+<td>a0</td>
+<td>ndarray(ndof) float (+/0)</td>
+</tr>
+<tr class="row-even"><td>theta_vib</td>
+<td>char temp</td>
+<td>K</td>
+<td>ndarray(ndof) float (+/0)</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="visualization-of-normal-modes">
+<h2>Visualization of Normal Modes<a class="headerlink" href="#visualization-of-normal-modes" title="Permalink to this headline">¶</a></h2>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> has the ability to export a Molden file that stores information about
+the harmonic frequencies and normal modes computed via <a class="reference internal" href="#psi4.frequency" title="psi4.frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">frequency()</span></code></a>.
+This feature can be enabled by setting the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-normal-modes-write-findif"><span class="xref std std-term">NORMAL_MODES_WRITE</span></a> to true.
+The filename of the Molden file ends in <code class="docutils literal notranslate"><span class="pre">.molden_normal_modes</span></code>, and the prefix is
+determined by <a class="reference internal" href="autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> (if set), or else by the name of the
+output file plus the name of the current molecule.
+The normal coordinates saved in the Molden file are normalized and are not
+mass weighted.</p>
+<div class="section" id="molden-interface-keywords">
+<h3>Molden Interface Keywords<a class="headerlink" href="#molden-interface-keywords" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="normal-modes-write">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-normal-modes-write-findif"><span class="xref std std-term">NORMAL_MODES_WRITE</span></a><a class="headerlink" href="#normal-modes-write" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Do write a file containing the normal modes in Molden format? If so, the filename will end in .molden_normal_modes, and the prefix is determined by <a class="reference internal" href="autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> (if set), or else by the name of the output file plus the name of the current molecule.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="writer-file-label">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a><a class="headerlink" href="#writer-file-label" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Base filename for text files written by PSI, such as the MOLDEN output file, the Hessian file, the internal coordinate file, etc. Use the add_str_i function to make this string case sensitive.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Harmonic Vibrational Analysis and Visualization of Normal Modes — <code class="docutils literal notranslate"><span class="pre">frequency()</span></code> and <code class="docutils literal notranslate"><span class="pre">hessian()</span></code></a><ul>
+<li><a class="reference internal" href="#visualization-of-normal-modes">Visualization of Normal Modes</a><ul>
+<li><a class="reference internal" href="#molden-interface-keywords">Molden Interface Keywords</a><ul>
+<li><a class="reference internal" href="#normal-modes-write"><code class="docutils literal notranslate"><span class="pre">NORMAL_MODES_WRITE</span></code></a></li>
+<li><a class="reference internal" href="#writer-file-label"><code class="docutils literal notranslate"><span class="pre">WRITER_FILE_LABEL</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="db.html" title="Database — database()"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="opt.html" title="Geometry Optimization — optimize() and gradient()"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/freq.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Tuesday, 24 November 2020 02:48AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

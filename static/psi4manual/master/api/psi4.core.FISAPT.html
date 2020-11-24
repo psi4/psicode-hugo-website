@@ -1,0 +1,662 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>FISAPT</title>
+    <link rel="stylesheet" href="../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+
+    
+    
+     
+        <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FittedSlaterCorrelationFactor" href="psi4.core.FittedSlaterCorrelationFactor.html" />
+    <link rel="prev" title="FDDS_Dispersion" href="psi4.core.FDDS_Dispersion.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.FittedSlaterCorrelationFactor.html" title="FittedSlaterCorrelationFactor"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.FDDS_Dispersion.html" title="FDDS_Dispersion"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.FISAPT.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" accesskey="U"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="fisapt">
+<h1>FISAPT<a class="headerlink" href="#fisapt" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="psi4.core.FISAPT">
+<em class="property">class </em><code class="descclassname">psi4.core.</code><code class="descname">FISAPT</code><a class="headerlink" href="#psi4.core.FISAPT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>A Fragment-SAPT Wavefunction</p>
+<p class="rubric">Methods Summary</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.coulomb" title="psi4.core.FISAPT.coulomb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coulomb</span></code></a>(self)</td>
+<td>Build the J/K potentials for C, D, and E.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.dHF" title="psi4.core.FISAPT.dHF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dHF</span></code></a>(self)</td>
+<td>SAPT0 delta HF.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.disp" title="psi4.core.FISAPT.disp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disp</span></code></a>(self,&nbsp;arg0,&nbsp;psi4.core.Matrix],&nbsp;arg1,&nbsp;…)</td>
+<td>Computes the MP2-based DispE20 and Exch-DispE20 energy.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.elst" title="psi4.core.FISAPT.elst"><code class="xref py py-obj docutils literal notranslate"><span class="pre">elst</span></code></a>(self)</td>
+<td>SAPT0 electrostatics.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.exch" title="psi4.core.FISAPT.exch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exch</span></code></a>(self)</td>
+<td>SAPT0 exchange.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.fdisp" title="psi4.core.FISAPT.fdisp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fdisp</span></code></a>(self)</td>
+<td>F-SAPT0 dispersion.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.felst" title="psi4.core.FISAPT.felst"><code class="xref py py-obj docutils literal notranslate"><span class="pre">felst</span></code></a>(self)</td>
+<td>F-SAPT0 electrostatics.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.fexch" title="psi4.core.FISAPT.fexch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fexch</span></code></a>(self)</td>
+<td>F-SAPT0 exchange.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.find" title="psi4.core.FISAPT.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(self)</td>
+<td>F-SAPT0 induction.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.flocalize" title="psi4.core.FISAPT.flocalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flocalize</span></code></a>(self)</td>
+<td>F-SAPT0 localize.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.freeze_core" title="psi4.core.FISAPT.freeze_core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freeze_core</span></code></a>(self)</td>
+<td>Freeze the core orbitals.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.ind" title="psi4.core.FISAPT.ind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ind</span></code></a>(self)</td>
+<td>SAPT0 induction.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.kinetic" title="psi4.core.FISAPT.kinetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kinetic</span></code></a>(self)</td>
+<td>Build the kinetic integrals T.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.localize" title="psi4.core.FISAPT.localize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">localize</span></code></a>(self)</td>
+<td>Localize the active occupied orbitals via IBO2.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.matrices" title="psi4.core.FISAPT.matrices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matrices</span></code></a>(self)</td>
+<td>Return the interally computed matrices (not copied).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.molecule" title="psi4.core.FISAPT.molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molecule</span></code></a>(self)</td>
+<td>Returns the FISAPT’s molecule.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.nuclear" title="psi4.core.FISAPT.nuclear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nuclear</span></code></a>(self)</td>
+<td>Build the nuclear potentials V and interaction energies.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.overlap" title="psi4.core.FISAPT.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a>(self)</td>
+<td>Build the overlap integrals S.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.partition" title="psi4.core.FISAPT.partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition</span></code></a>(self)</td>
+<td>Partition the nuclei and electrons.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.print_header" title="psi4.core.FISAPT.print_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_header</span></code></a>(self)</td>
+<td>Print header, bases, sizes, etc.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.print_trailer" title="psi4.core.FISAPT.print_trailer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_trailer</span></code></a>(self)</td>
+<td>Print SAPT results.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.raw_plot" title="psi4.core.FISAPT.raw_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_plot</span></code></a>(self,&nbsp;arg0)</td>
+<td>Plot some analysis files.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.scalars" title="psi4.core.FISAPT.scalars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scalars</span></code></a>(self)</td>
+<td>Return the interally computed scalars (not copied).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.scf" title="psi4.core.FISAPT.scf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scf</span></code></a>(self)</td>
+<td>Solve the relaxed SCF equations for A0 and B0.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.sinf_disp" title="psi4.core.FISAPT.sinf_disp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sinf_disp</span></code></a>(self,&nbsp;arg0,&nbsp;psi4.core.Matrix],&nbsp;…)</td>
+<td>Computes the MP2-based DispE20 and Exch-DispE20 energy without S^2.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.unify" title="psi4.core.FISAPT.unify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unify</span></code></a>(self)</td>
+<td>Produce unified matrices for A’, B’, and C’.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../psi4api.html#psi4.core.FISAPT.vectors" title="psi4.core.FISAPT.vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectors</span></code></a>(self)</td>
+<td>Return the interally computed vectors (not copied).</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="psi4.core.FISAPT.coulomb">
+<code class="descname">coulomb</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.coulomb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the J/K potentials for C, D, and E.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.dHF">
+<code class="descname">dHF</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.dHF" title="Permalink to this definition">¶</a></dt>
+<dd><p>SAPT0 delta HF.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.disp">
+<code class="descname">disp</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT, arg0: Dict[str, psi4.core.Matrix], arg1: Dict[str, psi4.core.Vector], arg2: bool</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.disp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the MP2-based DispE20 and Exch-DispE20 energy.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.elst">
+<code class="descname">elst</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.elst" title="Permalink to this definition">¶</a></dt>
+<dd><p>SAPT0 electrostatics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.exch">
+<code class="descname">exch</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.exch" title="Permalink to this definition">¶</a></dt>
+<dd><p>SAPT0 exchange.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.fdisp">
+<code class="descname">fdisp</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.fdisp" title="Permalink to this definition">¶</a></dt>
+<dd><p>F-SAPT0 dispersion.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.felst">
+<code class="descname">felst</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.felst" title="Permalink to this definition">¶</a></dt>
+<dd><p>F-SAPT0 electrostatics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.fexch">
+<code class="descname">fexch</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.fexch" title="Permalink to this definition">¶</a></dt>
+<dd><p>F-SAPT0 exchange.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.find">
+<code class="descname">find</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>F-SAPT0 induction.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.flocalize">
+<code class="descname">flocalize</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.flocalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>F-SAPT0 localize.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.freeze_core">
+<code class="descname">freeze_core</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.freeze_core" title="Permalink to this definition">¶</a></dt>
+<dd><p>Freeze the core orbitals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.ind">
+<code class="descname">ind</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.ind" title="Permalink to this definition">¶</a></dt>
+<dd><p>SAPT0 induction.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.kinetic">
+<code class="descname">kinetic</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.kinetic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the kinetic integrals T.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.localize">
+<code class="descname">localize</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.localize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localize the active occupied orbitals via IBO2.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.matrices">
+<code class="descname">matrices</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; Dict[str, psi4.core.Matrix]<a class="headerlink" href="#psi4.core.FISAPT.matrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the interally computed matrices (not copied).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.molecule">
+<code class="descname">molecule</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; psi4.core.Molecule<a class="headerlink" href="#psi4.core.FISAPT.molecule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the FISAPT’s molecule.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.nuclear">
+<code class="descname">nuclear</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.nuclear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the nuclear potentials V and interaction energies.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.overlap">
+<code class="descname">overlap</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the overlap integrals S.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.partition">
+<code class="descname">partition</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partition the nuclei and electrons.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.print_header">
+<code class="descname">print_header</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.print_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print header, bases, sizes, etc.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.print_trailer">
+<code class="descname">print_trailer</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.print_trailer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print SAPT results.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.raw_plot">
+<code class="descname">raw_plot</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em>, <em>arg0: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.raw_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot some analysis files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.scalars">
+<code class="descname">scalars</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; Dict[str, float]<a class="headerlink" href="#psi4.core.FISAPT.scalars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the interally computed scalars (not copied).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.scf">
+<code class="descname">scf</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.scf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the relaxed SCF equations for A0 and B0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.sinf_disp">
+<code class="descname">sinf_disp</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT, arg0: Dict[str, psi4.core.Matrix], arg1: Dict[str, psi4.core.Vector], arg2: bool</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.sinf_disp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the MP2-based DispE20 and Exch-DispE20 energy without S^2.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.unify">
+<code class="descname">unify</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#psi4.core.FISAPT.unify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce unified matrices for A’, B’, and C’.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="psi4.core.FISAPT.vectors">
+<code class="descname">vectors</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; Dict[str, psi4.core.Vector]<a class="headerlink" href="#psi4.core.FISAPT.vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the interally computed vectors (not copied).</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">coulomb</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Build the J/K potentials for C, D, and E.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">dHF</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>SAPT0 delta HF.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">disp</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT, arg0: Dict[str, psi4.core.Matrix], arg1: Dict[str, psi4.core.Vector], arg2: bool</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Computes the MP2-based DispE20 and Exch-DispE20 energy.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">elst</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>SAPT0 electrostatics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">exch</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>SAPT0 exchange.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">fdisp</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>F-SAPT0 dispersion.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">felst</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>F-SAPT0 electrostatics.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">fexch</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>F-SAPT0 exchange.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">find</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>F-SAPT0 induction.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">flocalize</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>F-SAPT0 localize.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">freeze_core</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Freeze the core orbitals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">ind</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>SAPT0 induction.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">kinetic</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Build the kinetic integrals T.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">localize</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Localize the active occupied orbitals via IBO2.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">matrices</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; Dict[str, psi4.core.Matrix]</dt>
+<dd><p>Return the interally computed matrices (not copied).</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">molecule</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; psi4.core.Molecule</dt>
+<dd><p>Returns the FISAPT’s molecule.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">nuclear</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Build the nuclear potentials V and interaction energies.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">overlap</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Build the overlap integrals S.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">partition</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Partition the nuclei and electrons.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">print_header</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Print header, bases, sizes, etc.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">print_trailer</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Print SAPT results.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">raw_plot</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em>, <em>arg0: str</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Plot some analysis files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">scalars</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; Dict[str, float]</dt>
+<dd><p>Return the interally computed scalars (not copied).</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">scf</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Solve the relaxed SCF equations for A0 and B0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">sinf_disp</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT, arg0: Dict[str, psi4.core.Matrix], arg1: Dict[str, psi4.core.Vector], arg2: bool</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Computes the MP2-based DispE20 and Exch-DispE20 energy without S^2.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">unify</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; None</dt>
+<dd><p>Produce unified matrices for A’, B’, and C’.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">vectors</code><span class="sig-paren">(</span><em>self: psi4.core.FISAPT</em><span class="sig-paren">)</span> &#x2192; Dict[str, psi4.core.Vector]</dt>
+<dd><p>Return the interally computed vectors (not copied).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.FittedSlaterCorrelationFactor.html" title="FittedSlaterCorrelationFactor"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.FDDS_Dispersion.html" title="FDDS_Dispersion"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.FISAPT.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" ><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Tuesday, 24 November 2020 02:48AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
