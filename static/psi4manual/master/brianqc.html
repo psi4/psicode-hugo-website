@@ -1,0 +1,382 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Interface to the BrianQC GPU module by the BrianQC team</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+
+    
+    
+     
+        <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interface to CFOUR by J. Stanton &amp; J. Gauss" href="cfour.html" />
+    <link rel="prev" title="Interface to adcc by M. F. Herbst and M. Scheurer" href="adcc.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cfour.html" title="Interface to CFOUR by J. Stanton &amp; J. Gauss"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adcc.html" title="Interface to adcc by M. F. Herbst and M. Scheurer"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/brianqc.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="interface-to-the-brianqc-gpu-module-by-the-brianqc-team">
+<span id="sec-brianqc"></span><span id="index-0"></span><h1>Interface to the BrianQC GPU module by the BrianQC team<a class="headerlink" href="#interface-to-the-brianqc-gpu-module-by-the-brianqc-team" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Gergely Kis</em></p>
+<p><em>Section author: Gergely Kis</em></p>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> contains code to interface to the BrianQC GPU module developed
+by the <a class="reference external" href="https://www.brianqc.com/team">BrianQC team</a>, which is available after a license agreement from
+<a class="reference external" href="https://brianqc.com/">https://brianqc.com/</a>.</p>
+<div class="section" id="installing-brianqc">
+<h2>Installing BrianQC<a class="headerlink" href="#installing-brianqc" title="Permalink to this headline">¶</a></h2>
+<p>Please contact BrianQC at <a class="reference external" href="https://brianqc.com/">https://brianqc.com/</a>
+to download the BrianQC GPU module and obtain a license.</p>
+<p>Note that there are several prerequisites for using BrianQC, including
+having a supported GPU available in the computing node and having the
+proper GPU drivers installed. Please refer to the <a class="reference external" href="https://www.brianqc.com/download/">BrianQC manual</a>
+for a full list of prerequisites.</p>
+<p>When installing BrianQC, choose the SDK installation by setting the
+<span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BRIANQC_SDK_INSTALL</span></code> envoronment variable to <cite>1</cite>.</p>
+</div>
+<div class="section" id="building-brianqc-s-user-built-components">
+<h2>Building BrianQC’s user-built components<a class="headerlink" href="#building-brianqc-s-user-built-components" title="Permalink to this headline">¶</a></h2>
+<p>After the installation, build BrianQC’s example and sample programs,
+which also creates the wrapper library and CMake configuration files
+required to build <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> with BrianQC.</p>
+<ol class="arabic simple">
+<li>Create a build directory to keep the source tree clean.</li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;brianqc_install_path&gt;
+mkdir build
+<span class="nb">cd</span> build
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Configure project and generate makefiles with CMake.
+You will require <a class="reference external" href="http://eigen.tuxfamily.org">Eigen</a> (tested with version 3.1.2)
+and <a class="reference external" href="https://www.boost.org/">boost</a> (tested with version 1.62).</li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake ..
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Build the examples and samples.</li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Test the installation by starting a small calculation.
+Make sure to set the <span class="target" id="index-2"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BRIANQC_INSTALL_PATH</span></code> environment variable to <cite>&lt;brianqc_install_path&gt;</cite>!</li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">BRIANQC_INSTALL_PATH</span><span class="o">=</span>&lt;brianqc_install_path&gt;
+bin/sample_hf_and_dft --molecule ../share/qc_molecules/cis-decalin.raw --basis ../share/basis_sets/cc-pvdz
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-psifour-with-brianqc">
+<h2>Building <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> with BrianQC<a class="headerlink" href="#building-psifour-with-brianqc" title="Permalink to this headline">¶</a></h2>
+<p>When CMake-ing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>, set the <strong class="makevar">ENABLE_BrianQC</strong> CMake variable to <cite>1</cite>
+and set the <strong class="makevar">BrianQC_DIR</strong> CMake variable to the path where BrianQC’s
+components have been built (usually <cite>&lt;brianqc_install_path&gt;/build</cite>), then build <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> normally.</p>
+</div>
+<div class="section" id="using-brianqc-from-psifour">
+<h2>Using BrianQC from <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span><a class="headerlink" href="#using-brianqc-from-psifour" title="Permalink to this headline">¶</a></h2>
+<p>To use BrianQC, the <span class="target" id="index-3"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BRIANQC_INSTALL_PATH</span></code> environment variable
+must be set to the full path of your BrianQC installation.</p>
+<p>There are two ways to enable BrianQC for a specific calculation:</p>
+<ul class="simple">
+<li>setting the <a class="reference internal" href="autodoc_glossary_options_c.html#term-brianqc-enable-globals"><span class="xref std std-term">BRIANQC_ENABLE</span></a> input option to <cite>True</cite>;</li>
+<li>setting the <span class="target" id="index-4"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">BRIANQC_ENABLE</span></code> environment variable to <cite>1</cite>.</li>
+</ul>
+<p>If both the input option and the environment variable are specified,
+then the environment variable takes precedence.</p>
+<div class="section" id="when-to-enable-brianqc">
+<h3>When to enable BrianQC<a class="headerlink" href="#when-to-enable-brianqc" title="Permalink to this headline">¶</a></h3>
+<p>The operation of BrianQC is transparent from a user’s point of view; every
+internal computation is either performed by <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> (if unsupported by BrianQC),
+or taken over by BrianQC, yielding the same result to within the required
+precision. In particular, BrianQC will respect all of <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>’s usual precision
+parameters, like <a class="reference internal" href="autodoc_glossary_options_c.html#term-ints-tolerance-scf"><span class="xref std std-term">INTS_TOLERANCE</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-scf"><span class="xref std std-term">E_CONVERGENCE</span></a>.</p>
+<p>BrianQC can speed up a number of internal computations, including Fock and
+gradient computation. Thus, BrianQC will speed up any calculation involving
+those terms, such as</p>
+<ul class="simple">
+<li>HF and DFT single point energies</li>
+<li>HF and DFT geometry optimizations</li>
+<li>HF and DFT frequency analysis</li>
+</ul>
+<p>Note that not every term of every calculation can be handled by BrianQC, thus,
+the actual speedup depends on the specifics of the calculation.</p>
+</div>
+<div class="section" id="necessary-and-recommended-option-values">
+<h3>Necessary and recommended option values<a class="headerlink" href="#necessary-and-recommended-option-values" title="Permalink to this headline">¶</a></h3>
+<p>To ensure that a calculation works with BrianQC, the following options need to
+be set when enabling BrianQC:</p>
+<ul class="simple">
+<li>BrianQC currently only handles the C1 molecular symmetry point group. Thus, if
+the molecule has any symmetries (which <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> would detect by default), the
+input geometry must contain the line <code class="docutils literal notranslate"><span class="pre">symmetry</span> <span class="pre">c1</span></code> to force <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> to
+disregard the symmetry.</li>
+</ul>
+<p>To achieve peak performance, the following settings are recommended when enabling
+BrianQC:</p>
+<ul class="simple">
+<li>By default, <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> uses density-fitted preiterations for SCF, which BrianQC
+doesn’t handle yet. To ensure that no non-BrianQC-accelerated iterations are
+performed, disable the preiterations by setting <a class="reference internal" href="autodoc_glossary_options_c.html#term-df-scf-guess-scf"><span class="xref std std-term">DF_SCF_GUESS</span></a> to <cite>False</cite>.</li>
+<li>By default, <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> uses a disk-based Fock building, but BrianQC currently only
+accelerates direct Fock builds. To ensure that Fock building is accelerated by
+BrianQC, set <a class="reference internal" href="autodoc_glossary_options_c.html#term-scf-type-globals"><span class="xref std std-term">SCF_TYPE</span></a> to <cite>direct</cite>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="brianqc-enable">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-brianqc-enable-globals"><span class="xref std std-term">BRIANQC_ENABLE</span></a><a class="headerlink" href="#brianqc-enable" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether to enable using the BrianQC GPU module</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Interface to the BrianQC GPU module by the BrianQC team</a><ul>
+<li><a class="reference internal" href="#installing-brianqc">Installing BrianQC</a></li>
+<li><a class="reference internal" href="#building-brianqc-s-user-built-components">Building BrianQC’s user-built components</a></li>
+<li><a class="reference internal" href="#building-psifour-with-brianqc">Building <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> with BrianQC</a></li>
+<li><a class="reference internal" href="#using-brianqc-from-psifour">Using BrianQC from <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></a><ul>
+<li><a class="reference internal" href="#when-to-enable-brianqc">When to enable BrianQC</a></li>
+<li><a class="reference internal" href="#necessary-and-recommended-option-values">Necessary and recommended option values</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#keywords">Keywords</a><ul>
+<li><a class="reference internal" href="#brianqc-enable"><code class="docutils literal notranslate"><span class="pre">BRIANQC_ENABLE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cfour.html" title="Interface to CFOUR by J. Stanton &amp; J. Gauss"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adcc.html" title="Interface to adcc by M. F. Herbst and M. Scheurer"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/brianqc.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Tuesday, 24 November 2020 02:48AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

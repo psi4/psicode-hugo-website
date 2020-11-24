@@ -1,0 +1,643 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>psi4.driver.p4util.fcidump</title>
+    <link rel="stylesheet" href="../../../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+
+    
+    
+     
+        <script type="text/javascript" src="../../../../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="../../../../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="../../../../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/p4util/fcidump.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.p4util.fcidump</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2019 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;Module with utility function for dumping the Hamiltonian to file in FCIDUMP format.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">psi4.driver</span> <span class="kn">import</span> <span class="n">psifiles</span> <span class="k">as</span> <span class="n">psif</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.p4util.testing</span> <span class="kn">import</span> <span class="n">compare_integers</span><span class="p">,</span> <span class="n">compare_values</span><span class="p">,</span> <span class="n">compare_recursive</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.procrouting.proc_util</span> <span class="kn">import</span> <span class="n">check_iwl_file_from_scf_type</span>
+
+<span class="kn">from</span> <span class="nn">psi4</span> <span class="kn">import</span> <span class="n">core</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span><span class="p">,</span> <span class="n">TestComparisonError</span>
+
+
+<div class="viewcode-block" id="fcidump"><a class="viewcode-back" href="../../../../api/psi4.driver.fcidump.html#psi4.driver.fcidump">[docs]</a><span class="k">def</span> <span class="nf">fcidump</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s1">&#39;INTDUMP&#39;</span><span class="p">,</span> <span class="n">oe_ints</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save integrals to file in FCIDUMP format as defined in Comp. Phys. Commun. 54 75 (1989)</span>
+<span class="sd">    Additional one-electron integrals, including orbital energies, can also be saved.</span>
+<span class="sd">    This latter format can be used with the HANDE QMC code but is not standard.</span>
+
+<span class="sd">    :returns: None</span>
+
+<span class="sd">    :raises: ValidationError when SCF wavefunction is not RHF</span>
+
+<span class="sd">    :type wfn: :py:class:`~psi4.core.Wavefunction`</span>
+<span class="sd">    :param wfn: set of molecule, basis, orbitals from which to generate cube files</span>
+<span class="sd">    :param fname: name of the integrals file, defaults to INTDUMP</span>
+<span class="sd">    :param oe_ints: list of additional one-electron integrals to save to file.</span>
+<span class="sd">    So far only EIGENVALUES is a valid option.</span>
+
+<span class="sd">    :examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; # [1] Save one- and two-electron integrals to standard FCIDUMP format</span>
+<span class="sd">    &gt;&gt;&gt; E, wfn = energy(&#39;scf&#39;, return_wfn=True)</span>
+<span class="sd">    &gt;&gt;&gt; fcidump(wfn)</span>
+
+<span class="sd">    &gt;&gt;&gt; # [2] Save orbital energies, one- and two-electron integrals.</span>
+<span class="sd">    &gt;&gt;&gt; E, wfn = energy(&#39;scf&#39;, return_wfn=True)</span>
+<span class="sd">    &gt;&gt;&gt; fcidump(wfn, oe_ints=[&#39;EIGENVALUES&#39;])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get some options</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span>
+    <span class="n">ints_tolerance</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;INTS_TOLERANCE&#39;</span><span class="p">)</span>
+    <span class="c1"># Some sanity checks</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;RHF&#39;</span><span class="p">,</span> <span class="s1">&#39;UHF&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;FCIDUMP not implemented for </span><span class="si">{}</span><span class="s1"> references</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">oe_ints</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">oe_ints</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">molecule</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span>
+    <span class="n">docc</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">doccpi</span><span class="p">()</span>
+    <span class="n">frzcpi</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">frzcpi</span><span class="p">()</span>
+    <span class="n">frzvpi</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">frzvpi</span><span class="p">()</span>
+    <span class="n">active_docc</span> <span class="o">=</span> <span class="n">docc</span> <span class="o">-</span> <span class="n">frzcpi</span>
+    <span class="n">active_socc</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">soccpi</span><span class="p">()</span>
+    <span class="n">active_mopi</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nmopi</span><span class="p">()</span> <span class="o">-</span> <span class="n">frzcpi</span> <span class="o">-</span> <span class="n">frzvpi</span>
+
+    <span class="n">nbf</span> <span class="o">=</span> <span class="n">active_mopi</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">if</span> <span class="n">wfn</span><span class="o">.</span><span class="n">same_a_b_orbs</span><span class="p">()</span> <span class="k">else</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">active_mopi</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">nirrep</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span>
+    <span class="n">nelectron</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">active_docc</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="n">active_socc</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">irrep_map</span> <span class="o">=</span> <span class="n">_irrep_map</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
+
+    <span class="n">wfn_irrep</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">n_socc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">active_socc</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n_socc</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">wfn_irrep</span> <span class="o">^=</span> <span class="n">h</span>
+
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;Writing integrals in FCIDUMP format to &#39;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># Generate FCIDUMP header</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="s1">&#39;&amp;FCI</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;NORB=</span><span class="si">{:d}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nbf</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;NELEC=</span><span class="si">{:d}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nelectron</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;MS2=</span><span class="si">{:d}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">nalpha</span><span class="p">()</span> <span class="o">-</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nbeta</span><span class="p">())</span>
+    <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;UHF=.</span><span class="si">{}</span><span class="s1">.,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="ow">not</span> <span class="n">wfn</span><span class="o">.</span><span class="n">same_a_b_orbs</span><span class="p">())</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="n">orbsym</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">active_mopi</span><span class="o">.</span><span class="n">n</span><span class="p">()):</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">frzcpi</span><span class="p">[</span><span class="n">h</span><span class="p">],</span> <span class="n">frzcpi</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">+</span> <span class="n">active_mopi</span><span class="p">[</span><span class="n">h</span><span class="p">]):</span>
+            <span class="n">orbsym</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1">,&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">irrep_map</span><span class="p">[</span><span class="n">h</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">wfn</span><span class="o">.</span><span class="n">same_a_b_orbs</span><span class="p">():</span>
+                <span class="n">orbsym</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1">,&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">irrep_map</span><span class="p">[</span><span class="n">h</span><span class="p">])</span>
+    <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;ORBSYM=</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">orbsym</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;ISYM=</span><span class="si">{:d}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">irrep_map</span><span class="p">[</span><span class="n">wfn_irrep</span><span class="p">])</span>
+    <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;&amp;END</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">intdump</span><span class="p">:</span>
+        <span class="n">intdump</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+
+    <span class="c1"># Get an IntegralTransform object</span>
+    <span class="n">check_iwl_file_from_scf_type</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">),</span> <span class="n">wfn</span><span class="p">)</span>
+    <span class="n">spaces</span> <span class="o">=</span> <span class="p">[</span><span class="n">core</span><span class="o">.</span><span class="n">MOSpace</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+    <span class="n">trans_type</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IntegralTransform</span><span class="o">.</span><span class="n">TransformationType</span><span class="o">.</span><span class="n">Restricted</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">wfn</span><span class="o">.</span><span class="n">same_a_b_orbs</span><span class="p">():</span>
+        <span class="n">trans_type</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IntegralTransform</span><span class="o">.</span><span class="n">TransformationType</span><span class="o">.</span><span class="n">Unrestricted</span>
+    <span class="n">ints</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IntegralTransform</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="n">spaces</span><span class="p">,</span> <span class="n">trans_type</span><span class="p">)</span>
+    <span class="n">ints</span><span class="o">.</span><span class="n">transform_tei</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">MOSpace</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">core</span><span class="o">.</span><span class="n">MOSpace</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">core</span><span class="o">.</span><span class="n">MOSpace</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">core</span><span class="o">.</span><span class="n">MOSpace</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;Integral transformation complete!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">DPD_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;instance_id&#39;</span><span class="p">:</span> <span class="n">ints</span><span class="o">.</span><span class="n">get_dpd_id</span><span class="p">(),</span> <span class="s1">&#39;alpha_MO&#39;</span><span class="p">:</span> <span class="n">ints</span><span class="o">.</span><span class="n">DPD_ID</span><span class="p">(</span><span class="s1">&#39;[A&gt;=A]+&#39;</span><span class="p">),</span> <span class="s1">&#39;beta_MO&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">wfn</span><span class="o">.</span><span class="n">same_a_b_orbs</span><span class="p">():</span>
+        <span class="n">DPD_info</span><span class="p">[</span><span class="s1">&#39;beta_MO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ints</span><span class="o">.</span><span class="n">DPD_ID</span><span class="p">(</span><span class="s2">&quot;[a&gt;=a]+&quot;</span><span class="p">)</span>
+    <span class="c1"># Write TEI to fname in FCIDUMP format</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">fcidump_tei_helper</span><span class="p">(</span><span class="n">nirrep</span><span class="p">,</span> <span class="n">wfn</span><span class="o">.</span><span class="n">same_a_b_orbs</span><span class="p">(),</span> <span class="n">DPD_info</span><span class="p">,</span> <span class="n">ints_tolerance</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+
+    <span class="c1"># Read-in OEI and write them to fname in FCIDUMP format</span>
+    <span class="c1"># Indexing functions to translate from zero-based (C and Python) to</span>
+    <span class="c1"># one-based (Fortran)</span>
+    <span class="n">mo_idx</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">alpha_mo_idx</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">beta_mo_idx</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">intdump</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;Writing frozen core operator in FCIDUMP format to &#39;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;RHF&#39;</span><span class="p">:</span>
+            <span class="n">PSIF_MO_FZC</span> <span class="o">=</span> <span class="s1">&#39;MO-basis Frozen-Core Operator&#39;</span>
+            <span class="n">moH</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">PSIF_MO_FZC</span><span class="p">,</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nmopi</span><span class="p">(),</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nmopi</span><span class="p">())</span>
+            <span class="n">moH</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">shared_object</span><span class="p">(),</span> <span class="n">psif</span><span class="o">.</span><span class="n">PSIF_OEI</span><span class="p">)</span>
+            <span class="n">mo_slice</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">frzcpi</span><span class="p">,</span> <span class="n">active_mopi</span><span class="p">)</span>
+            <span class="n">MO_FZC</span> <span class="o">=</span> <span class="n">moH</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">mo_slice</span><span class="p">,</span> <span class="n">mo_slice</span><span class="p">)</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">MO_FZC</span><span class="o">.</span><span class="n">nph</span><span class="p">):</span>
+                <span class="n">il</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="n">il</span><span class="p">]):</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">mo_idx</span><span class="p">(</span><span class="n">il</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+                    <span class="n">col</span> <span class="o">=</span> <span class="n">mo_idx</span><span class="p">(</span><span class="n">il</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">ints_tolerance</span><span class="p">):</span>
+                        <span class="n">intdump</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:29.20E}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="n">offset</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Additional one-electron integrals as requested in oe_ints</span>
+            <span class="c1"># Orbital energies</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;Writing orbital energies in FCIDUMP format to &#39;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;EIGENVALUES&#39;</span> <span class="ow">in</span> <span class="n">oe_ints</span><span class="p">:</span>
+                <span class="n">eigs_dump</span> <span class="o">=</span> <span class="n">write_eigenvalues</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">epsilon_a</span><span class="p">()</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">mo_slice</span><span class="p">)</span><span class="o">.</span><span class="n">to_array</span><span class="p">(),</span> <span class="n">mo_idx</span><span class="p">)</span>
+                <span class="n">intdump</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">eigs_dump</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">PSIF_MO_A_FZC</span> <span class="o">=</span> <span class="s1">&#39;MO-basis Alpha Frozen-Core Oper&#39;</span>
+            <span class="n">moH_A</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">PSIF_MO_A_FZC</span><span class="p">,</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nmopi</span><span class="p">(),</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nmopi</span><span class="p">())</span>
+            <span class="n">moH_A</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">shared_object</span><span class="p">(),</span> <span class="n">psif</span><span class="o">.</span><span class="n">PSIF_OEI</span><span class="p">)</span>
+            <span class="n">mo_slice</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">frzcpi</span><span class="p">,</span> <span class="n">active_mopi</span><span class="p">)</span>
+            <span class="n">MO_FZC_A</span> <span class="o">=</span> <span class="n">moH_A</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">mo_slice</span><span class="p">,</span> <span class="n">mo_slice</span><span class="p">)</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">MO_FZC_A</span><span class="o">.</span><span class="n">nph</span><span class="p">):</span>
+                <span class="n">il</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="n">il</span><span class="p">]):</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">alpha_mo_idx</span><span class="p">(</span><span class="n">il</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+                    <span class="n">col</span> <span class="o">=</span> <span class="n">alpha_mo_idx</span><span class="p">(</span><span class="n">il</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">ints_tolerance</span><span class="p">):</span>
+                        <span class="n">intdump</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:29.20E}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="n">offset</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">PSIF_MO_B_FZC</span> <span class="o">=</span> <span class="s1">&#39;MO-basis Beta Frozen-Core Oper&#39;</span>
+            <span class="n">moH_B</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">PSIF_MO_B_FZC</span><span class="p">,</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nmopi</span><span class="p">(),</span> <span class="n">wfn</span><span class="o">.</span><span class="n">nmopi</span><span class="p">())</span>
+            <span class="n">moH_B</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">shared_object</span><span class="p">(),</span> <span class="n">psif</span><span class="o">.</span><span class="n">PSIF_OEI</span><span class="p">)</span>
+            <span class="n">mo_slice</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">frzcpi</span><span class="p">,</span> <span class="n">active_mopi</span><span class="p">)</span>
+            <span class="n">MO_FZC_B</span> <span class="o">=</span> <span class="n">moH_B</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">mo_slice</span><span class="p">,</span> <span class="n">mo_slice</span><span class="p">)</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">MO_FZC_B</span><span class="o">.</span><span class="n">nph</span><span class="p">):</span>
+                <span class="n">il</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tril_indices</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="n">il</span><span class="p">]):</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">beta_mo_idx</span><span class="p">(</span><span class="n">il</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+                    <span class="n">col</span> <span class="o">=</span> <span class="n">beta_mo_idx</span><span class="p">(</span><span class="n">il</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">ints_tolerance</span><span class="p">):</span>
+                        <span class="n">intdump</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:29.20E}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="n">offset</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Additional one-electron integrals as requested in oe_ints</span>
+            <span class="c1"># Orbital energies</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;Writing orbital energies in FCIDUMP format to &#39;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;EIGENVALUES&#39;</span> <span class="ow">in</span> <span class="n">oe_ints</span><span class="p">:</span>
+                <span class="n">alpha_eigs_dump</span> <span class="o">=</span> <span class="n">write_eigenvalues</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">epsilon_a</span><span class="p">()</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">mo_slice</span><span class="p">)</span><span class="o">.</span><span class="n">to_array</span><span class="p">(),</span> <span class="n">alpha_mo_idx</span><span class="p">)</span>
+                <span class="n">beta_eigs_dump</span> <span class="o">=</span> <span class="n">write_eigenvalues</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">epsilon_b</span><span class="p">()</span><span class="o">.</span><span class="n">get_block</span><span class="p">(</span><span class="n">mo_slice</span><span class="p">)</span><span class="o">.</span><span class="n">to_array</span><span class="p">(),</span> <span class="n">beta_mo_idx</span><span class="p">)</span>
+                <span class="n">intdump</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alpha_eigs_dump</span> <span class="o">+</span> <span class="n">beta_eigs_dump</span><span class="p">)</span>
+        <span class="c1"># Dipole integrals</span>
+        <span class="c1">#core.print_out(&#39;Writing dipole moment OEI in FCIDUMP format to &#39; + fname + &#39;\n&#39;)</span>
+        <span class="c1"># Traceless quadrupole integrals</span>
+        <span class="c1">#core.print_out(&#39;Writing traceless quadrupole moment OEI in FCIDUMP format to &#39; + fname + &#39;\n&#39;)</span>
+        <span class="c1"># Frozen core + nuclear repulsion energy</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;Writing frozen core + nuclear repulsion energy in FCIDUMP format to &#39;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">e_fzc</span> <span class="o">=</span> <span class="n">ints</span><span class="o">.</span><span class="n">get_frozen_core_energy</span><span class="p">()</span>
+        <span class="n">e_nuc</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">get_dipole_field_strength</span><span class="p">())</span>
+        <span class="n">intdump</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{: 29.20E}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e_fzc</span> <span class="o">+</span> <span class="n">e_nuc</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;Done generating </span><span class="si">{}</span><span class="s1"> with integrals in FCIDUMP format.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="write_eigenvalues"><a class="viewcode-back" href="../../../../api/psi4.driver.write_eigenvalues.html#psi4.driver.write_eigenvalues">[docs]</a><span class="k">def</span> <span class="nf">write_eigenvalues</span><span class="p">(</span><span class="n">eigs</span><span class="p">,</span> <span class="n">mo_idx</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prepare multi-line string with one-particle eigenvalues to be written to the FCIDUMP file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eigs_dump</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">iorb</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">eigs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+            <span class="n">eigs_dump</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{: 29.20E}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="s1"> </span><span class="si">{:4d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mo_idx</span><span class="p">(</span><span class="n">iorb</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">iorb</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">eigs_dump</span></div>
+
+
+<span class="k">def</span> <span class="nf">_irrep_map</span><span class="p">(</span><span class="n">wfn</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns an array of irrep indices that maps from Psi4&#39;s ordering convention to the standard FCIDUMP convention.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">symm</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">point_group</span><span class="p">()</span><span class="o">.</span><span class="n">symbol</span><span class="p">()</span>
+    <span class="n">psi2dump</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c1&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span>               <span class="c1"># A</span>
+                <span class="s1">&#39;ci&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>             <span class="c1"># Ag Au</span>
+                <span class="s1">&#39;c2&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>             <span class="c1"># A  B</span>
+                <span class="s1">&#39;cs&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>             <span class="c1"># A&#39; A&quot;</span>
+                <span class="s1">&#39;d2&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>         <span class="c1"># A  B1  B2  B3</span>
+                <span class="s1">&#39;c2v&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>        <span class="c1"># A1 A2  B1  B2</span>
+                <span class="s1">&#39;c2h&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>        <span class="c1"># Ag Bg  Au  Bu</span>
+                <span class="s1">&#39;d2h&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># Ag B1g B2g B3g Au B1u B2u B3u</span>
+                <span class="p">}</span>
+
+    <span class="n">irrep_map</span> <span class="o">=</span> <span class="n">psi2dump</span><span class="p">[</span><span class="n">symm</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">irrep_map</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="fcidump_from_file"><a class="viewcode-back" href="../../../../api/psi4.driver.fcidump_from_file.html#psi4.driver.fcidump_from_file">[docs]</a><span class="k">def</span> <span class="nf">fcidump_from_file</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to read in a FCIDUMP file.</span>
+
+<span class="sd">    :returns: a dictionary with FCIDUMP header and integrals</span>
+<span class="sd">    The key-value pairs are:</span>
+<span class="sd">      - &#39;norb&#39; : number of basis functions</span>
+<span class="sd">      - &#39;nelec&#39; : number of electrons</span>
+<span class="sd">      - &#39;ms2&#39; : spin polarization of the system</span>
+<span class="sd">      - &#39;isym&#39; : symmetry of state (if present in FCIDUMP)</span>
+<span class="sd">      - &#39;orbsym&#39; : list of symmetry labels of each orbital</span>
+<span class="sd">      - &#39;uhf&#39; : whether restricted or unrestricted</span>
+<span class="sd">      - &#39;enuc&#39; : nuclear repulsion plus frozen core energy</span>
+<span class="sd">      - &#39;epsilon&#39; : orbital energies</span>
+<span class="sd">      - &#39;hcore&#39; : core Hamiltonian</span>
+<span class="sd">      - &#39;eri&#39; : electron-repulsion integrals</span>
+
+<span class="sd">    :param fname: FCIDUMP file name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intdump</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="s1">&#39;&amp;FCI&#39;</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">skiplines</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">read</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">skiplines</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s1">&#39;END&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;UHF&#39;</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;TRUE&#39;</span> <span class="ow">in</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;ORBSYM&#39;</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+
+            <span class="n">intdump</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># Read the data and index, skip header</span>
+    <span class="n">raw_ints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">skiplines</span><span class="p">)</span>
+
+    <span class="c1"># Read last line, i.e. Enuc + Efzc</span>
+    <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;enuc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raw_ints</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Read in integrals and indices</span>
+    <span class="n">ints</span> <span class="o">=</span> <span class="n">raw_ints</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Get dimensions and indices</span>
+    <span class="n">nbf</span> <span class="o">=</span> <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;norb&#39;</span><span class="p">]</span>
+    <span class="n">idxs</span> <span class="o">=</span> <span class="n">raw_ints</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="c1"># Slices</span>
+    <span class="n">sl</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">ints</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nbf</span><span class="p">,</span> <span class="n">ints</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># Extract orbital energies</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbf</span><span class="p">)</span>
+    <span class="n">epsilon</span><span class="p">[</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;epsilon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span>
+
+    <span class="c1"># Count how many 2-index intdump we have</span>
+    <span class="n">sl</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">start</span> <span class="o">-</span> <span class="n">nbf</span> <span class="o">*</span> <span class="n">nbf</span><span class="p">,</span> <span class="n">sl</span><span class="o">.</span><span class="n">stop</span> <span class="o">-</span> <span class="n">nbf</span><span class="p">)</span>
+    <span class="n">two_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">sl</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">stop</span> <span class="o">-</span> <span class="n">two_index</span><span class="p">,</span> <span class="n">sl</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+
+    <span class="c1"># Extract Hcore</span>
+    <span class="n">Hcore</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">))</span>
+    <span class="n">Hcore</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">Hcore</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;hcore&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Hcore</span>
+
+    <span class="c1"># Extract ERIs</span>
+    <span class="n">sl</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sl</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">eri</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">))</span>
+    <span class="n">eri</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">3</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">eri</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">eri</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">3</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">eri</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">eri</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">eri</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">eri</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">eri</span><span class="p">[(</span><span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">idxs</span><span class="p">[</span><span class="n">sl</span><span class="p">,</span> <span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+    <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;eri&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eri</span>
+
+    <span class="k">return</span> <span class="n">intdump</span></div>
+
+
+<div class="viewcode-block" id="compare_fcidumps"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_fcidumps.html#psi4.driver.compare_fcidumps">[docs]</a><span class="k">def</span> <span class="nf">compare_fcidumps</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two FCIDUMP files. Prints :py:func:`util.success`</span>
+<span class="sd">    when value *computed* matches value *expected*.</span>
+<span class="sd">    Performs a system exit on failure. Used in input files in the test suite.</span>
+
+<span class="sd">    :returns: a dictionary of energies computed from the MO integrals.</span>
+<span class="sd">    The key-value pairs are:</span>
+<span class="sd">      - &#39;NUCLEAR REPULSION ENERGY&#39; : nuclear repulsion plus frozen core energy</span>
+<span class="sd">      - &#39;ONE-ELECTRON ENERGY&#39; : SCF one-electron energy</span>
+<span class="sd">      - &#39;TWO-ELECTRON ENERGY&#39; : SCF two-electron energy</span>
+<span class="sd">      - &#39;SCF TOTAL ENERGY&#39; : SCF total energy</span>
+<span class="sd">      - &#39;MP2 CORRELATION ENERGY&#39; : MP2 correlation energy</span>
+
+<span class="sd">    :param expected: reference FCIDUMP file</span>
+<span class="sd">    :param computed: computed FCIDUMP file</span>
+<span class="sd">    :param label: string labelling the test</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Grab expected header and integrals</span>
+    <span class="n">ref_intdump</span> <span class="o">=</span> <span class="n">fcidump_from_file</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+    <span class="n">intdump</span> <span class="o">=</span> <span class="n">fcidump_from_file</span><span class="p">(</span><span class="n">computed</span><span class="p">)</span>
+
+    <span class="c1"># Compare headers</span>
+    <span class="n">compare_recursive</span><span class="p">(</span>
+        <span class="n">ref_intdump</span><span class="p">,</span>
+        <span class="n">intdump</span><span class="p">,</span>
+        <span class="s1">&#39;FCIDUMP header&#39;</span><span class="p">,</span>
+        <span class="n">forgive</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;enuc&#39;</span><span class="p">,</span> <span class="s1">&#39;hcore&#39;</span><span class="p">,</span> <span class="s1">&#39;eri&#39;</span><span class="p">,</span> <span class="s1">&#39;epsilon&#39;</span><span class="p">])</span>
+
+    <span class="n">ref_energies</span> <span class="o">=</span> <span class="n">energies_from_fcidump</span><span class="p">(</span><span class="n">ref_intdump</span><span class="p">)</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">energies_from_fcidump</span><span class="p">(</span><span class="n">intdump</span><span class="p">)</span>
+
+    <span class="n">pass_1el</span> <span class="o">=</span> <span class="n">compare_values</span><span class="p">(</span><span class="n">ref_energies</span><span class="p">[</span><span class="s1">&#39;ONE-ELECTRON ENERGY&#39;</span><span class="p">],</span> <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;ONE-ELECTRON ENERGY&#39;</span><span class="p">],</span> <span class="mi">7</span><span class="p">,</span>
+                              <span class="n">label</span> <span class="o">+</span> <span class="s1">&#39;. 1-electron energy&#39;</span><span class="p">)</span>
+    <span class="n">pass_2el</span> <span class="o">=</span> <span class="n">compare_values</span><span class="p">(</span><span class="n">ref_energies</span><span class="p">[</span><span class="s1">&#39;TWO-ELECTRON ENERGY&#39;</span><span class="p">],</span> <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;TWO-ELECTRON ENERGY&#39;</span><span class="p">],</span> <span class="mi">7</span><span class="p">,</span>
+                              <span class="n">label</span> <span class="o">+</span> <span class="s1">&#39;. 2-electron energy&#39;</span><span class="p">)</span>
+    <span class="n">pass_scf</span> <span class="o">=</span> <span class="n">compare_values</span><span class="p">(</span><span class="n">ref_energies</span><span class="p">[</span><span class="s1">&#39;SCF TOTAL ENERGY&#39;</span><span class="p">],</span> <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;SCF TOTAL ENERGY&#39;</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span>
+                              <span class="n">label</span> <span class="o">+</span> <span class="s1">&#39;. SCF total energy&#39;</span><span class="p">)</span>
+    <span class="n">pass_mp2</span> <span class="o">=</span> <span class="n">compare_values</span><span class="p">(</span><span class="n">ref_energies</span><span class="p">[</span><span class="s1">&#39;MP2 CORRELATION ENERGY&#39;</span><span class="p">],</span> <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;MP2 CORRELATION ENERGY&#39;</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span>
+                              <span class="n">label</span> <span class="o">+</span> <span class="s1">&#39;. MP2 correlation energy&#39;</span><span class="p">)</span>
+
+    <span class="n">compare_integers</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="n">pass_1el</span> <span class="ow">and</span> <span class="n">pass_2el</span> <span class="ow">and</span> <span class="n">pass_scf</span> <span class="ow">and</span> <span class="n">pass_mp2</span><span class="p">),</span> <span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="energies_from_fcidump"><a class="viewcode-back" href="../../../../api/psi4.driver.energies_from_fcidump.html#psi4.driver.energies_from_fcidump">[docs]</a><span class="k">def</span> <span class="nf">energies_from_fcidump</span><span class="p">(</span><span class="n">intdump</span><span class="p">):</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;NUCLEAR REPULSION ENERGY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;enuc&#39;</span><span class="p">]</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;epsilon&#39;</span><span class="p">]</span>
+    <span class="n">Hcore</span> <span class="o">=</span> <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;hcore&#39;</span><span class="p">]</span>
+    <span class="n">eri</span> <span class="o">=</span> <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;eri&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Compute SCF energy</span>
+    <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;ONE-ELECTRON ENERGY&#39;</span><span class="p">],</span> <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;TWO-ELECTRON ENERGY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_scf_energy</span><span class="p">(</span><span class="n">Hcore</span><span class="p">,</span> <span class="n">eri</span><span class="p">,</span>
+                                                                                   <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">epsilon</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                                                                                   <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;uhf&#39;</span><span class="p">])</span>
+    <span class="c1"># yapf: disable</span>
+    <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;SCF TOTAL ENERGY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;ONE-ELECTRON ENERGY&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;TWO-ELECTRON ENERGY&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;NUCLEAR REPULSION ENERGY&#39;</span><span class="p">]</span>
+    <span class="c1"># yapf: enable</span>
+
+    <span class="c1"># Compute MP2 energy</span>
+    <span class="n">energies</span><span class="p">[</span><span class="s1">&#39;MP2 CORRELATION ENERGY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_mp2_energy</span><span class="p">(</span><span class="n">eri</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">intdump</span><span class="p">[</span><span class="s1">&#39;uhf&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">energies</span></div>
+
+
+<span class="k">def</span> <span class="nf">_scf_energy</span><span class="p">(</span><span class="n">Hcore</span><span class="p">,</span> <span class="n">ERI</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">,</span> <span class="n">unrestricted</span><span class="p">):</span>
+    <span class="n">scf_1el_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ii-&gt;&#39;</span><span class="p">,</span> <span class="n">Hcore</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">occ_sl</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">)])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">unrestricted</span><span class="p">:</span>
+        <span class="n">scf_1el_e</span> <span class="o">*=</span> <span class="mi">2</span>
+    <span class="n">coulomb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;iijj-&gt;&#39;</span><span class="p">,</span> <span class="n">ERI</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">occ_sl</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">)])</span>
+    <span class="n">exchange</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ijij-&gt;&#39;</span><span class="p">,</span> <span class="n">ERI</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">occ_sl</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">)])</span>
+    <span class="k">if</span> <span class="n">unrestricted</span><span class="p">:</span>
+        <span class="n">scf_2el_e</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">coulomb</span> <span class="o">-</span> <span class="n">exchange</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">scf_2el_e</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">coulomb</span> <span class="o">-</span> <span class="n">exchange</span>
+
+    <span class="k">return</span> <span class="n">scf_1el_e</span><span class="p">,</span> <span class="n">scf_2el_e</span>
+
+
+<span class="k">def</span> <span class="nf">_mp2_energy</span><span class="p">(</span><span class="n">ERI</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">unrestricted</span><span class="p">):</span>
+    <span class="c1"># Occupied and virtual slices</span>
+    <span class="n">occ_sl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">epsilon</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">vir_sl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">epsilon</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">eocc</span> <span class="o">=</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">occ_sl</span><span class="p">]</span>
+    <span class="n">evir</span> <span class="o">=</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">vir_sl</span><span class="p">]</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">eocc</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">evir</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">eocc</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">evir</span><span class="p">)</span>
+    <span class="n">MO</span> <span class="o">=</span> <span class="n">ERI</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">occ_sl</span><span class="p">,</span> <span class="n">vir_sl</span><span class="p">,</span> <span class="n">occ_sl</span><span class="p">,</span> <span class="n">vir_sl</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">unrestricted</span><span class="p">:</span>
+        <span class="n">mp2_e</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;abrs,abrs,abrs-&gt;&quot;</span><span class="p">,</span> <span class="n">MO</span><span class="p">,</span> <span class="n">MO</span> <span class="o">-</span> <span class="n">MO</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">denom</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mp2_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;iajb,iajb,iajb-&gt;&#39;</span><span class="p">,</span> <span class="n">MO</span><span class="p">,</span> <span class="n">MO</span><span class="p">,</span> <span class="n">denom</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;iajb,iajb,iajb-&gt;&#39;</span><span class="p">,</span> <span class="n">MO</span> <span class="o">-</span> <span class="n">MO</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                                                                         <span class="n">MO</span><span class="p">,</span> <span class="n">denom</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mp2_e</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../../index.html" title="index">
+          <img class="logo" src="../../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/p4util/fcidump.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Tuesday, 24 November 2020 02:48AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

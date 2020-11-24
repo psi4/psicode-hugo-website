@@ -1,0 +1,832 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Psithon Tutorial: Using PSI4 as an Executable</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+
+    
+    
+     
+        <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PsiAPI Tutorial: Using Psi4 as a Python Module" href="psiapi.html" />
+    <link rel="prev" title="A PSI4 Tutorial" href="index_tutorials.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psiapi.html" title="PsiAPI Tutorial: Using Psi4 as a Python Module"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index_tutorials.html" title="A PSI4 Tutorial"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/tutorial.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="index_tutorials.html" accesskey="U">A <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Tutorial</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="psithon-tutorial-using-psifour-as-an-executable">
+<span id="sec-tutorial"></span><h1>Psithon Tutorial: Using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> as an Executable<a class="headerlink" href="#psithon-tutorial-using-psifour-as-an-executable" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Psithon and PsiAPI refer to two modes of interacting with <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>. In
+Psithon mode, you write an input file in our domain-specific language
+(not quite Python) where commands don’t have <code class="docutils literal notranslate"><span class="pre">psi4.</span></code> in front, then
+submit it to the executable <code class="docutils literal notranslate"><span class="pre">psi4</span></code> which processes the Psithon into
+pure Python and runs it internally. In PsiAPI mode, you write a pure
+Python script with <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">psi4</span></code> at the top and commands are behind
+the <code class="docutils literal notranslate"><span class="pre">psi4.</span></code> namespace, then submit it to the <code class="docutils literal notranslate"><span class="pre">python</span></code> interpreter.
+Both modes are equally powerful. This tutorial covers the Psithon
+mode.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> functions and keywords have aliases.  For example,
+<code class="docutils literal notranslate"><span class="pre">frequency()</span></code>, <code class="docutils literal notranslate"><span class="pre">frequencies()</span></code>, and <code class="docutils literal notranslate"><span class="pre">freq()</span></code> all work to
+obtain vibrational frequencies.</p>
+</div>
+<div class="section" id="basic-input-file-structure">
+<h2>Basic Input File Structure<a class="headerlink" href="#basic-input-file-structure" title="Permalink to this headline">¶</a></h2>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> reads input from a text file, which can be prepared in any standard
+text editor.  The default input file name is <code class="docutils literal notranslate"><span class="pre">input.dat</span></code> and the
+default output file name is <code class="docutils literal notranslate"><span class="pre">output.dat</span></code>.  So that you can give your
+files meaningful names, these defaults can be changed by specifying
+the input file name and output file name on the the command line.
+The syntax is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="nb">input</span><span class="o">-</span><span class="n">name</span> <span class="n">output</span><span class="o">-</span><span class="n">name</span>
+</pre></div>
+</div>
+<p>If you give an input name but no output name, then the output name will
+be the same as the input name (replacing any “.in” or “.dat” extension by “.out”).</p>
+</div>
+<div class="section" id="sample-input-files">
+<h2>Sample Input Files<a class="headerlink" href="#sample-input-files" title="Permalink to this headline">¶</a></h2>
+<p>Below, we will provide a few simple input files as examples.  A large
+number of sample input files, covering everything from single-point energies
+using density-functional theory to response properties from coupled-cluster
+theory, can be found in the <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples">psi4/samples</a> directory.</p>
+</div>
+<div class="section" id="running-a-basic-hartree-fock-calculation">
+<h2>Running a Basic Hartree–Fock Calculation<a class="headerlink" href="#running-a-basic-hartree-fock-calculation" title="Permalink to this headline">¶</a></h2>
+<p>In our first example, we will consider a Hartree–Fock SCF computation
+for the water molecule using a cc-pVDZ basis set.  We will specify the
+geometry of our water molecule using a standard Z-matrix.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Any line starting with the # character is a comment line</span>
+<span class="c1">#! Sample HF/cc-pVDZ H2O computation</span>
+
+<span class="n">memory</span> <span class="mi">600</span> <span class="n">mb</span>
+
+<span class="n">molecule</span> <span class="n">h2o</span> <span class="p">{</span>
+  <span class="n">O</span> 
+  <span class="n">H</span> <span class="mi">1</span> <span class="mf">0.96</span>
+  <span class="n">H</span> <span class="mi">1</span> <span class="mf">0.96</span> <span class="mi">2</span> <span class="mf">104.5</span>
+<span class="p">}</span>
+
+<span class="nb">set</span> <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span>
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The memory and basis set specifications are placed <em>before</em> the
+energy function is called.  Any user options need to
+be set before the procedure they are meant to affect.</p>
+</div>
+<p>For your convenience, the above example can be found in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/tu1-h2o-energy/input.dat">tu1-h2o-energy</a>.
+You can run it if you wish.
+Once <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> is in your path (see the
+<a class="reference internal" href="build_planning.html#faq-runordinaryexe"><span class="std std-ref">User Configuration</span></a>
+section of the installation instructions), you can run this computation by typing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="nb">input</span><span class="o">.</span><span class="n">dat</span> <span class="n">output</span><span class="o">.</span><span class="n">dat</span>
+</pre></div>
+</div>
+<p>If everything goes well, the computation should complete and should report
+a final restricted Hartree–Fock energy in a section like this:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">Energy</span> <span class="n">converged</span><span class="o">.</span>
+
+<span class="nd">@RHF</span> <span class="n">Final</span> <span class="n">Energy</span><span class="p">:</span>   <span class="o">-</span><span class="mf">76.02663273410671</span>
+</pre></div>
+</td></tr></table></div>
+<p>By default, the energy should be converged to about <span class="math notranslate nohighlight">\(1.0 \times 10^{-6}\)</span>, so agreement
+is only expected for about the first 6 digits after the decimal.  If the
+computation does not complete, there is probably a problem with the
+compilation or installation of the program (see the installation
+instructions in Sec. <a class="reference internal" href="build_planning.html#sec-installfile"><span class="std std-ref">Compiling and Installing from Source</span></a>).</p>
+<p>This very simple input is sufficient to run the requested information.
+Notice that we didn’t tell the program some otherwise useful information
+like the charge on the molecule (0, it’s neutral), the spin multiplicity
+(1 for a closed-shell molecule with all electrons paired), or the reference
+wavefunction to use (restricted Hartree–Fock, or RHF, is usually
+appropriate for a closed-shell molecule).  The program correctly guessed
+all of these options for us.  We can change the default behavior through
+additional keywords.</p>
+<p>Let’s consider what we would do for an open-shell molecule, where
+not all electrons are paired.  For example, let’s run a computation
+on methylene (CH<sub>2</sub>), whose ground electronic state has two unpaired
+electrons (triplet electronic state, or a spin multiplicity <span class="math notranslate nohighlight">\(2S+1 = 3\)</span>).
+In this case, the default spin multiplicity (1) is not correct, so we
+need to tell the program the true value (3).  Like many programs, <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+can get the charge and multiplicity as the first two integers in the
+Z-matrix.  Note the line with <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">3</span></code> at the beginning of the molecule
+specification below.  In this example we will also specify the bond length
+and bond angle as variables (<span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(A\)</span>), whose values are given
+at the end of the Z-matrix specification.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#! Sample UHF/6-31G** CH2 computation</span>
+
+<span class="n">molecule</span> <span class="n">ch2</span> <span class="p">{</span>
+  <span class="mi">0</span> <span class="mi">3</span>
+  <span class="n">C</span> 
+  <span class="n">H</span> <span class="mi">1</span> <span class="n">R</span>
+  <span class="n">H</span> <span class="mi">1</span> <span class="n">R</span> <span class="mi">2</span> <span class="n">A</span>
+
+  <span class="n">R</span> <span class="o">=</span> <span class="mf">1.075</span>
+  <span class="n">A</span> <span class="o">=</span> <span class="mf">133.93</span>
+<span class="p">}</span>
+
+<span class="nb">set</span> <span class="n">basis</span> <span class="mi">6</span><span class="o">-</span><span class="mi">31</span><span class="n">G</span><span class="o">**</span>
+<span class="nb">set</span> <span class="n">reference</span> <span class="n">uhf</span>
+<span class="n">energy</span> <span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>This sample input can be found in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/tu2-ch2-energy/input.dat">tu2-ch2-energy</a> and as
+before it can be run through the command <code class="docutils literal notranslate"><span class="pre">psi4</span> <span class="pre">input.dat</span> <span class="pre">output.dat</span></code>
+(actually, because <code class="docutils literal notranslate"><span class="pre">psi4</span></code> by default looks for an input file named
+<code class="docutils literal notranslate"><span class="pre">input.dat</span></code> and writes by default to a file called <code class="docutils literal notranslate"><span class="pre">output.dat</span></code>, in this
+case one could also just type <code class="docutils literal notranslate"><span class="pre">psi4</span></code>).  If it works, it should print
+the final energy as</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@UHF</span> <span class="n">Final</span> <span class="n">Energy</span><span class="p">:</span>   <span class="o">-</span><span class="mf">38.92533462456894</span>
+</pre></div>
+</td></tr></table></div>
+<p>Notice we added a new keyword, <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">reference</span> <span class="pre">uhf</span></code>, to the input.  For
+open-shell molecules, we have a choice of unrestricted orbitals
+(unrestricted Hartree–Fock, or UHF), or restricted orbitals (restricted
+open-shell Hartree–Fock, or ROHF).  Usually, UHF is a little easier to
+converge (although it may be more susceptible to spin contamination than
+ROHF).</p>
+</div>
+<div class="section" id="geometry-optimization-and-vibrational-frequency-analysis">
+<h2>Geometry Optimization and Vibrational Frequency Analysis<a class="headerlink" href="#geometry-optimization-and-vibrational-frequency-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The above examples were simple single-point energy computations
+(as specified by the <a class="reference internal" href="energy.html#psi4.energy" title="psi4.energy"><code class="xref py py-func docutils literal notranslate"><span class="pre">energy()</span></code></a> function).  Of course there are other
+kinds of computations to perform, such as geometry optimizations and
+vibrational frequency computations.  These can be specified by replacing
+<a class="reference internal" href="energy.html#psi4.energy" title="psi4.energy"><code class="xref py py-func docutils literal notranslate"><span class="pre">energy()</span></code></a> with <a class="reference internal" href="opt.html#psi4.optimize" title="psi4.optimize"><code class="xref py py-func docutils literal notranslate"><span class="pre">optimize()</span></code></a> or <a class="reference internal" href="freq.html#psi4.frequency" title="psi4.frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">frequency()</span></code></a>, respectively.</p>
+<p>Here’s an example of optimizing the H<sub>2</sub>O molecule using Hartree–Fock with
+a cc-pVDZ basis set (located in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/tu3-h2o-opt/input.dat">tu3-h2o-opt</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#! Optimize H2O HF/cc-pVDZ</span>
+
+
+<span class="n">molecule</span> <span class="n">h2o</span> <span class="p">{</span>
+  <span class="n">O</span> 
+  <span class="n">H</span> <span class="mi">1</span> <span class="mf">0.96</span>
+  <span class="n">H</span> <span class="mi">1</span> <span class="mf">0.96</span> <span class="mi">2</span> <span class="mf">104.5</span>
+<span class="p">}</span>
+
+<span class="nb">set</span> <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span>
+<span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>This should perform a series of gradient computations.  The gradient points
+which way is downhill in energy, and the optimizer then modifies the
+geometry to follow the gradient.  After a few cycles, the geometry should
+converge with a message like <code class="docutils literal notranslate"><span class="pre">Optimization</span> <span class="pre">is</span> <span class="pre">complete!</span></code>.  As indicated
+in the following table (printed by the optimizer at the end of the
+computation and grep-able with <code class="docutils literal notranslate"><span class="pre">~</span></code>), the energy decreases with each step,
+and the maximum force on each atom also decreases with each step (in
+principle these numbers could increase in some iterations, but here they do
+not).</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------------------------------------------</span> <span class="o">~</span>
+ <span class="n">Step</span>         <span class="n">Total</span> <span class="n">Energy</span>             <span class="n">Delta</span> <span class="n">E</span>       <span class="n">MAX</span> <span class="n">Force</span>       <span class="n">RMS</span> <span class="n">Force</span>        <span class="n">MAX</span> <span class="n">Disp</span>        <span class="n">RMS</span> <span class="n">Disp</span>  <span class="o">~</span>
+<span class="o">---------------------------------------------------------------------------------------------------------------</span> <span class="o">~</span>
+    <span class="mi">1</span>     <span class="o">-</span><span class="mf">76.026632734857</span>    <span class="o">-</span><span class="mf">76.026632734857</span>      <span class="mf">0.01523505</span>      <span class="mf">0.01245744</span>      <span class="mf">0.02742199</span>      <span class="mf">0.02277500</span>  <span class="o">~</span>
+    <span class="mi">2</span>     <span class="o">-</span><span class="mf">76.027022668419</span>     <span class="o">-</span><span class="mf">0.000389933562</span>      <span class="mf">0.00178749</span>      <span class="mf">0.00142923</span>      <span class="mf">0.01007985</span>      <span class="mf">0.00594840</span>  <span class="o">~</span>
+    <span class="mi">3</span>     <span class="o">-</span><span class="mf">76.027032729361</span>     <span class="o">-</span><span class="mf">0.000010060942</span>      <span class="mf">0.00014016</span>      <span class="mf">0.00008485</span>      <span class="mf">0.00077279</span>      <span class="mf">0.00044621</span>  <span class="o">~</span>
+<span class="o">---------------------------------------------------------------------------------------------------------------</span> <span class="o">~</span>
+</pre></div>
+</td></tr></table></div>
+<p>To get harmonic vibrational frequencies, it’s important to keep in mind that
+the values of the vibrational frequencies are a function of the molecular
+geometry.  Therefore, <em>it’s important to obtain the vibrational frequencies
+at the OPTIMIZED GEOMETRY</em>.  We could set up a second input file to perform
+the vibrational frequency analysis, being very careful to copy over the
+optimized geometry from the <em>bottom</em> of the output file for the geometry
+optimization.  This geometry could be specified in either z-matrix or
+Cartesian formats.  However, there’s a much easier way to do this.  If we
+specify a vibrational frequency analysis in the same input file as the
+optimization, after the optimization function has been called, then the
+optimized geometry will automatically be carried over.</p>
+<p>So, it’s easiset to do the optimization and vibrational frequency analysis
+together.  This can be specified as follows (see test case
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/tu4-h2o-freq/input.dat">tu4-h2o-freq</a>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#! Optimization followed by frequencies H2O HF/cc-pVDZ</span>
+
+<span class="n">molecule</span> <span class="n">h2o</span> <span class="p">{</span>
+  <span class="n">O</span> 
+  <span class="n">H</span> <span class="mi">1</span> <span class="mf">0.96</span>
+  <span class="n">H</span> <span class="mi">1</span> <span class="mf">0.96</span> <span class="mi">2</span> <span class="mf">104.5</span>
+<span class="p">}</span>
+
+<span class="nb">set</span> <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span>
+<span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+<span class="n">scf_e</span><span class="p">,</span> <span class="n">scf_wfn</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+</pre></div>
+</div>
+<p>The program will do the same optimization as in our previous example,
+but then it will follow it with some computations to obtain the Hessian
+(second derivative matrix) of the electronic energy with respect to
+nuclear displacements.  From this, it can obtain the harmonic vibrational
+frequencies, given below (roundoff errors of around 0.1 cm<sup>-1</sup>
+may exist):</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span>  <span class="n">Irrep</span>      <span class="n">Harmonic</span> <span class="n">Frequency</span>
+                  <span class="p">(</span><span class="n">cm</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">-----------------------------------------------</span>
+     <span class="n">A1</span>         <span class="mf">1775.6480</span>
+     <span class="n">A1</span>         <span class="mf">4113.3794</span>
+     <span class="n">B2</span>         <span class="mf">4212.1826</span>
+<span class="o">-----------------------------------------------</span>
+</pre></div>
+</td></tr></table></div>
+<p>Notice that the symmetry type of the normal modes is specified (A1, A1,
+B2).  The program also prints out the normal modes in terms of Cartesian
+coordinates of each atom.  For example, the normal mode at 1776 cm<sup>-1</sup>
+is:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">Frequency</span><span class="p">:</span>       <span class="mf">1775.65</span>
+ <span class="n">Force</span> <span class="n">constant</span><span class="p">:</span>   <span class="mf">0.1193</span>
+           <span class="n">X</span>       <span class="n">Y</span>       <span class="n">Z</span>           <span class="n">mass</span>
+<span class="n">O</span>        <span class="mf">0.000</span>   <span class="mf">0.000</span>  <span class="o">-</span><span class="mf">0.270</span>      <span class="mf">15.994915</span>
+<span class="n">H</span>        <span class="mf">0.000</span>   <span class="mf">0.417</span>   <span class="mf">0.538</span>       <span class="mf">1.007825</span>
+<span class="n">H</span>        <span class="mf">0.000</span>  <span class="o">-</span><span class="mf">0.417</span>   <span class="mf">0.538</span>       <span class="mf">1.007825</span>
+</pre></div>
+</td></tr></table></div>
+<p>where the table shows the displacements in the X, Y, and Z dimensions for
+each atom along the normal mode coordinate.  (This information could be used
+to animate the vibrational frequency using visualization software.)</p>
+<p>Because the vibrational frequencies are available, a thermodynamics
+analysis is automatically performed at the end of the computation.
+You can see this in the next section of the output file.  The vibrational
+frequencies are sufficient to obtain vibrational contributions to
+enthalpy (H), entropy (S), and Gibbs free energy (G).  Similarly, the
+molecular geometry is used to obtain rotational constants, which are
+then used to obtain rotational contributions to H, S, and G.</p>
+</div>
+<div class="section" id="analysis-of-intermolecular-interactions">
+<h2>Analysis of Intermolecular Interactions<a class="headerlink" href="#analysis-of-intermolecular-interactions" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s consider something a little more interesting.  <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+contains code to analyze the nature of intermolecular interactions
+between two molecules, via symmetry-adapted perturbation theory
+(SAPT) <a class="reference internal" href="bibliography.html#jeziorski-1994-1887" id="id1">[Jeziorski:1994:1887]</a>.  This kind of analysis gives a lot
+of insight into the nature of intermolecular interactions, and <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+makes these computations easier than ever.</p>
+<p>For a SAPT computation, the input needs to provide information on two
+distinct molecules.  This is very easy, we just give a Z-matrix or set of
+Cartesian coordinates for each molecule, and separate the two with two
+dashes, like this:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Example SAPT computation for ethene*ethine (*i.e.*, ethylene*acetylene),</span>
+<span class="c1"># test case 16 from the S22 database</span>
+
+<span class="n">molecule</span> <span class="n">dimer</span> <span class="p">{</span>
+<span class="mi">0</span> <span class="mi">1</span>
+<span class="n">C</span>   <span class="mf">0.000000</span>  <span class="o">-</span><span class="mf">0.667578</span>  <span class="o">-</span><span class="mf">2.124659</span>
+<span class="n">C</span>   <span class="mf">0.000000</span>   <span class="mf">0.667578</span>  <span class="o">-</span><span class="mf">2.124659</span>
+<span class="n">H</span>   <span class="mf">0.923621</span>  <span class="o">-</span><span class="mf">1.232253</span>  <span class="o">-</span><span class="mf">2.126185</span>
+<span class="n">H</span>  <span class="o">-</span><span class="mf">0.923621</span>  <span class="o">-</span><span class="mf">1.232253</span>  <span class="o">-</span><span class="mf">2.126185</span>
+<span class="n">H</span>  <span class="o">-</span><span class="mf">0.923621</span>   <span class="mf">1.232253</span>  <span class="o">-</span><span class="mf">2.126185</span>
+<span class="n">H</span>   <span class="mf">0.923621</span>   <span class="mf">1.232253</span>  <span class="o">-</span><span class="mf">2.126185</span>
+<span class="o">--</span>
+<span class="mi">0</span> <span class="mi">1</span>
+<span class="n">C</span>   <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">2.900503</span>
+<span class="n">C</span>   <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">1.693240</span>
+<span class="n">H</span>   <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">0.627352</span>
+<span class="n">H</span>   <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">3.963929</span>
+<span class="n">units</span> <span class="n">angstrom</span>
+
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>Here’s the second half of the input, where we specify the computation
+options:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="p">{</span>
+    <span class="n">basis</span> <span class="n">jun</span><span class="o">-</span><span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span>
+    <span class="n">scf_type</span> <span class="n">DF</span>
+    <span class="n">freeze_core</span> <span class="kc">True</span>
+<span class="p">}</span>
+
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;sapt0&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>Before, we have been setting keywords individually with commands like
+<code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">basis</span> <span class="pre">cc-pVDZ</span></code>.  Because we have a few more options now, it’s
+convenient to place them together into the <code class="docutils literal notranslate"><span class="pre">set</span></code>
+block, bounded by <code class="docutils literal notranslate"><span class="pre">{...}</span></code>.  This
+will set all of these options as “global” options (meaning that they are
+visible to all parts of the program).  Most common <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> options can be
+set in a globals section like this. If an option needs to be visible
+only to one part of the program (<em>e.g.</em>, we only want to increase the
+energy convergence in the SCF code, but not the rest of the
+code), it can be placed in a section of input visible to that part of the
+program (<em>e.g.</em>, <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">scf</span> <span class="pre">e_convergence</span> <span class="pre">1.0E-8</span></code>).</p>
+<p>Back to our SAPT example, we have found that for basic-level SAPT
+computations (<em>i.e.</em>, SAPT0), a good error cancellation is found
+<a class="reference internal" href="bibliography.html#hohenstein-2012-wires" id="id2">[Hohenstein:2012:WIREs]</a> with the jun-cc-pVDZ basis (this is the
+usual aug-cc-pVDZ basis, but without diffuse functions on hydrogen and
+without diffuse <span class="math notranslate nohighlight">\(d\)</span> functions on heavy atoms) <a class="reference internal" href="bibliography.html#papajak-2011-10" id="id3">[Papajak:2011:10]</a>. So,
+we’ll use that as our standard basis set.  The SAPT code is designed to
+use density fitting techniques, because they introduce minimal errors
+while providing much faster computations <a class="reference internal" href="bibliography.html#hohenstein-2010-184111" id="id4">[Hohenstein:2010:184111]</a>
+<a class="reference internal" href="bibliography.html#hohenstein-2010-014101" id="id5">[Hohenstein:2010:014101]</a>. Since we’re using density fitting for the SAPT,
+we might as well also use it for the Hartree–Fock computations that are
+performed as part of the SAPT.  We can specify that with
+<code class="docutils literal notranslate"><span class="pre">scf_type</span> <span class="pre">DF</span></code>.</p>
+<p>Density fitting procedures require the use of auxiliary basis sets that
+pair with the primary basis set.  Fortunately, <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> is usually smart
+enough to figure out what auxiliary basis sets are needed for a given
+computation.  In this case, jun-cc-pVDZ is a standard enough basis set
+(just a simple truncation of the very popular aug-cc-pVDZ basis set)
+that <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> correctly guesses that we want the jun-cc-pVDZ-JKFIT
+auxiliary basis for the Hartree–Fock, and the jun-cc-pVDZ-RI basis set
+for the SAPT procedure.</p>
+<p>To speed up the computation a little, we also tell the SAPT procedure to
+freeze the core electrons with <code class="docutils literal notranslate"><span class="pre">freeze_core</span> <span class="pre">True</span></code>.  The SAPT
+procedure is invoked with the simple call, <code class="docutils literal notranslate"><span class="pre">energy('sapt0')</span></code>.  This
+call knows to automatically run two monomer computations and a dimer
+computation and then use these results to perform the SAPT analysis.  The
+various energy components are printed at the end of the output, in addition
+to the total SAPT0 interaction energy.  An explanation of the various
+energy components can be found in the review by Jeziorski, Moszynski, and
+Szalewicz <a class="reference internal" href="bibliography.html#jeziorski-1994-1887" id="id6">[Jeziorski:1994:1887]</a>, and this is discussed in more detail
+in the SAPT section later in this manual.  For now, we’ll note that most of
+the SAPT energy components are negative; this means those are attractive
+contributions (the zero of energy in a SAPT computation is defined as
+non-interacting monomers).  The exchange contributions are positive
+(repulsive).   In this example, the most attractive contribution between
+ethylene and acetylene is an electrostatic term of -2.12 kcal mol<sup>-1</sup>
+(<code class="docutils literal notranslate"><span class="pre">Elst10,r</span></code> where the 1 indicates the first-order
+perturbation theory result with respect to the intermolecular interaction,
+and the 0 indicates zeroth-order with respect to intramolecular electron
+correlation).  The next most attractive contribution is the <code class="docutils literal notranslate"><span class="pre">Disp20</span></code>
+term (2nd order intermolecular dispersion, which looks like an MP2 in which
+one excitation is placed on each monomer), contributing an attraction of
+-1.21 kcal mol<sup>-1</sup>.  It is not surprising that the electrostatic
+contribution is dominant, because the geometry chosen for this example has the
+acetylene perpendicular to the ethylene, with the acetylene hydrogen
+pointing directly at the double bond in ethylene; this will be attractive
+because the H atoms in acetylene bear a partial positive charge, while the
+electron-rich double bond in ethylene bears a partial negative charge.  At
+the same time, the dispersion interaction should be smaller because the
+perpendicular geometry does not allow much overlap between the monomers.
+Hence, the SAPT analysis helps clarify (and quantify) our physical
+understanding about the interaction between the two monomers.</p>
+</div>
+<div class="section" id="potential-surface-scans-and-counterpoise-correction-made-easy-with-psithon">
+<h2>Potential Surface Scans and Counterpoise Correction Made Easy with Psithon<a class="headerlink" href="#potential-surface-scans-and-counterpoise-correction-made-easy-with-psithon" title="Permalink to this headline">¶</a></h2>
+<p>Finally, let’s consider an example that shows how the Python driver
+in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> simplifies some routine tasks.  <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> can interpret
+valid Python code in addition to the computational chemistry directives
+we’ve seen in the previous examples; we call this mixture Psithon.
+The Python computer language is very easy to pick up, and even users
+previously unfamiliar with Python can use it to simplify tasks by
+modifying some of the example input files supplied with <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+in the <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples">psi4/samples</a> directory.</p>
+<p>Suppose you want to do a limited potential energy surface scan, such as
+computing the interaction energy between two neon atoms at various
+interatomic distances.  One simple but unappealing way to do this is to
+create separate input files for each distance to be studied.  Most of
+these input files are identical, except that the interatomic distance is
+different.  Psithon lets you specify all this in a single input file,
+looping over the different distances with an array like this:
+<code class="docutils literal notranslate"><span class="pre">Rvals=[2.5,</span> <span class="pre">3.0,</span> <span class="pre">4.0]</span></code>.</p>
+<p>Let’s also suppose you want to do counterpoise (CP) correction to compute interaction energies.
+Counterpoise correction involves computing the dimer energy and then
+subtracting out the energies of the two monomers, each evaluated in the
+dimer basis.  Again, each of these computations could be run in a separate
+input file, but because counterpoise correction is a fairly standard
+procedure for intermolecular interactions, <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> knows about it and has
+a built-in routine to perform counterpoise correction.  It only needs to
+know what method you want to do the counterpoise correction on (here, let’s
+consider CCSD(T)), and it needs to know what’s monomer A and what’s monomer
+B.  This last issue of specifying the monomers separately was already dealt
+with in the previous SAPT example, where we saw that two dashes in the
+<code class="docutils literal notranslate"><span class="pre">molecule</span></code> block can be used to separate monomers.</p>
+<p>So, we’re going to do counterpoise-corrected CCSD(T) energies for Ne<sub>2</sub> at
+a series of different interatomic distances.  And let’s print out a table
+of the interatomic distances we’ve considered, and the CP-corrected CCSD(T)
+interaction energies (in kcal mol<sup>-1</sup>) at each geometry.  Doing all this
+in a single input is surprisingly easy in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>.  Here’s the input
+(available as <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/tu6-cp-ne2/input.dat">tu6-cp-ne2</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#! Example potential energy surface scan and CP-correction for Ne2</span>
+
+<span class="n">molecule</span> <span class="n">dimer</span> <span class="p">{</span>
+  <span class="n">Ne</span>
+<span class="o">--</span>
+  <span class="n">Ne</span> <span class="mi">1</span> <span class="n">R</span>
+<span class="p">}</span>
+
+<span class="n">Rvals</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]</span>
+
+
+<span class="nb">set</span> <span class="n">basis</span> <span class="n">aug</span><span class="o">-</span><span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span>
+<span class="nb">set</span> <span class="n">freeze_core</span> <span class="kc">True</span>
+
+<span class="c1"># Initialize a blank dictionary of counterpoise corrected energies</span>
+<span class="c1"># (Need this for the syntax below to work)</span>
+<span class="n">ecp</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">Rvals</span><span class="p">:</span>
+   <span class="n">dimer</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">R</span>
+   <span class="n">ecp</span><span class="p">[</span><span class="n">R</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;ccsd(t)&#39;</span><span class="p">,</span> <span class="n">bsse_type</span> <span class="o">=</span> <span class="s1">&#39;cp&#39;</span><span class="p">)</span>
+
+<span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;CP-corrected CCSD(T)/aug-cc-pVDZ interaction energies</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        R [Ang]         E_int [kcal/mol]             </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;-----------------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">Rvals</span><span class="p">:</span>
+   <span class="n">e</span> <span class="o">=</span> <span class="n">ecp</span><span class="p">[</span><span class="n">R</span><span class="p">]</span> <span class="o">*</span> <span class="n">psi_hartree2kcalmol</span>
+   <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        </span><span class="si">%3.1f</span><span class="s2">            </span><span class="si">%10.6f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+
+</pre></div>
+</div>
+<p>First, you can see the <code class="docutils literal notranslate"><span class="pre">molecule</span></code> block has a couple dashes to
+separate the monomers from each other.  Also note we’ve used a Z-matrix to
+specify the geometry, and we’ve used a variable (<code class="docutils literal notranslate"><span class="pre">R</span></code>) as the
+interatomic distance.  We have <em>not</em> specified the value of <code class="docutils literal notranslate"><span class="pre">R</span></code> in
+the <code class="docutils literal notranslate"><span class="pre">molecule</span></code> block like we normally would.  That’s because we’re
+going to vary it during the scan across the potential energy surface.
+Below the <code class="docutils literal notranslate"><span class="pre">molecule</span></code> block, you can see the <code class="docutils literal notranslate"><span class="pre">Rvals</span></code> array
+specified.  This is a Python array holding the interatomic distances we
+want to consider.  In Python, arrays are surrounded by square brackets, and
+elements are separated by commas.</p>
+<p>The next lines, <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">basis</span> <span class="pre">aug-cc-pVDZ</span></code> and <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">freeze_core</span> <span class="pre">True</span></code>,
+are familiar from previous test cases.  Next comes a slightly
+unusual-looking line, <code class="docutils literal notranslate"><span class="pre">ecp</span> <span class="pre">=</span> <span class="pre">{}</span></code>.  This is Python’s way of initializing
+a “dictionary”.  We’re going to use this dictionary to store the
+counterpoise-corrected energies as they become available.  A dictionary is
+like an array, but we can index it using strings or floating-point numbers
+instead of integers if we want.  Here, we will index it using
+floating-point numbers, namely, the <code class="docutils literal notranslate"><span class="pre">R</span></code> values.  This winds up being
+slightly more elegant than a regular array in later parts of the input
+file.</p>
+<p>The next section, beginning with <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">R</span> <span class="pre">in</span> <span class="pre">Rvals:</span></code>, loops over the
+interatomic distances, <code class="docutils literal notranslate"><span class="pre">R</span></code>, in our array <code class="docutils literal notranslate"><span class="pre">Rvals</span></code>.  In Python,
+loops need to be indented, and each line in the loop has to be indented
+by the same amount.  The first line in the loop, <code class="docutils literal notranslate"><span class="pre">dimer.R</span> <span class="pre">=</span> <span class="pre">R</span></code>,
+sets the Z-matrix variable <code class="docutils literal notranslate"><span class="pre">R</span></code> of the molecule called <code class="docutils literal notranslate"><span class="pre">dimer</span></code>
+to the <code class="docutils literal notranslate"><span class="pre">R</span></code> value extracted from the <code class="docutils literal notranslate"><span class="pre">Rvals</span></code> array.  The next line,
+<code class="docutils literal notranslate"><span class="pre">ecp[R]</span> <span class="pre">=</span> <span class="pre">energy('ccsd(t)',</span> <span class="pre">bsse_type='cp')</span></code>, computes the counterpoise-corrected
+CCSD(T) energy and places it in the <code class="docutils literal notranslate"><span class="pre">ecp</span></code> dictionary with <code class="docutils literal notranslate"><span class="pre">R</span></code> as
+the index.  Note we didn’t need to specify ghost atoms, and we didn’t need
+to call the monomer and dimer computations separately.  The built-in
+Psithon function <code class="xref py py-func docutils literal notranslate"><span class="pre">nbody_gufunc()</span></code> does it all for us, automatically.</p>
+<p>Near the very end of the output file, the counterpoise correction Python
+function will print a nice summary of the results of the counterpoise
+computation (the energies of the dimer, of monomer 1 with the ghost functions
+of monomer 2, of monomer 2 with the ghost functions of monomer 1, and the
+overall counterpoise-corrected interaction energy):</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">N</span><span class="o">-</span><span class="n">Body</span><span class="p">:</span> <span class="n">Computing</span> <span class="nb">complex</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="k">with</span> <span class="n">fragments</span> <span class="p">(</span><span class="mi">2</span><span class="p">,)</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">basis</span> <span class="n">of</span> <span class="n">fragments</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span>
+<span class="o">...</span>
+<span class="n">N</span><span class="o">-</span><span class="n">Body</span><span class="p">:</span> <span class="n">Complex</span> <span class="n">Energy</span> <span class="p">(</span><span class="n">fragments</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">basis</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>  <span class="o">-</span><span class="mf">128.70932405488924</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">N</span><span class="o">-</span><span class="n">Body</span><span class="p">:</span> <span class="n">Computing</span> <span class="nb">complex</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="k">with</span> <span class="n">fragments</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">basis</span> <span class="n">of</span> <span class="n">fragments</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span>
+<span class="o">...</span>
+<span class="n">N</span><span class="o">-</span><span class="n">Body</span><span class="p">:</span> <span class="n">Complex</span> <span class="n">Energy</span> <span class="p">(</span><span class="n">fragments</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">basis</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>  <span class="o">-</span><span class="mf">128.70932405488935</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">N</span><span class="o">-</span><span class="n">Body</span><span class="p">:</span> <span class="n">Computing</span> <span class="nb">complex</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="p">)</span> <span class="k">with</span> <span class="n">fragments</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">basis</span> <span class="n">of</span> <span class="n">fragments</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span>
+<span class="o">...</span>
+<span class="n">N</span><span class="o">-</span><span class="n">Body</span><span class="p">:</span> <span class="n">Complex</span> <span class="n">Energy</span> <span class="p">(</span><span class="n">fragments</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">basis</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>  <span class="o">-</span><span class="mf">257.41867403127321</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">==&gt;</span> <span class="n">N</span><span class="o">-</span><span class="n">Body</span><span class="p">:</span> <span class="n">Counterpoise</span> <span class="n">Corrected</span> <span class="p">(</span><span class="n">CP</span><span class="p">)</span>  <span class="n">energies</span> <span class="o">&lt;==</span>
+
+<span class="n">n</span><span class="o">-</span><span class="n">Body</span>     <span class="n">Total</span> <span class="n">Energy</span> <span class="p">[</span><span class="n">Eh</span><span class="p">]</span>       <span class="n">I</span><span class="o">.</span><span class="n">E</span><span class="o">.</span> <span class="p">[</span><span class="n">kcal</span><span class="o">/</span><span class="n">mol</span><span class="p">]</span>      <span class="n">Delta</span> <span class="p">[</span><span class="n">kcal</span><span class="o">/</span><span class="n">mol</span><span class="p">]</span>
+     <span class="mi">1</span>     <span class="o">-</span><span class="mf">257.418648109779</span>        <span class="mf">0.000000000000</span>        <span class="mf">0.000000000000</span>
+     <span class="mi">2</span>     <span class="o">-</span><span class="mf">257.418674031273</span>       <span class="o">-</span><span class="mf">0.016265984132</span>       <span class="o">-</span><span class="mf">0.016265984132</span>
+</pre></div>
+</td></tr></table></div>
+<p>And that’s it!  The only remaining part of the example input is a little table
+of the different R values and the CP-corrected CCSD(T) energies, converted from
+atomic units (Hartree) to kcal mol<sup>-1</sup> by multiplying by the
+automatically-defined conversion factor <code class="docutils literal notranslate"><span class="pre">psi_hartree2kcalmol</span></code>.  <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+provides several built-in physical constants and conversion factors, as
+described in section <a class="reference internal" href="psithoninput.html#sec-physicalconstants"><span class="std std-ref">Physical Constants</span></a>.
+Notice the loop over <span class="math notranslate nohighlight">\(R\)</span> to create
+the table looks just like the loop over <code class="docutils literal notranslate"><span class="pre">R</span></code> to run the different
+computations, and the CP-corrected energies <code class="docutils literal notranslate"><span class="pre">ecp[R]</span></code> are accessed the same
+way they were stored.  The <code class="docutils literal notranslate"><span class="pre">print</span></code> line at the end just specifies some
+formatting for the printed table (first element is a floating point number 3
+spaces wide with one digit after the decimal, and the second element is a
+floating point number 10 spaces wide with 6 digits after the decimal); the
+format strings are the same as in the C programming language.  For tables more
+complicated than the simple one used here, Psithon has built-in support for
+tables (see the next section).</p>
+<p>Our table is printed at the very end of the output file, and looks like
+this</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">CP</span><span class="o">-</span><span class="n">corrected</span> <span class="n">CCSD</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="n">aug</span><span class="o">-</span><span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span> <span class="n">interaction</span> <span class="n">energies</span>
+
+        <span class="n">R</span> <span class="p">(</span><span class="n">Ang</span><span class="p">)</span>         <span class="n">E_int</span> <span class="p">(</span><span class="n">kcal</span><span class="o">/</span><span class="n">mol</span><span class="p">)</span>
+<span class="o">-----------------------------------------------------</span>
+        <span class="mf">2.5</span>              <span class="mf">0.757718</span>
+        <span class="mf">3.0</span>              <span class="mf">0.015687</span>
+        <span class="mf">4.0</span>             <span class="o">-</span><span class="mf">0.016264</span>
+</pre></div>
+</td></tr></table></div>
+<p>The following section goes over Psithon in much more detail, but
+hopefully this example already makes it clear that many complex tasks
+can be done very easily in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Psithon Tutorial: Using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> as an Executable</a><ul>
+<li><a class="reference internal" href="#basic-input-file-structure">Basic Input File Structure</a></li>
+<li><a class="reference internal" href="#sample-input-files">Sample Input Files</a></li>
+<li><a class="reference internal" href="#running-a-basic-hartree-fock-calculation">Running a Basic Hartree–Fock Calculation</a></li>
+<li><a class="reference internal" href="#geometry-optimization-and-vibrational-frequency-analysis">Geometry Optimization and Vibrational Frequency Analysis</a></li>
+<li><a class="reference internal" href="#analysis-of-intermolecular-interactions">Analysis of Intermolecular Interactions</a></li>
+<li><a class="reference internal" href="#potential-surface-scans-and-counterpoise-correction-made-easy-with-psithon">Potential Surface Scans and Counterpoise Correction Made Easy with Psithon</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psiapi.html" title="PsiAPI Tutorial: Using Psi4 as a Python Module"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index_tutorials.html" title="A PSI4 Tutorial"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/tutorial.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="index_tutorials.html" >A <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Tutorial</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Tuesday, 24 November 2020 02:48AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

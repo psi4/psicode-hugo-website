@@ -1,0 +1,507 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Adding Add-Ons</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+
+    
+    
+     
+        <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Git, Versioning" href="manage_git.html" />
+    <link rel="prev" title="Managing: Git, Conda, CMake and all that" href="manage_index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="manage_git.html" title="Git, Versioning"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="manage_index.html" title="Managing: Git, Conda, CMake and all that"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/manage_addon.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="manage_index.html" accesskey="U">Managing: Git, Conda, CMake and all that</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="adding-add-ons">
+<span id="sec-addaddons"></span><h1>Adding Add-Ons<a class="headerlink" href="#adding-add-ons" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-to-use-an-add-on-s-name-in-directory-structure-build-and-distribution">
+<span id="faq-addonname"></span><h2>How to use an Add-On’s name in directory structure, build, and distribution<a class="headerlink" href="#how-to-use-an-add-on-s-name-in-directory-structure-build-and-distribution" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Select a name. May be mixed case with numerals and underscores
+(<em>e.g.</em>, CheMPS2, libefp, PCMSolver, v2rdm_casscf). Shouldn’t start with a
+numeral. Needn’t start with “lib”, even if a library.</li>
+<li>GitHub repository name should be <code class="samp docutils literal notranslate"><em><span class="pre">AddOn_name</span></em></code> or
+<code class="samp docutils literal notranslate"><em><span class="pre">AddOn_name</span></em><span class="pre">.lower()</span></code> (hereafter, <code class="samp docutils literal notranslate"><em><span class="pre">addon_name</span></em></code>. For example: CheMPS2, libefp, pcmsolver,
+v2rdm_casscf.</li>
+<li>CMake project name should be <code class="samp docutils literal notranslate"><em><span class="pre">AddOn_name</span></em></code>. For example:
+<code class="docutils literal notranslate"><span class="pre">project(libefp)</span></code>, <code class="docutils literal notranslate"><span class="pre">project(CheMPS2)</span></code>, <code class="docutils literal notranslate"><span class="pre">project(PCMSolver)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">project(v2rdm_casscf)</span></code>. Namespacing in the directory structure used
+to detect the addon should have this name (<em>e.g.</em>,
+<code class="docutils literal notranslate"><span class="pre">share/cmake/CheMPS2</span></code>).</li>
+<li>Restricted by the CMake project name, add-ons return CMake variables
+and compile definitions of <code class="samp docutils literal notranslate"><span class="pre">FOUND_</span><em><span class="pre">AddOn_name</span></em></code> and
+<code class="samp docutils literal notranslate"><span class="pre">USING_</span><em><span class="pre">AddOn_name</span></em></code>. For example: <code class="docutils literal notranslate"><span class="pre">FOUND_libefp</span></code>,
+<code class="docutils literal notranslate"><span class="pre">USING_CheMPS2</span></code>, <code class="docutils literal notranslate"><span class="pre">PCMSolver_LIBRARIES</span></code>, <code class="docutils literal notranslate"><span class="pre">USING_v2rdm_casscf</span></code>.</li>
+<li>The CMake target(s) formed use the full add-on name as the namespace,
+<code class="samp docutils literal notranslate"><em><span class="pre">AddOn_name</span></em><span class="pre">::</span><em><span class="pre">lib_name_without_lib</span></em><span class="pre">.lower()</span></code>. For example:
+<code class="docutils literal notranslate"><span class="pre">libefp::efp</span></code>, <code class="docutils literal notranslate"><span class="pre">CheMPS2::chemps2</span></code>, <code class="docutils literal notranslate"><span class="pre">PCMSolver::pcm</span></code>,
+<code class="docutils literal notranslate"><span class="pre">v2rdm_casscf::v2rdm_casscf</span></code>.</li>
+<li>Following the CMake project name (though not restricted to it –
+<span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> managment could change the pattern), the user flag to enable
+an add-on is <code class="samp docutils literal notranslate"><span class="pre">ENABLE_</span><em><span class="pre">AddOn_name</span></em></code>. Note that runtime-only
+add-ons don’t go through this enabling process.</li>
+<li>Internally, the ExternalProject_Add and dummy libraries as well as any
+tests/ and external/ subdirectories should all be lowercase,
+<code class="samp docutils literal notranslate"><em><span class="pre">addon_name</span></em></code>.</li>
+<li>The <a class="reference external" href="https://anaconda.org/psi4/repo">conda package</a> and internal to
+<span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> (that is, the ExternalProject_Add, dummy libraries, and any
+tests/ and external/ subdirectories) should all be lowercase,
+<code class="samp docutils literal notranslate"><em><span class="pre">addon_name</span></em></code>.</li>
+<li>Alternatively, you can do everything mentioned here lowercase and just
+have a different capitalization for an advertising name. After all,
+that’s what <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> does.</li>
+</ul>
+</div>
+<div class="section" id="how-to-integrate-an-add-on-into-build-testing-and-docs">
+<span id="faq-addoncmake"></span><h2>How to integrate an Add-On into build, testing, and docs<a class="headerlink" href="#how-to-integrate-an-add-on-into-build-testing-and-docs" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>In all cases, put Add-Ons in alphabetic order, ignoring any “lib” in the name.</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/CMakeLists.txt">psi4/CMakeLists.txt</a><ul>
+<li>Add the <code class="samp docutils literal notranslate"><span class="pre">ENABLE_</span><em><span class="pre">AddOn_name</span></em></code> line</li>
+<li>Add the <code class="samp docutils literal notranslate"><span class="pre">external_</span><em><span class="pre">addon_name</span></em></code> dependency to the <code class="docutils literal notranslate"><span class="pre">psi4-core</span></code> external project</li>
+<li>Add the <code class="samp docutils literal notranslate"><em><span class="pre">AddOn_name</span></em><span class="pre">_DIR</span></code> variable passing to the <code class="docutils literal notranslate"><span class="pre">psi4-core</span></code> external project</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/CMakeLists.txt">psi4/psi4/CMakeLists.txt</a><ul>
+<li>Add a block imitating Libint if Add-On required or CheMPS2 if not
+required</li>
+<li>If there are shared resources to the external that need
+to be found by <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> in PSIDATADIR, follow the <code class="docutils literal notranslate"><span class="pre">efpfrag</span></code>
+pattern of libefp to symlink them in.</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/src/CMakeLists.txt">psi4/psi4/src/CMakeLists.txt</a><ul>
+<li>No changes should be required unless both (1) code in export_*
+or core.cc needs the <code class="samp docutils literal notranslate"><span class="pre">USING_</span><em><span class="pre">AddOn_name</span></em></code> definition or
+AddOn header includes and (2) no binary <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> module (as
+opposed to library <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> module with the AddOn target linked
+is itself a direct dependency of target <code class="docutils literal notranslate"><span class="pre">core</span></code>. Basically,
+try to leave this file alone, but if there are compile errors,
+add the definitions/headers as needed.</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/src/psi4/">psi4/psi4/src/psi4/</a><ul>
+<li>If a module is needed to interface the AddOn to <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>, try to
+put “interface” in the name. Follow the pattern of CheMPS2 or gdma.
+If non-required, be sure to conditionalize it with <code class="docutils literal notranslate"><span class="pre">if(TARGET</span>
+<span class="pre">AddOn::addon)</span></code> in CMake files or <code class="docutils literal notranslate"><span class="pre">#ifdef</span> <span class="pre">USING_AddOn</span></code> in
+source files.</li>
+<li>If a separate module is not required, follow the patter of dkh
+or simint with respect to libmints. Again, conditionalize as in
+preceding bullet.</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/external/upstream/">psi4/psi4/external/upstream/</a><ul>
+<li>Add a CMakeLists.txt that imitates another AddOn of similar
+language and dependencies. Try to keep the format, messaging,
+and variables passed as similar as possible so that differences
+mean something. If BLAS/LAPACK or other common dependencies in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/common/">psi4/psi4/common/</a> are needed, be sure to add them to the
+<code class="docutils literal notranslate"><span class="pre">DEPENDS</span></code> argument.</li>
+<li>The usual practice to to get everything cohesive between
+the CMake for the AddOn repository and <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> and then as a
+last step, mint a tag in the former and add it to two places in
+<code class="samp docutils literal notranslate"><span class="pre">psi4/external/upstream/</span><em><span class="pre">addon_name</span></em><span class="pre">/CMakeLists.txt</span></code> and one
+place in <a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/CMakeLists.txt">psi4/psi4/CMakeLists.txt</a> so that only that version
+and later are acceptable to <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> for detecting pre-built.</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/tests/">psi4/tests/</a><ul>
+<li>In <a class="reference external" href="https://github.com/psi4/psi4/blob/master/tests/CMakeLists.txt">psi4/tests/CMakeLists.txt</a>, add a block adding a tests subdirectory if Add-On enabled</li>
+<li>Create new subdirectory <code class="samp docutils literal notranslate"><span class="pre">tests/</span><em><span class="pre">addon_name</span></em></code> with a
+CMakeLists.txt. In that add a few tests. Imitate the pattern in
+other subdirs of including the addon prefix to the test name in the
+CMakeLists but not in the test dir name. Make sure the tests get the
+addon CTest label and that at least one of them gets the smoke label.</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://github.com/psi4/psi4/blob/master/doc/sphinxman/">psi4/doc/sphinxman/</a><ul>
+<li>Create a new <cite>.rst</cite> page, copying one of the Add-Ons with similar
+language and dependency requirements. Edit it
+as appropriate. Add this page to the list in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/doc/sphinxman/source/interfacing.rst">psi4/doc/sphinxman/source/interfacing.rst</a>.</li>
+<li>Add a bullet to <a class="reference external" href="https://github.com/psi4/psi4/blob/master/doc/sphinxman/source/build_planning.rst">psi4/doc/sphinxman/source/build_planning.rst</a></li>
+<li>Add the new page to the long list in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/doc/sphinxman/CMakeLists.txt">psi4/doc/sphinxman/CMakeLists.txt</a>. If there are any files or
+images referred to, add them to the file, too, following precedent.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="else">
+<h2>else<a class="headerlink" href="#else" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Build conda packages<ul>
+<li>Recipes in <a class="reference external" href="https://github.com/psi4/psi4meta/tree/master/conda-recipes">https://github.com/psi4/psi4meta/tree/master/conda-recipes</a></li>
+</ul>
+</li>
+<li><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> and Add-On Projects Working Together<ul>
+<li>Obligations of the External Project owners are to:<ol class="arabic">
+<li>allow us to contribute some CMake files to your build system
+so that compile flags and dependencies (e.g., BLAS/LAPACK) can be
+consistent with the <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> build and so the installed project can
+be readily detected by <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> or any interested party (through a
+CMake imported target).</li>
+<li>provide us a tag at a tested commit/version number so their
+development may be ongoing.</li>
+<li>communicate with us when they’ve made improvements and minted
+a new tag.</li>
+</ol>
+</li>
+<li>In return, for Add-Ons the <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> project will:<ol class="arabic">
+<li>leave control of their code under your purview.</li>
+<li>maintain any interfacing code needed.</li>
+<li>regularly run integration tests between <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> and your code.</li>
+<li>build a mostly statically linked conda package so that any
+of your users can obtain a pre-built binary distribution through
+<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">addon</span> <span class="pre">--channel</span> <span class="pre">psi4</span></code>.</li>
+<li>provide a development sandbox for your code through <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> plugins.</li>
+<li>provide conda download counts independent of <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>.</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="how-to-name-keywords-in-psi4-src-read-options-cc">
+<span id="faq-readoptions"></span><h2>How to name keywords in <code class="docutils literal notranslate"><span class="pre">psi4/src/read_options.cc</span></code><a class="headerlink" href="#how-to-name-keywords-in-psi4-src-read-options-cc" title="Permalink to this headline">¶</a></h2>
+<p>A few guidelines for standardizing option names among modules.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">TRIPLES</span></code> (not trip), <code class="docutils literal notranslate"><span class="pre">TRIPLETS</span></code> (not trip), <code class="docutils literal notranslate"><span class="pre">SINGLES</span></code> (not sing),
+<code class="docutils literal notranslate"><span class="pre">SINGLETS</span></code> (not sing)</li>
+<li><code class="docutils literal notranslate"><span class="pre">CONVERGENCE</span></code> (not conv, not converge) and <code class="docutils literal notranslate"><span class="pre">TOLERANCE</span></code> (not tol)</li>
+<li>Convergence of a method should be governed by an <code class="docutils literal notranslate"><span class="pre">E_CONVERGENCE</span></code> for
+energy and either a <code class="docutils literal notranslate"><span class="pre">D_CONVERGENCE</span></code> for density or a <code class="docutils literal notranslate"><span class="pre">R_CONVERGENCE</span></code>
+for residual/amplitudes. All of these should be doubles- let the input
+parser handle the flexible input format.</li>
+<li>Diis should have a boolean <code class="docutils literal notranslate"><span class="pre">DIIS</span></code> (not do_diis, not use_diis) to turn
+on/off diis extrapolation, a <code class="docutils literal notranslate"><span class="pre">DIIS_MIN_VECS</span></code> and <code class="docutils literal notranslate"><span class="pre">DIIS_MAX_VECS</span></code> for
+minimum and maximum number of diis vectors to use, and a <code class="docutils literal notranslate"><span class="pre">DIIS_START</span></code>
+which is the iteration at which to start saving vectors for diis. Not all
+modules conform to all these at present, but they’re as standardized as
+they can be without changing code.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AMPS</span></code> (not amplitude, not amp) for amplitudes</li>
+<li><code class="docutils literal notranslate"><span class="pre">NUM_</span></code> (not n) for number (e.g., <code class="docutils literal notranslate"><span class="pre">NUM_AMPS_PRINT</span></code>, <code class="docutils literal notranslate"><span class="pre">MAX_NUM_VECS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">NUM_THREADS</span></code>)</li>
+<li>Some names that could be split into multiple words are staying as one.
+Use <code class="docutils literal notranslate"><span class="pre">MAXITER</span></code>, <code class="docutils literal notranslate"><span class="pre">CACHELEVEL</span></code>, <code class="docutils literal notranslate"><span class="pre">PUREAM</span></code>, <code class="docutils literal notranslate"><span class="pre">DERTYPE</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">INTS</span></code> (not integrals), also <code class="docutils literal notranslate"><span class="pre">OEI</span></code> (not oe_integrals) for
+one-electron integrals and <code class="docutils literal notranslate"><span class="pre">TEI</span></code> (not te_integrals) for two-electron
+integrals</li>
+<li><code class="docutils literal notranslate"><span class="pre">PERTURB</span></code> (not pert) for perturbation</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">PRINT</span></code> options to indicate printing to output file. Use <code class="docutils literal notranslate"><span class="pre">WRITE</span></code>
+options to indicate printing to another file. This probably isn’t
+entirely valid now but should be observed in future. The complement to
+<code class="docutils literal notranslate"><span class="pre">WRITE</span></code> is <code class="docutils literal notranslate"><span class="pre">READ</span></code>. <code class="docutils literal notranslate"><span class="pre">PRINT</span></code>, <code class="docutils literal notranslate"><span class="pre">READ</span></code>, and <code class="docutils literal notranslate"><span class="pre">WRITE</span></code> will usually
+be the last words in an option name.</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">FOLLOW_ROOT</span></code> for the state to be followed in geometry optimizations</li>
+<li><code class="docutils literal notranslate"><span class="pre">WFN</span></code> (not wavefunction)</li>
+<li>You’re welcome to use <code class="docutils literal notranslate"><span class="pre">WFN</span></code> and <code class="docutils literal notranslate"><span class="pre">DERTYPE</span></code> as internal options, but
+plan to have these set by the python driver and mark them as <code class="docutils literal notranslate"><span class="pre">!expert</span></code>
+options. Really avoid using <code class="docutils literal notranslate"><span class="pre">JOBTYPE</span></code>.</li>
+<li>You’re not welcome to add <code class="docutils literal notranslate"><span class="pre">CHARGE</span></code> or <code class="docutils literal notranslate"><span class="pre">MULTP</span></code> options. Plan to get
+these quantities from the molecule object. Since we frequently use subsets
+of systems (with their own charge and multiplicity), this is safer.</li>
+<li>Conform. Just grep <code class="docutils literal notranslate"><span class="pre">'add'</span> <span class="pre">psi4/src/read_options.cc</span></code> to get a list of
+all the option names in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> and try to match any conventions you
+find.</li>
+<li>If you have a quantity you’d like to call a cutoff, a threshold, a
+tolerance, or a convergence, consider the following guidelines in naming
+it.<ul>
+<li>If its value is typically greater than ~0.001, give it a name with <code class="docutils literal notranslate"><span class="pre">CUTOFF</span></code>.</li>
+<li>If its value is typically less than ~0.001 and quantities being tested
+against the option are more valuable with larger values (e.g.,
+integrals, occupations, eigenvectors), give it a name with <code class="docutils literal notranslate"><span class="pre">TOLERANCE</span></code>.</li>
+<li>If its value is typically less than ~0.001 and quantities being tested
+against the option are more valuable with smaller values (e.g., energy
+changes, residual errors, gradients), give it a name with
+<code class="docutils literal notranslate"><span class="pre">CONVERGENCE</span></code>.</li>
+</ul>
+</li>
+<li>In deciding how to arrange words in an option name, place the context
+first (e.g., <code class="docutils literal notranslate"><span class="pre">MP2_AMPS_PRINT</span></code>, <code class="docutils literal notranslate"><span class="pre">TRIPLES_DIIS</span></code>). This means <code class="docutils literal notranslate"><span class="pre">PRINT</span></code>
+will generally be at the end of an option name.</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">INTS_TOLERANCE</span></code> (not schwarz_cutoff)</li>
+<li><code class="docutils literal notranslate"><span class="pre">H</span></code> in an option name is reserved for Hamiltonian (or hydrogen).
+Hessian should be <code class="docutils literal notranslate"><span class="pre">HESS</span></code>.</li>
+<li>All option names should be all caps and separated by underscores.</li>
+<li>If you have an option that instructs your module to do something not too
+computationally intensive and then quit, append <code class="docutils literal notranslate"><span class="pre">_EXIT</span></code> to the option
+name.</li>
+<li>Scaling terms (like for scs) should follow the pattern <code class="docutils literal notranslate"><span class="pre">MP2_SS_SCALE</span></code>
+and <code class="docutils literal notranslate"><span class="pre">SAPT_OS_SCALE</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">FRAG</span></code> for fragment.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AVG</span></code> for average.</li>
+<li>For level-shifting, let’s try to have it governed by (double)
+<code class="docutils literal notranslate"><span class="pre">LEVEL_SHIFT</span></code> only and not a boolean/double combo since the procedure
+can be turned on (role of boolean) if the value (role of double) has
+changed.</li>
+<li>For Tikhonow regularization, use <code class="docutils literal notranslate"><span class="pre">TIKONOW_OMEGA</span></code>, not regularizer.</li>
+<li><code class="docutils literal notranslate"><span class="pre">SYM</span></code> for symmetry.</li>
+<li><code class="docutils literal notranslate"><span class="pre">OCC</span></code> for occupied/occupation (e.g., <code class="docutils literal notranslate"><span class="pre">DOCC</span></code>, <code class="docutils literal notranslate"><span class="pre">LOCK_OCC</span></code>, <code class="docutils literal notranslate"><span class="pre">OCC_TOLERANCE</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">COND</span></code> for condition and <code class="docutils literal notranslate"><span class="pre">CONDITIONER</span></code> for conditioner.</li>
+<li><code class="docutils literal notranslate"><span class="pre">LOCAL</span></code> (not localize).</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">AO</span></code> and <code class="docutils literal notranslate"><span class="pre">MO</span></code> for atomic and molecular orbitals. When ‘O’ for
+orbitals is too obsure or would make for too short a keyword, as in
+“bool NO” for “Do use natural orbitals”, use <code class="docutils literal notranslate"><span class="pre">ORBS</span></code> for orbitals. So
+natural orbitals are <code class="docutils literal notranslate"><span class="pre">NAT_ORBS</span></code> and Brueckner orbitals are
+<code class="docutils literal notranslate"><span class="pre">BRUECKNER_ORBS</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">LEVEL</span></code> (not <code class="docutils literal notranslate"><span class="pre">LVL</span></code>, not <code class="docutils literal notranslate"><span class="pre">LEV</span></code>).</li>
+<li><code class="docutils literal notranslate"><span class="pre">EX</span></code> for excitation.</li>
+<li><code class="docutils literal notranslate"><span class="pre">VAL</span></code> for valence.</li>
+<li><code class="docutils literal notranslate"><span class="pre">GEOM</span></code> (not geo, not geometry).</li>
+<li><code class="docutils literal notranslate"><span class="pre">SYM</span></code> (not symm, not symmetry).</li>
+<li><code class="docutils literal notranslate"><span class="pre">FILE</span></code> (unless truly multiple FILES).</li>
+<li><code class="docutils literal notranslate"><span class="pre">WRITE</span></code>/<code class="docutils literal notranslate"><span class="pre">READ</span></code> for info transfer across jobs. <code class="docutils literal notranslate"><span class="pre">SAVE</span></code>/<code class="docutils literal notranslate"><span class="pre">RESTART</span></code>
+for same in context of restart.</li>
+<li>Damping should interface through option (double) <code class="docutils literal notranslate"><span class="pre">DAMPING_PERCENTAGE</span></code>,
+where a value of 0.0 indicates no damping.</li>
+<li>Try to avoid <code class="docutils literal notranslate"><span class="pre">COMPUTE</span></code> or <code class="docutils literal notranslate"><span class="pre">CALC</span></code> in an option name. If it’s a
+boolean like “opdm_compute” for “Do compute the one-particle density
+matrix”, just use <code class="docutils literal notranslate"><span class="pre">OPDM</span></code>.</li>
+<li>Properties should be governed by a <code class="docutils literal notranslate"><span class="pre">PROPERTIES</span></code> array for the root of
+interest or by a <code class="docutils literal notranslate"><span class="pre">PROPERTIES_ALL</span></code> array for all roots in a multi-root
+calc.  Since no module conforms to this right now, use <code class="docutils literal notranslate"><span class="pre">PROPERTY</span></code>
+alone and <code class="docutils literal notranslate"><span class="pre">PROP</span></code> in multi-part option as <code class="docutils literal notranslate"><span class="pre">PROP_ROOT</span></code>, <code class="docutils literal notranslate"><span class="pre">PROP_ALL</span></code>,
+<code class="docutils literal notranslate"><span class="pre">PROP_SYM</span></code> to conform.</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">DF</span></code> (not ri) for density-fitting and resolution-of-the-identity
+option names. Only the basis sets are staying as -RI since that’s what
+EMSL uses.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Adding Add-Ons</a><ul>
+<li><a class="reference internal" href="#how-to-use-an-add-on-s-name-in-directory-structure-build-and-distribution">How to use an Add-On’s name in directory structure, build, and distribution</a></li>
+<li><a class="reference internal" href="#how-to-integrate-an-add-on-into-build-testing-and-docs">How to integrate an Add-On into build, testing, and docs</a></li>
+<li><a class="reference internal" href="#else">else</a></li>
+<li><a class="reference internal" href="#how-to-name-keywords-in-psi4-src-read-options-cc">How to name keywords in <code class="docutils literal notranslate"><span class="pre">psi4/src/read_options.cc</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="manage_git.html" title="Git, Versioning"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="manage_index.html" title="Managing: Git, Conda, CMake and all that"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/manage_addon.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="manage_index.html" >Managing: Git, Conda, CMake and all that</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Tuesday, 24 November 2020 02:48AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

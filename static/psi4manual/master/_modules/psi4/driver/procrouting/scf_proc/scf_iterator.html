@@ -1,0 +1,1190 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>psi4.driver.procrouting.scf_proc.scf_iterator</title>
+    <link rel="stylesheet" href="../../../../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+
+    
+    
+     
+        <script type="text/javascript" src="../../../../../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="../../../../../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script type="text/javascript" src="../../../../../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../../../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/procrouting/scf_proc/scf_iterator.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.procrouting.scf_proc.scf_iterator</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2019 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The SCF iteration functions</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">psi4.driver</span> <span class="kn">import</span> <span class="n">p4util</span>
+<span class="kn">from</span> <span class="nn">psi4.driver</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.p4util.exceptions</span> <span class="kn">import</span> <span class="n">SCFConvergenceError</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">psi4</span> <span class="kn">import</span> <span class="n">core</span>
+
+<span class="kn">from</span> <span class="nn">.efp</span> <span class="kn">import</span> <span class="n">get_qm_atoms_opts</span><span class="p">,</span> <span class="n">modify_Fock_permanent</span><span class="p">,</span> <span class="n">modify_Fock_induced</span>
+
+<span class="c1">#import logging</span>
+<span class="c1">#logger = logging.getLogger(&quot;scf.scf_iterator&quot;)</span>
+<span class="c1">#logger.setLevel(logging.DEBUG)</span>
+
+<span class="c1"># Q: I expect more local settings of options for part of SCF.</span>
+<span class="c1">#    For convcrit, do we want:</span>
+<span class="c1">#   (A) easy to grep</span>
+<span class="c1">#    with p4util.OptionsStateCM([&#39;SCF&#39;, &#39;E_CONVERGENCE&#39;], [&#39;SCF&#39;, &#39;D_CONVERGENCE&#39;]):</span>
+<span class="c1">#        core.set_local_option(&#39;SCF&#39;, &#39;E_CONVERGENCE&#39;, 1.e-5)</span>
+<span class="c1">#        core.set_local_option(&#39;SCF&#39;, &#39;D_CONVERGENCE&#39;, 1.e-4)</span>
+<span class="c1">#        self.iterations()</span>
+<span class="c1">#</span>
+<span class="c1">#   or (B) functional. options never touched</span>
+<span class="c1">#    self.iterations(e_conv=1.e-5, d_conv=1.e-4)</span>
+
+
+<span class="k">def</span> <span class="nf">scf_compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class Wavefunction requires this function. Here it is</span>
+<span class="sd">    simply a wrapper around initialize(), iterations(), finalize_energy(). It</span>
+<span class="sd">    returns the SCF energy computed by finalize_energy().</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DF_SCF_GUESS&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;DIRECT&#39;</span><span class="p">):</span>
+        <span class="c1"># speed up DIRECT algorithm (recomputes full (non-DF) integrals</span>
+        <span class="c1">#   each iter) by first converging via fast DF iterations, then</span>
+        <span class="c1">#   fully converging in fewer slow DIRECT iterations. aka Andy trick 2.0</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  Starting with a DF guess...</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">p4util</span><span class="o">.</span><span class="n">OptionsStateCM</span><span class="p">([</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">]):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">,</span> <span class="s1">&#39;DF&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">SCFConvergenceError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+                <span class="k">raise</span> <span class="n">SCFConvergenceError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SCF DF preiterations&quot;&quot;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  DF guess converged.</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># reset the DIIS &amp; JK objects in prep for DIRECT</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized_diis_manager_</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">diis_manager</span><span class="p">()</span><span class="o">.</span><span class="n">reset_subspace</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_jk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory_jk_</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">SCFConvergenceError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;SCF&quot;</span><span class="p">,</span> <span class="s2">&quot;FAIL_ON_MAXITER&quot;</span><span class="p">):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  Failed to converge.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># energy = 0.0</span>
+            <span class="c1"># A P::e fn to either throw or protest upon nonconvergence</span>
+            <span class="c1"># die_if_not_converged()</span>
+            <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  Energy and/or wave function did not converge, but proceeding anyway.</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  Energy and wave function converged.</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">scf_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">finalize_energy</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">scf_energy</span>
+
+
+<span class="k">def</span> <span class="nf">_build_jk</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="n">memory</span><span class="p">):</span>
+    <span class="n">jk</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">JK</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">get_basisset</span><span class="p">(</span><span class="s2">&quot;ORBITAL&quot;</span><span class="p">),</span>
+                       <span class="n">aux</span><span class="o">=</span><span class="n">wfn</span><span class="o">.</span><span class="n">get_basisset</span><span class="p">(</span><span class="s2">&quot;DF_BASIS_SCF&quot;</span><span class="p">),</span>
+                       <span class="n">do_wK</span><span class="o">=</span><span class="n">wfn</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">is_x_lrc</span><span class="p">(),</span>
+                       <span class="n">memory</span><span class="o">=</span><span class="n">memory</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jk</span>
+
+
+<span class="k">def</span> <span class="nf">initialize_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memory</span><span class="p">,</span> <span class="n">jk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">functional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">jk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">jk</span> <span class="o">=</span> <span class="n">_build_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memory</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">set_jk</span><span class="p">(</span><span class="n">jk</span><span class="p">)</span>
+
+    <span class="n">jk</span><span class="o">.</span><span class="n">set_print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_print</span><span class="p">())</span>
+    <span class="n">jk</span><span class="o">.</span><span class="n">set_memory</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span>
+    <span class="n">jk</span><span class="o">.</span><span class="n">set_do_K</span><span class="p">(</span><span class="n">functional</span><span class="o">.</span><span class="n">is_x_hybrid</span><span class="p">())</span>
+    <span class="n">jk</span><span class="o">.</span><span class="n">set_do_wK</span><span class="p">(</span><span class="n">functional</span><span class="o">.</span><span class="n">is_x_lrc</span><span class="p">())</span>
+    <span class="n">jk</span><span class="o">.</span><span class="n">set_omega</span><span class="p">(</span><span class="n">functional</span><span class="o">.</span><span class="n">x_omega</span><span class="p">())</span>
+
+    <span class="n">jk</span><span class="o">.</span><span class="n">set_omega_alpha</span><span class="p">(</span><span class="n">functional</span><span class="o">.</span><span class="n">x_alpha</span><span class="p">())</span>
+    <span class="n">jk</span><span class="o">.</span><span class="n">set_omega_beta</span><span class="p">(</span><span class="n">functional</span><span class="o">.</span><span class="n">x_beta</span><span class="p">())</span>   
+
+    <span class="n">jk</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+    <span class="n">jk</span><span class="o">.</span><span class="n">print_header</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">scf_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Specialized initialization, compute integrals and does everything to prepare for iterations&quot;&quot;&quot;</span>
+
+    <span class="c1"># Figure out memory distributions</span>
+
+    <span class="c1"># Get memory in terms of doubles</span>
+    <span class="n">total_memory</span> <span class="o">=</span> <span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_memory</span><span class="p">()</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s2">&quot;SCF_MEM_SAFETY_FACTOR&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Figure out how large the DFT collocation matrices are</span>
+    <span class="n">vbase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_potential</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">vbase</span><span class="p">:</span>
+        <span class="n">collocation_size</span> <span class="o">=</span> <span class="n">vbase</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span><span class="o">.</span><span class="n">collocation_size</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">vbase</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">ansatz</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">collocation_size</span> <span class="o">*=</span> <span class="mi">4</span>  <span class="c1"># First derivs</span>
+        <span class="k">elif</span> <span class="n">vbase</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">ansatz</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">collocation_size</span> <span class="o">*=</span> <span class="mi">10</span>  <span class="c1"># Second derivs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">collocation_size</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Change allocation for collocation matrices based on DFT type</span>
+    <span class="n">jk</span> <span class="o">=</span> <span class="n">_build_jk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_memory</span><span class="p">)</span>
+    <span class="n">jk_size</span> <span class="o">=</span> <span class="n">jk</span><span class="o">.</span><span class="n">memory_estimate</span><span class="p">()</span>
+
+    <span class="c1"># Give remaining to collocation</span>
+    <span class="k">if</span> <span class="n">total_memory</span> <span class="o">&gt;</span> <span class="n">jk_size</span><span class="p">:</span>
+        <span class="n">collocation_memory</span> <span class="o">=</span> <span class="n">total_memory</span> <span class="o">-</span> <span class="n">jk_size</span>
+    <span class="c1"># Give up to 10% to collocation</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">total_memory</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">collocation_size</span><span class="p">:</span>
+        <span class="n">collocation_memory</span> <span class="o">=</span> <span class="n">collocation_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">collocation_memory</span> <span class="o">=</span> <span class="n">total_memory</span> <span class="o">*</span> <span class="mf">0.1</span>
+
+    <span class="k">if</span> <span class="n">collocation_memory</span> <span class="o">&gt;</span> <span class="n">collocation_size</span><span class="p">:</span>
+        <span class="n">collocation_memory</span> <span class="o">=</span> <span class="n">collocation_size</span>
+
+    <span class="c1"># Set constants</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">memory_jk_</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_memory</span> <span class="o">-</span> <span class="n">collocation_memory</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">memory_collocation_</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">collocation_memory</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_print</span><span class="p">():</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  ==&gt; Integral Setup &lt;==</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Initialize EFP</span>
+    <span class="n">efp_enabled</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">(),</span> <span class="s1">&#39;EFP&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">efp_enabled</span><span class="p">:</span>
+        <span class="c1"># EFP: Set QM system, options, and callback. Display efp geom in [A]</span>
+        <span class="n">efpobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">EFP</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">efpobj</span><span class="o">.</span><span class="n">banner</span><span class="p">())</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">efpobj</span><span class="o">.</span><span class="n">geometry_summary</span><span class="p">(</span><span class="n">units_to_bohr</span><span class="o">=</span><span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span><span class="p">))</span>
+
+        <span class="n">efpptc</span><span class="p">,</span> <span class="n">efpcoords</span><span class="p">,</span> <span class="n">efpopts</span> <span class="o">=</span> <span class="n">get_qm_atoms_opts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">())</span>
+        <span class="n">efpobj</span><span class="o">.</span><span class="n">set_point_charges</span><span class="p">(</span><span class="n">efpptc</span><span class="p">,</span> <span class="n">efpcoords</span><span class="p">)</span>
+        <span class="n">efpobj</span><span class="o">.</span><span class="n">set_opts</span><span class="p">(</span><span class="n">efpopts</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;psi&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="s1">&#39;psi&#39;</span><span class="p">)</span>
+
+        <span class="n">efpobj</span><span class="o">.</span><span class="n">set_electron_density_field_fn</span><span class="p">(</span><span class="n">field_fn</span><span class="p">)</span>
+
+    <span class="c1"># Initilize all integratals and perform the first guess</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attempt_number_</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">mints</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_jk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory_jk_</span><span class="p">,</span> <span class="n">jk</span><span class="o">=</span><span class="n">jk</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_potential</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">V_potential</span><span class="p">()</span><span class="o">.</span><span class="n">build_collocation_cache</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory_collocation_</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Form core H&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_H</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Form core H&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">efp_enabled</span><span class="p">:</span>
+            <span class="c1"># EFP: Add in permanent moment contribution and cache</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Form Vefp&quot;</span><span class="p">)</span>
+            <span class="n">verbose</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;PRINT&quot;</span><span class="p">)</span>
+            <span class="n">Vefp</span> <span class="o">=</span> <span class="n">modify_Fock_permanent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">(),</span> <span class="n">mints</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">Vefp</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">Vefp</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Vefp</span><span class="p">)</span>
+            <span class="n">Horig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Horig</span> <span class="o">=</span> <span class="n">Horig</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  QM/EFP: iterating Total Energy including QM/EFP Induction</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Form Vefp&quot;</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Form S/X&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_Shalf</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Form S/X&quot;</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  ==&gt; Pre-Iterations &lt;==</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Guess&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guess</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Guess&quot;</span><span class="p">)</span>
+        <span class="c1"># Print out initial docc/socc/etc data</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_print</span><span class="p">():</span>                    
+            <span class="n">lack_occupancy</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;GUESS&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;SAD&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;GUESS&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;SAD&#39;</span><span class="p">]:</span>
+                <span class="n">lack_occupancy</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;GUESS&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;AUTO&#39;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print_preiterations</span><span class="p">(</span><span class="n">small</span><span class="o">=</span><span class="n">lack_occupancy</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print_preiterations</span><span class="p">(</span><span class="n">small</span><span class="o">=</span><span class="n">lack_occupancy</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># We&#39;re reading the orbitals from the previous set of iterations.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_D</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_energies</span><span class="p">(</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_initial_E</span><span class="p">())</span>
+
+    <span class="c1"># turn off VV10 for iterations</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;DFT_VV10_POSTSCF&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">vv10_b</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  VV10: post-SCF option active </span><span class="se">\n</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">set_lock</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">set_do_vv10</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">set_lock</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">scf_iterate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e_conv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_conv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">is_dfjk</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;DF&#39;</span><span class="p">)</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;PRINT&quot;</span><span class="p">)</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;REFERENCE&quot;</span><span class="p">)</span>
+
+    <span class="c1"># self.member_data_ signals are non-local, used internally by c-side fns</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">diis_enabled_</span> <span class="o">=</span> <span class="n">_validate_diis</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">MOM_excited_</span> <span class="o">=</span> <span class="n">_validate_MOM</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">diis_start_</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS_START&#39;</span><span class="p">)</span>
+    <span class="n">damping_enabled</span> <span class="o">=</span> <span class="n">_validate_damping</span><span class="p">()</span>
+    <span class="n">soscf_enabled</span> <span class="o">=</span> <span class="n">_validate_soscf</span><span class="p">()</span>
+    <span class="n">frac_enabled</span> <span class="o">=</span> <span class="n">_validate_frac</span><span class="p">()</span>
+    <span class="n">efp_enabled</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">(),</span> <span class="s1">&#39;EFP&#39;</span><span class="p">)</span>
+    <span class="n">diis_rms</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS_RMS_ERROR&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  ==&gt; Iterations &lt;==</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">                        Total Energy        Delta E     </span><span class="si">%s</span><span class="s2"> |[F,P]|</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">%</span>
+                       <span class="p">(</span><span class="s2">&quot;   &quot;</span> <span class="k">if</span> <span class="n">is_dfjk</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;RMS&quot;</span> <span class="k">if</span> <span class="n">diis_rms</span> <span class="k">else</span> <span class="s2">&quot;MAX&quot;</span><span class="p">))</span>
+
+    <span class="c1"># SCF iterations!</span>
+    <span class="n">SCFE_old</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">Dnorm</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">diis_performed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">soscf_performed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frac_performed_</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">#self.MOM_performed_ = False  # redundant from common_init()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_density_and_energy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">efp_enabled</span><span class="p">:</span>
+            <span class="c1"># EFP: Add efp contribution to Fock matrix</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Horig</span><span class="p">)</span>
+            <span class="k">global</span> <span class="n">mints_psi4_yo</span>
+            <span class="n">mints_psi4_yo</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span>
+            <span class="n">Vefp</span> <span class="o">=</span> <span class="n">modify_Fock_induced</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">EFP</span><span class="p">,</span> <span class="n">mints_psi4_yo</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">Vefp</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">Vefp</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Vefp</span><span class="p">)</span>
+
+        <span class="n">SCFE</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_external_potentials</span><span class="p">()</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Form G&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_G</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Form G&quot;</span><span class="p">)</span>
+
+        <span class="n">upcm</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PCM&#39;</span><span class="p">):</span>
+            <span class="n">calc_type</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">PCM</span><span class="o">.</span><span class="n">CalcType</span><span class="o">.</span><span class="n">Total</span>
+            <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;PCM&quot;</span><span class="p">,</span> <span class="s2">&quot;PCM_SCF_TYPE&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;SEPARATE&quot;</span><span class="p">:</span>
+                <span class="n">calc_type</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">PCM</span><span class="o">.</span><span class="n">CalcType</span><span class="o">.</span><span class="n">NucAndEle</span>
+            <span class="n">Dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="n">Dt</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
+            <span class="n">upcm</span><span class="p">,</span> <span class="n">Vpcm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_PCM</span><span class="p">()</span><span class="o">.</span><span class="n">compute_PCM_terms</span><span class="p">(</span><span class="n">Dt</span><span class="p">,</span> <span class="n">calc_type</span><span class="p">)</span>
+            <span class="n">SCFE</span> <span class="o">+=</span> <span class="n">upcm</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">push_back_external_potential</span><span class="p">(</span><span class="n">Vpcm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;PCM POLARIZATION ENERGY&quot;</span><span class="p">,</span> <span class="n">upcm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_energies</span><span class="p">(</span><span class="s2">&quot;PCM Polarization&quot;</span><span class="p">,</span> <span class="n">upcm</span><span class="p">)</span>
+
+        <span class="n">upe</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PE&#39;</span><span class="p">):</span>
+            <span class="n">Dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="n">Dt</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
+            <span class="n">upe</span><span class="p">,</span> <span class="n">Vpe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pe_state</span><span class="o">.</span><span class="n">get_pe_contribution</span><span class="p">(</span>
+                <span class="n">Dt</span><span class="p">,</span> <span class="n">elec_only</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">SCFE</span> <span class="o">+=</span> <span class="n">upe</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">push_back_external_potential</span><span class="p">(</span><span class="n">Vpe</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;PE ENERGY&quot;</span><span class="p">,</span> <span class="n">upe</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_energies</span><span class="p">(</span><span class="s2">&quot;PE Energy&quot;</span><span class="p">,</span> <span class="n">upe</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Form F&quot;</span><span class="p">)</span>
+        <span class="c1"># SAD: since we don&#39;t have orbitals yet, we might not be able</span>
+        <span class="c1"># to form the real Fock matrix. Instead, build an initial one</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sad_</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_initial_F</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_F</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Form F&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Fa</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Fb</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+        <span class="n">SCFE</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_E</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">efp_enabled</span><span class="p">:</span>
+            <span class="k">global</span> <span class="n">efp_Dt_psi4_yo</span>
+
+            <span class="c1"># EFP: Add efp contribution to energy</span>
+            <span class="n">efp_Dt_psi4_yo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="n">efp_Dt_psi4_yo</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
+            <span class="n">SCFE</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">EFP</span><span class="o">.</span><span class="n">get_wavefunction_dependent_energy</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_energies</span><span class="p">(</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">,</span> <span class="n">SCFE</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;SCF ITERATION ENERGY&quot;</span><span class="p">,</span> <span class="n">SCFE</span><span class="p">)</span>
+        <span class="n">Ediff</span> <span class="o">=</span> <span class="n">SCFE</span> <span class="o">-</span> <span class="n">SCFE_old</span>
+        <span class="n">SCFE_old</span> <span class="o">=</span> <span class="n">SCFE</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Check if we are doing SOSCF</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">soscf_enabled</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Dnorm</span> <span class="o">&lt;</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_START_CONVERGENCE&#39;</span><span class="p">))):</span>
+            <span class="n">Dnorm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_orbital_gradient</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS_MAX_VECS&#39;</span><span class="p">))</span>
+            <span class="n">diis_performed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">needs_xc</span><span class="p">():</span>
+                <span class="n">base_name</span> <span class="o">=</span> <span class="s2">&quot;SOKS, nmicro=&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">base_name</span> <span class="o">=</span> <span class="s2">&quot;SOSCF, nmicro=&quot;</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">_converged</span><span class="p">(</span><span class="n">Ediff</span><span class="p">,</span> <span class="n">Dnorm</span><span class="p">,</span> <span class="n">e_conv</span><span class="o">=</span><span class="n">e_conv</span><span class="p">,</span> <span class="n">d_conv</span><span class="o">=</span><span class="n">d_conv</span><span class="p">):</span>
+                <span class="n">nmicro</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soscf_update</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_CONV&#39;</span><span class="p">),</span>
+                                           <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_MIN_ITER&#39;</span><span class="p">),</span>
+                                           <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_MAX_ITER&#39;</span><span class="p">),</span>
+                                           <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_PRINT&#39;</span><span class="p">))</span>
+                <span class="c1"># if zero, the soscf call bounced for some reason</span>
+                <span class="n">soscf_performed</span> <span class="o">=</span> <span class="p">(</span><span class="n">nmicro</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">soscf_performed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">find_occupation</span><span class="p">()</span>
+                    <span class="n">status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nmicro</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Did not take a SOSCF step, using normal convergence methods</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># need to ensure orthogonal orbitals and set epsilon</span>
+                <span class="n">status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_name</span> <span class="o">+</span> <span class="s2">&quot;conv&quot;</span><span class="p">)</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Form C&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">form_C</span><span class="p">()</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Form C&quot;</span><span class="p">)</span>
+                <span class="n">soscf_performed</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Stops DIIS</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">soscf_performed</span><span class="p">:</span>
+            <span class="c1"># Normal convergence procedures if we do not do SOSCF</span>
+
+            <span class="c1"># SAD: form initial orbitals from the initial Fock matrix, and</span>
+            <span class="c1"># reset the occupations. From here on, the density matrices</span>
+            <span class="c1"># are correct.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sad_</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">form_initial_C</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reset_occupation</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">find_occupation</span><span class="p">()</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Run DIIS</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: DIIS&quot;</span><span class="p">)</span>
+                <span class="n">diis_performed</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">add_to_diis_subspace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diis_enabled_</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diis_start_</span>
+
+                <span class="n">Dnorm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_orbital_gradient</span><span class="p">(</span><span class="n">add_to_diis_subspace</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS_MAX_VECS&#39;</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">add_to_diis_subspace</span> <span class="ow">and</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS_MIN_VECS&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">diis_performed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diis</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">diis_performed</span><span class="p">:</span>
+                    <span class="n">status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;DIIS&quot;</span><span class="p">)</span>
+
+                <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: DIIS&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">diis_performed</span><span class="p">:</span>
+                    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  After DIIS:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Fa</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Fb</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+                <span class="c1"># frac, MOM invoked here from Wfn::HF::find_occupation</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Form C&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">form_C</span><span class="p">()</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Form C&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MOM_performed_</span><span class="p">:</span>
+                    <span class="n">status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;MOM&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frac_performed_</span><span class="p">:</span>
+                    <span class="n">status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;FRAC&quot;</span><span class="p">)</span>
+
+                <span class="c1"># Reset occupations if necessary</span>
+                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_occ_</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reset_occupation</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">find_occupation</span><span class="p">()</span>
+
+        <span class="c1"># Form new density matrix</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_on</span><span class="p">(</span><span class="s2">&quot;HF: Form D&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_D</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">timer_off</span><span class="p">(</span><span class="s2">&quot;HF: Form D&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;SCF ITERATION ENERGY&quot;</span><span class="p">,</span> <span class="n">SCFE</span><span class="p">)</span>
+
+        <span class="c1"># After we&#39;ve built the new D, damp the update</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">damping_enabled</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">Dnorm</span> <span class="o">&gt;</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DAMPING_CONVERGENCE&#39;</span><span class="p">)):</span>
+            <span class="n">damping_percentage</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;DAMPING_PERCENTAGE&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">damping_update</span><span class="p">(</span><span class="n">damping_percentage</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span>
+            <span class="n">status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;DAMP=</span><span class="si">{}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">damping_percentage</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Ca</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Cb</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Db</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+        <span class="c1"># Print out the iteration</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+            <span class="s2">&quot;   @</span><span class="si">%s%s</span><span class="s2"> iter </span><span class="si">%3s</span><span class="s2">: </span><span class="si">%20.14f</span><span class="s2">   </span><span class="si">%12.5e</span><span class="s2">   </span><span class="si">%-11.5e</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="s2">&quot;DF-&quot;</span> <span class="k">if</span> <span class="n">is_dfjk</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="s2">&quot;SAD&quot;</span> <span class="k">if</span>
+             <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sad_</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span><span class="p">,</span> <span class="n">SCFE</span><span class="p">,</span> <span class="n">Ediff</span><span class="p">,</span> <span class="n">Dnorm</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">status</span><span class="p">)))</span>
+
+        <span class="c1"># if a an excited MOM is requested but not started, don&#39;t stop yet</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MOM_excited_</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">MOM_performed_</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># if a fractional occupation is requested but not started, don&#39;t stop yet</span>
+        <span class="k">if</span> <span class="n">frac_enabled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">frac_performed_</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># Call any postiteration callbacks</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sad_</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_converged</span><span class="p">(</span><span class="n">Ediff</span><span class="p">,</span> <span class="n">Dnorm</span><span class="p">,</span> <span class="n">e_conv</span><span class="o">=</span><span class="n">e_conv</span><span class="p">,</span> <span class="n">d_conv</span><span class="o">=</span><span class="n">d_conv</span><span class="p">):</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span> <span class="o">&gt;=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;MAXITER&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SCFConvergenceError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SCF iterations&quot;&quot;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Ediff</span><span class="p">,</span> <span class="n">Dnorm</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">scf_finalize_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Performs stability analysis and calls back SCF with new guess</span>
+<span class="sd">    if needed, Returns the SCF energy. This function should be called</span>
+<span class="sd">    once orbitals are ready for energy/property computations, usually</span>
+<span class="sd">    after iterations() is called.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># post-scf vv10 correlation</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;DFT_VV10_POSTSCF&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">vv10_b</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">set_lock</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">set_do_vv10</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">set_lock</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  ==&gt; Computing Non-Self-Consistent VV10 Energy Correction &lt;==</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">SCFE</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_V</span><span class="p">()</span>
+        <span class="n">SCFE</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_E</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_energies</span><span class="p">(</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">,</span> <span class="n">SCFE</span><span class="p">)</span>
+
+    <span class="c1"># Perform wavefunction stability analysis before doing</span>
+    <span class="c1"># anything on a wavefunction that may not be truly converged.</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;STABILITY_ANALYSIS&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;NONE&quot;</span><span class="p">:</span>
+
+        <span class="c1"># Don&#39;t bother computing needed integrals if we can&#39;t do anything with them.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">needs_xc</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Stability analysis not yet supported for XC functionals.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># We need the integral file, make sure it is written and</span>
+        <span class="c1"># compute it if needed</span>
+        <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;UHF&quot;</span><span class="p">:</span>
+            <span class="c1">#psio = core.IO.shared_object()</span>
+            <span class="c1">#psio.open(constants.PSIF_SO_TEI, 1)  # PSIO_OPEN_OLD</span>
+            <span class="c1">#try:</span>
+            <span class="c1">#    psio.tocscan(constants.PSIF_SO_TEI, &quot;IWL Buffers&quot;)</span>
+            <span class="c1">#except TypeError:</span>
+            <span class="c1">#    # &quot;IWL Buffers&quot; actually found but psio_tocentry can&#39;t be returned to Py</span>
+            <span class="c1">#    psio.close(constants.PSIF_SO_TEI, 1)</span>
+            <span class="c1">#else:</span>
+            <span class="c1">#    # tocscan returned None</span>
+            <span class="c1">#    psio.close(constants.PSIF_SO_TEI, 1)</span>
+
+            <span class="c1"># logic above foiled by psio_tocentry not returning None&lt;--nullptr in pb11 2.2.1</span>
+            <span class="c1">#   so forcibly recomputing for now until stability revamp</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    SO Integrals not on disk. Computing...&quot;</span><span class="p">)</span>
+            <span class="n">mints</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span>
+            <span class="c1">#next 2 lines fix a bug that prohibits relativistic stability analysis</span>
+
+            <span class="n">mints</span><span class="o">.</span><span class="n">integrals</span><span class="p">()</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;done.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Q: Not worth exporting all the layers of psio, right?</span>
+
+        <span class="n">follow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stability_analysis</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="n">follow</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">attempt_number_</span> <span class="o">&lt;=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;MAX_ATTEMPTS&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attempt_number_</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    Running SCF again with the rotated orbitals.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized_diis_manager_</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">diis_manager</span><span class="p">()</span><span class="o">.</span><span class="n">reset_subspace</span><span class="p">()</span>
+            <span class="c1"># reading the rotated orbitals in before starting iterations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_D</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_energies</span><span class="p">(</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_initial_E</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">()</span>
+            <span class="n">follow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stability_analysis</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">follow</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">attempt_number_</span> <span class="o">&gt;</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;MAX_ATTEMPTS&#39;</span><span class="p">):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    There&#39;s still a negative eigenvalue. Try modifying FOLLOW_STEP_SCALE</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    or increasing MAX_ATTEMPTS (not available for PK integrals).</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># At this point, we are not doing any more SCF cycles</span>
+    <span class="c1">#   and we can compute and print final quantities.</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">(),</span> <span class="s1">&#39;EFP&#39;</span><span class="p">):</span>
+        <span class="n">efpobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">EFP</span>
+
+        <span class="n">efpobj</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>  <span class="c1"># do_gradient=do_gradient)</span>
+        <span class="n">efpene</span> <span class="o">=</span> <span class="n">efpobj</span><span class="o">.</span><span class="n">get_energy</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;psi&#39;</span><span class="p">)</span>
+        <span class="n">efp_wfn_independent_energy</span> <span class="o">=</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;ind&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_energies</span><span class="p">(</span><span class="s2">&quot;EFP&quot;</span><span class="p">,</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span>
+
+        <span class="n">SCFE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">)</span>
+        <span class="n">SCFE</span> <span class="o">+=</span> <span class="n">efp_wfn_independent_energy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_energies</span><span class="p">(</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">,</span> <span class="n">SCFE</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">efpobj</span><span class="o">.</span><span class="n">energy_summary</span><span class="p">(</span><span class="n">scfefp</span><span class="o">=</span><span class="n">SCFE</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;psi&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span>
+            <span class="s1">&#39;EFP ELST ENERGY&#39;</span><span class="p">,</span>
+            <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;electrostatic&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;charge_penetration&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;electrostatic_point_charges&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;EFP IND ENERGY&#39;</span><span class="p">,</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;polarization&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;EFP DISP ENERGY&#39;</span><span class="p">,</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;dispersion&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;EFP EXCH ENERGY&#39;</span><span class="p">,</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;exchange_repulsion&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;EFP TOTAL ENERGY&#39;</span><span class="p">,</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;CURRENT ENERGY&#39;</span><span class="p">,</span> <span class="n">efpene</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span>
+
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  ==&gt; Post-Iterations &lt;==</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_potential</span><span class="p">():</span>
+        <span class="n">quad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_potential</span><span class="p">()</span><span class="o">.</span><span class="n">quadrature_values</span><span class="p">()</span>
+        <span class="n">rho_a</span> <span class="o">=</span> <span class="n">quad</span><span class="p">[</span><span class="s1">&#39;RHO_A&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">same_a_b_dens</span><span class="p">()</span> <span class="k">else</span> <span class="n">quad</span><span class="p">[</span><span class="s1">&#39;RHO_A&#39;</span><span class="p">]</span>
+        <span class="n">rho_b</span> <span class="o">=</span> <span class="n">quad</span><span class="p">[</span><span class="s1">&#39;RHO_B&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">same_a_b_dens</span><span class="p">()</span> <span class="k">else</span> <span class="n">quad</span><span class="p">[</span><span class="s1">&#39;RHO_B&#39;</span><span class="p">]</span>
+        <span class="n">rho_ab</span> <span class="o">=</span> <span class="p">(</span><span class="n">rho_a</span> <span class="o">+</span> <span class="n">rho_b</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;GRID ELECTRONS TOTAL&quot;</span><span class="p">,</span><span class="n">rho_ab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;GRID ELECTRONS ALPHA&quot;</span><span class="p">,</span><span class="n">rho_a</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;GRID ELECTRONS BETA&quot;</span><span class="p">,</span><span class="n">rho_b</span><span class="p">)</span>
+        <span class="n">dev_a</span> <span class="o">=</span> <span class="n">rho_a</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nalpha</span><span class="p">()</span>
+        <span class="n">dev_b</span> <span class="o">=</span> <span class="n">rho_b</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbeta</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Electrons on quadrature grid:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">same_a_b_dens</span><span class="p">():</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Ntotal   = </span><span class="si">{</span><span class="n">rho_ab</span><span class="si">:</span><span class="s2">15.10f</span><span class="si">}</span><span class="s2"> ; deviation = </span><span class="si">{</span><span class="n">dev_b</span><span class="o">+</span><span class="n">dev_a</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Nalpha   = </span><span class="si">{</span><span class="n">rho_a</span><span class="si">:</span><span class="s2">15.10f</span><span class="si">}</span><span class="s2"> ; deviation = </span><span class="si">{</span><span class="n">dev_a</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Nbeta    = </span><span class="si">{</span><span class="n">rho_b</span><span class="si">:</span><span class="s2">15.10f</span><span class="si">}</span><span class="s2"> ; deviation = </span><span class="si">{</span><span class="n">dev_b</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Ntotal   = </span><span class="si">{</span><span class="n">rho_ab</span><span class="si">:</span><span class="s2">15.10f</span><span class="si">}</span><span class="s2"> ; deviation = </span><span class="si">{</span><span class="n">dev_b</span><span class="o">+</span><span class="n">dev_a</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">dev_b</span><span class="o">+</span><span class="n">dev_a</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   WARNING: large deviation in the electron count on grid detected. Check grid size!&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">check_phases</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">compute_spin_contamination</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">frac_renormalize</span><span class="p">()</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;SCF&quot;</span><span class="p">,</span> <span class="s2">&quot;REFERENCE&quot;</span><span class="p">)</span>
+
+    <span class="n">energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">)</span>
+
+    <span class="c1">#    fail_on_maxiter = core.get_option(&quot;SCF&quot;, &quot;FAIL_ON_MAXITER&quot;)</span>
+    <span class="c1">#    if converged or not fail_on_maxiter:</span>
+    <span class="c1">#</span>
+    <span class="c1">#        if print_lvl &gt; 0:</span>
+    <span class="c1">#            self.print_orbitals()</span>
+    <span class="c1">#</span>
+    <span class="c1">#        if converged:</span>
+    <span class="c1">#            core.print_out(&quot;  Energy converged.\n\n&quot;)</span>
+    <span class="c1">#        else:</span>
+    <span class="c1">#            core.print_out(&quot;  Energy did not converge, but proceeding anyway.\n\n&quot;)</span>
+
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PRINT&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_orbitals</span><span class="p">()</span>
+
+    <span class="n">is_dfjk</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;DF&#39;</span><span class="p">)</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  @</span><span class="si">%s%s</span><span class="s2"> Final Energy: </span><span class="si">%20.14f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;DF-&#39;</span> <span class="k">if</span> <span class="n">is_dfjk</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">energy</span><span class="p">))</span>
+    <span class="c1"># if (perturb_h_) {</span>
+    <span class="c1">#     core.print_out(&quot; with %f %f %f perturbation&quot; %</span>
+    <span class="c1">#                    (dipole_field_strength_[0], dipole_field_strength_[1], dipole_field_strength_[2]))</span>
+    <span class="c1"># }</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">print_energies</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">clear_external_potentials</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PCM&#39;</span><span class="p">):</span>
+        <span class="n">calc_type</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">PCM</span><span class="o">.</span><span class="n">CalcType</span><span class="o">.</span><span class="n">Total</span>
+        <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;PCM&quot;</span><span class="p">,</span> <span class="s2">&quot;PCM_SCF_TYPE&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;SEPARATE&quot;</span><span class="p">:</span>
+            <span class="n">calc_type</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">PCM</span><span class="o">.</span><span class="n">CalcType</span><span class="o">.</span><span class="n">NucAndEle</span>
+        <span class="n">Dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">Dt</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">Vpcm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_PCM</span><span class="p">()</span><span class="o">.</span><span class="n">compute_PCM_terms</span><span class="p">(</span><span class="n">Dt</span><span class="p">,</span> <span class="n">calc_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_back_external_potential</span><span class="p">(</span><span class="n">Vpcm</span><span class="p">)</span>
+        <span class="c1"># Set callback function for CPSCF</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_external_cpscf_perturbation</span><span class="p">(</span><span class="s2">&quot;PCM&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">pert_dm</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_PCM</span><span class="p">()</span><span class="o">.</span><span class="n">compute_V</span><span class="p">(</span><span class="n">pert_dm</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PE&#39;</span><span class="p">):</span>
+        <span class="n">Dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">Dt</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">Vpe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pe_state</span><span class="o">.</span><span class="n">get_pe_contribution</span><span class="p">(</span>
+            <span class="n">Dt</span><span class="p">,</span> <span class="n">elec_only</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_back_external_potential</span><span class="p">(</span><span class="n">Vpe</span><span class="p">)</span>
+        <span class="c1"># Set callback function for CPSCF</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_external_cpscf_perturbation</span><span class="p">(</span><span class="s2">&quot;PE&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">pert_dm</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pe_state</span><span class="o">.</span><span class="n">get_pe_contribution</span><span class="p">(</span><span class="n">pert_dm</span><span class="p">,</span> <span class="n">elec_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Properties</span>
+    <span class="c1">#  Comments so that autodoc utility will find these PSI variables</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF DIPOLE X&quot;] =</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF DIPOLE Y&quot;] =</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF DIPOLE Z&quot;] =</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF QUADRUPOLE XX&quot;] =</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF QUADRUPOLE XY&quot;] =</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF QUADRUPOLE XZ&quot;] =</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF QUADRUPOLE YY&quot;] =</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF QUADRUPOLE YZ&quot;] =</span>
+    <span class="c1">#  Process::environment.globals[&quot;SCF QUADRUPOLE ZZ&quot;] =</span>
+
+    <span class="c1"># Orbitals are always saved, in case an MO guess is requested later</span>
+    <span class="c1"># save_orbitals()</span>
+
+    <span class="c1"># Shove variables into global space</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># TODO re-enable</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_potential</span><span class="p">():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V_potential</span><span class="p">()</span><span class="o">.</span><span class="n">clear_collocation_cache</span><span class="p">()</span>
+
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Computation Completed</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">energy</span>
+
+
+<span class="k">def</span> <span class="nf">scf_print_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">enuc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;Nuclear&#39;</span><span class="p">)</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;One-Electron&#39;</span><span class="p">)</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;Two-Electron&#39;</span><span class="p">)</span>
+    <span class="n">exc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;XC&#39;</span><span class="p">)</span>
+    <span class="n">ed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;-D&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">del_variable</span><span class="p">(</span><span class="s1">&#39;-D Energy&#39;</span><span class="p">)</span>
+    <span class="n">evv10</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;VV10&#39;</span><span class="p">)</span>
+    <span class="n">eefp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;EFP&#39;</span><span class="p">)</span>
+    <span class="n">epcm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;PCM Polarization&#39;</span><span class="p">)</span>
+    <span class="n">epe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;PE Energy&#39;</span><span class="p">)</span>
+
+    <span class="n">hf_energy</span> <span class="o">=</span> <span class="n">enuc</span> <span class="o">+</span> <span class="n">e1</span> <span class="o">+</span> <span class="n">e2</span>
+    <span class="n">dft_energy</span> <span class="o">=</span> <span class="n">hf_energy</span> <span class="o">+</span> <span class="n">exc</span> <span class="o">+</span> <span class="n">ed</span> <span class="o">+</span> <span class="n">evv10</span>
+    <span class="n">total_energy</span> <span class="o">=</span> <span class="n">dft_energy</span> <span class="o">+</span> <span class="n">eefp</span> <span class="o">+</span> <span class="n">epcm</span> <span class="o">+</span> <span class="n">epe</span>
+
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   =&gt; Energetics &lt;=</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    Nuclear Repulsion Energy =        </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">enuc</span><span class="p">))</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    One-Electron Energy =             </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e1</span><span class="p">))</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    Two-Electron Energy =             </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">needs_xc</span><span class="p">():</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    DFT Exchange-Correlation Energy = </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    Empirical Dispersion Energy =     </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ed</span><span class="p">))</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    VV10 Nonlocal Energy =            </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">evv10</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PCM&#39;</span><span class="p">):</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    PCM Polarization Energy =         </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epcm</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PE&#39;</span><span class="p">):</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    PE Energy =                       </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epe</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">(),</span> <span class="s1">&#39;EFP&#39;</span><span class="p">):</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    EFP Energy =                      </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">eefp</span><span class="p">))</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    Total Energy =                    </span><span class="si">{:24.16f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total_energy</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PE&#39;</span><span class="p">):</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pe_state</span><span class="o">.</span><span class="n">cppe_state</span><span class="o">.</span><span class="n">summary_string</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;NUCLEAR REPULSION ENERGY&#39;</span><span class="p">,</span> <span class="n">enuc</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;ONE-ELECTRON ENERGY&#39;</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;TWO-ELECTRON ENERGY&#39;</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">()</span><span class="o">.</span><span class="n">needs_xc</span><span class="p">():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;DFT XC ENERGY&#39;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;DFT VV10 ENERGY&#39;</span><span class="p">,</span> <span class="n">evv10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;DFT FUNCTIONAL TOTAL ENERGY&#39;</span><span class="p">,</span> <span class="n">hf_energy</span> <span class="o">+</span> <span class="n">exc</span> <span class="o">+</span> <span class="n">evv10</span><span class="p">)</span>
+        <span class="c1">#self.set_variable(self.functional().name() + &#39; FUNCTIONAL TOTAL ENERGY&#39;, hf_energy + exc + evv10)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;DFT TOTAL ENERGY&#39;</span><span class="p">,</span> <span class="n">dft_energy</span><span class="p">)</span>  <span class="c1"># overwritten later for DH</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;HF TOTAL ENERGY&#39;</span><span class="p">,</span> <span class="n">hf_energy</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_disp_functor&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;DISPERSION CORRECTION ENERGY&#39;</span><span class="p">,</span> <span class="n">ed</span><span class="p">)</span>
+    <span class="c1">#if abs(ed) &gt; 1.0e-14:</span>
+    <span class="c1">#    for pv, pvv in self.variables().items():</span>
+    <span class="c1">#        if abs(pvv - ed) &lt; 1.0e-14:</span>
+    <span class="c1">#            if pv.endswith(&#39;DISPERSION CORRECTION ENERGY&#39;) and pv.startswith(self.functional().name()):</span>
+    <span class="c1">#                fctl_plus_disp_name = pv.split()[0]</span>
+    <span class="c1">#                self.set_variable(fctl_plus_disp_name + &#39; TOTAL ENERGY&#39;, dft_energy)  # overwritten later for DH</span>
+    <span class="c1">#else:</span>
+    <span class="c1">#    self.set_variable(self.functional().name() + &#39; TOTAL ENERGY&#39;, dft_energy)  # overwritten later for DH</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;SCF ITERATIONS&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration_</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">scf_print_preiterations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">small</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># small version does not print Nalpha,Nbeta,Ndocc,Nsocc, e.g. for SAD guess where they are not</span>
+    <span class="c1"># available</span>
+    <span class="n">ct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">point_group</span><span class="p">()</span><span class="o">.</span><span class="n">char_table</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">small</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   -------------------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    Irrep   Nso     Nmo     Nalpha   Nbeta   Ndocc  Nsocc</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   -------------------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;     </span><span class="si">{</span><span class="n">ct</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">symbol</span><span class="p">()</span><span class="si">:</span><span class="s2">&lt;3s</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nsopi</span><span class="p">()[</span><span class="n">h</span><span class="p">]</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nmopi</span><span class="p">()[</span><span class="n">h</span><span class="p">]</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nalphapi</span><span class="p">()[</span><span class="n">h</span><span class="p">]</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nbetapi</span><span class="p">()[</span><span class="n">h</span><span class="p">]</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doccpi</span><span class="p">()[</span><span class="n">h</span><span class="p">]</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">soccpi</span><span class="p">()[</span><span class="n">h</span><span class="p">]</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   -------------------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;    Total  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nso</span><span class="p">()</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nmo</span><span class="p">()</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nalpha</span><span class="p">()</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nbeta</span><span class="p">()</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nbeta</span><span class="p">()</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nalpha</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbeta</span><span class="p">()</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   -------------------------------------------------------</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   -------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    Irrep   Nso     Nmo    </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   -------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;     </span><span class="si">{</span><span class="n">ct</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">symbol</span><span class="p">()</span><span class="si">:</span><span class="s2">&lt;3s</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nsopi</span><span class="p">()[</span><span class="n">h</span><span class="p">]</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nmopi</span><span class="p">()[</span><span class="n">h</span><span class="p">]</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   -------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;    Total  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nso</span><span class="p">()</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nmo</span><span class="p">()</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;   -------------------------</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Bind functions to core.HF class</span>
+<span class="n">core</span><span class="o">.</span><span class="n">HF</span><span class="o">.</span><span class="n">initialize</span> <span class="o">=</span> <span class="n">scf_initialize</span>
+<span class="n">core</span><span class="o">.</span><span class="n">HF</span><span class="o">.</span><span class="n">initialize_jk</span> <span class="o">=</span> <span class="n">initialize_jk</span>
+<span class="n">core</span><span class="o">.</span><span class="n">HF</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">scf_iterate</span>
+<span class="n">core</span><span class="o">.</span><span class="n">HF</span><span class="o">.</span><span class="n">compute_energy</span> <span class="o">=</span> <span class="n">scf_compute_energy</span>
+<span class="n">core</span><span class="o">.</span><span class="n">HF</span><span class="o">.</span><span class="n">finalize_energy</span> <span class="o">=</span> <span class="n">scf_finalize_energy</span>
+<span class="n">core</span><span class="o">.</span><span class="n">HF</span><span class="o">.</span><span class="n">print_energies</span> <span class="o">=</span> <span class="n">scf_print_energies</span>
+<span class="n">core</span><span class="o">.</span><span class="n">HF</span><span class="o">.</span><span class="n">print_preiterations</span> <span class="o">=</span> <span class="n">scf_print_preiterations</span>
+
+
+<span class="k">def</span> <span class="nf">_converged</span><span class="p">(</span><span class="n">e_delta</span><span class="p">,</span> <span class="n">d_rms</span><span class="p">,</span> <span class="n">e_conv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_conv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">e_conv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">e_conv</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;SCF&quot;</span><span class="p">,</span> <span class="s2">&quot;E_CONVERGENCE&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">d_conv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">d_conv</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;SCF&quot;</span><span class="p">,</span> <span class="s2">&quot;D_CONVERGENCE&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">e_delta</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">e_conv</span> <span class="ow">and</span> <span class="n">d_rms</span> <span class="o">&lt;</span> <span class="n">d_conv</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_damping</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Sanity-checks DAMPING control options</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValidationError</span>
+<span class="sd">        If any of |scf__damping_percentage|, |scf__damping_convergence|</span>
+<span class="sd">        don&#39;t play well together.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether DAMPING is enabled during scf.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Q: I changed the enabled criterion get_option &lt;-- has_option_changed</span>
+    <span class="n">enabled</span> <span class="o">=</span> <span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DAMPING_PERCENTAGE&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">enabled</span><span class="p">:</span>
+        <span class="n">parameter</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;DAMPING_PERCENTAGE&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parameter</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">parameter</span> <span class="o">&gt;</span> <span class="mf">100.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF DAMPING_PERCENTAGE (</span><span class="si">{}</span><span class="s1">) must be between 0 and 100&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parameter</span><span class="p">))</span>
+
+        <span class="n">stop</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DAMPING_CONVERGENCE&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">stop</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF DAMPING_CONVERGENCE (</span><span class="si">{}</span><span class="s1">) must be &gt; 0&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stop</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">enabled</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_diis</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Sanity-checks DIIS control options</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValidationError</span>
+<span class="sd">        If any of |scf__diis|, |scf__diis_start|,</span>
+<span class="sd">        |scf__diis_min_vecs|, |scf__diis_max_vecs| don&#39;t play well together.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether DIIS is enabled during scf.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">enabled</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">enabled</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS_START&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF DIIS_START (</span><span class="si">{}</span><span class="s1">) must be at least 1&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
+
+        <span class="n">minvecs</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS_MIN_VECS&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">minvecs</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF DIIS_MIN_VECS (</span><span class="si">{}</span><span class="s1">) must be at least 1&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">minvecs</span><span class="p">))</span>
+
+        <span class="n">maxvecs</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;DIIS_MAX_VECS&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">maxvecs</span> <span class="o">&lt;</span> <span class="n">minvecs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF DIIS_MAX_VECS (</span><span class="si">{}</span><span class="s1">) must be at least DIIS_MIN_VECS (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">maxvecs</span><span class="p">,</span> <span class="n">minvecs</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">enabled</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_frac</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Sanity-checks FRAC control options</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValidationError</span>
+<span class="sd">        If any of |scf__frac_start| don&#39;t play well together.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether FRAC is enabled during scf.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">enabled</span> <span class="o">=</span> <span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;FRAC_START&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">enabled</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">enabled</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF FRAC_START (</span><span class="si">{}</span><span class="s1">) must be at least 1&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">enabled</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">enabled</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_MOM</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Sanity-checks MOM control options</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValidationError</span>
+<span class="sd">        If any of |scf__mom_start|, |scf__mom_occ| don&#39;t play well together.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether excited-state MOM (not just the plain stabilizing MOM) is enabled during scf.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">enabled</span> <span class="o">=</span> <span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;MOM_START&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;MOM_OCC&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">enabled</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s2">&quot;MOM_START&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">enabled</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF MOM_START (</span><span class="si">{}</span><span class="s1">) must be at least 1&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">enabled</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_soscf</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Sanity-checks SOSCF control options</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValidationError</span>
+<span class="sd">        If any of |scf__soscf|, |scf__soscf_start_convergence|,</span>
+<span class="sd">        |scf__soscf_min_iter|, |scf__soscf_max_iter| don&#39;t play well together.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether SOSCF is enabled during scf.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">enabled</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">enabled</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_START_CONVERGENCE&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF SOSCF_START_CONVERGENCE (</span><span class="si">{}</span><span class="s1">) must be positive&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
+
+        <span class="n">miniter</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_MIN_ITER&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">miniter</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF SOSCF_MIN_ITER (</span><span class="si">{}</span><span class="s1">) must be at least 1&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">miniter</span><span class="p">))</span>
+
+        <span class="n">maxiter</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_MAX_ITER&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">maxiter</span> <span class="o">&lt;</span> <span class="n">miniter</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF SOSCF_MAX_ITER (</span><span class="si">{}</span><span class="s1">) must be at least SOSCF_MIN_ITER (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">maxiter</span><span class="p">,</span> <span class="n">miniter</span><span class="p">))</span>
+
+        <span class="n">conv</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SOSCF_CONV&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conv</span> <span class="o">&lt;</span> <span class="mf">1.e-10</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;SCF SOSCF_CONV (</span><span class="si">{}</span><span class="s1">) must be achievable&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">conv</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">enabled</span>
+
+
+<span class="k">def</span> <span class="nf">field_fn</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Callback function for PylibEFP to compute electric field from electrons</span>
+<span class="sd">    in ab initio part for libefp polarization calculation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xyz : list</span>
+<span class="sd">        (3 * npt, ) flat array of points at which to compute electric field</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        (3 * npt, ) flat array of electric field at points in `xyz`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Function signature defined by libefp, so function uses number of</span>
+<span class="sd">    basis functions and integrals factory `mints_psi4_yo` and total density</span>
+<span class="sd">    matrix `efp_Dt_psi4_yo` from global namespace.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">npt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="c1"># Cartesian basis one-electron EFP perturbation</span>
+    <span class="n">nbf</span> <span class="o">=</span> <span class="n">mints_psi4_yo</span><span class="o">.</span><span class="n">basisset</span><span class="p">()</span><span class="o">.</span><span class="n">nbf</span><span class="p">()</span>
+
+    <span class="c1"># Electric field at points</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">npt</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">ipt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npt</span><span class="p">):</span>
+        <span class="c1"># get electric field integrals from Psi4</span>
+        <span class="n">p4_field_ints</span> <span class="o">=</span> <span class="n">mints_psi4_yo</span><span class="o">.</span><span class="n">electric_field</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">points</span><span class="p">[</span><span class="n">ipt</span><span class="p">])</span>
+
+        <span class="n">field</span><span class="p">[</span><span class="n">ipt</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">efp_Dt_psi4_yo</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p4_field_ints</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>  <span class="c1"># Ex</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">efp_Dt_psi4_yo</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p4_field_ints</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span>  <span class="c1"># Ey</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">efp_Dt_psi4_yo</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p4_field_ints</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>   <span class="c1"># Ez</span>
+        <span class="p">]</span>
+
+    <span class="n">field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">npt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">field</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../../../index.html" title="index">
+          <img class="logo" src="../../../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/procrouting/scf_proc/scf_iterator.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/766c1e7">1.4a2.dev1136</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Tuesday, 24 November 2020 02:48AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
