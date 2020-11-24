@@ -19,12 +19,13 @@ import requests
 
 
 with open(f'../data/pubs/psi_software.yaml') as fp:
-    ydict = yaml.load(fp)
+    ydict = yaml.safe_load(fp)
 
 results = {}
 
 for psipub in ydict:
     results[psipub['short']] = {}
+    print("pub", psipub["short"])
 
     # pull over the Google Scholar webpage for the article, scisbd=1 means 'sort by date' (most recent articles first)
     page1_of_citing_articles = f"""https://scholar.google.com/scholar?cites={psipub['gs']}&hl=en&scipsc=&q=&scisbd=1"""
@@ -35,6 +36,10 @@ for psipub in ydict:
     res.raise_for_status()
 
     citedby = re.search('Cited by (\d+)', res.text)
+    print("citedby", citedby.groups())
+    print("page1", page1_of_citing_articles)
+    print("summ", article_summary)
+    print("results", results)
     results[psipub['short']]['citation_count'] = int(citedby[1])
 
     ## recent few citing articles
