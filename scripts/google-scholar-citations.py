@@ -30,15 +30,16 @@ for psipub in ydict:
     # pull over the Google Scholar webpage for the article, scisbd=1 means 'sort by date' (most recent articles first)
     page1_of_citing_articles = f"""https://scholar.google.com/scholar?cites={psipub['gs']}&hl=en&scipsc=&q=&scisbd=1"""
     article_summary = """https://scholar.google.com/scholar?hl=en&as_sdt=0%2C11&q={}&btnG=""".format(quote(psipub['title']))
+    print("page1", page1_of_citing_articles)
+    print("summ", article_summary)
 
     ## total citation count
     res = requests.get(article_summary)
     res.raise_for_status()
+    print("res", res.text)
 
     citedby = re.search('Cited by (\d+)', res.text)
     print("citedby", citedby.groups())
-    print("page1", page1_of_citing_articles)
-    print("summ", article_summary)
     print("results", results)
     results[psipub['short']]['citation_count'] = int(citedby[1])
 
