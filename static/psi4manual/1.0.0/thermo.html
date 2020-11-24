@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Vibrational and Thermochemical Analysis &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" />
+    <link rel="prev" title="oeprop() Evaluation of One-Electron Properties" href="oeprop.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="interfacing.html" title="Interfaces: Enhancing Psi4 Capabilities"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="oeprop.html" title="oeprop() Evaluation of One-Electron Properties"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="vibrational-and-thermochemical-analysis">
+<span id="sec-thermo"></span><span id="index-0"></span><h1>Vibrational and Thermochemical Analysis<a class="headerlink" href="#vibrational-and-thermochemical-analysis" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Rollin A. King</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__thermo.html#apdx-thermo"><span>Keywords</span></a>, <a class="reference internal" href="autodir_psivariables/module__thermo.html#apdx-thermo-psivar"><span>PSI Variables</span></a>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/bin/thermo">THERMO</a></p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">It is important to know that <span class="sc">Psi4</span>, like any other
+quantum chemistry program, does <em>not</em> compute the usual enthalpies,
+entropies, or Gibbs free energies <em>of formation</em> provided by most
+reference books.  Instead, quantum chemistry programs compute &#8220;absolute&#8221;
+thermodynamic properties relative to infinitely separated nuclei and
+electrons, not &#8220;formation&#8221; values relative to elements in their standard
+states.  If you are computing thermodynamic differences, like a reaction
+enthalpy computed as the enthalpy of the products minus the enthalpy
+of the reactants, then these &#8220;absolute&#8221; enthalpies are perfectly valid
+and usable.  However, they cannot be mixed and matched with enthalpies of
+formation from reference books, since the zero of energy is not the same.
+Additionally, the &#8220;thermal energies&#8221; reported in kcal/mol are the
+finite-temperature <em>corrections</em> to the electronic total energy, and
+not the overall thermal energies themselves.  If in doubt, use the
+reported Total Energies in Hartree/particle.</p>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="t">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-t-thermo"><span class="xref std std-term">T</span></a><a class="headerlink" href="#t" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Temperature in Kelvin for thermodynamic analysis. Note that 273.15 is the value for IUPAC STP.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 298.15</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="p">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-p-thermo"><span class="xref std std-term">P</span></a><a class="headerlink" href="#p" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Pressure in Pascal for thermodynamic analysis. Note that 100000. is the value for IUPAC STP.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 101325</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="rotational-symmetry-number">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-rotational-symmetry-number-thermo"><span class="xref std std-term">ROTATIONAL_SYMMETRY_NUMBER</span></a><a class="headerlink" href="#rotational-symmetry-number" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Rotational symmetry number for thermodynamic analysis. Default is set from the full point group (e.g., Td for methane) as opposed to the computational point group (e.g., C2v for methane). Default takes into account symmetry reduction through asymmetric isotopic substitution and is unaffected by user-set symmetry on molecule, so this option is the sole way to influence the symmetry-dependent aspects of the thermodynamic analysis.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 1</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="examples">
+<span id="sec-thermoexamples"></span><h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="output">
+<span id="index-1"></span><h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>Text, text everywhere, and not a character on point.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>--------------------------------------------------------------------------------------------- ~
+ Step     Total Energy     Delta E     MAX Force     RMS Force      MAX Disp      RMS Disp    ~
+--------------------------------------------------------------------------------------------- ~
+  Convergence Criteria    1.00e-06 *    3.00e-04 *             o    1.20e-03 *             o  ~
+--------------------------------------------------------------------------------------------- ~
+    1     -38.91591820   -3.89e+01      6.91e-02      5.72e-02 o    1.42e-01      1.19e-01 o  ~
+    2     -38.92529543   -9.38e-03      6.21e-03      3.91e-03 o    2.00e-02      1.18e-02 o  ~
+    3     -38.92540669   -1.11e-04      4.04e-03      2.46e-03 o    3.63e-02      2.12e-02 o  ~
+    4     -38.92548668   -8.00e-05      2.30e-04 *    1.92e-04 o    1.99e-03      1.17e-03 o  ~
+    5     -38.92548698   -2.98e-07 *    3.95e-05 *    3.35e-05 o    1.37e-04 *    1.05e-04 o  ~
+</pre></div>
+</div>
+<p>The full list of keywords for thermo is provided in Appendix <a class="reference internal" href="autodir_options_c/module__thermo.html#apdx-thermo"><span>THERMO</span></a>.</p>
+<p>Information on the Psithon function that drives frequency analyses is provided
+at <a class="reference internal" href="freq.html#driver.frequency" title="driver.frequency"><code class="xref py py-func docutils literal"><span class="pre">frequency()</span></code></a>.</p>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Vibrational and Thermochemical Analysis</a><ul>
+<li><a class="reference internal" href="#keywords">Keywords</a><ul>
+<li><a class="reference internal" href="#t"><code class="docutils literal"><span class="pre">T</span></code></a></li>
+<li><a class="reference internal" href="#p"><code class="docutils literal"><span class="pre">P</span></code></a></li>
+<li><a class="reference internal" href="#rotational-symmetry-number"><code class="docutils literal"><span class="pre">ROTATIONAL_SYMMETRY_NUMBER</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="oeprop.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">oeprop()</span></code> Evaluation of One-Electron Properties</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="interfacing.html"
+                        title="next chapter">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/thermo.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="interfacing.html" title="Interfaces: Enhancing Psi4 Capabilities"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="oeprop.html" title="oeprop() Evaluation of One-Electron Properties"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

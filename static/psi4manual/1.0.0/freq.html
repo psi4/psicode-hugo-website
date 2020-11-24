@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Harmonic Vibrational Analysis, frequency() and hessian() &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Psithon Functions: Invoking a Calculation" href="psithonfunc.html" />
+    <link rel="next" title="Database, database()" href="db.html" />
+    <link rel="prev" title="Geometry Optimization, optimize() and gradient()" href="opt.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="db.html" title="Database, database()"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="opt.html" title="Geometry Optimization, optimize() and gradient()"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="harmonic-vibrational-analysis-frequency-and-hessian">
+<span id="sec-freq"></span><span id="index-0"></span><h1>Harmonic Vibrational Analysis, <a class="reference internal" href="#driver.frequency" title="driver.frequency"><code class="xref py py-func docutils literal"><span class="pre">frequency()</span></code></a> and <a class="reference internal" href="#driver.hessian" title="driver.hessian"><code class="xref py py-func docutils literal"><span class="pre">hessian()</span></code></a><a class="headerlink" href="#harmonic-vibrational-analysis-frequency-and-hessian" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="#table-freq-gen"><span>Psi4 Native Hessian Methods</span></a></li>
+</ul>
+<p>For further discussion of vibrational and thermochemical analysis,
+see Sec. <a class="reference internal" href="thermo.html#sec-thermo"><span>Vibrational and Thermochemical Analysis</span></a>.</p>
+<p><a class="reference internal" href="#driver.frequency" title="driver.frequency"><code class="xref py py-func docutils literal"><span class="pre">frequency()</span></code></a> is the only command most users will ever
+need to access directly to perform frequency calculations. Behind
+the scenes, <a class="reference internal" href="#driver.frequency" title="driver.frequency"><code class="xref py py-func docutils literal"><span class="pre">frequency()</span></code></a> is a light wrapper over
+<a class="reference internal" href="#driver.hessian" title="driver.hessian"><code class="xref py py-func docutils literal"><span class="pre">hessian()</span></code></a> that computes the Hessian then adds a
+thermochemical analysis.</p>
+<dl class="function">
+<dt id="driver.frequency">
+<code class="descname">frequency</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>molecule</em>, <em>return_wfn</em>, <em>func</em>, <em>mode</em>, <em>dertype</em>, <em>irrep</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/driver.html#frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#driver.frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to compute harmonic vibrational frequencies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Aliases:</th><td class="field-body"><p class="first">frequencies(), freq()</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>float</em> – Total electronic energy in Hartrees.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(<em>float</em>, <a class="reference internal" href="autodoc_psimod.html#sec-psimod-wavefunction"><span>Wavefunction</span></a>) – energy and wavefunction when <strong>return_wfn</strong> specified.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; <p><code class="docutils literal"><span class="pre">'scf'</span></code> || <code class="docutils literal"><span class="pre">'mp2'</span></code> || <code class="docutils literal"><span class="pre">'ci5'</span></code> || etc.</p>
+<p>First argument, usually unlabeled. Indicates the computational method
+to be applied to the system.</p>
+</li>
+<li><strong>molecule</strong> (<a class="reference internal" href="notes_py.html#op-py-molecule"><span>molecule</span></a>) &#8211; <p><code class="docutils literal"><span class="pre">h2o</span></code> || etc.</p>
+<p>The target molecule, if not the last molecule defined.</p>
+</li>
+<li><strong>return_wfn</strong> (<a class="reference internal" href="notes_py.html#op-py-boolean"><span>boolean</span></a>) &#8211; <p><code class="docutils literal"><span class="pre">'on'</span></code> || <img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">'off'</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/></p>
+<p>Indicate to additionally return the <a class="reference internal" href="autodoc_psimod.html#sec-psimod-wavefunction"><span>Wavefunction</span></a>
+calculation result as the second element (after <em>float</em> energy) of a tuple.
+Arrays of frequencies and the Hessian can be accessed through the wavefunction.</p>
+</li>
+<li><strong>func</strong> (<a class="reference internal" href="notes_py.html#op-py-function"><span>function</span></a>) &#8211; <p><img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">gradient</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <code class="docutils literal"><span class="pre">energy</span></code> || <code class="docutils literal"><span class="pre">cbs</span></code></p>
+<p>Indicates the type of calculation to be performed on the molecule.
+The default dertype accesses <code class="docutils literal"><span class="pre">'gradient'</span></code> or <code class="docutils literal"><span class="pre">'energy'</span></code>, while
+<code class="docutils literal"><span class="pre">'cbs'</span></code> performs a multistage finite difference calculation.
+If a nested series of python functions is intended (see <a class="reference internal" href="intercalls.html#sec-intercalls"><span>Function Intercalls</span></a>),
+use keyword <code class="docutils literal"><span class="pre">freq_func</span></code> instead of <code class="docutils literal"><span class="pre">func</span></code>.</p>
+</li>
+<li><strong>mode</strong> (<em>string</em>) &#8211; <p><img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">'continuous'</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <code class="docutils literal"><span class="pre">'sow'</span></code> || <code class="docutils literal"><span class="pre">'reap'</span></code></p>
+<p>For a finite difference of energies or gradients frequency, indicates
+whether the calculations required to complete the frequency are to be run
+in one file (<code class="docutils literal"><span class="pre">'continuous'</span></code>) or are to be farmed out in an
+embarrassingly parallel fashion (<code class="docutils literal"><span class="pre">'sow'</span></code>/<code class="docutils literal"><span class="pre">'reap'</span></code>)/ For the latter,
+run an initial job with <code class="docutils literal"><span class="pre">'sow'</span></code> and follow instructions in its output file.
+For maximum flexibility, <code class="docutils literal"><span class="pre">return_wfn</span></code> is always on in <code class="docutils literal"><span class="pre">'reap'</span></code> mode.</p>
+</li>
+<li><strong>dertype</strong> (<a class="reference internal" href="notes_py.html#op-py-dertype"><span>dertype</span></a>) &#8211; <p><img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">'hessian'</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <code class="docutils literal"><span class="pre">'gradient'</span></code> || <code class="docutils literal"><span class="pre">'energy'</span></code></p>
+<p>Indicates whether analytic (if available- they&#8217;re not), finite
+difference of gradients (if available) or finite difference of
+energies is to be performed.</p>
+</li>
+<li><strong>irrep</strong> (<em>int or string</em>) &#8211; <p><img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">-1</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/> || <code class="docutils literal"><span class="pre">1</span></code> || <code class="docutils literal"><span class="pre">'b2'</span></code> || <code class="docutils literal"><span class="pre">'App'</span></code> || etc.</p>
+<p>Indicates which symmetry block (<a class="reference internal" href="psithonmol.html#table-irrepordering"><span>Cotton</span></a> ordering) of vibrational
+frequencies to be computed. <code class="docutils literal"><span class="pre">1</span></code>, <code class="docutils literal"><span class="pre">'1'</span></code>, or <code class="docutils literal"><span class="pre">'a1'</span></code> represents
+<img class="math" src="_images/math/0cea09413197c28625ecd0261f720c9e7f04bec1.png" alt="a_1" style="vertical-align: -4px"/>, requesting only the totally symmetric modes.
+<code class="docutils literal"><span class="pre">-1</span></code> indicates a full frequency calculation.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Analytic hessians are not available. Frequencies will proceed through
+finite differences according to availability of gradients or energies.</p>
+</div>
+<table class="docutils field-list" frame="void" id="table-freq-gen" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Frequency calculation for all modes through highest available derivatives</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frequency</span><span class="p">(</span><span class="s1">&#39;ccsd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [2] Frequency calculation for b2 modes through finite difference of gradients</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     printing lowest mode frequency to screen and Hessian to output</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">frequencies</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">irrep</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">wfn</span><span class="o">.</span><span class="n">frequencies</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wfn</span><span class="o">.</span><span class="n">hessian</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [3] Frequency calculation at default conditions and Hessian reuse at STP</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">freq</span><span class="p">(</span><span class="s1">&#39;mp2&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">t</span> <span class="mf">273.15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">p</span> <span class="mi">100000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">thermo</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="n">wfn</span><span class="o">.</span><span class="n">frequencies</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="driver.hessian">
+<code class="descname">hessian</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>molecule</em>, <em>return_wfn</em>, <em>func</em>, <em>dertype</em>, <em>irrep</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/driver.html#hessian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#driver.hessian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function complementary to <code class="xref py py-func docutils literal"><span class="pre">frequency()</span></code>. Computes force
+constants, deciding analytic, finite difference of gradients, or
+finite difference of energies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="autodoc_psimod.html#sec-psimod-matrix"><span>Matrix</span></a> – Total non-mass-weighted electronic Hessian in Hartrees/Bohr/Bohr.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<a class="reference internal" href="autodoc_psimod.html#sec-psimod-matrix"><span>Matrix</span></a>, <a class="reference internal" href="autodoc_psimod.html#sec-psimod-wavefunction"><span>Wavefunction</span></a>) – Hessian and wavefunction when <strong>return_wfn</strong> specified.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Frequency calculation without thermochemical analysis</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hessian</span><span class="p">(</span><span class="s1">&#39;mp3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [2] Frequency calc w/o thermo analysis getting the Hessian</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     in file, psi4.Matrix, and np.array forms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">hessian_write</span> <span class="n">on</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">hessian</span><span class="p">(</span><span class="s1">&#39;ccsd&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wfn</span><span class="o">.</span><span class="n">hessian</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="opt.html"
+                        title="previous chapter">Geometry Optimization, <code class="docutils literal"><span class="pre">optimize()</span></code> and <code class="docutils literal"><span class="pre">gradient()</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="db.html"
+                        title="next chapter">Database, <code class="docutils literal"><span class="pre">database()</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/freq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="db.html" title="Database, database()"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="opt.html" title="Geometry Optimization, optimize() and gradient()"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PSIMRCC Implementation of Mk-MRCC Theory &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="CI: Configuration Interaction" href="detci.html" />
+    <link rel="prev" title="OCC: Orbital-Optimized Coupled-Cluster and Møller–Plesset Perturbation Theories" href="occ.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="detci.html" title="CI: Configuration Interaction"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="occ.html" title="OCC: Orbital-Optimized Coupled-Cluster and Møller–Plesset Perturbation Theories"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="psimrcc-implementation-of-mk-mrcc-theory">
+<span id="sec-psimrcc"></span><span id="index-0"></span><h1>PSIMRCC Implementation of Mk-MRCC Theory<a class="headerlink" href="#psimrcc-implementation-of-mk-mrcc-theory" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Francesco A. Evangelista and Andrew C. Simmonett</em></p>
+<p><em>Section author: Alexander E. Vaughn</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__psimrcc.html#apdx-psimrcc"><span>Keywords</span></a>, <a class="reference internal" href="autodir_psivariables/module__psimrcc.html#apdx-psimrcc-psivar"><span>PSI Variables</span></a>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/bin/psimrcc">PSIMRCC</a></p>
+<p>State-specific Multireference coupled cluster theories provide highly
+accurate energies and properties of electronic states that require
+a multiconfigurational zeroth-order wavefunction.  The PSIMRCC
+module contained in <span class="sc">Psi4</span> implements the state-specific
+multireference coupled-cluster approach of Mukherjee and co-workers
+(Mk-MRCC). This method is implemented and shown to be a powerful tool in
+<a class="reference internal" href="bibliography.html#evangelista-2006-154113" id="id1">[Evangelista:2006:154113]</a> and <a class="reference internal" href="bibliography.html#evangelista-2008-124104" id="id2">[Evangelista:2008:124104]</a>. Mk-MRCC is
+based on the Jeziorski-Monkhorst ansatz <a class="reference internal" href="bibliography.html#jeziorski-1981-1668" id="id3">[Jeziorski:1981:1668]</a> for the
+wavefunction, <img class="math" src="_images/math/fcb42b580fc37b67d357c1314f2be5e2057d0917.png" alt="\Psi" style="vertical-align: -1px"/></p>
+<div class="math">
+<p><img src="_images/math/a82c54ce94410385c4be321103914de7ac9cdc8e.png" alt="\left| \Psi \right \rangle = \sum_\mu^d e^{\hat{T}^\mu} \left| \Phi_\mu \right\rangle c_\mu \, \text{,}"/></p>
+</div><p>where <img class="math" src="_images/math/43683e2e610738c15b14d6f0c665681767395149.png" alt="\Phi_\mu" style="vertical-align: -6px"/> are the reference determinants,
+<img class="math" src="_images/math/dfd83367e1aca7f386eb1f7abbea59136e72658f.png" alt="\hat{T}^\mu" style="vertical-align: 0px"/> are reference-specific excitation operators, and
+<img class="math" src="_images/math/360349f624c2dbf07b7acd0c00ced7ccc5f80f0c.png" alt="c_\mu" style="vertical-align: -6px"/> are expansion coefficients obtained through diagonalization
+of the Mk-MRCC effective Hamiltonian matrix that allows the various
+reference determinants to interact. As an example of how this works
+the Mk-MRCCSD excitation operators for each reference is contracted
+two-body terms</p>
+<div class="math">
+<p><img src="_images/math/4f01c8ed99ec695c92c838417ebf4ea099051e5e.png" alt="\hat{T}^\mu = \hat{T}^\mu_1 + \hat{T}^\mu_2"/></p>
+</div><p>where</p>
+<div class="math">
+<p><img src="_images/math/2e61a3f74b59661783dafcee2394a4f671346b80.png" alt="\hat{T}^\mu_1 = \sum_i^{\textrm{occ}(\mu)} \sum_a^{\textrm{vir}(\mu)} t_i^a (\mu) \hat{a}^\dagger_a \hat{a}_i"/></p>
+</div><p>and</p>
+<div class="math">
+<p><img src="_images/math/073afd07c7a47ce514626de75aff29f3fec8e032.png" alt="\hat{T}^\mu_2 =\frac{1}{4} \sum_i^{\textrm{occ}(\mu)} \sum_a^{\textrm{vir}(\mu)} t_{ij}^{ab} (\mu) \hat{a}^\dagger_b \hat{a}_j \hat{a}^\dagger_a \hat{a}_i"/></p>
+</div><p>The Mk-MRCC energy is a chosen eigenvalue of the effective Hamiltonian,
+<img class="math" src="_images/math/5713e86d2699be483c164ef9d1cbab2202e4a8c1.png" alt="\textrm{H}^{eff}_{\mu \nu}" style="vertical-align: -8px"/></p>
+<div class="math">
+<p><img src="_images/math/fd3da65b60718149b984c1e8886395fdc32be691.png" alt="\sum_\nu \textrm{H}^{eff}_{\mu \nu} c_\nu =E c_\nu"/></p>
+</div><p>where</p>
+<div class="math">
+<p><img src="_images/math/03b824bec1b710e919caed2dc6bbb648ab66b699.png" alt="\textrm{H}^{eff}_{\mu \nu} = \left \langle \Phi_\mu \right | \hat{H}e^{\hat{T}^\nu} \left | \Phi_\nu \right \rangle \, \textrm{.}"/></p>
+</div><p><span class="sc">Psi4</span> currently implements Mk-MRCC with singles and doubles
+[Mk-MRCCSD] and Mk-MRCCSD with perturbative triples [Mk-MRCCSD(T)]
+as formulated in <a class="reference internal" href="bibliography.html#evangelista-2010-074107" id="id4">[Evangelista:2010:074107]</a>. A companion perturbation
+method (Mk-MRPT2) has been developed based on the Mukherjee formalisim
+as shown in <a class="reference internal" href="bibliography.html#evangelista-2009-4728" id="id5">[Evangelista:2009:4728]</a>.</p>
+<p>The current version of the code is limited to reference active spaces
+in which all determinants are connected to each other by no more than two
+excitations.  In practice, this usually means that the active space can have
+at most two particles, or at most two holes.  Examples would include
+CAS(2,2), CAS(2,8), CAS(4,3), etc., where CAS(n,m) refers to a
+complete-active-space configuration interaction (CAS-CI) reference with n
+electrons in m orbitals.  If the user specifies active spaces that do not fit
+these limitations, then the code will still run, but some relevant
+determinants will be missing, and the answer obtained will be an approximation
+to the true Mk-MRCC procedure.</p>
+<p>The PSIMRCC code itself does not perform orbital optimization.  Hence, the
+references used might be considered CAS-CI references, but not CASSCF
+references (CASSCF implies that the orbitals have been optimized specifically
+to minimize the energy of the CAS-CI reference).  However, if one wishes to
+use two-configuration self-consistent-field (TCSCF) orbitals, those can
+be obtained using the multi-configuration self-consistent-field (MCSCF)
+component of PSIMRCC (specifying <a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-mcscf"><span class="xref std std-term">REFERENCE</span></a> to be <code class="docutils literal"><span class="pre">twocon</span></code>).
+This is suitable for describing diradicals.  Otherwise, one may use RHF or
+ROHF orbitals as input to PSIMRCC.  Due to a current limitation in the code,
+one must obtain orbitals using PSIMRCC&#8217;s MCSCF module regardless of what
+orbital type is chosen, <code class="docutils literal"><span class="pre">twocon</span></code>, <code class="docutils literal"><span class="pre">rhf</span></code>, or <code class="docutils literal"><span class="pre">rohf</span></code>.  An example of the
+MCSCF input is given below.</p>
+<p>PSIMRCC is most commonly used for low-spin cases (singlets or open-shell
+singlets).  It is capable of performing computations on higher spin states
+(e.g., triplets), but in general, not all the required matrix elements have
+been coded for high-spin cases, meaning that results will correspond to an
+approximate Mk-MRCC computation for high-spin cases.</p>
+<div class="section" id="a-simple-example">
+<h2>A Simple Example<a class="headerlink" href="#a-simple-example" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="autodoc_glossary_options_c.html#term-corr-wfn-psimrcc"><span class="xref std std-term">CORR_WFN</span></a> allows you to select one of three methods
+Mk-MRPT2 [<code class="docutils literal"><span class="pre">PT2</span></code>], Mk-MRCCSD [<code class="docutils literal"><span class="pre">CCSD</span></code>], or Mk-MRCCSD(T) [<code class="docutils literal"><span class="pre">CCSD_T</span></code>].
+The <a class="reference internal" href="autodoc_glossary_options_c.html#term-corr-multp-psimrcc"><span class="xref std std-term">CORR_MULTP</span></a> option allows you to select the Slater
+determinants with a particular <img class="math" src="_images/math/19bd28226d5c470d30f7497311211ab6221ac711.png" alt="M_s" style="vertical-align: -3px"/> value. The <a class="reference internal" href="autodoc_glossary_options_c.html#term-wfn-sym-psimrcc"><span class="xref std std-term">WFN_SYM</span></a>
+keyword is neccesary if you do not want to compute the energy of the
+totally-symmetric state. The <a class="reference internal" href="autodoc_glossary_options_c.html#term-follow-root-psimrcc"><span class="xref std std-term">FOLLOW_ROOT</span></a> option may be used
+to follow different roots of the effective Hamiltonian. A value of 1
+instructs PSIMRCC to follow the solution with the lowest energy given
+a certain set of determinants.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule o2 {
+   0 3
+   O
+   O 1 2.265122720724
+   units au
+}
+set {
+   basis cc-pvtz
+}
+set mcscf {
+   reference       rohf
+   docc            [3,0,0,0,0,2,1,1]      # Doubly occupied MOs
+   socc            [0,0,1,1,0,0,0,0]      # Singly occupied MOs
+}
+set psimrcc {
+   corr_wfn        ccsd                   # Do Mk-MRCCSD
+   frozen_docc     [1,0,0,0,0,1,0,0]      # Frozen MOs
+   restricted_docc [2,0,0,0,0,1,1,1]      # Doubly occupied MOs
+   active          [0,0,1,1,0,0,0,0]      # Active MOs
+   frozen_uocc     [0,0,0,0,0,0,0,0]      # Frozen virtual MOs
+   corr_multp      1                      # Select the Ms = 0 component
+   follow_root     1
+   wfn_sym         B1g                    # Select the B1g state
+}
+energy(&#39;psimrcc&#39;)
+</pre></div>
+</div>
+<p>Note that the oxygen molecule has 16 electrons (including core), while
+the <code class="docutils literal"><span class="pre">docc</span></code> array contains only 7 doubly-occupied orbitals (or 14
+electrons).  Hence, two more electrons are available to place into
+the active space (given by <code class="docutils literal"><span class="pre">active</span></code>), which consists of 2 orbitals.
+Thus there are two active electrons in two orbitals.  In this particular
+example, we are using standard ROHF orbitals for the Mk-MRCCSD procedure,
+rather than TCSCF orbitals.  Nevertheless, with the present code,
+these orbitals must be provided through the MCSCF module, as specified in the
+<code class="docutils literal"><span class="pre">set</span> <span class="pre">mcscf</span></code> section above.</p>
+</div>
+<div class="section" id="orbital-ordering-and-selection-of-the-model-space">
+<h2>Orbital ordering and selection of the model space<a class="headerlink" href="#orbital-ordering-and-selection-of-the-model-space" title="Permalink to this headline">¶</a></h2>
+<p>The reference determinants <img class="math" src="_images/math/43683e2e610738c15b14d6f0c665681767395149.png" alt="\Phi_\mu" style="vertical-align: -6px"/> are specified in PSIMRCC
+via occupational numbers. PSIMRCC requires that four arrays be specified
+for this purpose.</p>
+<ul class="simple">
+<li>Frozen doubly occupied orbitals (<a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-docc-globals"><span class="xref std std-term">FROZEN_DOCC</span></a>) are doubly
+occupied in each reference determinant and are not correlated in the
+MRCC procedure.</li>
+<li>Doubly occupied orbitals (<a class="reference internal" href="autodoc_glossary_options_c.html#term-restricted-docc-globals"><span class="xref std std-term">RESTRICTED_DOCC</span></a>) are doubly
+occupied in each reference determinant and are correlated in the MRCC
+procedure.</li>
+<li>Active orbitals (<a class="reference internal" href="autodoc_glossary_options_c.html#term-active-globals"><span class="xref std std-term">ACTIVE</span></a>) are partially occupied in each
+reference determinant.</li>
+<li>Frozen virtual orbitals (<a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-uocc-globals"><span class="xref std std-term">FROZEN_UOCC</span></a>) are unoccupied in
+all reference determinants and are excluded from the correlated wave
+function.</li>
+</ul>
+<p>The model space is selected by considering all possible occupations
+of the electrons among the orbitals in the active space that result
+in determinants with the correct symmetry (<a class="reference internal" href="autodoc_glossary_options_c.html#term-wfn-sym-psimrcc"><span class="xref std std-term">WFN_SYM</span></a>)
+and the correct <img class="math" src="_images/math/8569bb797b14308b6402e0b19a2b4b6dcc9a6dd1.png" alt="\textrm{M}_s" style="vertical-align: -3px"/> value specified by the keyword
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-corr-multp-psimrcc"><span class="xref std std-term">CORR_MULTP</span></a>. Note that this does not consider the multiplicity
+of the wavefunction. Thus, in order to obtain the wavefunction
+with a set of <img class="math" src="_images/math/7d6c6236038bcb70ae2b99a0b36375ae77bc23db.png" alt="\textrm{M}_s = 0" style="vertical-align: -3px"/> reference determinants for
+an open-shell system you should request a <a class="reference internal" href="autodoc_glossary_options_c.html#term-corr-multp-psimrcc"><span class="xref std std-term">CORR_MULTP</span></a> of
+1 within the PSIMRCC module, and select the root of the effective
+Hamiltonian that corresponds to the state of interest. In addition,
+the <a class="reference internal" href="autodoc_glossary_options_c.html#term-wfn-sym-psimrcc"><span class="xref std std-term">WFN_SYM</span></a> keyword needs to be specified otherwise the
+wavefunction belonging to the all-symmetric irrep will be selected. In
+addition, it should be noted that for an open-shell singlet based
+on two <img class="math" src="_images/math/7d6c6236038bcb70ae2b99a0b36375ae77bc23db.png" alt="\textrm{M}_s = 0" style="vertical-align: -3px"/> determinants the eigenvector is
+[<img class="math" src="_images/math/8a26f31852cf4ec5ba2aebbb139e62d716c3b109.png" alt="\frac{1}{\sqrt{2}}\text{,}\frac{1}{\sqrt{2}}" style="vertical-align: -10px"/>], which corresponds
+to a wavefunction of the following form:</p>
+<div class="math">
+<p><img src="_images/math/1fc3d725aeacb1f72eb0341f50017bdc9aee0a9b.png" alt="\frac{1}{\sqrt{2}} \left( \chi_1 \alpha (1) \chi_2 \beta (2) + \chi_2 \alpha(1) \chi_1 \beta (2) \right)"/></p>
+</div><p>See Appendix <a class="reference internal" href="autodir_options_c/module__psimrcc.html#apdx-psimrcc"><span>PSIMRCC</span></a> for a complete list of PSIMRCC options.</p>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PSIMRCC Implementation of Mk-MRCC Theory</a><ul>
+<li><a class="reference internal" href="#a-simple-example">A Simple Example</a></li>
+<li><a class="reference internal" href="#orbital-ordering-and-selection-of-the-model-space">Orbital ordering and selection of the model space</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="occ.html"
+                        title="previous chapter">OCC: Orbital-Optimized Coupled-Cluster and Møller&#8211;Plesset Perturbation Theories</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="detci.html"
+                        title="next chapter">CI: Configuration Interaction</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/psimrcc.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="detci.html" title="CI: Configuration Interaction"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="occ.html" title="OCC: Orbital-Optimized Coupled-Cluster and Møller–Plesset Perturbation Theories"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

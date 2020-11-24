@@ -1,0 +1,323 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gaussian_n &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for gaussian_n</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2016 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="c1"># Gn theory.</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">driver</span>
+<span class="kn">import</span> <span class="nn">psi4</span>
+<span class="kn">import</span> <span class="nn">p4util</span>
+<span class="kn">import</span> <span class="nn">p4const</span>
+<span class="c1">#from driver import *</span>
+<span class="c1"># never import aliases into this file</span>
+
+<div class="viewcode-block" id="run_gaussian_2"><a class="viewcode-back" href="../autodoc_driver.html#gaussian_n.run_gaussian_2">[docs]</a><span class="k">def</span> <span class="nf">run_gaussian_2</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+    <span class="c1"># throw an exception for open-shells</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;RHF&#39;</span> <span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;g2 computations require &quot;reference rhf&quot;.&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># stash user options:</span>
+    <span class="n">optstash</span> <span class="o">=</span> <span class="n">p4util</span><span class="o">.</span><span class="n">OptionsState</span><span class="p">(</span>
+        <span class="p">[</span><span class="s1">&#39;FNOCC&#39;</span><span class="p">,</span><span class="s1">&#39;COMPUTE_TRIPLES&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;FNOCC&#39;</span><span class="p">,</span><span class="s1">&#39;COMPUTE_MP4_TRIPLES&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;MP2_TYPE&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">])</span>
+
+    <span class="c1"># override default scf_type</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span><span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">,</span><span class="s1">&#39;OUT_OF_CORE&#39;</span><span class="p">)</span>
+
+    <span class="c1"># optimize geometry at scf level</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">,</span><span class="s2">&quot;6-31G(D)&quot;</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="c1"># scf frequencies for zpe</span>
+    <span class="n">scf_e</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">frequency</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="c1"># thermodynamic properties</span>
+    <span class="n">du</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;INTERNAL ENERGY CORRECTION&#39;</span><span class="p">)</span>
+    <span class="n">dh</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;ENTHALPY CORRECTION&#39;</span><span class="p">)</span>
+    <span class="n">dg</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;GIBBS FREE ENERGY CORRECTION&#39;</span><span class="p">)</span>
+
+    <span class="n">freqs</span>   <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">frequencies</span><span class="p">()</span>
+    <span class="n">nfreq</span>   <span class="o">=</span> <span class="n">freqs</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">freqsum</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">):</span>
+        <span class="n">freqsum</span> <span class="o">+=</span> <span class="n">freqs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">zpe</span> <span class="o">=</span> <span class="n">freqsum</span> <span class="o">/</span> <span class="n">p4const</span><span class="o">.</span><span class="n">psi_hartree2wavenumbers</span> <span class="o">*</span> <span class="mf">0.8929</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="c1"># optimize geometry at mp2 (no frozen core) level</span>
+    <span class="c1"># note: freeze_core isn&#39;t an option in MP2</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">,</span><span class="s2">&quot;FALSE&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;MP2_TYPE&#39;</span><span class="p">,</span> <span class="s1">&#39;CONV&#39;</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;mp2&#39;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="c1"># qcisd(t)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;FNOCC&#39;</span><span class="p">,</span><span class="s1">&#39;COMPUTE_MP4_TRIPLES&#39;</span><span class="p">,</span><span class="s2">&quot;TRUE&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">,</span><span class="s2">&quot;TRUE&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">,</span><span class="s2">&quot;6-311G(D_P)&quot;</span><span class="p">)</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">run_fnocc</span><span class="p">(</span><span class="s1">&#39;qcisd(t)&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># HLC: high-level correction based on number of valence electrons</span>
+    <span class="n">nirrep</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span>
+    <span class="n">frzcpi</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">frzcpi</span><span class="p">()</span>
+    <span class="n">nfzc</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nirrep</span><span class="p">):</span>
+        <span class="n">nfzc</span> <span class="o">+=</span> <span class="n">frzcpi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">nalpha</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">nalpha</span><span class="p">()</span> <span class="o">-</span> <span class="n">nfzc</span>
+    <span class="n">nbeta</span>  <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">nbeta</span><span class="p">()</span> <span class="o">-</span> <span class="n">nfzc</span>
+    <span class="c1"># hlc of gaussian-2</span>
+    <span class="n">hlc</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.00481</span> <span class="o">*</span> <span class="n">nalpha</span> <span class="o">-</span><span class="mf">0.00019</span> <span class="o">*</span> <span class="n">nbeta</span>
+    <span class="c1"># hlc of gaussian-1</span>
+    <span class="n">hlc1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.00614</span> <span class="o">*</span> <span class="n">nalpha</span>
+
+    <span class="n">eqci_6311gdp</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;QCISD(T) TOTAL ENERGY&quot;</span><span class="p">)</span>
+    <span class="n">emp4_6311gd</span>  <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;MP4 TOTAL ENERGY&quot;</span><span class="p">)</span>
+    <span class="n">emp2_6311gd</span>  <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;MP2 TOTAL ENERGY&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="c1"># correction for diffuse functions</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">,</span><span class="s2">&quot;6-311+G(D_P)&quot;</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;mp4&#39;</span><span class="p">)</span>
+    <span class="n">emp4_6311pg_dp</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;MP4 TOTAL ENERGY&quot;</span><span class="p">)</span>
+    <span class="n">emp2_6311pg_dp</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;MP2 TOTAL ENERGY&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="c1"># correction for polarization functions</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">,</span><span class="s2">&quot;6-311G(2DF_P)&quot;</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;mp4&#39;</span><span class="p">)</span>
+    <span class="n">emp4_6311g2dfp</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;MP4 TOTAL ENERGY&quot;</span><span class="p">)</span>
+    <span class="n">emp2_6311g2dfp</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;MP2 TOTAL ENERGY&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="c1"># big basis mp2</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">,</span><span class="s2">&quot;6-311+G(3DF_2P)&quot;</span><span class="p">)</span>
+    <span class="c1">#run_fnocc(&#39;_mp2&#39;,**kwargs)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;mp2&#39;</span><span class="p">)</span>
+    <span class="n">emp2_big</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s2">&quot;MP2 TOTAL ENERGY&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="n">eqci</span>       <span class="o">=</span> <span class="n">eqci_6311gdp</span>
+    <span class="n">e_delta_g2</span> <span class="o">=</span> <span class="n">emp2_big</span> <span class="o">+</span> <span class="n">emp2_6311gd</span> <span class="o">-</span> <span class="n">emp2_6311g2dfp</span> <span class="o">-</span> <span class="n">emp2_6311pg_dp</span>
+    <span class="n">e_plus</span>     <span class="o">=</span> <span class="n">emp4_6311pg_dp</span> <span class="o">-</span> <span class="n">emp4_6311gd</span>
+    <span class="n">e_2df</span>      <span class="o">=</span> <span class="n">emp4_6311g2dfp</span> <span class="o">-</span> <span class="n">emp4_6311gd</span>
+
+    <span class="n">eg2</span> <span class="o">=</span> <span class="n">eqci</span> <span class="o">+</span> <span class="n">e_delta_g2</span> <span class="o">+</span> <span class="n">e_plus</span> <span class="o">+</span> <span class="n">e_2df</span>
+    <span class="n">eg2_mp2_0k</span> <span class="o">=</span> <span class="n">eqci</span> <span class="o">+</span> <span class="p">(</span><span class="n">emp2_big</span> <span class="o">-</span> <span class="n">emp2_6311gd</span><span class="p">)</span> <span class="o">+</span> <span class="n">hlc</span> <span class="o">+</span> <span class="n">zpe</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;  ==&gt;  G1/G2 Energy Components  &lt;==</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        QCISD(T):            </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">eqci</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        E(Delta):            </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">e_delta_g2</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        E(2DF):              </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">e_2df</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        E(+):                </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">e_plus</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        E(G1 HLC):           </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">hlc1</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        E(G2 HLC):           </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">hlc</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        E(ZPE):              </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">zpe</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;  ==&gt;  0 Kelvin Results  &lt;==</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">eg2_0k</span> <span class="o">=</span> <span class="n">eg2</span> <span class="o">+</span> <span class="n">zpe</span> <span class="o">+</span> <span class="n">hlc</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G1:                  </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">eqci</span> <span class="o">+</span> <span class="n">e_plus</span> <span class="o">+</span> <span class="n">e_2df</span> <span class="o">+</span> <span class="n">hlc1</span> <span class="o">+</span> <span class="n">zpe</span><span class="p">))</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G2(MP2):             </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">eg2_mp2_0k</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G2:                  </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">eg2_0k</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G1 TOTAL ENERGY&quot;</span><span class="p">,</span><span class="n">eqci</span> <span class="o">+</span> <span class="n">e_plus</span> <span class="o">+</span> <span class="n">e_2df</span> <span class="o">+</span> <span class="n">hlc1</span> <span class="o">+</span> <span class="n">zpe</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G2 TOTAL ENERGY&quot;</span><span class="p">,</span><span class="n">eg2_0k</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G2(MP2) TOTAL ENERGY&quot;</span><span class="p">,</span><span class="n">eg2_mp2_0k</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;  ==&gt;  </span><span class="si">%3.0lf</span><span class="s1"> Kelvin Results  &lt;==</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">%</span> <span class="n">T</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">internal_energy</span> <span class="o">=</span> <span class="n">eg2_mp2_0k</span> <span class="o">+</span> <span class="n">du</span> <span class="o">-</span> <span class="n">zpe</span> <span class="o">/</span> <span class="mf">0.8929</span>
+    <span class="n">enthalpy</span>        <span class="o">=</span> <span class="n">eg2_mp2_0k</span> <span class="o">+</span> <span class="n">dh</span> <span class="o">-</span> <span class="n">zpe</span> <span class="o">/</span> <span class="mf">0.8929</span>
+    <span class="n">gibbs</span>           <span class="o">=</span> <span class="n">eg2_mp2_0k</span> <span class="o">+</span> <span class="n">dg</span> <span class="o">-</span> <span class="n">zpe</span> <span class="o">/</span> <span class="mf">0.8929</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G2(MP2) energy:      </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">internal_energy</span> <span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G2(MP2) enthalpy:    </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">enthalpy</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G2(MP2) free energy: </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">gibbs</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G2(MP2) INTERNAL ENERGY&quot;</span><span class="p">,</span><span class="n">internal_energy</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G2(MP2) ENTHALPY&quot;</span><span class="p">,</span><span class="n">enthalpy</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G2(MP2) FREE ENERGY&quot;</span><span class="p">,</span><span class="n">gibbs</span><span class="p">)</span>
+
+    <span class="n">internal_energy</span> <span class="o">=</span> <span class="n">eg2_0k</span> <span class="o">+</span> <span class="n">du</span> <span class="o">-</span> <span class="n">zpe</span> <span class="o">/</span> <span class="mf">0.8929</span>
+    <span class="n">enthalpy</span>        <span class="o">=</span> <span class="n">eg2_0k</span> <span class="o">+</span> <span class="n">dh</span> <span class="o">-</span> <span class="n">zpe</span> <span class="o">/</span> <span class="mf">0.8929</span>
+    <span class="n">gibbs</span>           <span class="o">=</span> <span class="n">eg2_0k</span> <span class="o">+</span> <span class="n">dg</span> <span class="o">-</span> <span class="n">zpe</span> <span class="o">/</span> <span class="mf">0.8929</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G2 energy:           </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">internal_energy</span> <span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G2 enthalpy:         </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">enthalpy</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;        G2 free energy:      </span><span class="si">%20.12lf</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">gibbs</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;CURRENT ENERGY&quot;</span><span class="p">,</span><span class="n">eg2_0k</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G2 INTERNAL ENERGY&quot;</span><span class="p">,</span><span class="n">internal_energy</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G2 ENTHALPY&quot;</span><span class="p">,</span><span class="n">enthalpy</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;G2 FREE ENERGY&quot;</span><span class="p">,</span><span class="n">gibbs</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="n">optstash</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
+
+    <span class="c1"># return 0K g2 results</span>
+    <span class="k">return</span> <span class="n">eg2_0k</span></div>
+
+<span class="c1"># aliases for g2</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">procedures</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">][</span><span class="s1">&#39;gaussian-2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">run_gaussian_2</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">procedures</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">][</span><span class="s1">&#39;g2&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="n">run_gaussian_2</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

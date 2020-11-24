@@ -1,0 +1,920 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FNOCC: Frozen natural orbitals for CCSD(T), QCISD(T), CEPA, and MP4 &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Theoretical Methods: SCF to FCI" href="methods.html" />
+    <link rel="next" title="OCC: Orbital-Optimized Coupled-Cluster and Møller–Plesset Perturbation Theories" href="occ.html" />
+    <link rel="prev" title="CC: Coupled Cluster Methods" href="cc.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="occ.html" title="OCC: Orbital-Optimized Coupled-Cluster and Møller–Plesset Perturbation Theories"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cc.html" title="CC: Coupled Cluster Methods"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<span class="target" id="index-0"></span><div class="section" id="fnocc-frozen-natural-orbitals-for-ccsd-t-qcisd-t-cepa-and-mp4">
+<span id="sec-fnocc"></span><span id="index-1"></span><h1>FNOCC: Frozen natural orbitals for CCSD(T), QCISD(T), CEPA, and MP4<a class="headerlink" href="#fnocc-frozen-natural-orbitals-for-ccsd-t-qcisd-t-cepa-and-mp4" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: A. Eugene DePrince</em></p>
+<p><em>Section author: A. Eugene DePrince</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__fnocc.html#apdx-fnocc"><span>Keywords</span></a>, <a class="reference internal" href="autodir_psivariables/module__fnocc.html#apdx-fnocc-psivar"><span>PSI Variables</span></a>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/bin/fnocc">FNOCC</a></p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">There is a known bug concerning the i7-5930 series combined
+with the Intel 15 compilers and MKL 11.2.3. When <span class="sc">Psi4</span> is compiled
+under these conditions, parallel runs of the FNOCC code have experienced
+non-sensical CCSD correlation energies (often several hartrees lower
+than the starting guess). At the moment, the only confirmed solutions
+are running serially, using a different BLAS implementation, or upgrading
+to Intel 16.0.2 and MKL 11.3.2.</p>
+</div>
+<div class="section" id="frozen-natural-orbitals-fno">
+<h2>Frozen natural orbitals (FNO)<a class="headerlink" href="#frozen-natural-orbitals-fno" title="Permalink to this headline">¶</a></h2>
+<p>The computational cost of the CCSD <a class="reference internal" href="bibliography.html#purvis-1982" id="id1">[Purvis:1982]</a>, CCSD(T)
+<a class="reference internal" href="bibliography.html#raghavachari-1989" id="id2">[Raghavachari:1989]</a>, and related methods be reduced by constructing a
+compact representation of the virtual space based on the natural orbitals
+of second-order perturbation theory <a class="reference internal" href="bibliography.html#sosa-1989-148" id="id3">[Sosa:1989:148]</a>.  The most demanding
+steps in the CCSD and (T) algorithms scale as <img class="math" src="_images/math/5986db804df1d6268a92255e51c67ee12717d9f6.png" alt="{\cal{O}}(o^2v^4)" style="vertical-align: -4px"/>
+and <img class="math" src="_images/math/658e8f0dadf795bf943dc4d6f3efdcb746e127c2.png" alt="{\cal{O}}(o^3v^4)" style="vertical-align: -4px"/>, where <img class="math" src="_images/math/38732d488ba22c7cdf11ae43fe5953bcb317e065.png" alt="o" style="vertical-align: 0px"/> and <img class="math" src="_images/math/cf4c2f9cafb5b0074abef55afea9b0f5802b349a.png" alt="v" style="vertical-align: 0px"/> represent the
+number of oribitals that are occupied and unoccupied (virtual) in the
+reference function, respectively.  By reducing the the size of the virtual
+space, the cost of evaluating these terms reduces by a factor of <img class="math" src="_images/math/5d0c7d07b020c19b171f0fe278393026cc7854ac.png" alt="(v
+/ v_{FNO})^4" style="vertical-align: -5px"/>, where <img class="math" src="_images/math/4698c7eedece5973c64c1351309c080552eb615f.png" alt="v_{FNO}" style="vertical-align: -3px"/> represents the number of virtual
+orbitals retained after the FNO truncation.</p>
+<p>The general outline for the FNO procedure in <span class="sc">Psi4</span> is:</p>
+<blockquote>
+<div><ol class="lowerroman simple">
+<li>construct the virtual-virtual block of the unrelaxed MP2 one-particle density matrix (OPDM)</li>
+<li>diagonalize this block of the OPDM to obtain a set of natural virtual orbitals</li>
+<li>based on some occupancy threshold, determine which orbitals are unimportant and may be discarded</li>
+<li>project the virtual-virtual block of the Fock matrix onto the truncated space</li>
+<li>construct semicanonical orbitals by diagonalizing the virtual-virtual block of the Fock matrix</li>
+<li>proceed with the QCISD(T) / CCSD(T) / MP4 computation in the reduced virtual space</li>
+</ol>
+</div></blockquote>
+<p>A second-order correction based upon the MP2 energies in the full and
+truncated spaces captures much of the missing correlation effects.  More
+details on the implementation and numerical accuracy of FNO methods in
+<span class="sc">Psi4</span> can be found in Ref. <a class="reference internal" href="bibliography.html#deprince-2013-293" id="id4">[DePrince:2013:293]</a>.  FNO computations
+are controlled through the keywords <a class="reference internal" href="autodoc_glossary_options_c.html#term-nat-orbs-fnocc"><span class="xref std std-term">NAT_ORBS</span></a> and
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-occ-tolerance-fnocc"><span class="xref std std-term">OCC_TOLERANCE</span></a>, or by prepending a valid method name with &#8220;fno&#8221; in
+the energy call as</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;fno-ccsd(t)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you wish to specify the number of active natural orbitals manually, use
+the keyword <a class="reference internal" href="autodoc_glossary_options_c.html#term-active-nat-orbs-fnocc"><span class="xref std std-term">ACTIVE_NAT_ORBS</span></a>.  This keyword will override the
+keyword <a class="reference internal" href="autodoc_glossary_options_c.html#term-occ-tolerance-fnocc"><span class="xref std std-term">OCC_TOLERANCE</span></a>.</p>
+</div>
+<div class="section" id="qcisd-t-ccsd-t-mp4-and-cepa">
+<h2>QCISD(T), CCSD(T), MP4, and CEPA<a class="headerlink" href="#qcisd-t-ccsd-t-mp4-and-cepa" title="Permalink to this headline">¶</a></h2>
+<p>The FNOCC module in <span class="sc">Psi4</span> supports several related many-body quantum
+chemistry methods, including the CCSD(T) and QCISD(T) methods, several
+orders of many-body perturbation theory (MP2-MP4), and a family methods
+related to the coupled electron pair approximation (CEPA).</p>
+</div>
+<div class="section" id="quadratic-configuration-interaction-and-coupled-cluster">
+<h2>Quadratic configuration interaction and coupled cluster<a class="headerlink" href="#quadratic-configuration-interaction-and-coupled-cluster" title="Permalink to this headline">¶</a></h2>
+<p>The quadratic configuration interaction singles doubles (QCISD) method of
+Pople, Head-Gordon, and Raghavachari <a class="reference internal" href="bibliography.html#pople-1987-5968" id="id5">[Pople:1987:5968]</a> was originally
+presented as a size-consistent extension of configuration interaction
+singles doubles (CISD). The method can also be obtained as a
+simplified version of the coupled cluster singles doubles (CCSD)
+method <a class="reference internal" href="bibliography.html#purvis-1982" id="id6">[Purvis:1982]</a>.  Consider the set of equations defining CCSD:</p>
+<div class="math" id="equation-CCSD">
+<p><span class="eqno">(1)</span><img src="_images/math/e172d54bb0ebab2e8111a6a759485cbd5bd14157.png" alt="\langle \Psi_0  | (H - E) (1 + T_1 + T_2 + \frac{1}{2}T_1^2)|\Psi_0\rangle = 0, \\
+\langle \Psi_i^a  | (H - E) (1 + T_1 + T_2 + \frac{1}{2}T_1^2+T_1T_2+\frac{1}{3!}T_1^3)|\Psi_0\rangle = 0, \\
+\langle \Psi_{ij}^{ab}  | (H - E) (1 + T_1 + T_2 + \frac{1}{2}T_1^2 + T_1T_2+\frac{1}{3!}T_1^3+\frac{1}{2}T_2^2+\frac{1}{2}T_1^2T_2+\frac{1}{4!}T_1^4)|\Psi_0\rangle = 0, \\"/></p>
+</div><p>where we have chosen the intermediate normalization,
+<img class="math" src="_images/math/1bbae78273e4b55b48a3ce9ab1eb345e097ad05c.png" alt="\langle \Psi_0| \Psi \rangle = 1" style="vertical-align: -5px"/>, and the symbols <img class="math" src="_images/math/16e357c096eed77674eca8ab99e4f7ede9e35081.png" alt="T_1" style="vertical-align: -4px"/>
+and <img class="math" src="_images/math/15a700f9e956b4e76e06aa3f659aeb312c1ea692.png" alt="T_2" style="vertical-align: -3px"/> represent single and double excitation operators.  The
+QCISD equations can be obtained by omitting all but two terms that
+are nonlinear in <img class="math" src="_images/math/16e357c096eed77674eca8ab99e4f7ede9e35081.png" alt="T_1" style="vertical-align: -4px"/> and <img class="math" src="_images/math/15a700f9e956b4e76e06aa3f659aeb312c1ea692.png" alt="T_2" style="vertical-align: -3px"/>:</p>
+<div class="math" id="equation-QCISD">
+<p><span class="eqno">(2)</span><img src="_images/math/3b681eb086e8680b630fa834c4840dbdc9b7f791.png" alt="\langle \Psi_0  | (H - E) (1 + T_1 + T_2)|\Psi_0\rangle = 0, \\
+\langle \Psi_i^a  | (H - E) (1 + T_1 + T_2 + T_1T_2)|\Psi_0\rangle = 0, \\
+\langle \Psi_{ij}^{ab}  | (H - E) (1 + T_1 + T_2 + \frac{1}{2}T_2^2)|\Psi_0\rangle = 0. \\"/></p>
+</div><p>QCISD is slightly cheaper that CCSD computationally, but it retains the
+<img class="math" src="_images/math/5986db804df1d6268a92255e51c67ee12717d9f6.png" alt="{\cal{O}}(o^2v^4)" style="vertical-align: -4px"/> complexity of the original equations. Just as in
+the familiar CCSD(T) method, the effects of connected triple excitations
+may be included noniteratively to yield the QCISD(T) method.  Both the
+QCISD(T) and CCSD(T) methods are implemented for closed-shell references
+in the FNOCC module.</p>
+</div>
+<div class="section" id="many-body-perturbation-theory">
+<span id="sec-fnompn"></span><h2>Many-body perturbation theory<a class="headerlink" href="#many-body-perturbation-theory" title="Permalink to this headline">¶</a></h2>
+<p>QCI and CC methods are closely related to perturbation theory, and the
+MP2, MP3, and MP4(SDQ) correlation energies can be obtained as a free
+by-product of a CCSD or QCISD computation.  The following is an
+example of the results for a computation run with the call
+<code class="docutils literal"><span class="pre">energy('fno-qcisd')</span></code> to <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>QCISD iterations converged!
+
+      OS MP2 FNO correction:                -0.000819116338
+      SS MP2 FNO correction:                -0.000092278158
+      MP2 FNO correction:                   -0.000911394496
+
+      OS MP2 correlation energy:            -0.166478414245
+      SS MP2 correlation energy:            -0.056669079827
+      MP2 correlation energy:               -0.223147494072
+    * MP2 total energy:                    -76.258836941658
+
+      OS MP2.5 correlation energy:          -0.171225850256
+      SS MP2.5 correlation energy:          -0.054028401038
+      MP2.5 correlation energy:             -0.225254251294
+    * MP2.5 total energy:                  -76.260943698880
+
+      OS MP3 correlation energy:            -0.175973286267
+      SS MP3 correlation energy:            -0.051387722248
+      MP3 correlation energy:               -0.227361008515
+    * MP3 total energy:                    -76.263050456101
+
+      OS MP4(SDQ) correlation energy:       -0.180324322304
+      SS MP4(SDQ) correlation energy:       -0.048798468084
+      MP4(SDQ) correlation energy:          -0.230995119324
+    * MP4(SDQ) total energy:               -76.266684566910
+
+      OS QCISD correlation energy:          -0.181578117924
+      SS QCISD correlation energy:          -0.049853548145
+      QCISD correlation energy:             -0.231431666069
+    * QCISD total energy:                  -76.267121113654
+</pre></div>
+</div>
+<p>The first set of energies printed corresponds to the second-order FNO
+correction mentioned previously.  Results for many-body perturbation
+theory through partial fourth order are then provided.
+The notation MP4(SDQ) indicates that we have included all contributions to
+the correlation energy through fourth order, with the exception of that
+from connected triple excitations.</p>
+<p>One need not run a full QCISD or CCSD computation to obtain these
+perturbation theory results.  The keywords for invoking perturbation
+theory computations are given below in
+Table <a class="reference internal" href="#table-fnocc-methods"><span>FNOCC Methods</span></a>.  Full MP4 correlation
+energies are also available.</p>
+</div>
+<div class="section" id="coupled-electron-pair-approximation">
+<span id="sec-fnocepa"></span><h2>Coupled electron pair approximation<a class="headerlink" href="#coupled-electron-pair-approximation" title="Permalink to this headline">¶</a></h2>
+<p>Coupled-pair methods can be viewed as approximations to CCSD or as
+size-extensive modifications of CISD.  The methods have the same
+complexity as CISD, and solving the CISD or coupled-pair equations
+requires fewer floating point operations than solving the CCSD.  CISD,
+CCSD, and the coupled-pair methods discussed below all scale formally with
+the sixth power of system size, and, as with the QCISD method, CEPA
+methods retain <img class="math" src="_images/math/5986db804df1d6268a92255e51c67ee12717d9f6.png" alt="{\cal{O}}(o^2v^4)" style="vertical-align: -4px"/> complexity of the CCSD equations.
+For a detailed discussion of the properties of various coupled-pair
+methods, see Ref. <a class="reference internal" href="bibliography.html#wennmohs-2008-217" id="id7">[Wennmohs:2008:217]</a>.</p>
+<p>What follows is a very basic description of the practical differences in
+the equations that define each of the coupled-pair methods implemented in
+<span class="sc">Psi4</span>.  We begin with the CISD wave function</p>
+<div class="math" id="equation-CIwfn">
+<p><span class="eqno">(3)</span><img src="_images/math/2a63c2e36ee4380ce9e3f9107318dec923987a3d.png" alt="| \Psi \rangle = | \Psi_0 \rangle + \sum_i^{occ} \sum_a^{vir} t_i^a | \Psi_i^a\rangle + \frac{1}{4}\sum_{ij}^{occ} \sum_{ab}^{vir} t_{ij}^{ab} | \Psi_{ij}^{ab}\rangle,"/></p>
+</div><p>where we have chosen the intermediate normalization, <img class="math" src="_images/math/188497ad526401347487314224975fea05619b7f.png" alt="\langle \Psi_0
+| \Psi \rangle = 1" style="vertical-align: -5px"/>.  The CISD correlation energy is given by</p>
+<div class="math" id="equation-CIenergy">
+<p><span class="eqno">(4)</span><img src="_images/math/77d534906dc3c7f9730b4aa7b27a284c88658f99.png" alt="E_c = \langle \Psi_0 | \hat{H} - E_0 | \Psi \rangle,"/></p>
+</div><p>and the amplitudes can be determined by the solution to the coupled set of
+eqations:</p>
+<div class="math" id="equation-CIeqns">
+<p><span class="eqno">(5)</span><img src="_images/math/d7014485f628a54c705d90d00fcc353f6e8c97d0.png" alt="0   &amp;= \langle \Psi_{ij}^{ab} | \hat{H} - E_0 - E_c | \Psi \rangle, \\
+0   &amp;= \langle \Psi_{i}^{a} | \hat{H} - E_0 - E_c | \Psi \rangle."/></p>
+</div><p>The CISD method is not size-extensive, but this problem can be overcome by
+making very simple modifications to the amplitude equations.  We replace
+the correlation energy, <img class="math" src="_images/math/46d72a6ce3d21e1b509f129287bd3a8220a7d32e.png" alt="E_c" style="vertical-align: -3px"/>, with generalized shifts for the
+doubles and singles equations, <img class="math" src="_images/math/03d299d2c511159c7006bb3104b1e69c6e27395e.png" alt="\Delta_{ij}" style="vertical-align: -6px"/> and <img class="math" src="_images/math/0701c8177845fbfcfb1de144fa7ba8106d75aa80.png" alt="\Delta_i" style="vertical-align: -3px"/>:</p>
+<div class="math" id="equation-CEPAeqns">
+<p><span class="eqno">(6)</span><img src="_images/math/74299763019a074d532dfc7d8b49fd3a8ce69d06.png" alt="0   &amp;= \langle \Psi_{ij}^{ab} | \hat{H} - E_0 - \Delta_{ij} | \Psi \rangle, \\
+0   &amp;= \langle \Psi_{i}^{a} | \hat{H} - E_0 - \Delta_i | \Psi \rangle."/></p>
+</div><p>These shifts approximate the effects of triple and quadruple excitations.
+The values for <img class="math" src="_images/math/03d299d2c511159c7006bb3104b1e69c6e27395e.png" alt="\Delta_{ij}" style="vertical-align: -6px"/> and <img class="math" src="_images/math/0701c8177845fbfcfb1de144fa7ba8106d75aa80.png" alt="\Delta_i" style="vertical-align: -3px"/>  used in several
+coupled-pair methods are given in Table <a class="reference internal" href="#table-cepa-shifts"><span>CEPA Shifts</span></a>.  Note that these shifts are defined in a spin-free
+formalism for closed-shell references only.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-cepa-shifts">
+<colgroup>
+<col width="19%" />
+<col width="46%" />
+<col width="35%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">method</th>
+<th class="head"><img class="math" src="_images/math/03d299d2c511159c7006bb3104b1e69c6e27395e.png" alt="\Delta_{ij}" style="vertical-align: -6px"/></th>
+<th class="head"><img class="math" src="_images/math/0701c8177845fbfcfb1de144fa7ba8106d75aa80.png" alt="\Delta_i" style="vertical-align: -3px"/></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cisd</td>
+<td><img class="math" src="_images/math/46d72a6ce3d21e1b509f129287bd3a8220a7d32e.png" alt="E_c" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/46d72a6ce3d21e1b509f129287bd3a8220a7d32e.png" alt="E_c" style="vertical-align: -3px"/></td>
+</tr>
+<tr class="row-odd"><td>cepa(0)</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>cepa(1)</td>
+<td><img class="math" src="_images/math/c2420602267ee4856f9720fd42b76c6c59c36910.png" alt="\frac{1}{2}\sum_k(\epsilon_{ik}+\epsilon_{jk})" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/cdbf79b882e2ed38d6ce537cbcbc9be1437c2e89.png" alt="\sum_k \epsilon_{ik}" style="vertical-align: -5px"/></td>
+</tr>
+<tr class="row-odd"><td>cepa(3)</td>
+<td><img class="math" src="_images/math/0ee5ad6f65b0640c552e323658ed642ce7449da7.png" alt="-\epsilon_{ij}+\sum_k(\epsilon_{ik}+\epsilon_{jk})" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/dd26f540d0e4b940724ca29e9d1fbec9b71bd858.png" alt="-\epsilon_{ii}+2\sum_k \epsilon_{ik}" style="vertical-align: -5px"/></td>
+</tr>
+<tr class="row-even"><td>acpf</td>
+<td><img class="math" src="_images/math/6a8d4a1127d6a96f46d910381e5f94393a1682e8.png" alt="\frac{2}{N} E_c" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/6a8d4a1127d6a96f46d910381e5f94393a1682e8.png" alt="\frac{2}{N} E_c" style="vertical-align: -6px"/></td>
+</tr>
+<tr class="row-odd"><td>aqcc</td>
+<td><img class="math" src="_images/math/23bcd196a6dcd76d07bdf30315862c4116bc7b02.png" alt="[1-\frac{(N-3)(N-2)}{N(N-1)}]E_c" style="vertical-align: -9px"/></td>
+<td><img class="math" src="_images/math/23bcd196a6dcd76d07bdf30315862c4116bc7b02.png" alt="[1-\frac{(N-3)(N-2)}{N(N-1)}]E_c" style="vertical-align: -9px"/></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The pair correlation energy, <img class="math" src="_images/math/7a5576eefc8931f37624d6dae6d496cdbe947958.png" alt="\epsilon_{ij}" style="vertical-align: -6px"/>, is simply a partial
+sum of the correlation energy.  In a spin-free formalism, the pair energy
+is given by</p>
+<div class="math" id="equation-pair_energy">
+<p><span class="eqno">(7)</span><img src="_images/math/2c9127fbb70d19e1b0f2e99aec68d51e51c6b399.png" alt="\epsilon_{ij} = \sum_{ab} v_{ij}^{ab} (2 t_{ij}^{ab} - t_{ij}^{ba})"/></p>
+</div><p>Methods whose shifts (<img class="math" src="_images/math/03d299d2c511159c7006bb3104b1e69c6e27395e.png" alt="\Delta_{ij}" style="vertical-align: -6px"/> and <img class="math" src="_images/math/0701c8177845fbfcfb1de144fa7ba8106d75aa80.png" alt="\Delta_i" style="vertical-align: -3px"/>) do not
+explicitly depend on orbitals <img class="math" src="_images/math/4cc7324e0d6c8c591e4d865a21144bda81fd3011.png" alt="i" style="vertical-align: 0px"/> or <img class="math" src="_images/math/c18271eddf460603079ed91e4dc4af329a59eab2.png" alt="j" style="vertical-align: -4px"/> (CISD, CEPA(0), ACPF,
+and AQCC) have solutions that render the energy stationary with respect
+variations in the amplitudes.  This convenient property allows density
+matrices and 1-electron properties to be evaluated without any additional
+effort.  Note, however, that 1-electron properties are currently
+unavailable when coupling these stationary CEPA-like methods with frozen
+natural orbitals.</p>
+</div>
+<div class="section" id="density-fitted-coupled-cluster">
+<h2>Density-fitted coupled cluster<a class="headerlink" href="#density-fitted-coupled-cluster" title="Permalink to this headline">¶</a></h2>
+<p>Density fitting (DF) [or the resolution of the identity (RI)] and Cholesky
+decomposition (CD) techniques are popular in quantum chemistry to avoid
+the computation and storage of the 4-index electron repulsion integral
+(ERI) tensor and even to reduce the computational scaling of some terms.
+DF/CD-CCSD(T) computations are available in <span class="sc">Psi4</span>, with or without the
+use of FNOs, through the FNOCC module.  The implementation and accuracy of
+the DF/CD-CCSD(T) method are described in Ref. <a class="reference internal" href="bibliography.html#deprince-2013-2687" id="id8">[DePrince:2013:2687]</a>.</p>
+<p>The DF-CCSD(T) procedure uses two auxiliary basis sets.  The first set is
+that used in the SCF procedure, defined by the <a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-scf-scf"><span class="xref std std-term">DF_BASIS_SCF</span></a>
+keyword.  If this keyword is not specified, an appropriate -JKFIT set is
+automatically selected.  This auxiliary set defines the ERI&#8217;s used to
+build the Fock matrix used in the DF-CCSD(T) procedure.  The second
+auxiliary set is used to approximate all other ERI&#8217;s in the DF-CCSD(T)
+procedure. The choice of auxiliary basis is controlled by the keyword
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-cc-fnocc"><span class="xref std std-term">DF_BASIS_CC</span></a>.  By default, <a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-cc-fnocc"><span class="xref std std-term">DF_BASIS_CC</span></a> is the RI set
+(optimized for DFMP2) most appropriate for use with the primary basis.
+For example, if the primary basis is aug-cc-pVDZ, the default
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-cc-fnocc"><span class="xref std std-term">DF_BASIS_CC</span></a> will be aug-cc-pVDZ-RI.</p>
+<p>Alternatively, the user can request that the DF-CCSD(T) procedure use a
+set of vectors defined by the Cholesky decomposition of the ERI tensor as
+the auxiliary basis. This feature is enabled by specifying <a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> <code class="docutils literal"><span class="pre">CD</span></code>.
+CD methods can be enabled in the SCF
+procedure as well, by specifying the <a class="reference internal" href="autodoc_glossary_options_c.html#term-scf-type-scf"><span class="xref std std-term">SCF_TYPE</span></a> as <code class="docutils literal"><span class="pre">CD</span></code>.  The
+accuracy of the decomposition can be controlled through the keyword
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-cholesky-tolerance-fnocc"><span class="xref std std-term">CHOLESKY_TOLERANCE</span></a>.</p>
+<p>The following input file sets up a DF-CCSD(T)
+computation using CD integrals</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule h2o {
+    0 1
+    O
+    H 1 1.0
+    H 1 1.0 2 104.5
+}
+
+set {
+    scf_type cd
+    cc_type cd
+    basis aug-cc-pvdz
+    freeze_core true
+}
+energy(&#39;ccsd(t)&#39;)
+</pre></div>
+</div>
+<p>The resulting CCSD(T) correlation energy will be equivalent to that
+obtained from a conventional computation if <a class="reference internal" href="autodoc_glossary_options_c.html#term-cholesky-tolerance-fnocc"><span class="xref std std-term">CHOLESKY_TOLERANCE</span></a> is
+sufficiently small (e.g.  <img class="math" src="_images/math/887f0bb6c97c86c1c2e5876b332c4cf2b5991854.png" alt="10^{-9}" style="vertical-align: -1px"/>).</p>
+</div>
+<div class="section" id="gn-theory">
+<span id="sec-fnogn"></span><h2>Gn theory<a class="headerlink" href="#gn-theory" title="Permalink to this headline">¶</a></h2>
+<p>The FNOCC module contains all the components that comprise the Gn family
+of composite methods.  Currently, only the G2 method is supported
+<a class="reference internal" href="bibliography.html#curtiss-1991-7221" id="id9">[Curtiss:1991:7221]</a>.  The G2 procedure may be called through the
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a> wrapper:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;gaussian-2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="supported-methods">
+<h2>Supported methods<a class="headerlink" href="#supported-methods" title="Permalink to this headline">¶</a></h2>
+<p>The various methods supported by the FNOCC module in <span class="sc">Psi4</span> are detailed
+in Table <a class="reference internal" href="#table-fnocc-methods"><span>FNOCC Methods</span></a>.  Note that these methods
+are implemented for closed-shell references only.  For open-shell references,
+the calls <code class="docutils literal"><span class="pre">energy('mp2.5')</span></code>, <code class="docutils literal"><span class="pre">energy('mp3')</span></code>, and <code class="docutils literal"><span class="pre">energy('mp4')</span></code> will
+default to implementations of these methods in other modules <a class="reference internal" href="notes_c.html#table-managedmethods"><span>Cross-module Redundancies</span></a>.</p>
+<blockquote>
+<div><table border="1" class="docutils" id="table-fnocc-methods">
+<colgroup>
+<col width="19%" />
+<col width="47%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method</th>
+<th class="head">type select</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qcisd</td>
+<td>quadratic configuration interaction singles doubles</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-ci-type-globals"><span class="xref std std-term">CI_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>qcisd(t)</td>
+<td>qcisd with perturbative triples</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-ci-type-globals"><span class="xref std std-term">CI_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>mp2.5</td>
+<td>average of second- and third-order perturbation theories</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp-type-globals"><span class="xref std std-term">MP_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>mp3</td>
+<td>third-order perturbation theory</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp-type-globals"><span class="xref std std-term">MP_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>mp4(sdq)</td>
+<td>fourth-order perturbation theory, minus triples contribution</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp-type-globals"><span class="xref std std-term">MP_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>mp4</td>
+<td>full fourth-order perturbation theory</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp-type-globals"><span class="xref std std-term">MP_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>lccd</td>
+<td>linear ccd</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>cepa(0), lccsd</td>
+<td>coupled electron pair approximation, variant 0</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>cepa(1)</td>
+<td>coupled electron pair approximation, variant 1</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>cepa(3)</td>
+<td>coupled electron pair approximation, variant 3</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>acpf</td>
+<td>averaged coupled-pair functional</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>aqcc</td>
+<td>averaged quadratic coupled-cluster</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>cisd</td>
+<td>configuration interaction with single and double excitations</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-ci-type-globals"><span class="xref std std-term">CI_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>fno-qcisd</td>
+<td>qcisd with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-ci-type-globals"><span class="xref std std-term">CI_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>fno-qcisd(t)</td>
+<td>qcisd(t) with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-ci-type-globals"><span class="xref std std-term">CI_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>fno-ccsd</td>
+<td>coupled cluster singles doubles with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV, DF, CD</td>
+</tr>
+<tr class="row-even"><td>fno-ccsd(t)</td>
+<td>ccsd with perturbative triples and frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV, DF, CD</td>
+</tr>
+<tr class="row-odd"><td>fno-mp3</td>
+<td>mp3 with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp-type-globals"><span class="xref std std-term">MP_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>fno-mp4(sdq)</td>
+<td>mp4(sdq) with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp-type-globals"><span class="xref std std-term">MP_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>fno-mp4</td>
+<td>mp4 with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp-type-globals"><span class="xref std std-term">MP_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>fno-lccd</td>
+<td>linear ccd with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>fno-cepa(0), fno-lccsd</td>
+<td>cepa(0) with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>fno-cepa(1)</td>
+<td>cepa(1) with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>fno-cepa(3)</td>
+<td>cepa(3) with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>fno-acpf</td>
+<td>acpf with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-odd"><td>fno-aqcc</td>
+<td>aqcc with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a> CONV</td>
+</tr>
+<tr class="row-even"><td>fno-cisd</td>
+<td>cisd with frozen natural orbitals</td>
+<td><a class="reference internal" href="autodoc_glossary_options_c.html#term-ci-type-globals"><span class="xref std std-term">CI_TYPE</span></a> CONV</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="basic-fnocc-keywords">
+<span id="index-2"></span><h2>Basic FNOCC Keywords<a class="headerlink" href="#basic-fnocc-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basis">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-mints"><span class="xref std std-term">BASIS</span></a><a class="headerlink" href="#basis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Primary basis set. <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><span>Available basis sets</span></a></p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><span>basis string</span></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="freeze-core">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-freeze-core-globals"><span class="xref std std-term">FREEZE_CORE</span></a><a class="headerlink" href="#freeze-core" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Specifies how many core orbitals to freeze in correlated computations. <code class="docutils literal"><span class="pre">TRUE</span></code> will default to freezing the standard default number of core orbitals. For PSI, the standard number of core orbitals is the number of orbitals in the nearest previous noble gas atom. More precise control over the number of frozen orbitals can be attained by using the keywords <a class="reference internal" href="autodoc_glossary_options_c.html#term-num-frozen-docc-globals"><span class="xref std std-term">NUM_FROZEN_DOCC</span></a> (gives the total number of orbitals to freeze, program picks the lowest-energy orbitals) or <a class="reference internal" href="autodoc_glossary_options_c.html#term-frozen-docc-globals"><span class="xref std std-term">FROZEN_DOCC</span></a> (gives the number of orbitals to freeze per irreducible representation)</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: FALSE, TRUE</li>
+<li><strong>Default</strong>: FALSE</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="r-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-fnocc"><span class="xref std std-term">R_CONVERGENCE</span></a><a class="headerlink" href="#r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence for the CC amplitudes. Note that convergence is met only when <a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-fnocc"><span class="xref std std-term">E_CONVERGENCE</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-fnocc"><span class="xref std std-term">R_CONVERGENCE</span></a> are satisfied.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1.0e-7</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="e-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-fnocc"><span class="xref std std-term">E_CONVERGENCE</span></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for CC energy. See Table <a class="reference internal" href="scf.html#table-conv-corl"><span>Post-SCF Convergence</span></a> for default convergence criteria for different calculation types. Note that convergence is met only when <a class="reference internal" href="autodoc_glossary_options_c.html#term-e-convergence-fnocc"><span class="xref std std-term">E_CONVERGENCE</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-r-convergence-fnocc"><span class="xref std std-term">R_CONVERGENCE</span></a> are satisfied.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1.0e-6</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="maxiter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-maxiter-fnocc"><span class="xref std std-term">MAXITER</span></a><a class="headerlink" href="#maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of CC iterations</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 100</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="diis-max-vecs">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-diis-max-vecs-fnocc"><span class="xref std std-term">DIIS_MAX_VECS</span></a><a class="headerlink" href="#diis-max-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Desired number of DIIS vectors</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 8</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="nat-orbs">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-nat-orbs-fnocc"><span class="xref std std-term">NAT_ORBS</span></a><a class="headerlink" href="#nat-orbs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use MP2 NOs to truncate virtual space for QCISD/CCSD and (T)?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="occ-tolerance">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-occ-tolerance-fnocc"><span class="xref std std-term">OCC_TOLERANCE</span></a><a class="headerlink" href="#occ-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Cutoff for occupation of MP2 virtual NOs in FNO-QCISD/CCSD(T). Virtual NOs with occupations less than <a class="reference internal" href="autodoc_glossary_options_c.html#term-occ-tolerance-fnocc"><span class="xref std std-term">OCC_TOLERANCE</span></a> will be discarded. This option is only used if <a class="reference internal" href="autodoc_glossary_options_c.html#term-nat-orbs-fnocc"><span class="xref std std-term">NAT_ORBS</span></a> = true.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1.0e-6</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="triples-low-memory">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-triples-low-memory-fnocc"><span class="xref std std-term">TRIPLES_LOW_MEMORY</span></a><a class="headerlink" href="#triples-low-memory" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use low memory option for triples contribution? Note that this option is enabled automatically if the memory requirements of the conventional algorithm would exceed the available resources</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cc-timings">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-timings-fnocc"><span class="xref std std-term">CC_TIMINGS</span></a><a class="headerlink" href="#cc-timings" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do time each cc diagram?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="df-basis-cc">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-df-basis-cc-fnocc"><span class="xref std std-term">DF_BASIS_CC</span></a><a class="headerlink" href="#df-basis-cc" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Auxilliary basis for df-ccsd(t).</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: <a class="reference internal" href="basissets_byelement.html#apdx-basiselement"><span>basis string</span></a></li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cholesky-tolerance">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cholesky-tolerance-fnocc"><span class="xref std std-term">CHOLESKY_TOLERANCE</span></a><a class="headerlink" href="#cholesky-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>tolerance for Cholesky decomposition of the ERI tensor</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><span>conv double</span></a></li>
+<li><strong>Default</strong>: 1.0e-4</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cepa-no-singles">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cepa-no-singles-fnocc"><span class="xref std std-term">CEPA_NO_SINGLES</span></a><a class="headerlink" href="#cepa-no-singles" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Flag to exclude singly excited configurations from a coupled-pair computation.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dipmom">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dipmom-fnocc"><span class="xref std std-term">DIPMOM</span></a><a class="headerlink" href="#dipmom" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Compute the dipole moment? Note that dipole moments are only available in the FNOCC module for the ACPF, AQCC, CISD, and CEPA(0) methods.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="advanced-fnocc-keywords">
+<span id="index-3"></span><h2>Advanced FNOCC Keywords<a class="headerlink" href="#advanced-fnocc-keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="scs-mp2">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-scs-mp2-fnocc"><span class="xref std std-term">SCS_MP2</span></a><a class="headerlink" href="#scs-mp2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do SCS-MP2?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-scale-os">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-scale-os-fnocc"><span class="xref std std-term">MP2_SCALE_OS</span></a><a class="headerlink" href="#mp2-scale-os" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Opposite-spin scaling factor for SCS-MP2</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.20</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="mp2-scale-ss">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-scale-ss-fnocc"><span class="xref std std-term">MP2_SCALE_SS</span></a><a class="headerlink" href="#mp2-scale-ss" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Same-spin scaling factor for SCS-MP2</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.0/3.0</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="scs-ccsd">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-scs-ccsd-fnocc"><span class="xref std std-term">SCS_CCSD</span></a><a class="headerlink" href="#scs-ccsd" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do SCS-CCSD?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cc-scale-os">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-scale-os-fnocc"><span class="xref std std-term">CC_SCALE_OS</span></a><a class="headerlink" href="#cc-scale-os" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Oppposite-spin scaling factor for SCS-CCSD</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.27</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cc-scale-ss">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-scale-ss-fnocc"><span class="xref std std-term">CC_SCALE_SS</span></a><a class="headerlink" href="#cc-scale-ss" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Same-spin scaling factor for SCS-CCSD</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 1.13</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="run-mp2">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-run-mp2-fnocc"><span class="xref std std-term">RUN_MP2</span></a><a class="headerlink" href="#run-mp2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>do only evaluate mp2 energy?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="run-mp3">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-run-mp3-fnocc"><span class="xref std std-term">RUN_MP3</span></a><a class="headerlink" href="#run-mp3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>do only evaluate mp3 energy?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="run-mp4">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-run-mp4-fnocc"><span class="xref std std-term">RUN_MP4</span></a><a class="headerlink" href="#run-mp4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>do only evaluate mp4 energy?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="run-ccsd">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-run-ccsd-fnocc"><span class="xref std std-term">RUN_CCSD</span></a><a class="headerlink" href="#run-ccsd" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>do ccsd rather than qcisd?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="run-cepa">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-run-cepa-fnocc"><span class="xref std std-term">RUN_CEPA</span></a><a class="headerlink" href="#run-cepa" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Is this a CEPA job? This parameter is used internally by the pythond driver. Changing its value won&#8217;t have any effect on the procedure.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="compute-triples">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-compute-triples-fnocc"><span class="xref std std-term">COMPUTE_TRIPLES</span></a><a class="headerlink" href="#compute-triples" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute triples contribution?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: true</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="compute-mp4-triples">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-compute-mp4-triples-fnocc"><span class="xref std std-term">COMPUTE_MP4_TRIPLES</span></a><a class="headerlink" href="#compute-mp4-triples" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute MP4 triples contribution?</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dfcc">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dfcc-fnocc"><span class="xref std std-term">DFCC</span></a><a class="headerlink" href="#dfcc" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use density fitting or cholesky decomposition in CC? This keyword is used internally by the driver. Changing its value will have no effect on the computation.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="cepa-level">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-cepa-level-fnocc"><span class="xref std std-term">CEPA_LEVEL</span></a><a class="headerlink" href="#cepa-level" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Which coupled-pair method is called? This parameter is used internally by the python driver. Changing its value won&#8217;t have any effect on the procedure.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Default</strong>: CEPA(0)</li>
+</ul>
+</div></blockquote>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FNOCC: Frozen natural orbitals for CCSD(T), QCISD(T), CEPA, and MP4</a><ul>
+<li><a class="reference internal" href="#frozen-natural-orbitals-fno">Frozen natural orbitals (FNO)</a></li>
+<li><a class="reference internal" href="#qcisd-t-ccsd-t-mp4-and-cepa">QCISD(T), CCSD(T), MP4, and CEPA</a></li>
+<li><a class="reference internal" href="#quadratic-configuration-interaction-and-coupled-cluster">Quadratic configuration interaction and coupled cluster</a></li>
+<li><a class="reference internal" href="#many-body-perturbation-theory">Many-body perturbation theory</a></li>
+<li><a class="reference internal" href="#coupled-electron-pair-approximation">Coupled electron pair approximation</a></li>
+<li><a class="reference internal" href="#density-fitted-coupled-cluster">Density-fitted coupled cluster</a></li>
+<li><a class="reference internal" href="#gn-theory">Gn theory</a></li>
+<li><a class="reference internal" href="#supported-methods">Supported methods</a></li>
+<li><a class="reference internal" href="#basic-fnocc-keywords">Basic FNOCC Keywords</a><ul>
+<li><a class="reference internal" href="#basis"><code class="docutils literal"><span class="pre">BASIS</span></code></a></li>
+<li><a class="reference internal" href="#freeze-core"><code class="docutils literal"><span class="pre">FREEZE_CORE</span></code></a></li>
+<li><a class="reference internal" href="#r-convergence"><code class="docutils literal"><span class="pre">R_CONVERGENCE</span></code></a></li>
+<li><a class="reference internal" href="#e-convergence"><code class="docutils literal"><span class="pre">E_CONVERGENCE</span></code></a></li>
+<li><a class="reference internal" href="#maxiter"><code class="docutils literal"><span class="pre">MAXITER</span></code></a></li>
+<li><a class="reference internal" href="#diis-max-vecs"><code class="docutils literal"><span class="pre">DIIS_MAX_VECS</span></code></a></li>
+<li><a class="reference internal" href="#nat-orbs"><code class="docutils literal"><span class="pre">NAT_ORBS</span></code></a></li>
+<li><a class="reference internal" href="#occ-tolerance"><code class="docutils literal"><span class="pre">OCC_TOLERANCE</span></code></a></li>
+<li><a class="reference internal" href="#triples-low-memory"><code class="docutils literal"><span class="pre">TRIPLES_LOW_MEMORY</span></code></a></li>
+<li><a class="reference internal" href="#cc-timings"><code class="docutils literal"><span class="pre">CC_TIMINGS</span></code></a></li>
+<li><a class="reference internal" href="#df-basis-cc"><code class="docutils literal"><span class="pre">DF_BASIS_CC</span></code></a></li>
+<li><a class="reference internal" href="#cholesky-tolerance"><code class="docutils literal"><span class="pre">CHOLESKY_TOLERANCE</span></code></a></li>
+<li><a class="reference internal" href="#cepa-no-singles"><code class="docutils literal"><span class="pre">CEPA_NO_SINGLES</span></code></a></li>
+<li><a class="reference internal" href="#dipmom"><code class="docutils literal"><span class="pre">DIPMOM</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-fnocc-keywords">Advanced FNOCC Keywords</a><ul>
+<li><a class="reference internal" href="#scs-mp2"><code class="docutils literal"><span class="pre">SCS_MP2</span></code></a></li>
+<li><a class="reference internal" href="#mp2-scale-os"><code class="docutils literal"><span class="pre">MP2_SCALE_OS</span></code></a></li>
+<li><a class="reference internal" href="#mp2-scale-ss"><code class="docutils literal"><span class="pre">MP2_SCALE_SS</span></code></a></li>
+<li><a class="reference internal" href="#scs-ccsd"><code class="docutils literal"><span class="pre">SCS_CCSD</span></code></a></li>
+<li><a class="reference internal" href="#cc-scale-os"><code class="docutils literal"><span class="pre">CC_SCALE_OS</span></code></a></li>
+<li><a class="reference internal" href="#cc-scale-ss"><code class="docutils literal"><span class="pre">CC_SCALE_SS</span></code></a></li>
+<li><a class="reference internal" href="#run-mp2"><code class="docutils literal"><span class="pre">RUN_MP2</span></code></a></li>
+<li><a class="reference internal" href="#run-mp3"><code class="docutils literal"><span class="pre">RUN_MP3</span></code></a></li>
+<li><a class="reference internal" href="#run-mp4"><code class="docutils literal"><span class="pre">RUN_MP4</span></code></a></li>
+<li><a class="reference internal" href="#run-ccsd"><code class="docutils literal"><span class="pre">RUN_CCSD</span></code></a></li>
+<li><a class="reference internal" href="#run-cepa"><code class="docutils literal"><span class="pre">RUN_CEPA</span></code></a></li>
+<li><a class="reference internal" href="#compute-triples"><code class="docutils literal"><span class="pre">COMPUTE_TRIPLES</span></code></a></li>
+<li><a class="reference internal" href="#compute-mp4-triples"><code class="docutils literal"><span class="pre">COMPUTE_MP4_TRIPLES</span></code></a></li>
+<li><a class="reference internal" href="#dfcc"><code class="docutils literal"><span class="pre">DFCC</span></code></a></li>
+<li><a class="reference internal" href="#cepa-level"><code class="docutils literal"><span class="pre">CEPA_LEVEL</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cc.html"
+                        title="previous chapter">CC: Coupled Cluster Methods</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="occ.html"
+                        title="next chapter">OCC: Orbital-Optimized Coupled-Cluster and Møller&#8211;Plesset Perturbation Theories</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/fnocc.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="occ.html" title="OCC: Orbital-Optimized Coupled-Cluster and Møller–Plesset Perturbation Theories"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="cc.html" title="CC: Coupled Cluster Methods"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" >Theoretical Methods: SCF to FCI</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

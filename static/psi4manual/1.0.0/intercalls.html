@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Function Intercalls &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Psithon Functions: Invoking a Calculation" href="psithonfunc.html" />
+    <link rel="next" title="Embarrassing Parallelism" href="sowreap.html" />
+    <link rel="prev" title="Spectroscopic Constants for Diatomics" href="diatomic.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sowreap.html" title="Embarrassing Parallelism"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="diatomic.html" title="Spectroscopic Constants for Diatomics"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="function-intercalls">
+<span id="sec-intercalls"></span><h1>Function Intercalls<a class="headerlink" href="#function-intercalls" title="Permalink to this headline">¶</a></h1>
+<p>For many of the <span class="sc">Psi4</span> Python functions described above, it makes scientific
+sense that they could be called in combination. For instance, one could
+optimize all the reagents in a database or compute a
+counterpoise-corrected interaction energy with an extrapolated method. The
+table below outlines permitted intercalls between functions, showing that
+db(opt(cbs(energy()))) is allowed, while db(cp(energy())) is not. This
+table is not yet validated for calls with cp().</p>
+<table border="1" class="docutils" id="id1">
+<span id="table-intercalls"></span><caption><span class="caption-text">Permitted nesting of Psithon functions</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="47%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Caller</th>
+<th class="head" colspan="5">Callee</th>
+</tr>
+<tr class="row-even"><th class="head">&nbsp;</th>
+<th class="head">cp</th>
+<th class="head">db</th>
+<th class="head">opt</th>
+<th class="head">cbs</th>
+<th class="head">energy</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="nbody.html#sec-cp"><span>Counterpoise Correct</span></a></td>
+<td>&nbsp;</td>
+<td>&#8212;</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="db.html#sec-db"><span>Database, database()</span></a></td>
+<td>&#8212;</td>
+<td>&nbsp;</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="opt.html#sec-opt"><span>Geometry Optimization, optimize() and gradient()</span></a></td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+<td>&nbsp;</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="cbs.html#sec-cbs"><span>Complete Basis Set</span></a></td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+<td>&nbsp;</td>
+<td>Y</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="energy.html#sec-energy"><span>Single-Point Energy, energy()</span></a></td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+<td>&#8212;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>The command db(opt(cbs(energy()))) is actually expressed as <code class="docutils literal"><span class="pre">db(...,</span>
+<span class="pre">db_func=opt,</span> <span class="pre">opt_func=cbs)</span></code>. The perhaps expected final argument of
+<code class="docutils literal"><span class="pre">cbs_func=energy</span></code> is not necessary since energy() is always the function
+called by default. Also, the outermost internal function call (<code class="docutils literal"><span class="pre">db_func</span></code>
+above can be called as just <code class="docutils literal"><span class="pre">func</span></code>. Several examples of intercalls
+between Python functions can be found in sample input <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/pywrap_all/input.dat">pywrap_all</a>.</li>
+<li>All keyword arguments are passed along to each function traversed in the
+Python driver, so there should be no concern for separating them, grouping
+them, or designating them for a particular function when undertaking a
+nested calculation. Where the same keyword is used by multiple functions,
+prefixes are added, e.g., <strong>db_mode</strong> and <strong>opt_mode</strong>.</li>
+<li>Function intercalls should not be used in sow/reap mode.</li>
+</ul>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="diatomic.html"
+                        title="previous chapter">Spectroscopic Constants for Diatomics</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sowreap.html"
+                        title="next chapter">Embarrassing Parallelism</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/intercalls.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sowreap.html" title="Embarrassing Parallelism"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="diatomic.html" title="Spectroscopic Constants for Diatomics"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

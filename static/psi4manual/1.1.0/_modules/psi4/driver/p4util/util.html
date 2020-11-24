@@ -1,0 +1,785 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>psi4.driver.p4util.util</title>
+    
+    <link rel="stylesheet" href="../../../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'add49b9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../../_static/cloud.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/p4util/util.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.p4util.util</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2017 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;Module with utility functions for use in input files.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="oeprop"><a class="viewcode-back" href="../../../../oeprop.html#psi4.driver.oeprop">[docs]</a><span class="k">def</span> <span class="nf">oeprop</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Evaluate one-electron properties.</span>
+
+<span class="sd">    :returns: None</span>
+
+<span class="sd">    :type wfn: :py:class:`~psi4.core.Wavefunction`</span>
+<span class="sd">    :param wfn: set of molecule, basis, orbitals from which to compute properties</span>
+
+<span class="sd">    How to specify args, which are actually the most important</span>
+
+<span class="sd">    :type title: string</span>
+<span class="sd">    :param title: label prepended to all psivars computed</span>
+
+<span class="sd">    :examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; # [1] Moments with specific label</span>
+<span class="sd">    &gt;&gt;&gt; E, wfn = energy(&#39;hf&#39;, return_wfn=True)</span>
+<span class="sd">    &gt;&gt;&gt; oeprop(wfn, &#39;DIPOLE&#39;, &#39;QUADRUPOLE&#39;, title=&#39;H3O+ SCF&#39;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">oe</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">OEProp</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;title&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">oe</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">oe</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+    <span class="n">oe</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="cubeprop"><a class="viewcode-back" href="../../../../cubeprop.html#psi4.driver.cubeprop">[docs]</a><span class="k">def</span> <span class="nf">cubeprop</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Evaluate properties on a grid and generate cube files.</span>
+
+<span class="sd">    .. versionadded:: 0.5</span>
+<span class="sd">       *wfn* parameter passed explicitly</span>
+
+<span class="sd">    :returns: None</span>
+
+<span class="sd">    :type wfn: :py:class:`~psi4.core.Wavefunction`</span>
+<span class="sd">    :param wfn: set of molecule, basis, orbitals from which to generate cube files</span>
+
+<span class="sd">    :examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; # [1] Cube files for all orbitals</span>
+<span class="sd">    &gt;&gt;&gt; E, wfn = energy(&#39;b3lyp&#39;, return_wfn=True)</span>
+<span class="sd">    &gt;&gt;&gt; cubeprop(wfn)</span>
+
+<span class="sd">    &gt;&gt;&gt; # [2] Cube files for density (alpha, beta, total, spin) and four orbitals</span>
+<span class="sd">    &gt;&gt;&gt; #     (two alpha, two beta)</span>
+<span class="sd">    &gt;&gt;&gt; set cubeprop_tasks [&#39;orbitals&#39;, &#39;density&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; set cubeprop_orbitals [5, 6, -5, -6]</span>
+<span class="sd">    &gt;&gt;&gt; E, wfn = energy(&#39;scf&#39;, return_wfn=True)</span>
+<span class="sd">    &gt;&gt;&gt; cubeprop(wfn)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># By default compute the orbitals</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">core</span><span class="o">.</span><span class="n">has_global_option_changed</span><span class="p">(</span><span class="s1">&#39;CUBEPROP_TASKS&#39;</span><span class="p">):</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;CUBEPROP_TASKS&#39;</span><span class="p">,[</span><span class="s1">&#39;ORBITALS&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;INTEGRAL_PACKAGE&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;ERD&#39;</span><span class="p">)</span> <span class="ow">and</span>
+        <span class="p">(</span><span class="s1">&#39;ESP&#39;</span> <span class="ow">in</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;CUBEPROP_TASKS&#39;</span><span class="p">))):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;INTEGRAL_PACKAGE ERD does not play nicely with electrostatic potential, so stopping.&#39;</span><span class="p">)</span>
+
+    <span class="n">cp</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">CubeProperties</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
+    <span class="n">cp</span><span class="o">.</span><span class="n">compute_properties</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="set_memory"><a class="viewcode-back" href="../../../../api/psi4.driver.set_memory.html#psi4.driver.set_memory">[docs]</a><span class="k">def</span> <span class="nf">set_memory</span><span class="p">(</span><span class="n">inputval</span><span class="p">,</span> <span class="n">execute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to reset the total memory allocation. Takes memory value</span>
+<span class="sd">    *inputval* as type int, float, or str; int and float are taken literally</span>
+<span class="sd">    as bytes to be set, string taken as a unit-containing value (e.g., 30 mb)</span>
+<span class="sd">    which is case-insensitive. Set *execute* to False to interpret *inputval*</span>
+<span class="sd">    without setting in Psi4 core.</span>
+
+<span class="sd">    :returns: *memory_amount* (float) Number of bytes of memory set</span>
+
+<span class="sd">    :raises: ValidationError when &lt;500MiB or disallowed type or misformatted</span>
+
+<span class="sd">    :examples:</span>
+
+<span class="sd">    &gt;&gt;&gt; # [1] Passing absolute number of bytes</span>
+<span class="sd">    &gt;&gt;&gt; psi4.set_memory(600000000)</span>
+<span class="sd">    &gt;&gt;&gt; psi4.get_memory()</span>
+<span class="sd">    Out[1]: 600000000L</span>
+
+<span class="sd">    &gt;&gt;&gt; # [2] Passing memory value as string with units</span>
+<span class="sd">    &gt;&gt;&gt; psi4.set_memory(&#39;30 GB&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; psi4.get_memory()</span>
+<span class="sd">    Out[2]: 30000000000L</span>
+
+<span class="sd">    :good examples:</span>
+
+<span class="sd">    800000000         # 800000000</span>
+<span class="sd">    2004088624.9      # 2004088624</span>
+<span class="sd">    1.0e9             # 1000000000</span>
+<span class="sd">    &#39;600 mb&#39;          # 600000000</span>
+<span class="sd">    &#39;600.0 MiB&#39;       # 629145600</span>
+<span class="sd">    &#39;.6 Gb&#39;           # 600000000</span>
+<span class="sd">    &#39; 100000000kB &#39;   # 100000000000</span>
+<span class="sd">    &#39;2 eb&#39;            # 2000000000000000000</span>
+
+<span class="sd">    :bad examples:</span>
+
+<span class="sd">    {}         # odd type</span>
+<span class="sd">    &#39;&#39;         # no info</span>
+<span class="sd">    &quot;8 dimms&quot;  # unacceptable units</span>
+<span class="sd">    &quot;1e5 gb&quot;   # string w/ exponent</span>
+<span class="sd">    &quot;5e5&quot;      # string w/o units</span>
+<span class="sd">    2000       # mem too small</span>
+<span class="sd">    -5e5       # negative (and too small)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Handle memory given in bytes directly (int or float)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputval</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">inputval</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="c1"># Handle memory given as a string</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputval</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">memory_string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\s*(\d*\.?\d+)\s*([KMGTPBE]i?B)\s*$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="n">matchobj</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">memory_string</span><span class="p">,</span> <span class="n">inputval</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">matchobj</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Invalid memory specification: </span><span class="si">{}</span><span class="s2">. Try 5e9 or &#39;5 gb&#39;.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">inputval</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Invalid type </span><span class="si">{}</span><span class="s2"> in memory specification: </span><span class="si">{}</span><span class="s2">. Try 5e9 or &#39;5 gb&#39;.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">type</span><span class="p">(</span><span class="n">inputval</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">inputval</span><span class="p">)))</span>
+
+    <span class="c1"># Units decimal or binary?</span>
+    <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="k">if</span> <span class="s2">&quot;i&quot;</span> <span class="ow">in</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">1024</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+    <span class="c1"># Build conversion factor, convert units</span>
+    <span class="n">unit_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;KB&quot;</span><span class="p">,</span> <span class="s2">&quot;MB&quot;</span><span class="p">,</span> <span class="s2">&quot;GB&quot;</span><span class="p">,</span> <span class="s2">&quot;TB&quot;</span><span class="p">,</span> <span class="s2">&quot;PB&quot;</span><span class="p">,</span> <span class="s2">&quot;EB&quot;</span><span class="p">]</span>
+    <span class="n">mult</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="n">unit_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="n">unit</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">mult</span> <span class="o">*=</span> <span class="n">multiplier</span>
+
+    <span class="n">memory_amount</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span> <span class="o">*</span> <span class="n">mult</span><span class="p">)</span>
+
+    <span class="c1"># Check minimum memory requirement</span>
+    <span class="n">min_mem_allowed</span> <span class="o">=</span> <span class="mi">262144000</span>
+    <span class="k">if</span> <span class="n">memory_amount</span> <span class="o">&lt;</span> <span class="n">min_mem_allowed</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;set_memory(): Requested </span><span class="si">{:.3}</span><span class="s2"> MiB (</span><span class="si">{:.3}</span><span class="s2"> MB); minimum 250 MiB (263 MB). Please, sir, I want some more.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">memory_amount</span> <span class="o">/</span> <span class="mi">1024</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">memory_amount</span> <span class="o">/</span> <span class="mi">1000</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">execute</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_memory_bytes</span><span class="p">(</span><span class="n">memory_amount</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">memory_amount</span></div>
+
+<div class="viewcode-block" id="get_memory"><a class="viewcode-back" href="../../../../api/psi4.driver.get_memory.html#psi4.driver.get_memory">[docs]</a><span class="k">def</span> <span class="nf">get_memory</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Function to return the total memory allocation.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">core</span><span class="o">.</span><span class="n">get_memory</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="success"><a class="viewcode-back" href="../../../../api/psi4.driver.success.html#psi4.driver.success">[docs]</a><span class="k">def</span> <span class="nf">success</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to print a &#39;*label*...PASSED&#39; line to screen.</span>
+<span class="sd">    Used by :py:func:`util.compare_values` family when functions pass.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="si">{0:.&lt;66}</span><span class="s1">PASSED&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">msg</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Test functions</span>
+<div class="viewcode-block" id="compare_values"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_values.html#psi4.driver.compare_values">[docs]</a><span class="k">def</span> <span class="nf">compare_values</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">digits</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">exitonfail</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two values. Prints :py:func:`util.success`</span>
+<span class="sd">    when value *computed* matches value *expected* to number of *digits*</span>
+<span class="sd">    (or to *digits* itself when *digits* &lt; 1 e.g. digits=0.04). Performs</span>
+<span class="sd">    a system exit on failure unless *exitonfail* False, in which case</span>
+<span class="sd">    returns error message. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">digits</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">thresh</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="n">digits</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%.*f</span><span class="s2">) does not match (</span><span class="si">%.*f</span><span class="s2">) to </span><span class="si">%d</span><span class="s2"> digits.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">digits</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">digits</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">digits</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">thresh</span> <span class="o">=</span> <span class="n">digits</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%f</span><span class="s2">) does not match (</span><span class="si">%f</span><span class="s2">) to </span><span class="si">%f</span><span class="s2"> digits.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">digits</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">expected</span> <span class="o">-</span> <span class="n">computed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">thresh</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exitonfail</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">computed</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">probably because the computed value is nan.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exitonfail</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="compare_integers"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_integers.html#psi4.driver.compare_integers">[docs]</a><span class="k">def</span> <span class="nf">compare_integers</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two integers. Prints :py:func:`util.success`</span>
+<span class="sd">    when value *computed* matches value *expected*.</span>
+<span class="sd">    Performs a system exit on failure. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">expected</span> <span class="o">!=</span> <span class="n">computed</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%d</span><span class="s2">) does not match (</span><span class="si">%d</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="compare_strings"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_strings.html#psi4.driver.compare_strings">[docs]</a><span class="k">def</span> <span class="nf">compare_strings</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two strings. Prints :py:func:`util.success`</span>
+<span class="sd">    when string *computed* exactly matches string *expected*.</span>
+<span class="sd">    Performs a system exit on failure. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">expected</span> <span class="o">!=</span> <span class="n">computed</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%s</span><span class="s2">) does not match (</span><span class="si">%s</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="compare_matrices"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_matrices.html#psi4.driver.compare_matrices">[docs]</a><span class="k">def</span> <span class="nf">compare_matrices</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">digits</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two matrices. Prints :py:func:`util.success`</span>
+<span class="sd">    when elements of matrix *computed* match elements of matrix *expected* to</span>
+<span class="sd">    number of *digits*. Performs a system exit on failure to match symmetry</span>
+<span class="sd">    structure, dimensions, or element values. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span> <span class="o">!=</span> <span class="n">computed</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> irreps, but </span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="se">\n</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">expected</span><span class="o">.</span><span class="n">nirrep</span><span class="p">(),</span> <span class="n">computed</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">computed</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()))</span>
+        <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">symmetry</span><span class="p">()</span> <span class="o">!=</span> <span class="n">computed</span><span class="o">.</span><span class="n">symmetry</span><span class="p">()):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> symmetry, but </span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="se">\n</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">expected</span><span class="o">.</span><span class="n">symmetry</span><span class="p">(),</span> <span class="n">computed</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">computed</span><span class="o">.</span><span class="n">symmetry</span><span class="p">()))</span>
+        <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">nirreps</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span>
+    <span class="n">symmetry</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">symmetry</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">irrep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nirreps</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">irrep</span><span class="p">)</span> <span class="o">!=</span> <span class="n">computed</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">irrep</span><span class="p">)):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> rows in irrep </span><span class="si">%d</span><span class="s2">, but </span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="se">\n</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">expected</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">irrep</span><span class="p">),</span> <span class="n">irrep</span><span class="p">,</span> <span class="n">computed</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">computed</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">irrep</span><span class="p">)))</span>
+            <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">cols</span><span class="p">(</span><span class="n">irrep</span> <span class="o">^</span> <span class="n">symmetry</span><span class="p">)</span> <span class="o">!=</span> <span class="n">computed</span><span class="o">.</span><span class="n">cols</span><span class="p">(</span><span class="n">irrep</span> <span class="o">^</span> <span class="n">symmetry</span><span class="p">)):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> columns in irrep, but </span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="se">\n</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">expected</span><span class="o">.</span><span class="n">cols</span><span class="p">(</span><span class="n">irrep</span><span class="p">),</span> <span class="n">irrep</span><span class="p">,</span> <span class="n">computed</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">computed</span><span class="o">.</span><span class="n">cols</span><span class="p">(</span><span class="n">irrep</span><span class="p">)))</span>
+            <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">irrep</span><span class="p">)</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">cols</span><span class="p">(</span><span class="n">irrep</span> <span class="o">^</span> <span class="n">symmetry</span><span class="p">)</span>
+        <span class="n">failed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="o">-</span> <span class="n">computed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">digits</span><span class="p">)):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%s</span><span class="s2">) does not match (</span><span class="si">%s</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">expected</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span> <span class="n">computed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)))</span>
+                    <span class="n">failed</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">break</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">failed</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Check your output file for reporting of the matrices.&quot;</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;The Failed Test Matrices</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Computed Matrix (2nd matrix passed in)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">computed</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Expected Matrix (1st matrix passed in)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">expected</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="compare_vectors"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_vectors.html#psi4.driver.compare_vectors">[docs]</a><span class="k">def</span> <span class="nf">compare_vectors</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">digits</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two vectors. Prints :py:func:`util.success`</span>
+<span class="sd">    when elements of vector *computed* match elements of vector *expected* to</span>
+<span class="sd">    number of *digits*. Performs a system exit on failure to match symmetry</span>
+<span class="sd">    structure, dimension, or element values. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span> <span class="o">!=</span> <span class="n">computed</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> irreps, but </span><span class="si">%s</span><span class="s2"> has </span><span class="si">%d</span><span class="se">\n</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">expected</span><span class="o">.</span><span class="n">nirrep</span><span class="p">(),</span> <span class="n">computed</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">computed</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()))</span>
+        <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">nirreps</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">irrep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nirreps</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">irrep</span><span class="p">)</span> <span class="o">!=</span> <span class="n">computed</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">irrep</span><span class="p">)):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">The reference has </span><span class="si">%d</span><span class="s2"> entries in irrep </span><span class="si">%d</span><span class="s2">, but the computed vector has </span><span class="si">%d</span><span class="se">\n</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">irrep</span><span class="p">),</span> <span class="n">irrep</span><span class="p">,</span> <span class="n">computed</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">irrep</span><span class="p">)))</span>
+            <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">irrep</span><span class="p">)</span>
+        <span class="n">failed</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span> <span class="o">-</span> <span class="n">computed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">entry</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">digits</span><span class="p">)):</span>
+                <span class="n">failed</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">failed</span><span class="p">):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;The computed vector</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">computed</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;The reference vector</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">expected</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed value (</span><span class="si">%s</span><span class="s2">) does not match (</span><span class="si">%s</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">entry</span><span class="p">),</span> <span class="n">expected</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">irrep</span><span class="p">,</span> <span class="n">entry</span><span class="p">)))</span>
+            <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="compare_arrays"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_arrays.html#psi4.driver.compare_arrays">[docs]</a><span class="k">def</span> <span class="nf">compare_arrays</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">digits</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two numpy arrays. Prints :py:func:`util.success`</span>
+<span class="sd">    when elements of vector *computed* match elements of vector *expected* to</span>
+<span class="sd">    number of *digits*. Performs a system exit on failure to match symmetry</span>
+<span class="sd">    structure, dimension, or element values. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shape1</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">shape2</span> <span class="o">=</span> <span class="n">computed</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="s2">&quot;Input objects do not have a shape attribute.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">shape1</span> <span class="o">!=</span> <span class="n">shape2</span><span class="p">:</span>
+        <span class="n">TestComparisonError</span><span class="p">(</span><span class="s2">&quot;Input shapes do not match.&quot;</span><span class="p">)</span>
+
+    <span class="n">tol</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">digits</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Array difference norm is </span><span class="si">%12.6f</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">expected</span> <span class="o">-</span> <span class="n">computed</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="compare_cubes"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_cubes.html#psi4.driver.compare_cubes">[docs]</a><span class="k">def</span> <span class="nf">compare_cubes</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare two cube files. Prints :py:func:`util.success`</span>
+<span class="sd">    when value *computed* matches value *expected*.</span>
+<span class="sd">    Performs a system exit on failure. Used in input files in the test suite.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Skip the first six elemets which are just labels</span>
+    <span class="n">evec</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">expected</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">:]]</span>
+    <span class="n">cvec</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">computed</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">:]]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">evec</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">cvec</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">evec</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">evec</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">cvec</span><span class="p">[</span><span class="n">n</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1.0e-4</span><span class="p">):</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed cube file does not match expected cube file.&quot;</span> <span class="o">%</span> <span class="n">label</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%s</span><span class="s2">: computed cube file does not match expected cube file.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">TestComparisonError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">success</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="c1"># Uncomment and use if compare_arrays above is inadequate</span>
+<span class="c1">#def compare_lists(expected, computed, digits, label):</span>
+<span class="c1">#    &quot;&quot;&quot;Function to compare two Python lists. Prints :py:func:`util.success`</span>
+<span class="c1">#    when elements of vector *computed* match elements of vector *expected* to</span>
+<span class="c1">#    number of *digits*. Performs a system exit on failure to match symmetry</span>
+<span class="c1">#    structure, dimension, or element values. Used in input files in the test suite.</span>
+<span class="c1">#</span>
+<span class="c1">#    &quot;&quot;&quot;</span>
+<span class="c1">#    if len(expected) != len(computed):</span>
+<span class="c1">#        message = (&quot;\tThe reference has %d entries, but the computed vector has %d\n.&quot; % (len(expected), len(computed)))</span>
+<span class="c1">#        raise TestComparisonError(message)</span>
+<span class="c1">#    dim = len(expected)</span>
+<span class="c1">#    failed = 0</span>
+<span class="c1">#    for entry in range(dim):</span>
+<span class="c1">#        if(abs(expected[entry] - computed[entry]) &gt; 10 ** (-digits)):</span>
+<span class="c1">#            print(&quot;\t%s: computed value (%s) does not match (%s).&quot; % (label, computed[entry], expected[entry]))</span>
+<span class="c1">#            failed = 1</span>
+<span class="c1">#            break</span>
+<span class="c1">#</span>
+<span class="c1">#    if(failed):</span>
+<span class="c1">#        core.print_out(&quot;The computed vector\n&quot;)</span>
+<span class="c1">#        computed.print_out()</span>
+<span class="c1">#        core.print_out(&quot;The reference vector\n&quot;)</span>
+<span class="c1">#        expected.print_out()</span>
+<span class="c1">#        message = (&quot;\t%s: computed list does not match expected list.&quot; % (label, computed, expected))</span>
+<span class="c1">#        raise TestComparisonError(message)</span>
+<span class="c1">#    success(label)</span>
+
+
+<div class="viewcode-block" id="copy_file_to_scratch"><a class="viewcode-back" href="../../../../api/psi4.driver.copy_file_to_scratch.html#psi4.driver.copy_file_to_scratch">[docs]</a><span class="k">def</span> <span class="nf">copy_file_to_scratch</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">move</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Function to move file into scratch with correct naming</span>
+<span class="sd">    convention.</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    @arg filename  full path to file</span>
+<span class="sd">    @arg prefix    computation prefix, usually &#39;psi&#39;</span>
+<span class="sd">    @arg namespace context namespace, usually molecule name</span>
+<span class="sd">    @arg unit      unit number, e.g. 32</span>
+<span class="sd">    @arg move      copy or move? (default copy)</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    Assume PID is 12345 and SCRATCH is /scratch/parrish/</span>
+
+<span class="sd">    copy_file_to_scratch(&#39;temp&#39;, &#39;psi&#39;, &#39;h2o&#39;, 32):</span>
+<span class="sd">        -cp ./temp /scratch/parrish/psi.12345.h2o.32</span>
+<span class="sd">    copy_file_to_scratch(&#39;/tmp/temp&#39;, &#39;psi&#39;, &#39;h2o&#39;, 32):</span>
+<span class="sd">        -cp /tmp/temp /scratch/parrish/psi.12345.h2o.32</span>
+<span class="sd">    copy_file_to_scratch(&#39;/tmp/temp&#39;, &#39;psi&#39;, &#39;&#39;, 32):</span>
+<span class="sd">        -cp /tmp/temp /scratch/parrish/psi.12345.32</span>
+<span class="sd">    copy_file_to_scratch(&#39;/tmp/temp&#39;, &#39;psi&#39;, &#39;&#39;, 32, True):</span>
+<span class="sd">        -mv /tmp/temp /scratch/parrish/psi.12345.32</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pid</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
+    <span class="n">scratch</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IOManager</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span><span class="o">.</span><span class="n">get_file_path</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">unit</span><span class="p">))</span>
+
+    <span class="n">cp</span> <span class="o">=</span> <span class="s1">&#39;/bin/cp&#39;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="n">move</span><span class="p">:</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="s1">&#39;/bin/mv&#39;</span><span class="p">;</span>
+
+    <span class="n">unit</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+
+    <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="n">prefix</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="n">pid</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">namespace</span><span class="p">):</span>
+        <span class="n">target</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span>
+        <span class="n">target</span> <span class="o">+=</span> <span class="n">namespace</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="n">unit</span>
+
+    <span class="n">command</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cp</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">scratch</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span></div>
+    <span class="c1">#print command</span>
+
+<div class="viewcode-block" id="copy_file_from_scratch"><a class="viewcode-back" href="../../../../api/psi4.driver.copy_file_from_scratch.html#psi4.driver.copy_file_from_scratch">[docs]</a><span class="k">def</span> <span class="nf">copy_file_from_scratch</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">move</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Function to move file out of scratch with correct naming</span>
+<span class="sd">    convention.</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    @arg filename  full path to target file</span>
+<span class="sd">    @arg prefix    computation prefix, usually &#39;psi&#39;</span>
+<span class="sd">    @arg namespace context namespace, usually molecule name</span>
+<span class="sd">    @arg unit      unit number, e.g. 32</span>
+<span class="sd">    @arg move      copy or move? (default copy)</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    Assume PID is 12345 and SCRATCH is /scratch/parrish/</span>
+
+<span class="sd">    copy_file_to_scratch(&#39;temp&#39;, &#39;psi&#39;, &#39;h2o&#39;, 32):</span>
+<span class="sd">        -cp /scratch/parrish/psi.12345.h2o.32 .temp</span>
+<span class="sd">    copy_file_to_scratch(&#39;/tmp/temp&#39;, &#39;psi&#39;, &#39;h2o&#39;, 32):</span>
+<span class="sd">        -cp /scratch/parrish/psi.12345.h2o.32 /tmp/temp</span>
+<span class="sd">    copy_file_to_scratch(&#39;/tmp/temp&#39;, &#39;psi&#39;, &#39;&#39;, 32):</span>
+<span class="sd">        -cp /scratch/parrish/psi.12345.32 /tmp/temp</span>
+<span class="sd">    copy_file_to_scratch(&#39;/tmp/temp&#39;, &#39;psi&#39;, &#39;&#39;, 32, True):</span>
+<span class="sd">        -mv /scratch/parrish/psi.12345.32 /tmp/temp</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pid</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
+    <span class="n">scratch</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IOManager</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span><span class="o">.</span><span class="n">get_file_path</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">unit</span><span class="p">))</span>
+
+    <span class="n">cp</span> <span class="o">=</span> <span class="s1">&#39;/bin/cp&#39;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="n">move</span><span class="p">:</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="s1">&#39;/bin/mv&#39;</span><span class="p">;</span>
+
+    <span class="n">unit</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+
+    <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="n">prefix</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="n">pid</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">namespace</span><span class="p">):</span>
+        <span class="n">target</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span>
+        <span class="n">target</span> <span class="o">+=</span> <span class="n">namespace</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span>
+    <span class="n">target</span> <span class="o">+=</span> <span class="n">unit</span>
+
+    <span class="n">command</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cp</span><span class="p">,</span> <span class="n">scratch</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xml2dict"><a class="viewcode-back" href="../../../../api/psi4.driver.xml2dict.html#psi4.driver.xml2dict">[docs]</a><span class="k">def</span> <span class="nf">xml2dict</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read XML *filename* into nested OrderedDict-s. *filename* defaults to</span>
+<span class="sd">    active CSX file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">xmltodict</span> <span class="k">as</span> <span class="nn">xd</span>
+    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">csx</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">outfile_name</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.csx&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">csx</span> <span class="o">=</span> <span class="n">filename</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">csx</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+        <span class="n">csxdict</span> <span class="o">=</span> <span class="n">xd</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">csxdict</span></div>
+
+
+<div class="viewcode-block" id="getFromDict"><a class="viewcode-back" href="../../../../api/psi4.driver.getFromDict.html#psi4.driver.getFromDict">[docs]</a><span class="k">def</span> <span class="nf">getFromDict</span><span class="p">(</span><span class="n">dataDict</span><span class="p">,</span> <span class="n">mapList</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">mapList</span><span class="p">,</span> <span class="n">dataDict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="csx2endict"><a class="viewcode-back" href="../../../../api/psi4.driver.csx2endict.html#psi4.driver.csx2endict">[docs]</a><span class="k">def</span> <span class="nf">csx2endict</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Grabs the CSX file as a dictionary, encodes translation of PSI variables</span>
+<span class="sd">    to XML blocks, gathers all available energies from CSX file into returned</span>
+<span class="sd">    dictionary.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">blockprefix</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;chemicalSemantics&#39;</span><span class="p">,</span> <span class="s1">&#39;molecularCalculation&#39;</span><span class="p">,</span> <span class="s1">&#39;quantumMechanics&#39;</span><span class="p">,</span> <span class="s1">&#39;singleReferenceState&#39;</span><span class="p">,</span> <span class="s1">&#39;singleDeterminant&#39;</span><span class="p">]</span>
+    <span class="n">blockmidfix</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;energies&#39;</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">]</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;cs:&#39;</span>
+
+    <span class="n">pv2xml</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;MP2 CORRELATION ENERGY&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;mp2&#39;</span><span class="p">],</span> <span class="s1">&#39;correlation&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;MP2 SAME-SPIN CORRELATION ENERGY&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;mp2&#39;</span><span class="p">],</span> <span class="s1">&#39;sameSpin correlation&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;HF TOTAL ENERGY&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;abinitioScf&#39;</span><span class="p">],</span> <span class="s1">&#39;electronic&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;NUCLEAR REPULSION ENERGY&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;abinitioScf&#39;</span><span class="p">],</span> <span class="s1">&#39;nuclearRepulsion&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;DFT FUNCTIONAL TOTAL ENERGY&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;dft&#39;</span><span class="p">],</span> <span class="s1">&#39;dftFunctional&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;DFT TOTAL ENERGY&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;dft&#39;</span><span class="p">],</span> <span class="s1">&#39;electronic&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;DOUBLE-HYBRID CORRECTION ENERGY&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;dft&#39;</span><span class="p">],</span> <span class="s1">&#39;doubleHybrid correction&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;DISPERSION CORRECTION ENERGY&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;dft&#39;</span><span class="p">],</span> <span class="s1">&#39;dispersion correction&#39;</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="n">csxdict</span> <span class="o">=</span> <span class="n">xml2dict</span><span class="p">()</span>
+    <span class="n">enedict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">pv</span><span class="p">,</span> <span class="n">lpv</span> <span class="ow">in</span> <span class="n">pv2xml</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="n">blockprefix</span> <span class="o">+</span> <span class="n">lpv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">blockmidfix</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">bit</span> <span class="k">for</span> <span class="n">bit</span> <span class="ow">in</span> <span class="n">address</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">qwer</span> <span class="o">=</span> <span class="n">getFromDict</span><span class="p">(</span><span class="n">csxdict</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">qwer</span><span class="p">:</span>
+            <span class="n">vv</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">vv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">lpv</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">enedict</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">vv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">enedict</span></div>
+
+
+<div class="viewcode-block" id="compare_csx"><a class="viewcode-back" href="../../../../api/psi4.driver.compare_csx.html#psi4.driver.compare_csx">[docs]</a><span class="k">def</span> <span class="nf">compare_csx</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Function to validate energies in CSX files against PSIvariables. Only</span>
+<span class="sd">    active if write_csx flag on.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;csx4psi&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;WRITE_CSX&#39;</span><span class="p">):</span>
+            <span class="n">enedict</span> <span class="o">=</span> <span class="n">csx2endict</span><span class="p">()</span>
+            <span class="n">compare_integers</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">enedict</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;CSX harvested&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pv</span><span class="p">,</span> <span class="n">en</span> <span class="ow">in</span> <span class="n">enedict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">compare_values</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">pv</span><span class="p">),</span> <span class="n">en</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;CSX &#39;</span> <span class="o">+</span> <span class="n">pv</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../../index.html" title="index">
+          <img class="logo" src="../../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/p4util/util.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, The Psi4 Project.
+      Last updated on Wednesday, 17 May 2017 05:47AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

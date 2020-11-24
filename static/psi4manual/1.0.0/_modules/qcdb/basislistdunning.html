@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.basislistdunning &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.basislistdunning</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1">#@BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># PSI4: an ab initio quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1">#@END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;Module (auto-generated from make_dunning.pl script)</span>
+<span class="sd">with commands building :py:class:`~basislist.BasisFamily` objects that</span>
+<span class="sd">encode the Dunning basis set orbital definitions in</span>
+<span class="sd">:source:`lib/basis/NOTES` and fitting bases designed for those</span>
+<span class="sd">orbital bases.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">.basislist</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="load_basfam_dunning"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.basislistdunning.load_basfam_dunning">[docs]</a><span class="k">def</span> <span class="nf">load_basfam_dunning</span><span class="p">():</span>
+
+    <span class="n">basis_ccpvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpvdz</span><span class="p">)</span>
+    <span class="n">basis_ccpv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcvdz</span><span class="p">)</span>
+    <span class="n">basis_ccpcv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpwcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcvdz</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpvdz</span><span class="p">)</span>
+    <span class="n">basis_augccpv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcvdz</span><span class="p">)</span>
+    <span class="n">basis_augccpcv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpwcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcvdz</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpvdz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcvdz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcvdz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpvdz</span><span class="p">)</span>
+    <span class="n">basis_junccpv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcvdz</span><span class="p">)</span>
+    <span class="n">basis_junccpcv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpwcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpwcvdz</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv_dpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCV(D+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpwcv_dpd_z</span><span class="p">)</span>
+    <span class="n">basis_daugccpvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpvdz</span><span class="p">)</span>
+    <span class="n">basis_daugccpcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpcvdz</span><span class="p">)</span>
+    <span class="n">basis_daugccpwcvdz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pwCVDZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpwcvdz</span><span class="p">)</span>
+    <span class="n">basis_ccpvdz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_dpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpwcvdz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pwCVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv_dpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pwCVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvdz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_dpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpwcvdz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv_dpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvdz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_dpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcvdz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv_dpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpvdz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_dpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpwcvdz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv_dpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVDZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpvdz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;cc-pVDZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_dpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;cc-pVDZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvdz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVDZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_dpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVDZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvdz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVDZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_dpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVDZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpvdz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVDZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_dpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVDZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpvdzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pVDZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpvdzdk</span><span class="p">)</span>
+    <span class="n">basis_ccpcvdzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCVDZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcvdzdk</span><span class="p">)</span>
+    <span class="n">basis_augccpvdzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVDZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpvdzdk</span><span class="p">)</span>
+    <span class="n">basis_augccpcvdzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCVDZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcvdzdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvdzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVDZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpvdzdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcvdzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCVDZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcvdzdk</span><span class="p">)</span>
+    <span class="n">basis_ccpvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpvtz</span><span class="p">)</span>
+    <span class="n">basis_ccpv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcvtz</span><span class="p">)</span>
+    <span class="n">basis_ccpcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpwcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcvtz</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpvtz</span><span class="p">)</span>
+    <span class="n">basis_augccpv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcvtz</span><span class="p">)</span>
+    <span class="n">basis_augccpcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpwcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcvtz</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpvtz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcvtz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcvtz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpvtz</span><span class="p">)</span>
+    <span class="n">basis_junccpv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcvtz</span><span class="p">)</span>
+    <span class="n">basis_junccpcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpwcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpwcvtz</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpwcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpvtz</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpcvtz</span><span class="p">)</span>
+    <span class="n">basis_mayccpcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpwcvtz</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcv_tpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCV(T+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpwcv_tpd_z</span><span class="p">)</span>
+    <span class="n">basis_daugccpvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpvtz</span><span class="p">)</span>
+    <span class="n">basis_daugccpcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpcvtz</span><span class="p">)</span>
+    <span class="n">basis_daugccpwcvtz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pwCVTZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpwcvtz</span><span class="p">)</span>
+    <span class="n">basis_ccpvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpwcvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpwcvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpwcvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcvtz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcv_tpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCVTZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpvtz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_tpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvtz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_tpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvtz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_tpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpvtz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_tpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpvtz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;may-cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_tpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;may-cc-pVTZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpvtzdk</span><span class="p">)</span>
+    <span class="n">basis_ccpcvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcvtzdk</span><span class="p">)</span>
+    <span class="n">basis_ccpwcvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcvtzdk</span><span class="p">)</span>
+    <span class="n">basis_augccpvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpvtzdk</span><span class="p">)</span>
+    <span class="n">basis_augccpcvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcvtzdk</span><span class="p">)</span>
+    <span class="n">basis_augccpwcvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcvtzdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpvtzdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcvtzdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcvtzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVTZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcvtzdk</span><span class="p">)</span>
+    <span class="n">basis_ccpvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpvqz</span><span class="p">)</span>
+    <span class="n">basis_ccpv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcvqz</span><span class="p">)</span>
+    <span class="n">basis_ccpcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpwcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcvqz</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpvqz</span><span class="p">)</span>
+    <span class="n">basis_augccpv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcvqz</span><span class="p">)</span>
+    <span class="n">basis_augccpcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpwcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcvqz</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpvqz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcvqz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcvqz</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpvqz</span><span class="p">)</span>
+    <span class="n">basis_junccpv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcvqz</span><span class="p">)</span>
+    <span class="n">basis_junccpcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpwcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpwcvqz</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpwcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpvqz</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpcvqz</span><span class="p">)</span>
+    <span class="n">basis_mayccpcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpwcvqz</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpwcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_aprccpvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpvqz</span><span class="p">)</span>
+    <span class="n">basis_aprccpv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_aprccpcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpcvqz</span><span class="p">)</span>
+    <span class="n">basis_aprccpcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_aprccpwcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pwCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpwcvqz</span><span class="p">)</span>
+    <span class="n">basis_aprccpwcv_qpd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pwCV(Q+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpwcv_qpd_z</span><span class="p">)</span>
+    <span class="n">basis_daugccpvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpvqz</span><span class="p">)</span>
+    <span class="n">basis_daugccpcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpcvqz</span><span class="p">)</span>
+    <span class="n">basis_daugccpwcvqz</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pwCVQZ&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpwcvqz</span><span class="p">)</span>
+    <span class="n">basis_ccpvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpwcvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpwcvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpwcvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpwcvqz</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpwcv_qpd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pwCVQZ-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpvqz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_qpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvqz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_qpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvqz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_qpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpvqz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_qpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpvqz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;may-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_qpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;may-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpvqz</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpv_qpd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pVQZ-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpvqzdk</span><span class="p">)</span>
+    <span class="n">basis_ccpcvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcvqzdk</span><span class="p">)</span>
+    <span class="n">basis_ccpwcvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcvqzdk</span><span class="p">)</span>
+    <span class="n">basis_augccpvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpvqzdk</span><span class="p">)</span>
+    <span class="n">basis_augccpcvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcvqzdk</span><span class="p">)</span>
+    <span class="n">basis_augccpwcvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcvqzdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpvqzdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcvqzdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcvqzdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCVQZ-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcvqzdk</span><span class="p">)</span>
+    <span class="n">basis_ccpv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpv5z</span><span class="p">)</span>
+    <span class="n">basis_ccpv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcv5z</span><span class="p">)</span>
+    <span class="n">basis_ccpcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcv5z</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpv5z</span><span class="p">)</span>
+    <span class="n">basis_augccpv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcv5z</span><span class="p">)</span>
+    <span class="n">basis_augccpcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcv5z</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpv5z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcv5z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcv5z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpv5z</span><span class="p">)</span>
+    <span class="n">basis_junccpv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcv5z</span><span class="p">)</span>
+    <span class="n">basis_junccpcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpwcv5z</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpwcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpv5z</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpcv5z</span><span class="p">)</span>
+    <span class="n">basis_mayccpcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpwcv5z</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpwcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_aprccpv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpv5z</span><span class="p">)</span>
+    <span class="n">basis_aprccpv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_aprccpcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpcv5z</span><span class="p">)</span>
+    <span class="n">basis_aprccpcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_aprccpwcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pwCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpwcv5z</span><span class="p">)</span>
+    <span class="n">basis_aprccpwcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pwCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpwcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_marccpv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpv5z</span><span class="p">)</span>
+    <span class="n">basis_marccpv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_marccpcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpcv5z</span><span class="p">)</span>
+    <span class="n">basis_marccpcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_marccpwcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pwCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpwcv5z</span><span class="p">)</span>
+    <span class="n">basis_marccpwcv_5pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pwCV(5+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpwcv_5pd_z</span><span class="p">)</span>
+    <span class="n">basis_daugccpv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpv5z</span><span class="p">)</span>
+    <span class="n">basis_daugccpcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpcv5z</span><span class="p">)</span>
+    <span class="n">basis_daugccpwcv5z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pwCV5Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpwcv5z</span><span class="p">)</span>
+    <span class="n">basis_ccpv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpwcv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpwcv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpwcv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpwcv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_marccpv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_marccpv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_marccpwcv5z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;mar-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_marccpwcv_5pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;mar-cc-pwCV5Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv5z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_5pd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv5z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_5pd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv5z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_5pd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv5z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_5pd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv5z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;may-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_5pd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;may-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpv5z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpv_5pd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_marccpv5z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_marccpv_5pd_z</span><span class="o">.</span><span class="n">add_jkfit</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV5Z-JKFIT&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpv5zdk</span><span class="p">)</span>
+    <span class="n">basis_ccpcv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcv5zdk</span><span class="p">)</span>
+    <span class="n">basis_ccpwcv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pwCV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpwcv5zdk</span><span class="p">)</span>
+    <span class="n">basis_augccpv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpv5zdk</span><span class="p">)</span>
+    <span class="n">basis_augccpcv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcv5zdk</span><span class="p">)</span>
+    <span class="n">basis_augccpwcv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pwCV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpwcv5zdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpv5zdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcv5zdk</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpwcv5zdk</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pwCV5Z-DK&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpwcv5zdk</span><span class="p">)</span>
+    <span class="n">basis_ccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpv6z</span><span class="p">)</span>
+    <span class="n">basis_ccpv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_ccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_ccpcv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;cc-pCV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_ccpcv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpv6z</span><span class="p">)</span>
+    <span class="n">basis_augccpv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_augccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_augccpcv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;aug-cc-pCV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_augccpcv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpv6z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpcv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pCV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_heavyaugccpcv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpv6z</span><span class="p">)</span>
+    <span class="n">basis_junccpv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_junccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_junccpcv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;jun-cc-pCV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_junccpcv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpv6z</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_mayccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_mayccpcv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;may-cc-pCV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_mayccpcv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_aprccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpv6z</span><span class="p">)</span>
+    <span class="n">basis_aprccpv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_aprccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_aprccpcv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;apr-cc-pCV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_aprccpcv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_marccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpv6z</span><span class="p">)</span>
+    <span class="n">basis_marccpv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_marccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_marccpcv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;mar-cc-pCV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_marccpcv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_febccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;feb-cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_febccpv6z</span><span class="p">)</span>
+    <span class="n">basis_febccpv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;feb-cc-pV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_febccpv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_febccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;feb-cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_febccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_febccpcv_6pd_z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;feb-cc-pCV(6+d)Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_febccpcv_6pd_z</span><span class="p">)</span>
+    <span class="n">basis_daugccpv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpv6z</span><span class="p">)</span>
+    <span class="n">basis_daugccpcv6z</span> <span class="o">=</span> <span class="n">BasisFamily</span><span class="p">(</span><span class="s1">&#39;d-aug-cc-pCV6Z&#39;</span><span class="p">)</span>
+    <span class="n">basisfamily_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basis_daugccpcv6z</span><span class="p">)</span>
+    <span class="n">basis_ccpv6z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpv_6pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv6z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpv_6pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv6z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpv_6pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv6z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_junccpv_6pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;jun-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv6z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_mayccpv_6pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;may-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpv6z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_aprccpv_6pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;apr-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_marccpv6z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_marccpv_6pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;mar-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_febccpv6z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;feb-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_febccpv_6pd_z</span><span class="o">.</span><span class="n">add_rifit</span><span class="p">(</span><span class="s1">&#39;feb-cc-pV6Z-RI&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpvtz</span><span class="o">.</span><span class="n">add_dualfit</span><span class="p">(</span><span class="s1">&#39;cc-pvtz-dual&#39;</span><span class="p">)</span>
+    <span class="n">basis_ccpvqz</span><span class="o">.</span><span class="n">add_dualfit</span><span class="p">(</span><span class="s1">&#39;cc-pvqz-dual&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvdz</span><span class="o">.</span><span class="n">add_dualfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pvdz-dual&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvtz</span><span class="o">.</span><span class="n">add_dualfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pvtz-dual&#39;</span><span class="p">)</span>
+    <span class="n">basis_augccpvqz</span><span class="o">.</span><span class="n">add_dualfit</span><span class="p">(</span><span class="s1">&#39;aug-cc-pvqz-dual&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvtz</span><span class="o">.</span><span class="n">add_dualfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pvtz-dual&#39;</span><span class="p">)</span>
+    <span class="n">basis_heavyaugccpvqz</span><span class="o">.</span><span class="n">add_dualfit</span><span class="p">(</span><span class="s1">&#39;heavy-aug-cc-pvqz-dual&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

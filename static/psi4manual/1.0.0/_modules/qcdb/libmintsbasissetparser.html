@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.libmintsbasissetparser &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.libmintsbasissetparser</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.libmintsgshell</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span>
+    <span class="nb">basestring</span> <span class="o">=</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="Gaussian94BasisSetParser"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsbasissetparser.Gaussian94BasisSetParser">[docs]</a><span class="k">class</span> <span class="nc">Gaussian94BasisSetParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for parsing basis sets from a text file in Gaussian 94</span>
+<span class="sd">    format. Translated directly from the Psi4 libmints class written</span>
+<span class="sd">    by Justin M. Turney and Andrew C. Simmonett.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forced_puream</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="c1"># If the parser needs to force spherical or cartesian (e.g., loading old guess)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_puream_or_cartesian</span> <span class="o">=</span> <span class="bp">False</span> <span class="k">if</span> <span class="n">forced_puream</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="bp">True</span>
+        <span class="c1"># Is the forced value to use puream?  (Otherwise force Cartesian).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forced_is_puream</span> <span class="o">=</span> <span class="bp">False</span> <span class="k">if</span> <span class="n">forced_puream</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">forced_puream</span>
+        <span class="c1"># string filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="Gaussian94BasisSetParser.load_file"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsbasissetparser.Gaussian94BasisSetParser.load_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">basisname</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load and return the file to be used by parse.  Return only</span>
+<span class="sd">        portion of *filename* pertaining to *basisname* if specified (for</span>
+<span class="sd">        multi-basisset files) otherwise entire file as list of strings.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># string filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+
+        <span class="n">given_basisname</span> <span class="o">=</span> <span class="bp">False</span> <span class="k">if</span> <span class="n">basisname</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="bp">True</span>
+        <span class="n">found_basisname</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">basis_separator</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*\[\s*(.*?)\s*\]\s*$&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Loads an entire file.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">infile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BasisSetFileNotFound</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;BasisSetParser::parse: Unable to open basis set file: </span><span class="si">%s</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;BasisSetParser::parse: given filename &#39;</span><span class="si">%s</span><span class="s2">&#39; is blank.&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="c1"># If no basisname was given always save the line.</span>
+            <span class="k">if</span> <span class="n">given_basisname</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">found_basisname</span><span class="p">:</span>
+                <span class="c1"># If we find another [*] we&#39;re done.</span>
+                <span class="k">if</span> <span class="n">basis_separator</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                    <span class="n">what</span> <span class="o">=</span> <span class="n">basis_separator</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># If the user gave a basisname AND text matches the basisname we want to trigger to retain</span>
+            <span class="k">if</span> <span class="n">given_basisname</span> <span class="ow">and</span> <span class="n">basis_separator</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">basisname</span> <span class="o">==</span> <span class="n">basis_separator</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">found_basisname</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">return</span> <span class="n">lines</span></div>
+
+<div class="viewcode-block" id="Gaussian94BasisSetParser.parse"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsbasissetparser.Gaussian94BasisSetParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Given a string, parse for the basis set needed for atom.</span>
+<span class="sd">        * @param symbol atom symbol to look for in dataset</span>
+<span class="sd">        * @param dataset data set to look through</span>
+<span class="sd">        dataset can be list of lines or a single string which will be converted to list of lines</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">dataset</span>
+
+        <span class="c1"># Regular expressions that we&#39;ll be checking for.</span>
+        <span class="n">cartesian</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*cartesian\s*&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="n">spherical</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*spherical\s*&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*\!.*&#39;</span><span class="p">)</span>  <span class="c1"># line starts with !</span>
+        <span class="n">separator</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*\*\*\*\*&#39;</span><span class="p">)</span>  <span class="c1"># line starts with ****</span>
+        <span class="n">ATOM</span> <span class="o">=</span> <span class="s1">&#39;(([A-Z]{1,3}\d*)|([A-Z]{1,3}_\w+))&#39;</span>  <span class="c1"># match &#39;C 0&#39;, &#39;Al c 0&#39;, &#39;P p88 p_pass 0&#39; not &#39;Ofail 0&#39;, &#39;h99_text 0&#39;</span>
+        <span class="n">atom_array</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*((&#39;</span> <span class="o">+</span> <span class="n">ATOM</span> <span class="o">+</span> <span class="s1">&#39;\s+)+)0\s*$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>  <span class="c1"># array of atomic symbols terminated by 0</span>
+        <span class="n">shell</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*(\w+)\s*(\d+)\s*(-?\d+\.\d+)&#39;</span><span class="p">)</span>  <span class="c1"># Match beginning of contraction</span>
+        <span class="n">blank</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*$&#39;</span><span class="p">)</span>
+        <span class="n">NUMBER</span> <span class="o">=</span> <span class="s2">&quot;((?:[-+]?</span><span class="se">\\</span><span class="s2">d*</span><span class="se">\\</span><span class="s2">.</span><span class="se">\\</span><span class="s2">d+(?:[DdEe][-+]?</span><span class="se">\\</span><span class="s2">d+)?)|(?:[-+]?</span><span class="se">\\</span><span class="s2">d+</span><span class="se">\\</span><span class="s2">.</span><span class="se">\\</span><span class="s2">d*(?:[DdEe][-+]?</span><span class="se">\\</span><span class="s2">d+)?))&quot;</span>
+        <span class="n">primitives1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*&#39;</span> <span class="o">+</span> <span class="n">NUMBER</span> <span class="o">+</span> <span class="s1">&#39;\s+&#39;</span> <span class="o">+</span> <span class="n">NUMBER</span> <span class="o">+</span> <span class="s1">&#39;.*&#39;</span><span class="p">)</span>  <span class="c1"># Match s, p, d, f, g, ... functions</span>
+        <span class="n">primitives2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^\s*&#39;</span> <span class="o">+</span> <span class="n">NUMBER</span> <span class="o">+</span> <span class="s1">&#39;\s+&#39;</span> <span class="o">+</span> <span class="n">NUMBER</span> <span class="o">+</span> <span class="s1">&#39;\s+&#39;</span> <span class="o">+</span> <span class="n">NUMBER</span> <span class="o">+</span> <span class="s1">&#39;.*&#39;</span><span class="p">)</span>  <span class="c1"># match sp functions</span>
+
+        <span class="c1"># s, p and s, p, d can be grouped together in Pople-style basis sets</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="s1">&#39;SP&#39;</span>
+        <span class="n">spd</span> <span class="o">=</span> <span class="s1">&#39;SPD&#39;</span>
+
+        <span class="c1">#                a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z</span>
+        <span class="c1">#shell_to_am = [-1,-1,-1, 2,-1, 3, 4, 5, 6,-1, 7, 8, 9,10,11, 1,12,13, 0,14,15,16,17,18,19,20]</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">]</span>
+        <span class="n">angmo</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+        <span class="n">shell_to_am</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">angmo</span><span class="p">))</span>
+
+        <span class="c1"># Basis type.</span>
+        <span class="n">gaussian_type</span> <span class="o">=</span> <span class="s1">&#39;Pure&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_puream_or_cartesian</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forced_is_puream</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="n">gaussian_type</span> <span class="o">=</span> <span class="s1">&#39;Cartesian&#39;</span>
+
+        <span class="c1"># Need a dummy center for the shell.</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+
+        <span class="n">shell_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">lineno</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">while</span> <span class="n">lineno</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">lineno</span><span class="p">]</span>
+            <span class="n">lineno</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Ignore blank lines</span>
+            <span class="k">if</span> <span class="n">blank</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Look for Cartesian or Spherical</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_puream_or_cartesian</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cartesian</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">gaussian_type</span> <span class="o">=</span> <span class="s1">&#39;Cartesian&#39;</span>
+<span class="c1">#TODO                    if psi4.get_global_option(&#39;PUREAM&#39;).has_changed():</span>
+<span class="c1">#TODO                        gaussian_type = &#39;Pure&#39; if int(psi4.get_global(&#39;PUREAM&#39;)) else &#39;Cartesian&#39;</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">spherical</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">gaussian_type</span> <span class="o">=</span> <span class="s1">&#39;Pure&#39;</span>
+<span class="c1">#TODO                    if psi4.get_global_option(&#39;PUREAM&#39;).has_changed():</span>
+<span class="c1">#TODO                        gaussian_type = &#39;Pure&#39; if int(psi4.get_global(&#39;PUREAM&#39;)) else &#39;Cartesian&#39;</span>
+                    <span class="k">continue</span>
+                <span class="c1">#end case where puream setting wasn&#39;t forced by caller</span>
+
+            <span class="c1"># Do some matches</span>
+            <span class="k">if</span> <span class="n">comment</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">separator</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Match: H    0</span>
+            <span class="c1"># or:    H    O...     0</span>
+            <span class="k">if</span> <span class="n">atom_array</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="n">what</span> <span class="o">=</span> <span class="n">atom_array</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="c1"># Check the captures and see if this basis set is for the atom we need.</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">what</span><span class="p">]:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;line </span><span class="si">%5d</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lineno</span><span class="p">)</span>
+
+                    <span class="c1"># Read in the next line</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">lineno</span><span class="p">]</span>
+                    <span class="n">lineno</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="c1"># Need to do the following until we match a &quot;****&quot; which is the end of the basis set</span>
+                    <span class="k">while</span> <span class="ow">not</span> <span class="n">separator</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                        <span class="c1"># Match shell information</span>
+                        <span class="k">if</span> <span class="n">shell</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                            <span class="n">what</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                            <span class="n">shell_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">what</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                            <span class="n">nprimitive</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">what</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                            <span class="n">scale</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">what</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shell_type</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                                <span class="n">am</span> <span class="o">=</span> <span class="n">shell_to_am</span><span class="p">[</span><span class="n">shell_type</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+                                <span class="n">exponents</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nprimitive</span>
+                                <span class="n">contractions</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nprimitive</span>
+
+                                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nprimitive</span><span class="p">):</span>
+                                    <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">lineno</span><span class="p">]</span>
+                                    <span class="n">lineno</span> <span class="o">+=</span> <span class="mi">1</span>
+                                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+                                    <span class="n">what</span> <span class="o">=</span> <span class="n">primitives1</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                                    <span class="c1"># Must match primitives1; will work on the others later</span>
+                                    <span class="k">if</span> <span class="ow">not</span> <span class="n">what</span><span class="p">:</span>
+                                        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Gaussian94BasisSetParser::parse: Unable to match an exponent with one contraction: line </span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lineno</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+                                    <span class="n">exponent</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">what</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                                    <span class="n">contraction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">what</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+                                    <span class="c1"># Scale the contraction and save the information</span>
+                                    <span class="n">contraction</span> <span class="o">*=</span> <span class="n">scale</span>
+                                    <span class="n">exponents</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">exponent</span>
+                                    <span class="n">contractions</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">contraction</span>
+
+                                <span class="c1"># We have a full shell, push it to the basis set</span>
+                                <span class="n">shell_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ShellInfo</span><span class="p">(</span><span class="n">am</span><span class="p">,</span> <span class="n">contractions</span><span class="p">,</span> <span class="n">exponents</span><span class="p">,</span>
+                                    <span class="n">gaussian_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Unnormalized&#39;</span><span class="p">))</span>
+
+                            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">shell_type</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                                <span class="c1"># This is to handle instances of SP, PD, DF, FG, ...</span>
+                                <span class="n">am1</span> <span class="o">=</span> <span class="n">shell_to_am</span><span class="p">[</span><span class="n">shell_type</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                                <span class="n">am2</span> <span class="o">=</span> <span class="n">shell_to_am</span><span class="p">[</span><span class="n">shell_type</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+                                <span class="n">exponents</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nprimitive</span>
+                                <span class="n">contractions1</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nprimitive</span>
+                                <span class="n">contractions2</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">nprimitive</span>
+
+                                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nprimitive</span><span class="p">):</span>
+                                    <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">lineno</span><span class="p">]</span>
+                                    <span class="n">lineno</span> <span class="o">+=</span> <span class="mi">1</span>
+                                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+                                    <span class="n">what</span> <span class="o">=</span> <span class="n">primitives2</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                                    <span class="c1"># Must match primitivies2</span>
+                                    <span class="k">if</span> <span class="ow">not</span> <span class="n">what</span><span class="p">:</span>
+                                        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Gaussian94BasisSetParser::parse: Unable to match an exponent with two contractions: line </span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lineno</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+                                    <span class="n">exponent</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">what</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                                    <span class="n">contraction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">what</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+                                    <span class="c1"># Scale the contraction and save the information</span>
+                                    <span class="n">contraction</span> <span class="o">*=</span> <span class="n">scale</span>
+                                    <span class="n">exponents</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">exponent</span>
+                                    <span class="n">contractions1</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">contraction</span>
+
+                                    <span class="c1"># Do the other contraction</span>
+                                    <span class="n">contraction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">what</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+                                    <span class="c1"># Scale the contraction and save the information</span>
+                                    <span class="n">contraction</span> <span class="o">*=</span> <span class="n">scale</span>
+                                    <span class="n">contractions2</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">contraction</span>
+
+                                <span class="n">shell_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ShellInfo</span><span class="p">(</span><span class="n">am1</span><span class="p">,</span> <span class="n">contractions1</span><span class="p">,</span> <span class="n">exponents</span><span class="p">,</span>
+                                    <span class="n">gaussian_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Unnormalized&#39;</span><span class="p">))</span>
+                                <span class="n">shell_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ShellInfo</span><span class="p">(</span><span class="n">am2</span><span class="p">,</span> <span class="n">contractions2</span><span class="p">,</span> <span class="n">exponents</span><span class="p">,</span>
+                                    <span class="n">gaussian_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Unnormalized&#39;</span><span class="p">))</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Gaussian94BasisSetParser::parse: Unable to parse basis sets with spd, or higher grouping&quot;&quot;&quot;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Gaussian94BasisSetParser::parse: Expected shell information, but got: line </span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lineno</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">lineno</span><span class="p">]</span>
+                        <span class="n">lineno</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="k">break</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+            <span class="c1">#raise BasisSetNotFound(&quot;Gaussian94BasisSetParser::parser: Unable to find the basis set for %s in %s&quot; % \</span>
+            <span class="c1">#   (symbol, self.filename), silent=True)</span>
+            <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+
+        <span class="k">return</span> <span class="n">shell_list</span><span class="p">,</span> <span class="n">msg</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

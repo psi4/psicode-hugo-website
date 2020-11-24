@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.subsetgenerator &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.subsetgenerator</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module containing functions that, when passed a qcdb.WrappedDatabase instance</span>
+<span class="sd">*dbinstance*, return an array of reaction names that are a subset of</span>
+<span class="sd">dbinstance.hrxn.keys(). Since the full database is passed in, reactions</span>
+<span class="sd">can be filtered by molecule characteristics, reaction names, existing</span>
+<span class="sd">subsets, etc. The official name of the subset is specified by the function</span>
+<span class="sd">docstring. Second line of docstring becomes tagl.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="genset_MXuDD"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_MXuDD">[docs]</a><span class="k">def</span> <span class="nf">genset_MXuDD</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;mxdd</span>
+<span class="sd">    near-equilibrium systems also in mxdd</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;mx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;dd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ssA</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">ssB</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="genset_HBn5min"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_HBn5min">[docs]</a><span class="k">def</span> <span class="nf">genset_HBn5min</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;HB-5min</span>
+<span class="sd">    near-equilibrium systems also in hb</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;hb&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;5min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ssA</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">ssB</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="genset_MXn5min"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_MXn5min">[docs]</a><span class="k">def</span> <span class="nf">genset_MXn5min</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;MX-5min</span>
+<span class="sd">    near-equilibrium systems also in mx</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;mx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;5min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ssA</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">ssB</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="genset_DDn5min"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_DDn5min">[docs]</a><span class="k">def</span> <span class="nf">genset_DDn5min</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;DD-5min</span>
+<span class="sd">    near-equilibrium systems also in dd</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;dd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;5min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ssA</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">ssB</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="genset_MXDDPPn5min"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_MXDDPPn5min">[docs]</a><span class="k">def</span> <span class="nf">genset_MXDDPPn5min</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;MXDDPP-5min</span>
+<span class="sd">    near-equilibrium systems also in mxddpp</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;mxddpp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;5min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ssA</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">ssB</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="genset_MXDDNPn5min"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_MXDDNPn5min">[docs]</a><span class="k">def</span> <span class="nf">genset_MXDDNPn5min</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;MXDDNP-5min</span>
+<span class="sd">    near-equilibrium systems also in mxddnp</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;mxddnp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssA</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dbinstance</span><span class="o">.</span><span class="n">sset</span><span class="p">[</span><span class="s1">&#39;5min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ssB</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ssA</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">ssB</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="genset_allneutral"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_allneutral">[docs]</a><span class="k">def</span> <span class="nf">genset_allneutral</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;neutral</span>
+<span class="sd">    systems where all components are neutral</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eligible</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">rxn</span><span class="p">,</span> <span class="n">orxn</span> <span class="ow">in</span> <span class="n">dbinstance</span><span class="o">.</span><span class="n">hrxn</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="bp">True</span> <span class="k">if</span> <span class="n">rgt</span><span class="o">.</span><span class="n">charge</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">False</span> <span class="k">for</span> <span class="n">rgt</span> <span class="ow">in</span> <span class="n">orxn</span><span class="o">.</span><span class="n">rxnm</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()]):</span>
+            <span class="n">eligible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rxn</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">eligible</span></div>
+
+
+<div class="viewcode-block" id="genset_anyanion"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_anyanion">[docs]</a><span class="k">def</span> <span class="nf">genset_anyanion</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;anion</span>
+<span class="sd">    systems where any component is an anion</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eligible</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">rxn</span><span class="p">,</span> <span class="n">orxn</span> <span class="ow">in</span> <span class="n">dbinstance</span><span class="o">.</span><span class="n">hrxn</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">rgt</span> <span class="ow">in</span> <span class="n">orxn</span><span class="o">.</span><span class="n">rxnm</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">rgt</span><span class="o">.</span><span class="n">charge</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">eligible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rxn</span><span class="p">)</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">eligible</span></div>
+
+
+<div class="viewcode-block" id="genset_anycation"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.subsetgenerator.genset_anycation">[docs]</a><span class="k">def</span> <span class="nf">genset_anycation</span><span class="p">(</span><span class="n">dbinstance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;cation</span>
+<span class="sd">    systems where any component is a cation</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eligible</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">rxn</span><span class="p">,</span> <span class="n">orxn</span> <span class="ow">in</span> <span class="n">dbinstance</span><span class="o">.</span><span class="n">hrxn</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">rgt</span> <span class="ow">in</span> <span class="n">orxn</span><span class="o">.</span><span class="n">rxnm</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">rgt</span><span class="o">.</span><span class="n">charge</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">eligible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rxn</span><span class="p">)</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">eligible</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

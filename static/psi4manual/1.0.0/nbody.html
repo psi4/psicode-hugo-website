@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Counterpoise Correct &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Psithon Functions: Invoking a Calculation" href="psithonfunc.html" />
+    <link rel="next" title="Geometry Optimization, optimize() and gradient()" href="opt.html" />
+    <link rel="prev" title="Property" href="prop.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="opt.html" title="Geometry Optimization, optimize() and gradient()"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prop.html" title="Property"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="counterpoise-correct">
+<span id="sec-cp"></span><span id="index-0"></span><h1>Counterpoise Correct<a class="headerlink" href="#counterpoise-correct" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Daniel G. A. Smith</em></p>
+<dl class="function">
+<dt id="driver_nbody._nbody_gufunc">
+<code class="descname">_nbody_gufunc</code><span class="sig-paren">(</span><em>func</em>, <em>method_string</em><span class="optional">[</span>, <em>molecule</em>, <em>bsse_type</em>, <em>max_nbody</em>, <em>ptype</em>, <em>return_total_data</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/driver_nbody.html#_nbody_gufunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#driver_nbody._nbody_gufunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the nbody interaction energy, gradient, or Hessian depending on input.
+This is a generalized univeral function for computing interaction quantities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>return type of func</em> – The interaction data.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(<em>float</em>, <a class="reference internal" href="autodoc_psimod.html#sec-psimod-wavefunction"><span>Wavefunction</span></a>) – interaction data and wavefunction with energy/gradient/hessian set appropriately when <strong>return_wfn</strong> specified.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>func</strong> (<em>function</em>) &#8211; <p><code class="docutils literal"><span class="pre">energy</span></code> || etc.</p>
+<p>Python function that accepts method_string and a molecule. Returns a
+energy, gradient, or Hessian as requested.</p>
+</li>
+<li><strong>method_string</strong> (<em>string</em>) &#8211; <p><code class="docutils literal"><span class="pre">'scf'</span></code> || <code class="docutils literal"><span class="pre">'mp2'</span></code> || <code class="docutils literal"><span class="pre">'ci5'</span></code> || etc.</p>
+<p>First argument, lowercase and usually unlabeled. Indicates the computational
+method to be passed to func.</p>
+</li>
+<li><strong>molecule</strong> (<a class="reference internal" href="notes_py.html#op-py-molecule"><span>molecule</span></a>) &#8211; <p><code class="docutils literal"><span class="pre">h2o</span></code> || etc.</p>
+<p>The target molecule, if not the last molecule defined.</p>
+</li>
+<li><strong>return_wfn</strong> (<a class="reference internal" href="notes_py.html#op-py-boolean"><span>boolean</span></a>) &#8211; <p><code class="docutils literal"><span class="pre">'on'</span></code> || <img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">'off'</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/></p>
+<p>Indicate to additionally return the <a class="reference internal" href="autodoc_psimod.html#sec-psimod-wavefunction"><span>Wavefunction</span></a>
+calculation result as the second element of a tuple.</p>
+</li>
+<li><strong>bsse_type</strong> (<em>string or list</em>) &#8211; <p><code class="docutils literal"><span class="pre">'cp'</span></code> || <code class="docutils literal"><span class="pre">['nocp',</span> <span class="pre">'vmfc']</span></code> || <img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">None</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/> || etc.</p>
+<p>Type of BSSE correction to compute: CP, NoCP, or VMFC. The first in this
+list is returned by this function. By default, this function is not called.</p>
+</li>
+<li><strong>max_nbody</strong> (<em>int</em>) &#8211; <p><code class="docutils literal"><span class="pre">3</span></code> || etc.</p>
+<p>Maximum n-body to compute, cannot exceed the number of fragments in the moleucle.</p>
+</li>
+<li><strong>ptype</strong> (<em>string</em>) &#8211; <p><code class="docutils literal"><span class="pre">'energy'</span></code> || <code class="docutils literal"><span class="pre">'gradient'</span></code> || <code class="docutils literal"><span class="pre">'hessian'</span></code></p>
+<p>Type of the procedure passed in.</p>
+</li>
+<li><strong>return_total_data</strong> (<a class="reference internal" href="notes_py.html#op-py-boolean"><span>boolean</span></a>) &#8211; <p><code class="docutils literal"><span class="pre">'on'</span></code> || <img class="math" src="_images/math/fcb47d177e58f83257e03078e39b830ee90caec8.png" alt="\Rightarrow" style="vertical-align: -1px"/> <code class="docutils literal"><span class="pre">'off'</span></code> <img class="math" src="_images/math/589f0defd3f7d56ed5fb2872215af7ebba9db67a.png" alt="\Leftarrow" style="vertical-align: -1px"/></p>
+<p>If True returns the total data (energy/gradient/etc) of the system,
+otherwise returns interaction data.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The nbody function computes counterpoise-corrected (CP), non-CP (noCP), and Valiron-Mayer Function Couterpoise (VMFC) interaction energies for complexes composed of arbitrary numbers of monomers.</p>
+<p><strong>Examples :</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span># Counterpoise corrected CCSD(T) energy for the Helium dimer
+molecule mol {
+  He
+  --
+  He 1 3
+}
+
+energy(&#39;CCSD(T)&#39;, bsse_type=&#39;cp&#39;)
+
+# noCP, VMFC, and CP energy for a helium cluster, limited at 3 bodies
+molecule mol {
+  He 0 0 0
+  --
+  He 0 0 4
+  --
+  He 0 4 0
+  --
+  He 4 0 0
+}
+
+# Returns the nocp energy as its first in the list
+energy(&#39;CCSD(T)&#39;, bsse_type=[&#39;nocp&#39;, &#39;cp&#39;, &#39;vmfc&#39;], max_nbody=3)
+</pre></div>
+</div>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="prop.html"
+                        title="previous chapter">Property</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="opt.html"
+                        title="next chapter">Geometry Optimization, <code class="docutils literal"><span class="pre">optimize()</span></code> and <code class="docutils literal"><span class="pre">gradient()</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/nbody.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="opt.html" title="Geometry Optimization, optimize() and gradient()"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prop.html" title="Property"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

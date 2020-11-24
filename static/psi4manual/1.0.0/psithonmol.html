@@ -1,0 +1,859 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Molecule and Geometry Specification &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Psithon: Structuring an Input File" href="psithoninput.html" />
+    <link rel="next" title="Basis Sets" href="basissets.html" />
+    <link rel="prev" title="Psithon: Structuring an Input File" href="psithoninput.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="basissets.html" title="Basis Sets"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psithoninput.html" title="Psithon: Structuring an Input File"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithoninput.html" accesskey="U">Psithon: Structuring an Input File</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="molecule-and-geometry-specification">
+<span id="sec-moleculespecification"></span><span id="index-0"></span><h1>Molecule and Geometry Specification<a class="headerlink" href="#molecule-and-geometry-specification" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="coordinates">
+<h2>Coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline">¶</a></h2>
+<p><span class="sc">Psi4</span> has a very flexible input parser that allows the user to provide
+geometries as Cartesian coordinates, Z-matrix variables, or a combination of
+both. The use of fixed values and variables are supported for both. For
+example, the geometry for H<sub>2</sub> can be specified a number of ways, using the
+<code class="samp docutils literal"><span class="pre">molecule</span> <em><span class="pre">optional_molecule_name</span></em> <span class="pre">{...}</span></code> block.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule {
+  H
+  H 1 0.9
+}
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule {
+  H
+  H 1 r
+  r = 0.9
+}
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule {
+  H1
+  H2 H1 0.9
+}
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule {
+  H 0.0 0.0 0.0
+  H 0.0 0.0 0.9
+}
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule {
+  H 0.0 0.0 0.0
+  H 0.0 0.0 r
+  r = 0.9
+}
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule {
+  H 0.0 0.0 -r
+  H 0.0 0.0 r
+  r = 0.45
+}
+</pre></div>
+</div>
+<p>Blank lines are ignored and, unlike regular Python syntax, indentation within
+the molecule block does not matter, although the <code class="docutils literal"><span class="pre">molecule</span></code> keyword itself must
+be aligned within the input according to standard Python syntax. For more
+examples of geometry specification, see the <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/mints1/input.dat">mints1</a> input file in the samples
+folder. It is also possible to mix Cartesian and Z-matrix geometry
+specifications, as demonstrated in the <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/mints4/input.dat">mints4</a> and
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/mints6/input.dat">mints6</a> sample input files.  For example, consider the following
+geometry specification, taken from the <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/mints6/input.dat">mints6</a> input:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule alanine {
+    N           -1.527107413251     0.745960643462     0.766603000356
+    C           -0.075844098953     0.811790225041     0.711418672248
+    C            0.503195220163    -0.247849447550    -0.215671574613
+    O           -0.351261319421    -0.748978309671    -1.089590304723
+    O            1.639498336738    -0.571249748886    -0.174705953194
+    H           -1.207655674855    -0.365913941094    -0.918035522052
+    # First, remove the H from the alpha carbon.  This line could be deleted
+    # and is only included for completeness
+    #H            0.429560656538     0.717651915252     1.673774709694
+    # Now patch it, using a Z Matrix specification.  This patch can be applied
+    # anywhere in the coord specification, as long as it appears lower than
+    # the atoms referenced, as is usual for Z-Matrices
+    C  2  rCC   3  aCCC   1  dCCCN
+    H  7  rCH1  2  aHCC1  3  dHCCC1
+    H  7  rCH2  2  aHCC2  3  dHCCC2
+    H  7  rCH3  2  aHCC3  3  dHCCC3
+    H            0.221781602033     1.772570540211     0.286988509018
+    H           -1.833601608592     0.108401996052     1.481873213172
+    H           -1.925572581453     1.640882152784     0.986471814808
+
+    aCCC = 108.0
+    rCC = 1.4
+    dCCCN = 120
+    rCH1 = 1.08
+    rCH2 = 1.08
+    rCH3 = 1.08
+    aHCC1 = 109.0
+    aHCC2 = 109.0
+    aHCC3 = 109.0
+    dHCCC1 = 0.0
+    dHCCC2 = 120.0
+    dHCCC3 = 240.0
+}
+</pre></div>
+</div>
+<p>Here, we remove the hydrogen from the alpha carbon of glycine and replace it
+with a methyl group.  Applying this patch using Cartesian coordinates is
+difficult, because it depends on the orientation of the existing glycine unit.
+In this example, we use Z-Matrix coordinates to define the methyl group, and
+define the orientation in terms of the existing glycine Cartesian coordinates
+which is much easier to visualize than the corresponding Cartesian-only
+approach.</p>
+<span class="target" id="sec-multiplemolecules"><span id="index-1"></span></span></div>
+<div class="section" id="molecule-keywords">
+<span id="sec-moleculekeywords"></span><span id="index-2"></span><h2>Molecule Keywords<a class="headerlink" href="#molecule-keywords" title="Permalink to this headline">¶</a></h2>
+<p>In addition to specifying the geometry, additional information can be
+provided in the molecule block <code class="samp docutils literal"><span class="pre">molecule</span> <em><span class="pre">optional_molecule_name</span></em> <span class="pre">{...}</span></code>.</p>
+<dl class="docutils">
+<dt><strong>Charge &amp; Multiplicity</strong></dt>
+<dd>If two integers <code class="samp docutils literal"><em><span class="pre">charge</span></em> <em><span class="pre">multiplicity</span></em></code> are encountered on any
+line of the molecule block, they are interpreted as the molecular charge
+and multiplicity (<img class="math" src="_images/math/621d701fcdd14a2b0c44c276ca3f09f8b34a0101.png" alt="2 M_s + 1" style="vertical-align: -3px"/>), respectively. For multi-fragment
+complexes, each fragment can have a <code class="samp docutils literal"><em><span class="pre">charge</span></em> <em><span class="pre">multiplicity</span></em></code> line.</dd>
+<dt><strong>Units</strong></dt>
+<dd>By default, Ångström units are used; this is changed by adding
+a line that reads <code class="samp docutils literal"><span class="pre">units</span> <em><span class="pre">spec</span></em></code>, where <code class="samp docutils literal"><em><span class="pre">spec</span></em></code> is one
+of <code class="docutils literal"><span class="pre">ang</span></code>, <code class="docutils literal"><span class="pre">angstrom</span></code>, <code class="docutils literal"><span class="pre">a.u.</span></code>, <code class="docutils literal"><span class="pre">au</span></code>, or <code class="docutils literal"><span class="pre">bohr</span></code>.</dd>
+<dt><strong>Orientation</strong></dt>
+<dd>Certain computations require that the molecule is not reoriented. This
+can be achieved by adding either <code class="docutils literal"><span class="pre">no_reorient</span></code> or <code class="docutils literal"><span class="pre">noreorient</span></code>.
+To prevent even recentering of the molecule, add <code class="docutils literal"><span class="pre">no_com</span></code> or <code class="docutils literal"><span class="pre">nocom</span></code>.</dd>
+<dt><strong>PubChem</strong></dt>
+<dd>A line reading <code class="samp docutils literal"><span class="pre">pubchem:</span><em><span class="pre">mol</span></em></code> fetches the geometry for molecule
+<code class="samp docutils literal"><em><span class="pre">mol</span></em></code> from the PubChem database, where <code class="samp docutils literal"><em><span class="pre">mol</span></em></code> is either
+the IUPAC molecule name or the CID number. See <a class="reference internal" href="#sec-pubchem"><span>PubChem Database</span></a> for
+details.</dd>
+<dt><strong>Symmetry</strong></dt>
+<dd>The symmetry can be specified by a line reading <code class="samp docutils literal"><span class="pre">symmetry</span>
+<em><span class="pre">symbol</span></em></code>, where <code class="samp docutils literal"><em><span class="pre">symbol</span></em></code> is the Schönflies symbol
+of the (Abelian) point group to use for the computation, one of one of
+<code class="docutils literal"><span class="pre">c1</span></code>, <code class="docutils literal"><span class="pre">c2</span></code>, <code class="docutils literal"><span class="pre">ci</span></code>, <code class="docutils literal"><span class="pre">cs</span></code>, <code class="docutils literal"><span class="pre">d2</span></code>, <code class="docutils literal"><span class="pre">c2h</span></code>, <code class="docutils literal"><span class="pre">c2v</span></code>, or <code class="docutils literal"><span class="pre">d2h</span></code>.
+This need not be specified, as the molecular symmetry is automatically
+detected by <span class="sc">Psi4</span>. See <a class="reference internal" href="#sec-symmetry"><span>Symmetry</span></a> for details.</dd>
+<dt><strong>Fragments</strong></dt>
+<dd>A line reading <code class="docutils literal"><span class="pre">--</span></code> is interpreted as the separator between two non-covalently
+bound molecular fragments. See <a class="reference internal" href="#sec-fragments"><span>Non-Covalently Bonded Molecule Fragments</span></a> for details.</dd>
+</dl>
+</div>
+<div class="section" id="multiple-molecules">
+<h2>Multiple Molecules<a class="headerlink" href="#multiple-molecules" title="Permalink to this headline">¶</a></h2>
+<p>To facilitate more elaborate computations, it is possible to provide a name for
+each molecule and tell <span class="sc">Psi4</span> which one should be used in a given
+calculation. For example, consider the following input file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule h2 {
+  H
+  H 1 0.9
+}
+
+set basis cc-pvdz
+set reference rhf
+energy(&#39;scf&#39;)  # on H2
+
+clean()
+
+molecule h {
+  H
+}
+
+set basis cc-pvdz
+set reference uhf
+energy(&#39;scf&#39;)  # on H
+</pre></div>
+</div>
+<p>Here, two separate jobs are performed on two different molecules; the first is
+performed on H<sub>2</sub>, while the second is for H atom. The last molecule to be
+specified is the &#8220;active&#8221; molecule by default. To explicitly activate a named
+molecule, the activate command is provided. With it, the above input file can be
+equivalently written as follows. Alternatively, the molecule can be specified
+directly to the computing function. Below, the third calculation is the same as
+the first.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule h2 {
+  H
+  H 1 0.9
+}
+
+molecule h {
+  H
+}
+
+activate(h2)
+set basis cc-pvdz
+set reference rhf
+energy(&#39;scf&#39;)  # on H2
+
+clean()
+
+activate(h)
+set basis cc-pvdz
+set reference uhf
+energy(&#39;scf&#39;)  # on H
+
+# --------------------------------------
+# equivalent to previous input ends here
+
+clean()
+
+set reference rhf
+energy(&#39;scf&#39;, molecule=h2)  # on H2
+</pre></div>
+</div>
+<p><a class="reference internal" href="psithoninput.html#sec-jobcontrol"><span>Job Control Keywords</span></a> provides more details about the job control
+and calculation keywords used in the above examples.</p>
+</div>
+<div class="section" id="ghost-atoms">
+<span id="sec-ghosts"></span><span id="index-3"></span><h2>Ghost Atoms<a class="headerlink" href="#ghost-atoms" title="Permalink to this headline">¶</a></h2>
+<p>While many common computations, particularly SAPT and counterpoise corrections, can
+be greatly simplified using the notation described in <a class="reference internal" href="#sec-fragments"><span>Non-Covalently Bonded Molecule Fragments</span></a>,
+manual specification of ghost atoms is sometimes required.  Either</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule he2 {
+    He
+    Gh(He) 1 2.0
+}
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule he2 {
+    He
+    @He 1 2.0
+}
+</pre></div>
+</div>
+<p>will generate a helium dimer with the second atom ghosted, <em>i.e.</em>, possessing
+basis functions but no electrons or nuclear charge.  See <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/dfmp2_1/input.dat">dfmp2_1</a>
+and <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/ghosts/input.dat">ghosts</a> for a demonstration of both mechanisms for specifying
+ghost atoms.</p>
+</div>
+<div class="section" id="isotopic-substitution">
+<span id="sec-isotope"></span><span id="index-4"></span><h2>Isotopic Substitution<a class="headerlink" href="#isotopic-substitution" title="Permalink to this headline">¶</a></h2>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Use of isotopic substitution in <span class="sc">Psi4</span> is not well
+developed, and the syntax is subject to change.</p>
+</div>
+<p>At present, isotopes can only be specified at creation-time of the molecule</p>
+<p>The syntax for a deuterium- and tritium-substituted water is below. Note
+that asymmetric isotopic substitution such as this <em>will</em> change the
+molecule&#8217;s point group symmetry.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule dto {
+  units au
+  O                   0.00000000    0.00000000    0.00000000
+  H@2.014101779       0.00000000    1.93042809   -1.10715266
+  H_label@3.01604927  0.00000000   -1.93042809   -1.10715266
+}
+</pre></div>
+</div>
+<p>The masses used by <span class="sc">Psi4</span> can be found at
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/include/masses.h">psi4/include/masses.h</a>. See <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/freq-isotope/input.dat">freq-isotope</a> for about
+the only use to which isotopologs can presently be put in <span class="sc">Psi4</span>.</p>
+</div>
+<div class="section" id="pubchem-database">
+<span id="sec-pubchem"></span><span id="index-5"></span><h2><a class="reference external" href="http://pubchem.ncbi.nlm.nih.gov/">PubChem</a> Database<a class="headerlink" href="#pubchem-database" title="Permalink to this headline">¶</a></h2>
+<p>Obtaining rough starting guess geometries can be burdensome.  The Z-matrix
+coordinate system was designed to provide chemists with an intuitive method for
+guessing structures in terms of bond lengths and angles.  While Z-matrix input is
+intuitive for small molecules with few degrees of freedom, it quickly becomes
+laborious as the system size grows.  To obtain a reasonable starting guess
+geometry, <span class="sc">Psi4</span> can take a chemical name as input; this is then used
+to attempt to retrieve Cartesian coordinates from the <a class="reference internal" href="bibliography.html#pubchem" id="id1">[PubChem]</a> database.</p>
+<p>For example, to run a computation on benzene, we can use the following molecule specification:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule benzene {
+    pubchem:benzene
+}
+</pre></div>
+</div>
+<p>If the computer is connected to the internet, the above code will instruct
+<span class="sc">Psi4</span> to search PubChem for a starting structure.  The search is actually
+performed for compounds whose name <em>contains</em> &#8220;benzene&#8221;, so multiple
+entries will be returned.  If the name provided (&#8220;benzene&#8221; in the above
+example) exactly matches one of the results, that entry will be used.  If no
+exact match is found the results, along with a unique chemical identifier
+(CID), are printed to the output file, prompting the user to provide a more
+specific name.  For example, if we know that we want to run a computation on a
+compound whose name(s) contain &#8220;benzene&#8221;, but we&#8217;re not sure of the exact IUPAC
+name, the following input can be used:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule benzene {
+    pubchem:benzene*
+}
+</pre></div>
+</div>
+<p>Appending the &#8220;*&#8221; prevents an exact match from being found and, at the time
+of writing, the following results are displayed in the output file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Chemical ID     IUPAC Name
+         241   benzene
+        7371   benzenesulfonic acid
+       91526   benzenesulfonate
+         244   phenylmethanol
+         727   1,2,3,4,5,6-hexachlorocyclohexane
+         240   benzaldehyde
+       65723   benzenesulfonohydrazide
+       74296   N-phenylbenzenesulfonamide
+         289   benzene-1,2-diol
+         243   benzoic acid
+        7370   benzenesulfonamide
+      636822   1,2,4-trimethoxy-5-[(E)-prop-1-enyl]benzene
+        7369   benzenesulfonyl chloride
+       12932   N-[2-di(propan-2-yloxy)phosphinothioylsulfanylethyl]benzenesulfonamide
+        7505   benzonitrile
+       78438   N-[anilino(phenyl)phosphoryl]aniline
+       12581   3-phenylpropanenitrile
+      517327   sodium benzenesulfonate
+      637563   1-methoxy-4-[(E)-prop-1-enyl]benzene
+      252325   [(E)-prop-1-enyl]benzene
+</pre></div>
+</div>
+<p>Note that some of these results do not contain the string &#8220;benzene&#8221;; these
+compounds have synonyms containing that text.  We can now replace the
+&#8220;benzene*&#8221; in the input file with one of the above compounds using either the
+IUPAC name or the CID provided in the list, <em>viz</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule benzene {
+    pubchem:637563
+}
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule benzene {
+    pubchem:1-methoxy-4-[(E)-prop-1-enyl]benzene
+}
+</pre></div>
+</div>
+<p>Some of the structures in the database are quite loosely optimized and do not
+have the correct symmetry.  Before starting the computation, <span class="sc">Psi4</span> will
+check to see if the molecule is close to having each of the possible
+symmetries, and will adjust the structure accordingly so that the maximum
+symmetry is utilized.</p>
+<p>The standard keywords, described in <a class="reference internal" href="#sec-moleculekeywords"><span>Molecule Keywords</span></a>, can be
+used in conjuction to specify charge, multiplicity, symmetry to use, <em>etc.</em> .</p>
+</div>
+<div class="section" id="symmetry">
+<span id="sec-symmetry"></span><span id="index-6"></span><h2>Symmetry<a class="headerlink" href="#symmetry" title="Permalink to this headline">¶</a></h2>
+<p>For efficiency, <span class="sc">Psi4</span> can utilize the largest Abelian subgroup of the full
+point group of the molecule. Concomitantly, a number of quantities, such as
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-socc-globals"><span class="xref std std-term">SOCC</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-docc-globals"><span class="xref std std-term">DOCC</span></a>, are arrays whose entries pertain to irreducible
+representations (irreps) of the molecular point group.  Ordering of irreps
+follows the convention used in Cotton&#8217;s <cite>Chemical Applications of Group
+Theory</cite>, as detailed in Table <a class="reference internal" href="#table-irrepordering"><span>Irreps</span></a>.  We refer to this
+convention as &#8220;Cotton Ordering&#8221; hereafter.</p>
+<table border="1" class="docutils" id="id2">
+<span id="table-irrepordering"></span><caption><span class="caption-text">Ordering of irreducible representations (irreps) used in <span class="sc">Psi4</span></span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="12%" />
+<col width="9%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Point Group</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">3</th>
+<th class="head">4</th>
+<th class="head">5</th>
+<th class="head">6</th>
+<th class="head">7</th>
+<th class="head">8</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><img class="math" src="_images/math/a7223a037dfd9076deee6e5754c08434bebef462.png" alt="C_1" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/565d5265a5771ce110bca359c85a858ec1d8e7e2.png" alt="A" style="vertical-align: 0px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/9454726fb4304aba31c8af0f71903451758cab8d.png" alt="C_i" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/f4a6d6db1509304e0367cffd1ad3942a61a14579.png" alt="A_g" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/52085ea8ac3d6d40d4a0447ccc8d12ff887373a2.png" alt="A_u" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><img class="math" src="_images/math/5397631d0b2847b2a135d492176b9e0d5ef61ab2.png" alt="C_2" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/565d5265a5771ce110bca359c85a858ec1d8e7e2.png" alt="A" style="vertical-align: 0px"/></td>
+<td><img class="math" src="_images/math/fd8a1eb9153f0dc573e5ebe023a59474dadd17ef.png" alt="B" style="vertical-align: 0px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/2c450bda9bb1b22b4fa818fdc3269030fe3d6296.png" alt="C_s" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/54a22b2b19871920b9012e66f9f5034a8ee88579.png" alt="A'" style="vertical-align: 0px"/></td>
+<td><img class="math" src="_images/math/b51ab8e1c35fd093ac5123c62f52846eadce707e.png" alt="A''" style="vertical-align: 0px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><img class="math" src="_images/math/a9dc0a375d48d53b36991cb6ee3f3f5b77d3216b.png" alt="D_2" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/565d5265a5771ce110bca359c85a858ec1d8e7e2.png" alt="A" style="vertical-align: 0px"/></td>
+<td><img class="math" src="_images/math/fd0669720606eebd9d117082f589c6e9807af337.png" alt="B_1" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/7dcb548591442130bc2b7fe439b00cda59130bd1.png" alt="B_2" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/ae7d48bcfd1c89800c04057077faeda3725ca7a7.png" alt="B_3" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/ab44cf29f6b7cf2559186d6ec00af45f66958751.png" alt="C_{2v}" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/9553af89635e87864e5ed39e397c77d5dbb2515e.png" alt="A_1" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/7354b4768908022e9709a2d4cb5cb8c3284652b7.png" alt="A_2" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/fd0669720606eebd9d117082f589c6e9807af337.png" alt="B_1" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/7dcb548591442130bc2b7fe439b00cda59130bd1.png" alt="B_2" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><img class="math" src="_images/math/dc186a22a21ff3eb15c312a82a0fc5ee7b5fa531.png" alt="C_{2h}" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/f4a6d6db1509304e0367cffd1ad3942a61a14579.png" alt="A_g" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/44b4617ca0c2015b9f7183bac061074321bacc59.png" alt="B_g" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/52085ea8ac3d6d40d4a0447ccc8d12ff887373a2.png" alt="A_u" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/865b4acf73ac24b56a7cd3a786e5147c39c75d2b.png" alt="B_u" style="vertical-align: -3px"/></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><img class="math" src="_images/math/db75df3e2b5a073f500992eae10086986cebf33f.png" alt="D_{2h}" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/f4a6d6db1509304e0367cffd1ad3942a61a14579.png" alt="A_g" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/5de7e078e4b135fcab413a3bb4046ff175f73cb8.png" alt="B_{1g}" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/4ad37e66de065e5d1ace9d8ae6ecaf09d840d6d7.png" alt="B_{2g}" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/16a1e9d0f23b7aba149d97f6bbae37bad3dbaa18.png" alt="B_{3g}" style="vertical-align: -6px"/></td>
+<td><img class="math" src="_images/math/52085ea8ac3d6d40d4a0447ccc8d12ff887373a2.png" alt="A_u" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/386a5958a2f5128f9753c1ff2842f156582171fa.png" alt="B_{1u}" style="vertical-align: -4px"/></td>
+<td><img class="math" src="_images/math/43fc576c686d2325ef1861626de149aa5d638f88.png" alt="B_{2u}" style="vertical-align: -3px"/></td>
+<td><img class="math" src="_images/math/387f8bd7544e07b1e920eb832333b1e2cbab1915.png" alt="B_{3u}" style="vertical-align: -3px"/></td>
+</tr>
+</tbody>
+</table>
+<p>For example, water (<img class="math" src="_images/math/ab44cf29f6b7cf2559186d6ec00af45f66958751.png" alt="C_{2v}" style="vertical-align: -3px"/> symmetry) has three doubly occupied <img class="math" src="_images/math/9553af89635e87864e5ed39e397c77d5dbb2515e.png" alt="A_1" style="vertical-align: -4px"/>
+orbitals, as well as one each of <img class="math" src="_images/math/fd0669720606eebd9d117082f589c6e9807af337.png" alt="B_1" style="vertical-align: -4px"/> and <img class="math" src="_images/math/7dcb548591442130bc2b7fe439b00cda59130bd1.png" alt="B_2" style="vertical-align: -3px"/> symmetry; the
+corresponding <a class="reference internal" href="autodoc_glossary_options_c.html#term-docc-globals"><span class="xref std std-term">DOCC</span></a> array is therefore:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">DOCC</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Although <span class="sc">Psi4</span> will detect the symmetry automatically, and use the largest
+possible Abelian subgroup, the user might want to run in a lower point group.
+To do this the molecule keyword <code class="samp docutils literal"><span class="pre">symmetry</span> <em><span class="pre">symbol</span></em></code> can be used
+(see <a class="reference internal" href="#sec-moleculekeywords"><span>Molecule Keywords</span></a>).  In most cases the standard
+Schönflies symbol (one of <code class="docutils literal"><span class="pre">c1</span></code>, <code class="docutils literal"><span class="pre">c2</span></code>, <code class="docutils literal"><span class="pre">ci</span></code>, <code class="docutils literal"><span class="pre">cs</span></code>, <code class="docutils literal"><span class="pre">d2</span></code>,
+<code class="docutils literal"><span class="pre">c2h</span></code>, <code class="docutils literal"><span class="pre">c2v</span></code>, <code class="docutils literal"><span class="pre">d2h</span></code> will suffice for <code class="samp docutils literal"><em><span class="pre">symbol</span></em></code>.
+For certain computations, the user might want to specify which particular
+subgroup is to be used by appending a unique axis specifier.  For example when
+running a computation on a molecule with <img class="math" src="_images/math/db75df3e2b5a073f500992eae10086986cebf33f.png" alt="D_{2h}" style="vertical-align: -3px"/> symmetry in <img class="math" src="_images/math/ab44cf29f6b7cf2559186d6ec00af45f66958751.png" alt="C_{2v}" style="vertical-align: -3px"/>, the
+<img class="math" src="_images/math/5397631d0b2847b2a135d492176b9e0d5ef61ab2.png" alt="C_2" style="vertical-align: -3px"/> axis can be chosen as either the <img class="math" src="_images/math/86e784d473f5fc5713b6ad4bea7af624b76966c2.png" alt="x" style="vertical-align: 0px"/>, the <img class="math" src="_images/math/95ca3c6a1fbeaaafe5800c3269c4c9c2cf2e5406.png" alt="y" style="vertical-align: -4px"/>, or the <img class="math" src="_images/math/4764300df3b118f2c580952e9fb04e7cd7943ba5.png" alt="z" style="vertical-align: 0px"/>; these can
+be specified by requesing the symmetry as <code class="docutils literal"><span class="pre">c2vx</span></code>, <code class="docutils literal"><span class="pre">c2vy</span></code>, or <code class="docutils literal"><span class="pre">c2vz</span></code>, respectively.
+Likewise the <code class="docutils literal"><span class="pre">c2x</span></code>, <code class="docutils literal"><span class="pre">c2y</span></code>, <code class="docutils literal"><span class="pre">c2z</span></code>, <code class="docutils literal"><span class="pre">c2hx</span></code>, <code class="docutils literal"><span class="pre">c2hy</span></code>, and <code class="docutils literal"><span class="pre">c2hz</span></code>
+labels are valid.  For <img class="math" src="_images/math/2c450bda9bb1b22b4fa818fdc3269030fe3d6296.png" alt="C_s" style="vertical-align: -3px"/> symmetry the labels <code class="docutils literal"><span class="pre">csx</span></code>, <code class="docutils literal"><span class="pre">csy</span></code>, and
+<code class="docutils literal"><span class="pre">csz</span></code> request the <img class="math" src="_images/math/4674377e6a0143771ca8b8e0d78ec4fd4b14779c.png" alt="yz" style="vertical-align: -4px"/>, <img class="math" src="_images/math/cd12011742e99d945f955c9dc4925a7134fd6eb1.png" alt="xz" style="vertical-align: 0px"/>, and <img class="math" src="_images/math/8d614ac07c67f7071f6943e0c55a674e0aacc62a.png" alt="xy" style="vertical-align: -4px"/> planes be used as the mirror plane,
+respectively.  If no unique axis is specified, <span class="sc">Psi4</span> will choose an appropriate
+subgroup.</p>
+<p>Certain types of finite difference computations, such as numerical vibrational
+frequencies, might lower the symmetry of the molecule.  When this happens
+symmetry-dependent arrays, such as <a class="reference internal" href="autodoc_glossary_options_c.html#term-socc-globals"><span class="xref std std-term">SOCC</span></a>, are automatically remapped
+to the lower symmetry.  For example, if we were to investigate the <img class="math" src="_images/math/6aa4d84e04ed966cdf22f2b78a0dfe5afeb5e83f.png" alt="^2B_1" style="vertical-align: -4px"/>
+state of water cation, we can specify</p>
+<blockquote>
+<div>SOCC = [0, 0, 1, 0]</div></blockquote>
+<p>in the input file.  If any ensuing computations lower the symmetry, the above
+array will be appropriately remapped.  For example, reducing the symmetry to
+<img class="math" src="_images/math/2c450bda9bb1b22b4fa818fdc3269030fe3d6296.png" alt="C_s" style="vertical-align: -3px"/> (with the molecular plane defining the mirror plane), the above
+array will be automatically interpreted as:</p>
+<blockquote>
+<div>SOCC = [0, 1]</div></blockquote>
+<p>Some caution is required, however.  The <img class="math" src="_images/math/82ce48270cf3019ea249ecfcac4bc041209249c3.png" alt="^2A_1" style="vertical-align: -4px"/> state can be obtained with
+the</p>
+<blockquote>
+<div>SOCC = [1, 0, 0, 0]</div></blockquote>
+<p>specification, which would become</p>
+<blockquote>
+<div>SOCC = [1, 0]</div></blockquote>
+<p>under the above-mentioned reduction in symmetry.  The <img class="math" src="_images/math/5d16d7da0ae049589fcef59cc5e7be1ccaf76063.png" alt="^2B_2" style="vertical-align: -3px"/> state,
+whose singly-occupied orbitals are</p>
+<blockquote>
+<div>SOCC = [0, 0, 0, 1]</div></blockquote>
+<p>would be mapped to</p>
+<blockquote>
+<div>SOCC = [1, 0]</div></blockquote>
+<p>which is the same occupation as the <img class="math" src="_images/math/82ce48270cf3019ea249ecfcac4bc041209249c3.png" alt="^2A_1" style="vertical-align: -4px"/> state.  In this case, the
+<img class="math" src="_images/math/82ce48270cf3019ea249ecfcac4bc041209249c3.png" alt="^2A_1" style="vertical-align: -4px"/> state is lower in energy, and is not problematic.  The distorted
+geometries for the <img class="math" src="_images/math/5d16d7da0ae049589fcef59cc5e7be1ccaf76063.png" alt="^2B_2" style="vertical-align: -3px"/> state are excited states that are subject to
+variational collapse.  One way to obtain reliable energies for these states is
+to use a multi-state method; in this case it&#8217;s easier to run the entire
+computation in the lowest symmetry needed during the finite difference
+procedure.</p>
+</div>
+<div class="section" id="non-covalently-bonded-molecule-fragments">
+<span id="sec-fragments"></span><span id="index-7"></span><h2>Non-Covalently Bonded Molecule Fragments<a class="headerlink" href="#non-covalently-bonded-molecule-fragments" title="Permalink to this headline">¶</a></h2>
+<p><span class="sc">Psi4</span> has an extensive range of tools for treating non-covalent
+intermolecular forces, including counterpoise corrections and symmetry adapted
+perturbation theory methods. These require the definition of which fragments
+are interacting within the complex. <span class="sc">Psi4</span> provides a very simple mechanism
+for doing so: simply define the complex&#8217;s geometry using the standard
+Cartesian, Z-matrix, or mixture thereof, specifications and then place two
+dashes between nonbonded fragements. For example, to study the interaction
+energy of ethane and ethyne molecules, we can use the following molecule
+block:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule eneyne {
+  0 1
+  C  0.000000 -0.667578  -2.124659
+  C  0.000000  0.667578  -2.124659
+  H  0.923621 -1.232253  -2.126185
+  H -0.923621 -1.232253  -2.126185
+  H -0.923621  1.232253  -2.126185
+  H  0.923621  1.232253  -2.126185
+  --
+  0 1
+  C 0.000000 0.000000 2.900503
+  C 0.000000 0.000000 1.693240
+  H 0.000000 0.000000 0.627352
+  H 0.000000 0.000000 3.963929
+}
+</pre></div>
+</div>
+<p>In this case, the charge and multiplicity of each interacting fragment is
+explicitly specified. If the charge and multiplicity are specified for the
+first fragment, it is assumed to be the same for all fragments. When
+considering interacting fragments, the overall charge is simply the sum of all
+fragment charges, and any unpaired electrons are assumed to be coupled to
+yield the highest possible <img class="math" src="_images/math/19bd28226d5c470d30f7497311211ab6221ac711.png" alt="M_s" style="vertical-align: -3px"/> value.</p>
+<p>Having defined a molecule containing fragments like <code class="docutils literal"><span class="pre">eneyne</span></code> above, it
+is a simple matter to perform calculations on only a subset of the
+fragments. For instance, the commands below run a scf first on the ethene
+fragment alone (<code class="docutils literal"><span class="pre">extract_subsets(1)</span></code> pulls out fragment 1 as Real atoms
+and discards remaining fragments) and next on the ethene fragment with the
+ethyne fragment ghosted (<code class="docutils literal"><span class="pre">extract_subsets(1,2)</span></code> pulls out fragment 1 as
+Real atoms and sets fragment 2 as Ghost atoms). For beyond bimolecular
+complexes, arrays can be used, e.g. <code class="docutils literal"><span class="pre">extract_subsets(2,[1,3])</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">mA</span> <span class="o">=</span> <span class="n">eneyne</span><span class="o">.</span><span class="n">extract_subsets</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+
+<span class="n">clean</span><span class="p">()</span>
+
+<span class="n">mAcp</span> <span class="o">=</span> <span class="n">eneyne</span><span class="o">.</span><span class="n">extract_subsets</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the molecule contains fragments but is not conveniently ordered for the
+<code class="docutils literal"><span class="pre">--</span></code> marker, the <a class="reference internal" href="autodoc_driver.html#wrapper_autofrag.auto_fragments" title="wrapper_autofrag.auto_fragments"><code class="xref py py-func docutils literal"><span class="pre">auto_fragments()</span></code></a> function can be applied, as shown in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/pywrap-basis/input.dat">pywrap-basis</a>, to return as active molecule the previous
+active molecule, only fragmented.</p>
+</div>
+<div class="section" id="advanced-python">
+<h2>Advanced Python<a class="headerlink" href="#advanced-python" title="Permalink to this headline">¶</a></h2>
+<p>A named molecule in an input file is a full-fledged instance of the
+powerful <a class="reference internal" href="autodoc_psimod.html#sec-psimod-molecule"><span>C++ Molecule class</span></a>. Thus, all member
+functions (that have been exported via Boost Python) documented thereat
+are accessible through the handle <code class="samp docutils literal"><em><span class="pre">option_molecule_name</span></em></code> in
+<code class="samp docutils literal"><span class="pre">molecule</span> <em><span class="pre">optional_molecule_name</span></em> <span class="pre">{...}</span></code>.</p>
+<ul>
+<li><p class="first">The molecular geometry can be got and set and manipulated as a
+<a class="reference internal" href="autodoc_psimod.html#sec-psimod-matrix"><span>psi4.Matrix</span></a> object. Below shows how to access
+coordinates in an input file in Python.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule formaldehyde {
+C  0.0 0.0 0.0
+O  0.0 1.2 0.0
+H -0.8 -0.3 0.0
+H  0.8 -0.3 0.0                         # set geometry in angstroms
+}
+
+formaldehyde.update_geometry()          # update the molecule internals since pre-energy()-like call
+formaldehyde.print_out()                # print molecule to output file
+geom1psi = formaldehyde.geometry()      # get coordinates in bohr as a psi4.Matrix
+
+geom1psi.print_out()                    # print coordinates array to output file
+geom1py = mat2arr(geom1psi)             # get coordinates as a Python array
+print geom1py                           # print coordinates to screen
+
+geom2py = [[ 0.0,  0.0, 0.0],
+          [ 0.0,  1.5, 0.0],
+          [-0.8, -0.3, 0.0],
+          [ 0.8, -0.3, 0.0]]            # define alternate coordinates in angstroms as Python array
+
+geom2psi = psi4.Matrix(4, 3)            # initialize psi4.Matrix
+geom2psi.set(geom2py)                   # load Python array into psi4.Matrix
+geom2psi.scale(1.0/psi_bohr2angstroms)  # scale into bohr
+geom2psi.print_out()                    # print alternate coord array to output file
+
+formaldehyde.set_geometry(geom2psi)     # load alternate coordinates into molecule
+formaldehyde.update_geometry()          # update the molecule internals
+formaldehyde.print_out()                # print new molecule to output file
+compare_values(28.9950517332, formaldehyde.nuclear_repulsion_energy(), 4, &quot;geom2 took&quot;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">Molecules can be initited from XYZ files and fragmented for SAPT computations.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span># &gt;&gt;&gt; cat mol1.xyz
+#7
+#
+#O          0.00000000      -0.05786571      -1.47979303
+#N          0.00000000       0.01436394       1.46454628
+#H          0.00000000       0.82293384      -1.85541474
+#H          0.81348351       0.39876776       1.92934049
+#H          0.00000000       0.07949567      -0.51934253
+#H          0.00000000      -0.98104857       1.65344779
+#H         -0.81348351       0.39876776       1.92934049
+
+# &gt;&gt;&gt; cat mol2.xyz
+# 6 au
+# stuff
+#     C     0.00000000000000     0.00000000000000     5.26601138679877
+#     C     0.00000000000000     0.00000000000000    -3.15195886530135
+#     H     0.00000000000000     0.00000000000000     7.28558683837122
+#     H     0.00000000000000     0.00000000000000    -1.12178201232889
+#     N     0.00000000000000     0.00000000000000     3.08339310458383
+#     N     0.00000000000000     0.00000000000000    -5.33865984413460
+
+sapt = {&#39;mol1&#39;: -0.0105313323529,
+        &#39;mol2&#39;: -0.00839486625709}
+
+nre = {&#39;mol1&#39;: 38.8138764635,
+       &#39;mol2&#39;: 72.3451968428}
+
+set basis jun-cc-pvdz
+
+for mol in [&#39;mol1&#39;, &#39;mol2&#39;]:
+    filen = mol + &#39;.xyz&#39;
+    p4mol = Molecule.init_with_xyz(filen)           # create molecule from file above
+    fragmentedmol = auto_fragments(molecule=p4mol)  # fragment with BFS algorithm
+    activate(fragmentedmol)                         # activate returned molecule (for sapt)
+
+    e = energy(&#39;sapt0&#39;)                             # run SAPT that requires 2 fragments
+    compare_values(sapt[mol], e, 5, &#39;%s sapt ok&#39; % mol)
+    compare_values(nre[mol], p4mol.nuclear_repulsion_energy(), 4, &#39;%s ok&#39; % mol)
+    clean()                                         # clean scratch between loop calcs
+</pre></div>
+</div>
+</li>
+<li><p class="first">The essential element, mass and coordinate information of the molecule is accessible</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule eneyne {
+0 1
+C_ene        0.000000  -0.667578  -2.124659
+C_ene        0.000000   0.667578  -2.124659
+H_ene@2.014  0.923621  -1.232253  -2.126185
+H_ene       -0.923621  -1.232253  -2.126185
+H_ene       -0.923621   1.232253  -2.126185
+Gh(H_ene)    0.923621   1.232253  -2.126185
+--
+0 1
+X            9.0        9.0        9.0
+C_yne        0.000000   0.000000   2.900503
+C_yne        0.000000   0.000000   1.693240
+H_yne        0.000000   0.000000   0.627352
+H_yne        0.000000   0.000000   3.963929
+}
+
+
+eneyne.update_geometry()
+
+for iat in range(eneyne.natom()):
+    print &quot;&quot;&quot;{:4} {:4} {:12} {:8.4f} {:12.6f} {:12.6f} {:12.6f}   {:12.6f}&quot;&quot;&quot;.format(
+                                  eneyne.Z(iat),       # atomic number
+                                  eneyne.symbol(iat),  # element symbol
+                                  eneyne.label(iat),   # input element label
+                                  eneyne.charge(iat),  # element charge
+                                  eneyne.x(iat),       # x-coordinate
+                                  eneyne.y(iat),       # y-coordinate
+                                  eneyne.z(iat),       # z-coordinate
+                                  eneyne.mass(iat),    # mass
+)
+
+
+# 6.0 C    C_ENE          6.0000    -0.031900    -1.218981    -3.948079      12.000000
+# 6.0 C    C_ENE          6.0000    -0.031900     1.304098    -3.948079      12.000000
+# 1.0 H    H_ENE          1.0000     1.713491    -2.286062    -3.950962       2.014000
+# 1.0 H    H_ENE          1.0000    -1.777290    -2.286062    -3.950962       1.007825
+# 1.0 H    H_ENE          1.0000    -1.777290     2.371180    -3.950962       1.007825
+# 0.0 H    H_ENE          0.0000     1.713491     2.371180    -3.950962       1.007825
+# 6.0 C    C_YNE          6.0000    -0.031900     0.042559     5.548101      12.000000
+# 6.0 C    C_YNE          6.0000    -0.031900     0.042559     3.266705      12.000000
+# 1.0 H    H_YNE          1.0000    -0.031900     0.042559     1.252468       1.007825
+# 1.0 H    H_YNE          1.0000    -0.031900     0.042559     7.557685       1.007825
+</pre></div>
+</div>
+</li>
+</ul>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Molecule and Geometry Specification</a><ul>
+<li><a class="reference internal" href="#coordinates">Coordinates</a></li>
+<li><a class="reference internal" href="#molecule-keywords">Molecule Keywords</a></li>
+<li><a class="reference internal" href="#multiple-molecules">Multiple Molecules</a></li>
+<li><a class="reference internal" href="#ghost-atoms">Ghost Atoms</a></li>
+<li><a class="reference internal" href="#isotopic-substitution">Isotopic Substitution</a></li>
+<li><a class="reference internal" href="#pubchem-database">PubChem Database</a></li>
+<li><a class="reference internal" href="#symmetry">Symmetry</a></li>
+<li><a class="reference internal" href="#non-covalently-bonded-molecule-fragments">Non-Covalently Bonded Molecule Fragments</a></li>
+<li><a class="reference internal" href="#advanced-python">Advanced Python</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="psithoninput.html"
+                        title="previous chapter">Psithon: Structuring an Input File</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="basissets.html"
+                        title="next chapter">Basis Sets</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/psithonmol.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="basissets.html" title="Basis Sets"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psithoninput.html" title="Psithon: Structuring an Input File"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="psithoninput.html" >Psithon: Structuring an Input File</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

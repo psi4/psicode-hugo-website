@@ -1,0 +1,455 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to GDMA Distributed Multipole Analysis by A. J. Stone — gdma()</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'add49b9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interface to Libint by E. Valeev" href="libint.html" />
+    <link rel="prev" title="Interface to gCP by S. Grimme" href="gcp.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="libint.html" title="Interface to Libint by E. Valeev"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gcp.html" title="Interface to gCP by S. Grimme"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/gdma.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="interface-to-gdma-distributed-multipole-analysis-by-a-j-stone-w-w-gdma">
+<span id="sec-gdma"></span><span id="index-0"></span><h1>Interface to GDMA Distributed Multipole Analysis by A. J. Stone — <a class="reference internal" href="#psi4.gdma" title="psi4.gdma"><code class="xref py py-func docutils literal"><span class="pre">gdma()</span></code></a><a class="headerlink" href="#interface-to-gdma-distributed-multipole-analysis-by-a-j-stone-w-w-gdma" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Anthony J. Stone, Andrew C. Simmonett</em></p>
+<p><em>Section author: Andrew C. Simmonett</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__gdma.html#apdx-gdma"><span class="std std-ref">Keywords</span></a>, <span class="xref std std-ref">PSI Variables</span>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/src/psi4/gdma_interface">GDMA_INTERFACE</a></p>
+<a class="reference external image-reference" href="https://github.com/psi4/gdma"><img alt="https://img.shields.io/badge/home-gdma-5077AB.svg" src="https://img.shields.io/badge/home-gdma-5077AB.svg" /></a>
+<br><a class="reference external image-reference" href="http://www-stone.ch.cam.ac.uk/documentation/gdma/manual.pdf"><img alt="https://img.shields.io/badge/docs-latest-5077AB.svg" src="https://img.shields.io/badge/docs-latest-5077AB.svg" /></a>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Binary</strong></p>
+<ul>
+<li><a class="first reference external image-reference" href="https://anaconda.org/psi4/gdma"><img alt="https://anaconda.org/psi4/gdma/badges/version.svg" src="https://anaconda.org/psi4/gdma/badges/version.svg" /></a>
+</li>
+<li><p class="first">GDMA is available as a conda package for Linux and macOS (and Windows, through the Ubuntu shell).</p>
+</li>
+<li><p class="first">If using the <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> binary, gdma has already been installed alongside.</p>
+</li>
+<li><p class="first">If using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> built from source, and anaconda or miniconda has
+already been installed (instructions at <a class="reference internal" href="conda.html#sec-quickconda"><span class="std std-ref">Quick Installation</span></a>),
+gdma can be obtained through <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">gdma</span></code>.
+Then enable it as a feature with <strong class="makevar">ENABLE_gdma</strong>,
+hint its location with <strong class="makevar">CMAKE_PREFIX_PATH</strong>,
+and rebuild <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> to detect gdma and activate dependent code.</p>
+</li>
+<li><p class="first">To remove a conda installation, <code class="docutils literal"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">gdma</span></code>.</p>
+</li>
+</ul>
+<p><strong>Source</strong></p>
+<ul>
+<li><a class="first reference external image-reference" href="https://github.com/psi4/gdma"><img alt="https://img.shields.io/github/tag/psi4/gdma.svg?maxAge=2592000" src="https://img.shields.io/github/tag/psi4/gdma.svg?maxAge=2592000" /></a>
+</li>
+<li><p class="first">If using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> built from source and you want gdma built from
+from source also,
+enable it as a feature with <strong class="makevar">ENABLE_gdma</strong>,
+and let the build system fetch and build it and activate dependent code.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p>The distributed multipole analysis (DMA) technique, developed by Anthony J.
+Stone and implemented by him into the <a class="reference external" href="http://www-stone.ch.cam.ac.uk/programs.html">GDMA package</a>, is available in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>.
+The current implementation simply embeds Stone&#8217;s GDMA code into the main
+executable, and generates the appropriate input files automatically.  The
+program takes as input a data file, and a Gaussian formatted checkpoint (see
+Section <a class="reference internal" href="fchk.html#sec-fchk"><span class="std std-ref">FCHK</span></a>) file.  The simplest usage of the GDMA code is
+demonstrated below, along with a listing of the options supported; these
+options correspond to the options described in the
+<a class="reference download internal" href="_downloads/gdma-2.2.06.pdf" download=""><code class="xref download docutils literal"><span class="pre">GDMA</span> <span class="pre">manual</span></code></a>.</p>
+<p>If more advanced usage is desired, which is not is permitted by the options
+listed below, the user may provide their own data file containing keywords to
+control the GDMA code.  Simply place the data file in the directory <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+is called from, and provide the file name as the datafile argument to the
+<a class="reference internal" href="#psi4.gdma" title="psi4.gdma"><code class="xref py py-func docutils literal"><span class="pre">gdma()</span></code></a> routine.  For example, if GDMA data file is called
+<em>control.dma</em>, the GDMA code is called as follows:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">grad</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="s1">&#39;mp2&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">gdma</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="n">datafile</span><span class="o">=</span><span class="s1">&#39;control.dma&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>An FCHK file will be generated for the GDMA code to read; this file will have
+the prefix given by <a class="reference internal" href="autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> (if set), or else by the name
+of the output file plus the name of the current molecule, and the suffix will
+be &#8216;.fchk&#8217;.  This FCHK file name should be passed to the &#8216;File&#8217; keyword in the
+DGMA data file, to ensure that the GDMA code reads the correct wavefunction
+information.</p>
+<p>After running, two matrices of results can be accessed:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">dma_results</span> <span class="o">=</span> <span class="n">get_array_variable</span><span class="p">(</span><span class="s1">&#39;DMA DISTRIBUTED MULTIPOLES&#39;</span><span class="p">)</span>
+<span class="n">tot_results</span> <span class="o">=</span> <span class="n">get_array_variable</span><span class="p">(</span><span class="s1">&#39;DMA TOTAL MULTIPOLES&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>The first contains distributed multipoles, in units given by
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-gdma-multipole-units-gdma"><span class="xref std std-term">GDMA_MULTIPOLE_UNITS</span></a>, with the row index corresponding to the site and
+the column index referencing the multipole component.  Both indices are zero
+based, and the <span class="math">\(Q^l_m\)</span> components of the multipoles are ordered as
+<span class="math">\(Q^0_0, Q^1_0, Q^1_{1c}, Q^1_{1s}, Q^2_0, Q^2_{1c}, Q^2_{1s}, Q^2_{2c},
+Q^2_{2s}, \ldots\)</span>  The second matrix returned has a single row, whose columns
+are the total multipoles, translated to <a class="reference internal" href="autodoc_glossary_options_c.html#term-gdma-origin-gdma"><span class="xref std std-term">GDMA_ORIGIN</span></a>, and summed.</p>
+<dl class="function">
+<dt id="psi4.gdma">
+<code class="descclassname">psi4.</code><code class="descname">gdma</code><span class="sig-paren">(</span><em>wfn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/driver.html#gdma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#psi4.gdma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to use wavefunction information in <em>wfn</em> and, if specified,
+additional commands in <em>filename</em> to run GDMA analysis.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.6.</span></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>wfn</strong> (<a class="reference internal" href="psi4api.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal"><span class="pre">Wavefunction</span></code></a>) &#8211; set of molecule, basis, orbitals from which to generate DMA analysis</li>
+<li><strong>datafile</strong> (<em>string</em>) &#8211; optional control file (see GDMA manual) to peform more complicated DMA
+analyses.  If this option is used, the File keyword must be set to read
+a filename.fchk, where filename is provided by <a class="reference internal" href="autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> .</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] DMA analysis from MP2 wavefunction.  N.B. gradient must be requested to generate MP2 density.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grad</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="s1">&#39;mp2&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gdma</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</dd></dl>
+
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="gdma-limit">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-gdma-limit-gdma"><span class="xref std std-term">GDMA_LIMIT</span></a><a class="headerlink" href="#gdma-limit" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The order of multipole expansion on each site. Currently limited to the same order for all sites; for more advanced usage a user-provided GDMA data file should be provided.</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="gdma-origin">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-gdma-origin-gdma"><span class="xref std std-term">GDMA_ORIGIN</span></a><a class="headerlink" href="#gdma-origin" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The origin (in Angstrom, expressed as an [x, y, z] array) about which the total multipoles will be computed during DMA. Useful for determining single site expansions at an arbitrary point.</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="gdma-multipole-units">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-gdma-multipole-units-gdma"><span class="xref std std-term">GDMA_MULTIPOLE_UNITS</span></a><a class="headerlink" href="#gdma-multipole-units" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether to print DMA results in atomic units or SI.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: AU</li>
+<li><strong>Default</strong>: AU SI</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="gdma-radius">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-gdma-radius-gdma"><span class="xref std std-term">GDMA_RADIUS</span></a><a class="headerlink" href="#gdma-radius" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The radii to be used, overriding the defaults. Specified as an array [ n1, r1, n2, r2, ... ] where n1,n2,n3... are atom type strings and r1,r2,r3 are radii in Angstrom.</p>
+<ul class="simple">
+<li><strong>Type</strong>: array</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="gdma-switch">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-gdma-switch-gdma"><span class="xref std std-term">GDMA_SWITCH</span></a><a class="headerlink" href="#gdma-switch" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The value to switch between the older standard DMA and the new grid-based approach. Pairs of primitives whose exponents sum is above this value will be treated using standard DMA. Set to 0 to force all pairs to be treated with standard DMA.</p>
+<ul class="simple">
+<li><strong>Type</strong>: double</li>
+<li><strong>Default</strong>: 4.0</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="how-to-configure-gdma-for-building-psi4">
+<span id="cmake-gdma"></span><h2>How to configure gdma for building Psi4<a class="headerlink" href="#how-to-configure-gdma-for-building-psi4" title="Permalink to this headline">¶</a></h2>
+<p><strong>Role and Dependencies</strong></p>
+<ul class="simple">
+<li>Role — In <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>, GDMA is a library that provides additional
+quantum chemical capabilities (multipole analysis).</li>
+<li>Downstream Dependencies — <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> (<span class="math">\(\Leftarrow\)</span> optional) gdma</li>
+<li>Upstream Dependencies — gdma <span class="math">\(\Leftarrow\)</span> Fortran</li>
+</ul>
+<p><strong>CMake Variables</strong></p>
+<ul class="simple">
+<li><strong class="makevar">ENABLE_gdma</strong> — CMake variable toggling whether Psi4 builds with gdma</li>
+<li><strong class="makevar">CMAKE_PREFIX_PATH</strong> — CMake list variable to specify where pre-built dependencies can be found. For gdma, set to an installation directory containing <code class="docutils literal"><span class="pre">include/GDMA/GDMA_MANGLE.h</span></code></li>
+<li><strong class="makevar">gdma_DIR</strong> — CMake variable to specify where pre-built gdma can be found. Set to installation directory containing <code class="docutils literal"><span class="pre">share/cmake/gdma/gdmaConfig.cmake</span></code></li>
+<li><strong class="makevar">CMAKE_DISABLE_FIND_PACKAGE_gdma</strong> — CMake variable to force internal build of gdma instead of detecting pre-built</li>
+</ul>
+<p><strong>Examples</strong></p>
+<ol class="upperalpha simple">
+<li>Build bundled</li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_gdma<span class="o">=</span>ON
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="2">
+<li>Build <em>without</em> gdma</li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="3">
+<li>Link against pre-built</li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_gdma<span class="o">=</span>ON -DCMAKE_PREFIX_PATH<span class="o">=</span>/path/to/gdma/root
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_gdma<span class="o">=</span>ON -Dgdma_DIR<span class="o">=</span>/path/to/gdma/configdir
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="4">
+<li>Build bundled despite pre-built being detectable</li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_gdma<span class="o">=</span>ON -DCMAKE_PREFIX_PATH<span class="o">=</span>/path/to/unwanted/gdma/root/and/wanted/other/dependencies/root -DCMAKE_DISABLE_FIND_PACKAGE_gdma<span class="o">=</span>ON
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Interface to GDMA Distributed Multipole Analysis by A. J. Stone — <code class="docutils literal"><span class="pre">gdma()</span></code></a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#input">Input</a></li>
+<li><a class="reference internal" href="#options">Options</a><ul>
+<li><a class="reference internal" href="#gdma-limit"><code class="docutils literal"><span class="pre">GDMA_LIMIT</span></code></a></li>
+<li><a class="reference internal" href="#gdma-origin"><code class="docutils literal"><span class="pre">GDMA_ORIGIN</span></code></a></li>
+<li><a class="reference internal" href="#gdma-multipole-units"><code class="docutils literal"><span class="pre">GDMA_MULTIPOLE_UNITS</span></code></a></li>
+<li><a class="reference internal" href="#gdma-radius"><code class="docutils literal"><span class="pre">GDMA_RADIUS</span></code></a></li>
+<li><a class="reference internal" href="#gdma-switch"><code class="docutils literal"><span class="pre">GDMA_SWITCH</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-configure-gdma-for-building-psi4">How to configure gdma for building Psi4</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="libint.html" title="Interface to Libint by E. Valeev"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="gcp.html" title="Interface to gCP by S. Grimme"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="https://github.com/psi4/psi4/edit/master/doc/sphinxman/source/gdma.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="https://github.com/psi4/psi4/tree/add49b9">1.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, The Psi4 Project.
+      Last updated on Wednesday, 17 May 2017 05:47AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

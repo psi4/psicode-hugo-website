@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.jajo &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.jajo</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1">#@BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># PSI4: an ab initio quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License along</span>
+<span class="c1"># with this program; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1">#@END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+
+
+<div class="viewcode-block" id="getrec"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.jajo.getrec">[docs]</a><span class="k">def</span> <span class="nf">getrec</span><span class="p">(</span><span class="n">reclabelarray</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads binary files JOBARC and JAINDX and returns contents</span>
+<span class="sd">    of each record in *reclabelarray*.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">knownlabels</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;AU_LENGT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CHARGE_E&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AMU     &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUC_MAGN&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MASS_ELE&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MASS_PRO&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;HBAR    &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AU_MASSP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SP_LIGHT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AU_EV   &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AVOGADRO&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AU_ENERG&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AU_CM-1 &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CM-1_KCA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CM-1_KJ &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AU_DIPOL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AU_VELOC&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AU_TIME &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EL_GFACT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EA_IRREP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;UHFRHF  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IFLAGS  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IFLAGS2 &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;OCCUPYA &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUMDROPA&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;JODAFLAG&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;TITLE   &quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NCNSTRNT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ICNSTRNT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;VCNSTRNT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NMPROTON&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NREALATM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COORDINT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;VARNAINT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COORD000&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ROTCONST&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ORIENT2 &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>  <span class="c1"># input orientation into interial frame</span>
+        <span class="s2">&quot;LINEAR  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NATOMS  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COORD   &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ORIENTMT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>  <span class="c1"># input orientation from ZMAT (mostly useful for Cartesians) to Cfour standard orientation</span>
+        <span class="s2">&quot;ATOMMASS&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ORIENT3 &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLPTGP&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLORDR&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLNIRR&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLNORB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLSYOP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLPERM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLMEMB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLPOPV&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLCLSS&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLSTGP&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ZMAT2MOL&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPPTGP&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPORDR&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPNIRR&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPNORB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPSYOP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPPERM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPMEMB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPPOPV&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPCLSS&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COMPSTGP&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BMATRIX &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUCREP  &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;TIEDCORD&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MPVMZMAT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ATOMCHRG&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NTOTSHEL&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NTOTPRIM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BASISEXP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BASISCNT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SHELLSIZ&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SHELLPRM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SHELLANG&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SHELLLOC&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SHOFFSET&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SHELLORB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;PROFFSET&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;PRIMORBT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULSHLNM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULSHLTP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULSHLSZ&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULSHLAT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;JODAOUT &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUMIIII &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUMIJIJ &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUMIIJJ &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUMIJKL &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NBASTOT &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NAOBASFN&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUMBASIR&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FAOBASIR&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AO2SO   &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLSOAO&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FULLAOSO&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AO2SOINV&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CART3CMP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CART2CMP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CMP3CART&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CMP2CART&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ANGMOMBF&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NBASATOM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NAOBFORB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MAP2ZMAT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CENTERBF&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CNTERBF0&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ANMOMBF0&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CMP2ZMAT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ZMAT2CMP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;OVERLAP &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ONEHAMIL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;AOOVRLAP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SHALFMAT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFEVCA0&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;RPPBMAT &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;OCCUPYA0&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SYMPOPOA&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SYMPOPVA&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFEVLA0&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFDENSA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FOCKA   &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SMHALF  &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EVECOAOA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ONEHMOA &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NOCCORB &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NVRTORB &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFENEG &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;TOTENERG&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IRREPALP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;OMEGA_A &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EVECAOXA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EVALORDR&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EVECAO_A&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EVCSYMAF&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EVCSYMAC&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;TESTVECT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MODROPA &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;VRHARMON&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NEWRECRD&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;VRCORIOL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;VRQUADRA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;VRANHARM&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFINERT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;DIDQ    &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFCOORD&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFDIPOL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFGRADI&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFDIPDR&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFNORMC&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFD2EZ &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFFREQS&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFORIEN&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUSECORD&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NZMATANH&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ISELECTQ&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NEXTGEOM&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NEXTGEO1&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FCMDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;GRDDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;DPMDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;DIPDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NMRDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SRTDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CHIDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;POLDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EFGDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;THEDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;JFCDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;JSDDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;JSODISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;JDSODISP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CUBCOUNT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FCMMAPER&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;QPLSMINS&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CUBCOORD&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;PASS1   &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFFORDR&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFFSYOP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFFPERM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFNUMIC&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFAMAT &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFTTEN &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFLINER&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;DIPOLMOM&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;POLARTEN&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CHITENSO&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;EFGTENSO&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IRREPPOP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REORDERA&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IRREPBET&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFEVLB0&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFEVCB0&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IRREPCOU&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IDROPA  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;OCCSCF  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;VRTSCF  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFEVECA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NCOMPA  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NBASCOMP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFEVALA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCFEVALB&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA0  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA0X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA0I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB0  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB0X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB0I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA0  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA0X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA0I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB0  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB0X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB0I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA1  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA1X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA1I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB1  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB1X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB1I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA1  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA1X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA1I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB1  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB1X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB1I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAOA2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAOA2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAOA2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBOB2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBOB2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBOB2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBVA2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBVA2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBVA2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBOA2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBOA2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBOA2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVB2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVB2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVB2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOB2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOB2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOB2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAVA2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAVA2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAVA2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBVB2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBVB2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBVB2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAVB2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAVB2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAVB2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVAVA2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SVBVB2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOAOA2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB2X &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SOBOB2I &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SYMPOPOB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SYMPOPVB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;T2NORM  &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MOIOVEC &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MOIOWRD &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MOIOSIZ &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MOIODIS &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MOIOFIL &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ISYMTYP &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;TOTRECMO&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;TOTWRDMO&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;RELDENSA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IINTERMA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;OCCNUM_A&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SCRATCH &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SETUP2  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MOLHES2 &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;GRAD2   &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;COORDMAS&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUCMULT &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SYMCOORD&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SYMCOOR2&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SYMCOOR3&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SYMMLENG&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SKIP    &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NSYMPERT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NPERTB  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;TRANSINV&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IBADNUMB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IBADINDX&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IBADIRRP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IBADPERT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;IBADSPIN&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;TREATPER&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MAXAODSZ&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;PERTINFO&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;GRADIENT&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;HESSIANM&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;GRDZORDR&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;D2EZORDR&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REALCORD&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;DUMSTRIP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BMATRIXC&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REALATOM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NORMCORD&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;DIPDERIV&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;I4CDCALC&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FREQUENC&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;RATMMASS&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;RATMPOSN&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;DEGENERT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFSHILD&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CORIZETA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NMPOINTX&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFD3EDX&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BPPTOB  &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BPTOB   &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BSRTOB  &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;BARTOB  &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;VRTOTAL &quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;D2DIPOLE&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;D3DIPOLE&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;D1DIPOLE&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFNORM2&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;NUSECOR2&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FCMDISP2&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;RGTDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CUBCOOR1&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;CUBCOOR2&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFFPEM2&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;RGTTENSO&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFFPER2&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFD4EDX&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ZPE_ANHA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;OPENSLOT&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+
+        <span class="s2">&quot;BOLTZMAN&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;MRCCOCC &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELPTGP&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELORDR&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELNIRR&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELNORB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELSYOP&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELPERM&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELMEMB&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELPOPV&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELCLSS&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;ABELSTGP&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REALCHRG&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>      <span class="c1"># atom/mol? charge taking into acct edp</span>
+        <span class="s2">&quot;NSOSCF  &quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>      <span class="c1"># whether is spin orbital calc?</span>
+        <span class="s2">&quot;SCFVCFLA&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>       <span class="c1"># scf vector expanded from sph to cart basis for symm anal - determin orb sym</span>
+        <span class="s2">&quot;EFG_SYM1&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>       <span class="c1"># symmetry property of components of electric field gradient  integrals</span>
+        <span class="s2">&quot;EFG_SYM2&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>       <span class="c1"># symm prop of comp of EFG</span>
+
+        <span class="s2">&quot;DCTDISPL&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;DANGERUS&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>   <span class="c1">#?</span>
+        <span class="s2">&quot;FULLCHAR&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;FULLDEGN&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;FULLLABL&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;FULLNIRX&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;COMPCHAR&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;COMPDEGN&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;COMPLABL&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;COMPNIRX&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;ROTVECX &quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;ROTVECY &quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;ROTVECZ &quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;COMPNSYQ&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;COMPSYQT&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;COMPSYMQ&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;TRAVECX &quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;TRAVECY &quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;TRAVECZ &quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;NVIBSYM &quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;NUMVIBRT&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;SBGRPSYM&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;ORDERREF&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;OPERSREF&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;NVIBSYMF&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;FULLNSYQ&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;FULLSYQT&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;FULLSYMQ&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;INVPSMAT&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;FDCOORDS&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;FDCALCTP&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;NUMPOINT&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;NPTIRREP&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;GRDPOINT&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;DIPPOINT&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;ENGPOINT&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;PASS1FIN&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;REFENERG&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;NEXTCALC&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;PRINSPIN&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;PRINFROM&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;PRININTO&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;NEXTGEOF&quot;</span><span class="p">:</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;ZPE_HARM&quot;</span><span class="p">:</span> <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;NDROPPED&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;REFCPTGP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="s2">&quot;REFFPTGP&quot;</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="c1">#?</span>
+        <span class="p">}</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;JAINDX&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>  <span class="c1"># b is important -&gt; binary</span>
+        <span class="n">fileContent</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">fileLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fileContent</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fileLength</span> <span class="o">==</span> <span class="mi">16012</span><span class="p">:</span>
+        <span class="n">srcints</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">srcrecs</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="k">elif</span> <span class="n">fileLength</span> <span class="o">==</span> <span class="mi">16020</span><span class="p">:</span>
+        <span class="n">srcints</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">srcrecs</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="k">elif</span> <span class="n">fileLength</span> <span class="o">==</span> <span class="mi">24016</span><span class="p">:</span>
+        <span class="n">srcints</span> <span class="o">=</span> <span class="mi">8</span>
+        <span class="n">srcrecs</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="k">elif</span> <span class="n">fileLength</span> <span class="o">==</span> <span class="mi">24024</span><span class="p">:</span>
+        <span class="n">srcints</span> <span class="o">=</span> <span class="mi">8</span>
+        <span class="n">srcrecs</span> <span class="o">=</span> <span class="mi">8</span>
+
+    <span class="c1"># fixed number of slots for options</span>
+    <span class="n">nopt</span> <span class="o">=</span> <span class="mi">1000</span>
+
+    <span class="n">type2len</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;DOUBLE&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;INTEGER&#39;</span><span class="p">:</span> <span class="n">srcints</span><span class="p">,</span>
+        <span class="s1">&#39;CHARACTER&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="n">intlen2format</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span>
+        <span class="mi">8</span><span class="p">:</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="n">type2format</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;DOUBLE&#39;</span><span class="p">:</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;INTEGER&#39;</span><span class="p">:</span> <span class="n">intlen2format</span><span class="p">[</span><span class="n">type2len</span><span class="p">[</span><span class="s1">&#39;INTEGER&#39;</span><span class="p">]],</span>
+        <span class="s1">&#39;CHARACTER&#39;</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;&lt;&lt;  JAINDX  &gt;&gt;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">posf</span> <span class="o">=</span> <span class="n">srcrecs</span>
+    <span class="n">istr</span> <span class="o">=</span> <span class="n">intlen2format</span><span class="p">[</span><span class="n">srcrecs</span><span class="p">]</span>
+    <span class="n">jastart</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">istr</span><span class="p">,</span> <span class="n">fileContent</span><span class="p">[:</span><span class="n">posf</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%10s%10d%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">posf</span><span class="p">))</span>
+
+    <span class="n">poss</span> <span class="o">=</span> <span class="n">posf</span>
+    <span class="n">posf</span> <span class="o">=</span> <span class="n">poss</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">nopt</span>
+    <span class="n">istr</span> <span class="o">=</span> <span class="s1">&#39;8s&#39;</span> <span class="o">*</span> <span class="n">nopt</span>
+    <span class="n">jaindx</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">istr</span><span class="p">,</span> <span class="n">fileContent</span><span class="p">[</span><span class="n">poss</span><span class="p">:</span><span class="n">posf</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%10s%10d%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;jaindx&#39;</span><span class="p">,</span> <span class="n">poss</span><span class="p">,</span> <span class="n">posf</span><span class="p">))</span>
+
+    <span class="n">poss</span> <span class="o">=</span> <span class="n">posf</span>
+    <span class="n">posf</span> <span class="o">=</span> <span class="n">poss</span> <span class="o">+</span> <span class="n">srcints</span> <span class="o">*</span> <span class="n">nopt</span>
+    <span class="n">istr</span> <span class="o">=</span> <span class="n">intlen2format</span><span class="p">[</span><span class="n">srcints</span><span class="p">]</span> <span class="o">*</span> <span class="n">nopt</span>
+    <span class="n">jaindx2</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">istr</span><span class="p">,</span> <span class="n">fileContent</span><span class="p">[</span><span class="n">poss</span><span class="p">:</span><span class="n">posf</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%10s%10d%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;jaindx2&#39;</span><span class="p">,</span> <span class="n">poss</span><span class="p">,</span> <span class="n">posf</span><span class="p">))</span>
+
+    <span class="n">poss</span> <span class="o">=</span> <span class="n">posf</span>
+    <span class="n">posf</span> <span class="o">=</span> <span class="n">poss</span> <span class="o">+</span> <span class="n">srcints</span> <span class="o">*</span> <span class="n">nopt</span>
+    <span class="n">istr</span> <span class="o">=</span> <span class="n">intlen2format</span><span class="p">[</span><span class="n">srcints</span><span class="p">]</span> <span class="o">*</span> <span class="n">nopt</span>
+    <span class="n">jaindx3</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">istr</span><span class="p">,</span> <span class="n">fileContent</span><span class="p">[</span><span class="n">poss</span><span class="p">:</span><span class="n">posf</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%10s%10d%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;jaindx3&#39;</span><span class="p">,</span> <span class="n">poss</span><span class="p">,</span> <span class="n">posf</span><span class="p">))</span>
+
+    <span class="n">poss</span> <span class="o">=</span> <span class="n">posf</span>
+    <span class="n">posf</span> <span class="o">=</span> <span class="n">poss</span> <span class="o">+</span> <span class="n">srcints</span>
+    <span class="n">istr</span> <span class="o">=</span> <span class="n">intlen2format</span><span class="p">[</span><span class="n">srcints</span><span class="p">]</span>
+    <span class="n">jamid</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">istr</span><span class="p">,</span> <span class="n">fileContent</span><span class="p">[</span><span class="n">poss</span><span class="p">:</span><span class="n">posf</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%10s%10d%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="n">poss</span><span class="p">,</span> <span class="n">posf</span><span class="p">))</span>
+
+    <span class="n">poss</span> <span class="o">=</span> <span class="n">posf</span>
+    <span class="n">posf</span> <span class="o">=</span> <span class="n">poss</span> <span class="o">+</span> <span class="n">srcrecs</span>
+    <span class="n">istr</span> <span class="o">=</span> <span class="n">intlen2format</span><span class="p">[</span><span class="n">srcrecs</span><span class="p">]</span>
+    <span class="n">jaend</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">istr</span><span class="p">,</span> <span class="n">fileContent</span><span class="p">[</span><span class="n">poss</span><span class="p">:</span><span class="n">posf</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%10s%10d%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="n">poss</span><span class="p">,</span> <span class="n">posf</span><span class="p">))</span>
+
+    <span class="n">nrecs</span> <span class="o">=</span> <span class="n">jaindx</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;OPENSLOT&#39;</span><span class="p">)</span>  <span class="c1"># number of active records</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;File Length:&#39;</span><span class="p">,</span> <span class="n">fileLength</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;srcints Int Length:&#39;</span><span class="p">,</span> <span class="n">srcints</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;srcrecs Int Length:&#39;</span><span class="p">,</span> <span class="n">srcrecs</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;First Rec:&#39;</span><span class="p">,</span> <span class="n">jastart</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;Second Rec:&#39;</span><span class="p">,</span> <span class="n">jamid</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;Last Rec:&#39;</span><span class="p">,</span> <span class="n">jaend</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%20s%10d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;Full Records:&#39;</span><span class="p">,</span> <span class="n">nrecs</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;&lt;&lt;  JOBARC  &gt;&gt;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;JOBARC&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>  <span class="c1"># b is important -&gt; binary</span>
+        <span class="n">fileContent</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="n">returnRecords</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">poss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrecs</span><span class="p">):</span>
+        <span class="n">posf</span> <span class="o">=</span> <span class="n">poss</span> <span class="o">+</span> <span class="n">type2len</span><span class="p">[</span><span class="n">knownlabels</span><span class="p">[</span><span class="n">jaindx</span><span class="p">[</span><span class="n">item</span><span class="p">]]]</span> <span class="o">*</span> <span class="n">jaindx3</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+        <span class="n">istr</span> <span class="o">=</span> <span class="n">type2format</span><span class="p">[</span><span class="n">knownlabels</span><span class="p">[</span><span class="n">jaindx</span><span class="p">[</span><span class="n">item</span><span class="p">]]]</span> <span class="o">*</span> <span class="n">jaindx3</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">knownlabels</span><span class="p">[</span><span class="n">jaindx</span><span class="p">[</span><span class="n">item</span><span class="p">]]</span> <span class="o">==</span> <span class="s1">&#39;CHARACTER&#39;</span><span class="p">:</span>
+            <span class="n">bound</span> <span class="o">=</span> <span class="n">type2len</span><span class="p">[</span><span class="n">knownlabels</span><span class="p">[</span><span class="n">jaindx</span><span class="p">[</span><span class="n">item</span><span class="p">]]]</span> <span class="o">*</span> <span class="n">jaindx3</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">*</span> <span class="mi">8</span>
+            <span class="n">posf</span> <span class="o">=</span> <span class="n">poss</span> <span class="o">+</span> <span class="n">bound</span>
+            <span class="n">istr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">bound</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;s&#39;</span>
+        <span class="n">jobarc</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">istr</span><span class="p">,</span> <span class="n">fileContent</span><span class="p">[</span><span class="n">poss</span><span class="p">:</span><span class="n">posf</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="c1">#print item, istr, poss, posf, &#39;\t&#39;, jaindx[item], jaindx2[item], jaindx3[item], jobarc</span>
+            <span class="k">if</span> <span class="n">jaindx3</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">120</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">jaindx</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">jaindx2</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">jaindx3</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">jobarc</span><span class="p">)</span>
+
+        <span class="n">poss</span> <span class="o">=</span> <span class="n">posf</span>
+        <span class="k">if</span> <span class="n">jaindx</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="ow">in</span> <span class="n">reclabelarray</span><span class="p">:</span>
+            <span class="n">returnRecords</span><span class="p">[</span><span class="n">jaindx</span><span class="p">[</span><span class="n">item</span><span class="p">]]</span> <span class="o">=</span> <span class="n">jobarc</span>
+
+    <span class="k">return</span> <span class="n">returnRecords</span></div>
+
+<span class="c1">#if __name__ == &quot;__main__&quot;:</span>
+<span class="c1">#    want = [&#39;NATOMS  &#39;, &#39;AU_LENGT&#39;, &#39;COORD   &#39;, &#39;HBAR    &#39;, &#39;ATOMCHRG&#39;]</span>
+<span class="c1">##    got = get_jajo_record(want)</span>
+<span class="c1">#    got = getrec(want)</span>
+<span class="c1">#    for item in got.keys():</span>
+<span class="c1">#        print item, got[item]</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

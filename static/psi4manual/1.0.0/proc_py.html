@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Adding Methods to Driver &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Programming: Using the Core Libraries" href="programming.html" />
+    <link rel="next" title="BasisSet" href="prog_basissets.html" />
+    <link rel="prev" title="LibOptions: globals, locals, has_changed and all that" href="optionshandling.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prog_basissets.html" title="BasisSet"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optionshandling.html" title="LibOptions: globals, locals, has_changed and all that"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="programming.html" accesskey="U">Programming: Using the Core Libraries</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="adding-methods-to-driver">
+<span id="sec-proc-py"></span><h1>Adding Methods to Driver<a class="headerlink" href="#adding-methods-to-driver" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="proc-py">
+<h2><code class="docutils literal"><span class="pre">proc.py</span></code><a class="headerlink" href="#proc-py" title="Permalink to this headline">¶</a></h2>
+<p>This is concerned at present with normal methods added first to the
+procedures table in driver.py that associates method names with functions
+to run them located in proc.py .</p>
+<p>The function should start with a declaration, as below. <code class="docutils literal"><span class="pre">methodname</span></code> is
+never seen by users, so it&#8217;s good to be specific; if there&#8217;s lots of
+modules that can run mp2, call methodname modulenamemethodname, perhaps.
+The function must always take as arguments <code class="docutils literal"><span class="pre">(name,</span> <span class="pre">**kwargs)</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span># energy method
+def run_methodname(name, **kwargs):
+
+# gradient method
+def run_methodname_gradient(name, **kwargs):
+</pre></div>
+</div>
+<p>If the function needs to test the identity of <code class="docutils literal"><span class="pre">name</span></code> several times, it
+can be convenient to predefine the lowercase version of the variable. The
+case of all other py-side options (in kwargs) has already been handled by
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a>, etc. in driver.py and need not be repeated here.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># include if convenient</span>
+<span class="n">lowername</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+<span class="c1"># never include</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs_lower</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It&#8217;s often necessary to The function often needs to set options for the
+c-side modules it calls. In order that the state of the options set by the
+user remains when control is returned to the user, an
+<code class="xref py py-class docutils literal"><span class="pre">OptionsState</span></code> object is set up. See
+<a class="reference internal" href="optionshandling.html#sec-handlingoptions-py"><span>LibOptions: globals, locals, has_changed and all that</span></a> for details. <em>All</em> options set by the
+function need to be included here, and <em>only</em> options set by the function
+should be included. Most options should be associated with a particular
+module, but a few (see below) are given without module.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># include if any options set</span>
+<span class="n">optstash</span> <span class="o">=</span> <span class="n">OptionsState</span><span class="p">(</span>
+    <span class="c1"># these and other basis options should have no associated module</span>
+    <span class="p">[</span><span class="s1">&#39;BASIS&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;DF_BASIS_SCF&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;DF_BASIS_MP2&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;PUREAM&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;FREEZE_CORE&#39;</span><span class="p">],</span>
+    <span class="c1"># all others should have an associated module</span>
+    <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;GUESS&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;DFMP2&#39;</span><span class="p">,</span> <span class="s1">&#39;MP2_OS_SCALE&#39;</span><span class="p">],</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>If options need to be set, set them anywhere here. Options should be set
+locally to a module, except for those without a module in
+<code class="xref py py-class docutils literal"><span class="pre">OptionsState</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># include if necessary as globals</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">,</span> <span class="n">guessbasis</span><span class="p">)</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s1">&#39;DF_BASIS_SCF&#39;</span><span class="p">,</span> <span class="n">guessbasisdf</span><span class="p">)</span>
+
+<span class="c1"># include if necessary as locals</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;TRANSQT2&#39;</span><span class="p">,</span> <span class="s1">&#39;WFN&#39;</span><span class="p">,</span> <span class="s1">&#39;MP2&#39;</span><span class="p">)</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;CCSORT&#39;</span><span class="p">,</span> <span class="s1">&#39;WFN&#39;</span><span class="p">,</span> <span class="s1">&#39;MP2&#39;</span><span class="p">)</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;MP2&#39;</span><span class="p">,</span> <span class="s1">&#39;WFN&#39;</span><span class="p">,</span> <span class="s1">&#39;MP2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the regular scf module is to be run, run it through
+<code class="xref py py-func docutils literal"><span class="pre">scf_helper()</span></code> so that cast-up can be used. Also, add
+the option to pass the reference wavefunciton by pre-running scf,
+then running the module with the <code class="docutils literal"><span class="pre">ref_wfn</span></code> kwarg.  Also, if the full
+two-electron integrals are necessary for the post-scf, compute them if
+only the df integrals were run previously.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Bypass the scf call if a reference wavefunction is given</span>
+
+<span class="n">ref_wfn</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ref_wfn&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">ref_wfn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">ref_wfn</span> <span class="o">=</span> <span class="n">scf_helper</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># If the scf type is DF/CD, then the AO integrals were never written to disk</span>
+    <span class="k">if</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;SCF_TYPE&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;DF&#39;</span><span class="p">,</span> <span class="s1">&#39;CD&#39;</span><span class="p">]:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="n">ref_wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span><span class="o">.</span><span class="n">integrals</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Direct any post-scf modules to be run.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># include if further post-scf modules are needed</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">transqt2</span><span class="p">()</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">ccsort</span><span class="p">()</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">mp2</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If an <code class="xref py py-class docutils literal"><span class="pre">OptionsState</span></code> object was set up, those options
+need to be returned to the original user state with the following.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># include if optstash = OptionsState( was set up previously</span>
+<span class="n">optstash</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>No function should return anything. <code class="docutils literal"><span class="pre">CURRENT</span> <span class="pre">ENERGY</span></code> will be set by
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a>, etc.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># never include</span>
+<span class="k">return</span> <span class="n">returnvalue</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="managed-methods">
+<h2>Managed Methods<a class="headerlink" href="#managed-methods" title="Permalink to this headline">¶</a></h2>
+<p>When functionality overlaps between modules, a pattern is needed to (1)
+access each route through the code without contrivances like <code class="docutils literal"><span class="pre">ccsd2</span></code>,
+<code class="docutils literal"><span class="pre">_ccsd</span></code>, <code class="docutils literal"><span class="pre">sdci</span></code> and (2) apportion defaulting among the modules, taking
+into account reference (RHF/UHF/ROHF) and calc type (CONV, DF, CD).
+Managed methods handle both these cases through the addition of a new
+keyword <a class="reference internal" href="autodoc_glossary_options_c.html#term-qc-module-globals"><span class="xref std std-term">QC_MODULE</span></a> and a set of type keywords analogous to
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-type-globals"><span class="xref std std-term">MP2_TYPE</span></a>: <a class="reference internal" href="autodoc_glossary_options_c.html#term-mp-type-globals"><span class="xref std std-term">MP_TYPE</span></a>,
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-ci-type-globals"><span class="xref std std-term">CI_TYPE</span></a>, <a class="reference internal" href="autodoc_glossary_options_c.html#term-cc-type-globals"><span class="xref std std-term">CC_TYPE</span></a>, which can have values <code class="docutils literal"><span class="pre">CONV</span></code>,
+<code class="docutils literal"><span class="pre">DF</span></code>, and <code class="docutils literal"><span class="pre">CD</span></code>. These are all <em>global</em> keywords, as their values are
+shared among modules rather than (or in addition to) being used internally
+by the module). We&#8217;re sticking with <a class="reference internal" href="autodoc_glossary_options_c.html#term-scf-type-scf"><span class="xref std std-term">SCF_TYPE</span></a> and
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-mp2-type-globals"><span class="xref std std-term">MP2_TYPE</span></a> defaulting to <code class="docutils literal"><span class="pre">DF</span></code>, while everything higher defaults
+to <code class="docutils literal"><span class="pre">CONV</span></code>. In <a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/python/driver.py">psi4/share/python/driver.py</a>, a managed method calls a
+&#8220;select&#8221; function rather than a &#8220;run&#8221; function.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>procedures = {
+    &#39;energy&#39;: {
+        &#39;scf&#39;           : run_scf,
+        &#39;mp3&#39;           : select_mp3,
+        &#39;dcft&#39;          : run_dcft,
+</pre></div>
+</div>
+<p>Then in <a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/python/proc.py">psi4/share/python/proc.py</a>, the select function runs through
+reference (always outer loop) and type (inner loop) to specify the proc
+function to call for any able, non-default module (<em>e.g.</em>, <code class="docutils literal"><span class="pre">mtd_type</span> <span class="pre">==</span>
+<span class="pre">'DETCI'</span></code> ) or able, default module (<em>e.g.</em>, <code class="docutils literal"><span class="pre">mtd_typd</span> <span class="pre">==</span> <span class="pre">['',</span> <span class="pre">'FNOCC']</span></code> ).
+Don&#8217;t worry about &#8216;else&#8217; statements as anything that falls through will be
+caught and a readable error generated.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">select_mp3</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function selecting the algorithm for a MP3 energy call</span>
+<span class="sd">    and directing to specified or best-performance default modules.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;REFERENCE&#39;</span><span class="p">)</span>
+    <span class="n">mtd_type</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;MP_TYPE&#39;</span><span class="p">)</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;QC_MODULE&#39;</span><span class="p">)</span>
+    <span class="c1"># Considering only [df]occ/fnocc/detci</span>
+
+    <span class="n">func</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;RHF&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mtd_type</span> <span class="o">==</span> <span class="s1">&#39;CONV&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span> <span class="o">==</span> <span class="s1">&#39;DETCI&#39;</span><span class="p">:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_detci</span>
+            <span class="k">elif</span> <span class="n">module</span> <span class="o">==</span> <span class="s1">&#39;FNOCC&#39;</span><span class="p">:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_fnocc</span>
+            <span class="k">elif</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;OCC&#39;</span><span class="p">]:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_occ</span>
+        <span class="k">elif</span> <span class="n">mtd_type</span> <span class="o">==</span> <span class="s1">&#39;DF&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;OCC&#39;</span><span class="p">]:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_dfocc</span>
+        <span class="k">elif</span> <span class="n">mtd_type</span> <span class="o">==</span> <span class="s1">&#39;CD&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;OCC&#39;</span><span class="p">]:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_dfocc</span>
+    <span class="k">elif</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;UHF&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mtd_type</span> <span class="o">==</span> <span class="s1">&#39;CONV&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;OCC&#39;</span><span class="p">]:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_occ</span>
+        <span class="k">elif</span> <span class="n">mtd_type</span> <span class="o">==</span> <span class="s1">&#39;DF&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;OCC&#39;</span><span class="p">]:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_dfocc</span>
+        <span class="k">elif</span> <span class="n">mtd_type</span> <span class="o">==</span> <span class="s1">&#39;CD&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;OCC&#39;</span><span class="p">]:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_dfocc</span>
+    <span class="k">elif</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;ROHF&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mtd_type</span> <span class="o">==</span> <span class="s1">&#39;CONV&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;DETCI&#39;</span><span class="p">]:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">run_detci</span>
+
+    <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ManagedMethodError</span><span class="p">([</span><span class="s1">&#39;select_mp3&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;MP_TYPE&#39;</span><span class="p">,</span> <span class="n">mtd_type</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">module</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Naturally, in the run function, you must either use the type keyword for
+type switching or translate it into whatever <code class="docutils literal"><span class="pre">DO_CD</span></code>-like keywords your
+module uses. At run time with a closed-shell molecule,</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;mp3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will run OCC, while</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set qc_module fnocc
+energy(&#39;mp3&#39;)
+</pre></div>
+</div>
+<p>will run FNOCC mp3.</p>
+<p>A special case is DETCI that <em>can</em> run mp3, but oughtn&#8217;t to be used for such. So above, ROHF CONV mp3 has no default, but can still access the detci code with</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set reference rohf
+set qc_module detci
+energy(&#39;mp3&#39;)
+</pre></div>
+</div>
+<p>While the below gives an error</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>set reference rohf
+energy(&#39;mp3&#39;)
+</pre></div>
+</div>
+<p>Again, whenever a single method name needs to call multiple proc.py run
+functions, it should be managed. In <a class="reference internal" href="notes_c.html#table-managedmethods"><span>Overlapping capabilities of Psi4</span></a> &#8220;Y&#8221; means method available in
+module, &#8220;D&#8221; means module is default for that method, &#8220;&#8221; mean method not
+available.</p>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Adding Methods to Driver</a><ul>
+<li><a class="reference internal" href="#proc-py"><code class="docutils literal"><span class="pre">proc.py</span></code></a></li>
+<li><a class="reference internal" href="#managed-methods">Managed Methods</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="optionshandling.html"
+                        title="previous chapter">LibOptions: globals, locals, has_changed and all that</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="prog_basissets.html"
+                        title="next chapter">BasisSet</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/proc_py.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prog_basissets.html" title="BasisSet"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optionshandling.html" title="LibOptions: globals, locals, has_changed and all that"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="programming.html" >Programming: Using the Core Libraries</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

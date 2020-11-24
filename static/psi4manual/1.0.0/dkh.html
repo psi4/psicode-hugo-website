@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" />
+    <link rel="next" title="Interface to programs through FCHK files, fchk()" href="fchk.html" />
+    <link rel="prev" title="Interface to DFTD3 by S. Grimme" href="dftd3.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="fchk.html" title="Interface to programs through FCHK files, fchk()"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dftd3.html" title="Interface to DFTD3 by S. Grimme"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="interface-to-dkh-by-a-wolf-m-reiher-and-b-a-hess">
+<span id="sec-dkh"></span><span id="index-0"></span><h1>Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess<a class="headerlink" href="#interface-to-dkh-by-a-wolf-m-reiher-and-b-a-hess" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Justin M. Turney</em></p>
+<p><em>Section author: Justin M. Turney</em></p>
+<p><em>Module:</em>  <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/lib/libmints">DKH</a></p>
+<div class="section" id="input">
+<span id="sec-dkhinput"></span><h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p>For all electron calculations one can use the Douglas-Kroll-Hess (DKH)
+Hamiltonian to take into account scalar relativistic effects.</p>
+<p>Minimal input for DKH single-point computation looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule {
+Mg
+}
+
+set basis aug-cc-pvdz-dk
+set relativistic dkh
+
+energy(&#39;scf&#39;)
+</pre></div>
+</div>
+<p>By default a 2nd-order DKH calculation is performed. To change the default
+order use the <a class="reference internal" href="autodoc_glossary_options_c.html#term-dkh-order-globals"><span class="xref std std-term">DKH_ORDER</span></a> option. The version of the code found in
+<span class="sc">Psi4</span> is capable of up to 4th-order DKH calculations.</p>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="relativistic">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-relativistic-globals"><span class="xref std std-term">RELATIVISTIC</span></a><a class="headerlink" href="#relativistic" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Relativistic Hamiltonian type</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: NO, X2C</li>
+<li><strong>Default</strong>: NO</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dkh-order">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dkh-order-globals"><span class="xref std std-term">DKH_ORDER</span></a><a class="headerlink" href="#dkh-order" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Order of Douglas-Kroll-Hess</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 2</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<p>When using this code please make reference to the appropriate following paper:</p>
+<ul class="simple">
+<li>&#8220;The Generalized Douglas-Kroll Transformation,&#8221; A. Wolf,
+M. Reiher, and B. A. Hess, <em>J. Chem. Phys.</em> <strong>117</strong>, 9215 (2002).
+(doi: <a class="reference external" href="http://dx.doi.org/10.1063/1.1515314">10.1063/1.1515314</a>)</li>
+</ul>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess</a><ul>
+<li><a class="reference internal" href="#input">Input</a></li>
+<li><a class="reference internal" href="#keywords">Keywords</a><ul>
+<li><a class="reference internal" href="#relativistic"><code class="docutils literal"><span class="pre">RELATIVISTIC</span></code></a></li>
+<li><a class="reference internal" href="#dkh-order"><code class="docutils literal"><span class="pre">DKH_ORDER</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dftd3.html"
+                        title="previous chapter">Interface to DFTD3 by S. Grimme</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fchk.html"
+                        title="next chapter">Interface to programs through FCHK files, <code class="docutils literal"><span class="pre">fchk()</span></code></a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/dkh.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="fchk.html" title="Interface to programs through FCHK files, fchk()"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dftd3.html" title="Interface to DFTD3 by S. Grimme"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

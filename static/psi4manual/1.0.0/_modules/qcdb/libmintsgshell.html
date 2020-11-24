@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>qcdb.libmintsgshell &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="../../_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.libmintsgshell</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Class to</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c1">#MAX_IOFF = 30000</span>
+<span class="c1">#extern size_t ioff[MAX_IOFF];</span>
+<span class="c1">#</span>
+<span class="c1">#MAX_DF = 500</span>
+<span class="c1">#extern double df[MAX_DF];</span>
+<span class="c1">#</span>
+<span class="c1">#MAX_BC = 20</span>
+<span class="c1">#extern double bc[MAX_BC][MAX_BC];</span>
+<span class="c1">#</span>
+<span class="c1">#MAX_FAC = 100</span>
+<span class="c1">#extern double fac[MAX_FAC];</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1">#MAX_DF = 500</span>
+<span class="c1">#extern double df[MAX_DF];</span>
+<span class="c1">#</span>
+<span class="c1">## Globals</span>
+<span class="c1">#size_t ioff[MAX_IOFF];</span>
+<span class="c1">#double df[MAX_DF];</span>
+<span class="c1">#double bc[MAX_BC][MAX_BC];</span>
+<span class="c1">#double fac[MAX_FAC];</span>
+<span class="c1">#</span>
+<span class="c1">#def Wavefunction_initialize_singletons():</span>
+<span class="c1">#    done = False</span>
+<span class="c1">#</span>
+<span class="c1">#    if done:</span>
+<span class="c1">#        return</span>
+<span class="c1">#</span>
+<span class="c1">#    ioff[0] = 0;</span>
+<span class="c1">#    for (size_t i=1; i&lt;MAX_IOFF; ++i)</span>
+<span class="c1">#        ioff[i] = ioff[i-1] + i;</span>
+<span class="c1">#</span>
+<span class="c1">#    df[0] = 1.0;</span>
+<span class="c1">#    df[1] = 1.0;</span>
+<span class="c1">#    df[2] = 1.0;</span>
+<span class="c1">#    for (int i=3; i&lt;MAX_DF; ++i)</span>
+<span class="c1">#        df[i] = (i-1)*df[i-2];</span>
+<span class="c1">#</span>
+<span class="c1">#    for (int i=0; i&lt;MAX_BC; ++i)</span>
+<span class="c1">#        for (int j=0; j&lt;=i; ++j)</span>
+<span class="c1">#            bc[i][j] = combinations(i, j);</span>
+<span class="c1">#</span>
+<span class="c1">#    fac[0] = 1.0;</span>
+<span class="c1">#    for (int i=1; i&lt;MAX_FAC; ++i)</span>
+<span class="c1">#        fac[i] = i*fac[i-1];</span>
+<span class="c1">#</span>
+<span class="c1">#    done = True</span>
+
+
+<div class="viewcode-block" id="df"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.df">[docs]</a><span class="k">def</span> <span class="nf">df</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gives the double factorial of *n*&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">n</span> <span class="o">*</span> <span class="n">df</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="INT_NCART"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.INT_NCART">[docs]</a><span class="k">def</span> <span class="nf">INT_NCART</span><span class="p">(</span><span class="n">am</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gives the number of cartesian functions for an angular momentum.</span>
+<span class="sd">    define INT_NCART(am) ((am&gt;=0) ? ((((am)+2)*((am)+1))&gt;&gt;1) : 0)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(((</span><span class="n">am</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">am</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">am</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="INT_NPURE"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.INT_NPURE">[docs]</a><span class="k">def</span> <span class="nf">INT_NPURE</span><span class="p">(</span><span class="n">am</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gives the number of spherical functions for an angular momentum.</span>
+<span class="sd">    #define INT_NPURE(am) (2*(am)+1)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">am</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="INT_NFUNC"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.INT_NFUNC">[docs]</a><span class="k">def</span> <span class="nf">INT_NFUNC</span><span class="p">(</span><span class="n">pu</span><span class="p">,</span> <span class="n">am</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gives the number of functions for an angular momentum based on pu.</span>
+<span class="sd">    #define INT_NFUNC(pu,am) ((pu)?INT_NPURE(am):INT_NCART(am))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pu</span> <span class="o">==</span> <span class="s1">&#39;Cartesian&#39;</span> <span class="ow">or</span> <span class="n">pu</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">INT_NCART</span><span class="p">(</span><span class="n">am</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">INT_NPURE</span><span class="p">(</span><span class="n">am</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="INT_CARTINDEX"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.INT_CARTINDEX">[docs]</a><span class="k">def</span> <span class="nf">INT_CARTINDEX</span><span class="p">(</span><span class="n">am</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes offset index for cartesian function.</span>
+<span class="sd">    #define INT_CARTINDEX(am,i,j) (((i) == (am))? 0 : (((((am) - (i) + 1)*((am) - (i)))&gt;&gt;1) + (am) - (i) - (j)))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">am</span><span class="p">)</span> <span class="k">else</span> <span class="p">((((</span><span class="n">am</span> <span class="o">-</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">am</span> <span class="o">-</span> <span class="n">i</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">am</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="INT_ICART"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.INT_ICART">[docs]</a><span class="k">def</span> <span class="nf">INT_ICART</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a, b, and c compute a cartesian offset.</span>
+<span class="sd">    #define INT_ICART(a, b, c) (((((((a)+(b)+(c)+1)&lt;&lt;1)-(a))*((a)+1))&gt;&gt;1)-(b)-1)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">((((((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="INT_IPURE"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.INT_IPURE">[docs]</a><span class="k">def</span> <span class="nf">INT_IPURE</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given l and m compute a pure function offset.</span>
+<span class="sd">    #define INT_IPURE(l, m) ((l)+(m))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">l</span> <span class="o">+</span> <span class="n">m</span></div>
+
+
+<span class="c1"># Lookup array that when you index the angular momentum it returns the corresponding letter</span>
+<span class="n">PrimitiveType</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Normalized&#39;</span><span class="p">,</span> <span class="s1">&#39;Unnormalized&#39;</span><span class="p">]</span>
+<span class="n">GaussianType</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Cartesian&#39;</span><span class="p">,</span> <span class="s1">&#39;Pure&#39;</span><span class="p">]</span>  <span class="c1"># Cartesian = 0, Pure = 1</span>
+
+
+<div class="viewcode-block" id="ShellInfo"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo">[docs]</a><span class="k">class</span> <span class="nc">ShellInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class has the same behavior as GaussianShell, but implements everything using</span>
+<span class="sd">    slower data structures, which are easier to construct. These are used to build the</span>
+<span class="sd">    basis set, which builds more efficient pointer-based GaussianShell objects.</span>
+<span class="sd">    @param e An array of exponent values.</span>
+<span class="sd">    @param am Angular momentum.</span>
+<span class="sd">    @param pure Pure spherical harmonics, or Cartesian.</span>
+<span class="sd">    @param c An array of contraction coefficients.</span>
+<span class="sd">    @param nc The atomic center that this shell is located on. Must map</span>
+<span class="sd">    back to the correct atom in the owning BasisSet molecule. Used</span>
+<span class="sd">    in integral derivatives for indexing.</span>
+<span class="sd">    @param center The x, y, z position of the shell. This is passed to</span>
+<span class="sd">    reduce the number of calls to the molecule.</span>
+<span class="sd">    @param start The starting index of the first function this shell</span>
+<span class="sd">    provides. Used to provide starting positions in matrices.</span>
+<span class="sd">    @param pt Is the shell already normalized?</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">am</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">pure</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">pt</span><span class="o">=</span><span class="s1">&#39;Normalized&#39;</span><span class="p">):</span>
+        <span class="c1"># Angular momentum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="n">am</span>
+        <span class="c1"># Flag for pure angular momentum (Cartesian = 0, Pure = 1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">puream</span> <span class="o">=</span> <span class="n">pure</span>
+        <span class="c1"># Exponents (of length nprimitives_)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="c1"># Contraction coefficients (of length nprimitives_)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="c1"># ERD normalized contraction coefficients (of length nprimitives_)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYerd_coef</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Original (un-normalized) contraction coefficients (of length nprimitives)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">))]</span>
+        <span class="c1"># Atom number this shell goes to. Needed when indexing integral derivatives.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nc</span> <span class="o">=</span> <span class="n">nc</span>
+        <span class="c1"># Atomic center number in the Molecule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="c1"># How many cartesian functions? (1=s, 3=p, 6=d, ...)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYncartesian</span> <span class="o">=</span> <span class="n">INT_NCART</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+        <span class="c1"># How many functions? (1=s, 3=p, 5/6=d, ...) * Dependent on the value of puream_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYnfunction</span> <span class="o">=</span> <span class="n">INT_NFUNC</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+
+        <span class="c1"># Compute the normalization constants</span>
+        <span class="k">if</span> <span class="n">pt</span> <span class="o">==</span> <span class="s1">&#39;Unnormalized&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">normalize_shell</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">erd_normalize_shell</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ShellInfo.primitive_normalization"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.primitive_normalization">[docs]</a>    <span class="k">def</span> <span class="nf">primitive_normalization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalizes a single primitive.</span>
+<span class="sd">        @param p The primitive index to normalize.</span>
+<span class="sd">        @return Normalization constant to be applied to the primitive.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tmp1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">+</span> <span class="mf">1.5</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">tmp1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="nb">pow</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">df</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="ShellInfo.contraction_normalization"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.contraction_normalization">[docs]</a>    <span class="k">def</span> <span class="nf">contraction_normalization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalizes an entire contraction set. Applies the normalization to the coefficients</span>
+<span class="sd">        *  @param gs The contraction set to normalize.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">e_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">()):</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">+</span> <span class="mf">1.5</span><span class="p">)</span>
+                <span class="n">e_sum</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">z</span>
+
+        <span class="n">tmp</span> <span class="o">=</span> <span class="p">((</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)))</span> <span class="o">*</span> <span class="n">df</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">))</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">*</span> <span class="n">e_sum</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">())]</span>
+        <span class="c1"># Set the normalization</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">norm</span></div>
+
+<div class="viewcode-block" id="ShellInfo.normalize_shell"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.normalize_shell">[docs]</a>    <span class="k">def</span> <span class="nf">normalize_shell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handles calling primitive_normalization and</span>
+<span class="sd">        contraction_normalization for you.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">()):</span>
+            <span class="n">normalization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">primitive_normalization</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">normalization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contraction_normalization</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ShellInfo.erd_normalize_shell"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.erd_normalize_shell">[docs]</a>    <span class="k">def</span> <span class="nf">erd_normalize_shell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYerd_coef</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tsum</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">a1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">a2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">temp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">+</span> <span class="mf">1.5</span>
+                <span class="n">temp3</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a1</span> <span class="o">*</span> <span class="n">a2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">a1</span> <span class="o">+</span> <span class="n">a2</span><span class="p">)</span>
+                <span class="n">temp3</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">temp3</span><span class="p">,</span> <span class="n">temp2</span><span class="p">)</span>
+                <span class="n">temp</span> <span class="o">*=</span> <span class="n">temp3</span>
+                <span class="n">tsum</span> <span class="o">+=</span> <span class="n">temp</span>
+                <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">:</span>
+                    <span class="n">tsum</span> <span class="o">+=</span> <span class="n">temp</span>
+        <span class="n">prefac</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">prefac</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span> <span class="o">/</span> <span class="n">df</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prefac</span> <span class="o">/</span> <span class="n">tsum</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">PYerd_coef</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">norm</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ShellInfo.copy"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nc</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make a copy of the ShellInfo&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">nc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ShellInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">puream</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="s1">&#39;Unnormalized&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ShellInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">puream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="s1">&#39;Unnormalized&#39;</span><span class="p">)</span></div>
+        <span class="c1"># better to just deepcopy?</span>
+
+<div class="viewcode-block" id="ShellInfo.nprimitive"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.nprimitive">[docs]</a>    <span class="k">def</span> <span class="nf">nprimitive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The number of primitive Gaussians&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ShellInfo.nfunction"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.nfunction">[docs]</a>    <span class="k">def</span> <span class="nf">nfunction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Total number of basis functions&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">INT_NFUNC</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ShellInfo.ncartesian"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.ncartesian">[docs]</a>    <span class="k">def</span> <span class="nf">ncartesian</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Total number of functions if this shell was Cartesian&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYncartesian</span></div>
+
+<div class="viewcode-block" id="ShellInfo.am"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.am">[docs]</a>    <span class="k">def</span> <span class="nf">am</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The angular momentum of the given contraction&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span></div>
+
+<div class="viewcode-block" id="ShellInfo.amchar"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.amchar">[docs]</a>    <span class="k">def</span> <span class="nf">amchar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The character symbol for the angular momentum of the given contraction&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;spdfghiklmnopqrtuvwxyz&#39;</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ShellInfo.AMCHAR"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.AMCHAR">[docs]</a>    <span class="k">def</span> <span class="nf">AMCHAR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The character symbol for the angular momentum of the given contraction (upper case)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;SPDFGHIKLMNOPQRTUVWXYZ&#39;</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ShellInfo.is_cartesian"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.is_cartesian">[docs]</a>    <span class="k">def</span> <span class="nf">is_cartesian</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns true if contraction is Cartesian&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">puream</span> <span class="o">==</span> <span class="s1">&#39;Cartesian&#39;</span> <span class="k">else</span> <span class="bp">False</span></div>
+
+<div class="viewcode-block" id="ShellInfo.is_pure"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.is_pure">[docs]</a>    <span class="k">def</span> <span class="nf">is_pure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns true if contraction is pure&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">puream</span> <span class="o">==</span> <span class="s1">&#39;Pure&#39;</span> <span class="k">else</span> <span class="bp">False</span></div>
+
+<div class="viewcode-block" id="ShellInfo.center"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.center">[docs]</a>    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the center of the Molecule this shell is on&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span></div>
+
+<div class="viewcode-block" id="ShellInfo.ncenter"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.ncenter">[docs]</a>    <span class="k">def</span> <span class="nf">ncenter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the atom number this shell is on. Used by integral derivatives for indexing.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nc</span></div>
+
+<div class="viewcode-block" id="ShellInfo.exp"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the exponent of the given primitive&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">[</span><span class="n">prim</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ShellInfo.coef"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.coef">[docs]</a>    <span class="k">def</span> <span class="nf">coef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return coefficient of pi&#39;th primitive&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span><span class="p">[</span><span class="n">pi</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ShellInfo.erd_coef"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.erd_coef">[docs]</a>    <span class="k">def</span> <span class="nf">erd_coef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return ERD normalized coefficient of pi&#39;th primitive&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYerd_coef</span><span class="p">[</span><span class="n">pi</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ShellInfo.original_coef"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.original_coef">[docs]</a>    <span class="k">def</span> <span class="nf">original_coef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return unnormalized coefficient of pi&#39;th primitive&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span><span class="p">[</span><span class="n">pi</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ShellInfo.exps"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.exps">[docs]</a>    <span class="k">def</span> <span class="nf">exps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the exponent of the given primitive&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span></div>
+
+<div class="viewcode-block" id="ShellInfo.coefs"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.coefs">[docs]</a>    <span class="k">def</span> <span class="nf">coefs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return coefficient of pi&#39;th primitive and ci&#39;th contraction&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span></div>
+
+<div class="viewcode-block" id="ShellInfo.original_coefs"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.original_coefs">[docs]</a>    <span class="k">def</span> <span class="nf">original_coefs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return unnormalized coefficient of pi&#39;th primitive and ci&#39;th contraction&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span></div>
+
+<div class="viewcode-block" id="ShellInfo.pyprint"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.pyprint">[docs]</a>    <span class="k">def</span> <span class="nf">pyprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print out the shell&quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;    </span><span class="si">%c</span><span class="s2"> </span><span class="si">%3d</span><span class="s2"> 1.00</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AMCHAR</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">K</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">()):</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;               </span><span class="si">%20.8f</span><span class="s2"> </span><span class="si">%20.8f</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">[</span><span class="n">K</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span><span class="p">[</span><span class="n">K</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">text</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+                <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ShellInfo.pyprint_gamess"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.pyprint_gamess">[docs]</a>    <span class="k">def</span> <span class="nf">pyprint_gamess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print out the shell in Gamess format&quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">%c</span><span class="s2"> </span><span class="si">%3d</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AMCHAR</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">K</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprimitive</span><span class="p">()):</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">%3d</span><span class="s2"> </span><span class="si">%15.8f</span><span class="s2"> </span><span class="si">%15.8f</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span><span class="p">[</span><span class="n">K</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span><span class="p">[</span><span class="n">K</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">text</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+                <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;String representation of shell&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pyprint</span><span class="p">(</span><span class="n">outfile</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ShellInfo.normalize"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalize the angular momentum component&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">1.0</span></div>
+
+<div class="viewcode-block" id="ShellInfo.function_index"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.function_index">[docs]</a>    <span class="k">def</span> <span class="nf">function_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Basis function index where this shell starts.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span></div>
+
+<div class="viewcode-block" id="ShellInfo.set_function_index"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.ShellInfo.set_function_index">[docs]</a>    <span class="k">def</span> <span class="nf">set_function_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set basis function index where this shell starts.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">i</span></div></div>
+
+
+<div class="viewcode-block" id="GaussianShell"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.GaussianShell">[docs]</a><span class="k">class</span> <span class="nc">GaussianShell</span><span class="p">(</span><span class="n">ShellInfo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class with same information as :py:class:`ShellInfo`. In C++,</span>
+<span class="sd">    class uses more efficient data structures, but in Python differences</span>
+<span class="sd">    minimal.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">am</span><span class="p">,</span> <span class="n">nprimitive</span><span class="p">,</span> <span class="n">oc</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">pure</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        *  @param am Angular momentum.</span>
+<span class="sd">        *  @param pure Pure spherical harmonics, or Cartesian.</span>
+<span class="sd">        *  @param oc An array of contraction coefficients.</span>
+<span class="sd">        *  @param c An array of normalized contraction coefficients.</span>
+<span class="sd">        *  @param ec An array of ERD normalized contraction coefficients.</span>
+<span class="sd">        *  @param e An array of exponent values.</span>
+<span class="sd">        *  @param pure an enum describing whether this shell uses pure or Cartesian functions.</span>
+<span class="sd">        *  @param nc The atomic center that this shell is located on. Must map back to the correct atom in the owning BasisSet molecule_. Used in integral derivatives for indexing.</span>
+<span class="sd">        *  @param center The x, y, z position of the shell. This is passed to reduce the number of calls to the molecule.</span>
+<span class="sd">        *  @param start The starting index of the first function this shell provides. Used to provide starting positions in matrices.</span>
+<span class="sd">        *  @param pt Is the shell already normalized?</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="n">am</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYnprimitive</span> <span class="o">=</span> <span class="n">nprimitive</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">puream</span> <span class="o">=</span> <span class="n">pure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYexp</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYoriginal_coef</span> <span class="o">=</span> <span class="n">oc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYcoef</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYerd_coef</span> <span class="o">=</span> <span class="n">ec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nc</span> <span class="o">=</span> <span class="n">nc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYncartesian</span> <span class="o">=</span> <span class="n">INT_NCART</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PYnfunction</span> <span class="o">=</span> <span class="n">INT_NFUNC</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GaussianShell.nprimitive"><a class="viewcode-back" href="../../autodoc_driver.html#qcdb.libmintsgshell.GaussianShell.nprimitive">[docs]</a>    <span class="k">def</span> <span class="nf">nprimitive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The number of primitive Gaussians&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYnprimitive</span></div></div>
+
+
+
+<span class="c1">#GaussianShell(0, nprimitive_,</span>
+<span class="c1">#    uoriginal_coefficients_, ucoefficients_, uerd_coefficients_,</span>
+<span class="c1">#    uexponents_, GaussianType(0), 0, xyz_, 0)</span>
+<span class="c1">#</span>
+<span class="c1">#GaussianShell(am, shell_nprim,</span>
+<span class="c1">#    &amp;uoriginal_coefficients_[ustart+atom_nprim], &amp;ucoefficients_[ustart+atom_nprim], &amp;uerd_coefficients_[ustart+atom_nprim],</span>
+<span class="c1">#    &amp;uexponents_[ustart+atom_nprim], puream, n, xyz_ptr, bf_count)</span>
+<span class="c1">#</span>
+<span class="c1">#GaussianShell(am, shell_nprim,</span>
+<span class="c1">#    &amp;uoriginal_coefficients_[prim_count], &amp;ucoefficients_[prim_count], &amp;uerd_coefficients_[prim_count],</span>
+<span class="c1">#    &amp;uexponents_[prim_count], puream, center, xyz_, bf_count)</span>
+<span class="c1">#</span>
+<span class="c1">#ShellInfo(am, contractions, exponents, gaussian_type, 0, center, 0, Unnormalized)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

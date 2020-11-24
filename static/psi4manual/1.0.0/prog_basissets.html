@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>BasisSet &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Programming: Using the Core Libraries" href="programming.html" />
+    <link rel="next" title="Python Driver" href="autodoc_driver.html" />
+    <link rel="prev" title="Adding Methods to Driver" href="proc_py.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="autodoc_driver.html" title="Python Driver"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="proc_py.html" title="Adding Methods to Driver"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="programming.html" accesskey="U">Programming: Using the Core Libraries</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="basisset">
+<span id="sec-handlingbasisset"></span><h1>BasisSet<a class="headerlink" href="#basisset" title="Permalink to this headline">¶</a></h1>
+<p>Circa November 2014, basis set handling in <span class="sc">Psi4</span> has been revamped.
+Fear not that the beloved libmints BasisSet object has changed- rather,
+the user specification of basis sets, programmer&#8217;s API to BasisSet
+constructors, and the construction of BasisSet objects has been changed.</p>
+<div class="section" id="advantages-to-new-scheme-aka-why">
+<h2>Advantages to New Scheme (aka <em>Why</em>)<a class="headerlink" href="#advantages-to-new-scheme-aka-why" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Defaults for fitting basis sets set on a per-atom basis (<em>e.g.</em>, DF-SCF
+on metal-organic with cc-pVDZ uses cc-pVDZ-JKFIT for the organic and
+Def2-tzvpp (or something) for the metal) so that the user shouldn&#8217;t
+experience a failed job on account of incomplete fitting basis sets.</li>
+<li>All default info for auxiliary basis sets in one place. Programmer when
+calling for a new auxiliary BasisSet gives the fitting role if defaults
+need to be computed (e.g., JKFIT) and the orbital basis to compute
+defaults off of (e.g., get_option(BASIS)). This eliminates all the
+&#8220;corresponding_jkfit&#8221; boilerplate in <code class="docutils literal"><span class="pre">proc.py</span></code> and also means defaults
+can be assigned for non-uniform orbital basis sets.</li>
+<li>Assignment of basis sets to atoms proceeds through &#8220;all&#8221;, &#8220;by_symbol&#8221;
+(e.g., &#8220;Co&#8221;), or &#8220;by_label&#8221; (e.g., H1 or Co_mine). There is <em>no</em>
+assignment to atoms by number (except a bit internally where it&#8217;s safe)
+which can be ambiguous when the Molecule has been fragmented as for SAPT.</li>
+<li>Users don&#8217;t need to &#8220;set basis basisname&#8221; after every <cite>molecule {...}</cite>
+definition or activation because basis sets are not attached to the
+molecule at time option is set but at time BasisSet is built. Similarly,
+once can define a <cite>basis basisname {...}</cite> block and use it for multiple
+molecules.</li>
+</ul>
+<p>BasisSet gives the option name where any user intentions as to proper
+value may be found (DF_BASIS_SCF), the name by which the new basis can be
+recalled (get_str(&#8216;DF_BASIS_SCF&#8217;)), the fitting role if defaults need to
+be computed (JKFIT), the</p>
+</div>
+<div class="section" id="how-for-programmers">
+<h2><em>How</em> for Programmers<a class="headerlink" href="#how-for-programmers" title="Permalink to this headline">¶</a></h2>
+<p>To get a BasisSet object into your module, just call <cite>pyconstruct</cite> where
+formerly you called <cite>construct</cite>. There are two flavors, one for orbital
+basis sets and one for auxiliary basis sets. There&#8217;s no difference in the
+BasisSet objects they return or even the code used to assemble them- the
+two flavors are just for sane argument naming and to establish different
+signatures for Boost binding.</p>
+<div class="section" id="orbital-basis">
+<h3>Orbital Basis<a class="headerlink" href="#orbital-basis" title="Permalink to this headline">¶</a></h3>
+<p>Give the function a Molecule object for which to build basis, a label for
+the basis (generally, BASIS), and a hint for finding the basis. This last
+argument gets used to find a python function by that name camoflaged
+(that&#8217;s what <code class="docutils literal"><span class="pre">basis</span> <span class="pre">{...}</span></code> blocks in the input file get translated into)
+or failing that a string to find a gbs file defining the basis.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>// simple
+boost::shared_ptr&lt;BasisSet&gt; primary = BasisSet::pyconstruct_orbital(molecule,
+    &quot;BASIS&quot;, &quot;CC-PVDZ&quot;);
+
+// self-contained
+boost::shared_ptr&lt;BasisSet&gt; primary = BasisSet::pyconstruct_orbital(Process::environment.molecule(),
+    &quot;BASIS&quot;, Process::environment.options.get_str(&quot;BASIS&quot;));
+</pre></div>
+</div>
+</div>
+<div class="section" id="auxiliary-basis">
+<h3>Auxiliary Basis<a class="headerlink" href="#auxiliary-basis" title="Permalink to this headline">¶</a></h3>
+<p>Give the function a Molecule object for which to build basis, a label for
+the basis, a hint for finding the basis, a fitting role to apply if
+defaults need to be generated, and a hint for finding the orbital basis to
+build defaults against.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>// simple
+boost::shared_ptr&lt;BasisSet&gt; auxiliary = BasisSet::pyconstruct_auxiliary(molecule,
+    &quot;DF_BASIS_SCF&quot;, &quot;&quot;,
+    &quot;JKFIT&quot;, &quot;CC-PVDZ&quot;);
+
+// self-contained and force Spherical
+boost::shared_ptr&lt;BasisSet&gt; auxiliary = BasisSet::pyconstruct_auxiliary(Process::environment.molecule(),
+    &quot;DF_BASIS_SCF&quot;, Process::environment.options.get_str(&quot;DF_BASIS_SCF&quot;),
+    &quot;JKFIT&quot;, Process:environment.options.get_str(&quot;BASIS&quot;), 1);
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-basis-option-to-code">
+<h3>Adding Basis Option to Code<a class="headerlink" href="#adding-basis-option-to-code" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Register new basis keyword with <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/bin/psi4/read_options.cc">psi4/src/bin/psi4/read_options.cc</a>
+(of course). The default should be the empty string.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">options</span><span class="o">.</span><span class="n">add_str</span><span class="p">(</span><span class="s2">&quot;DF_BASIS_ELST&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Register new basis keyword with the input parser
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/python/inputparser.py">psi4/share/python/inputparser.py</a>. In the main function
+<cite>process_input</cite>, add it to the regex below. This ensures that users can
+define <code class="docutils literal"><span class="pre">basis_keyword</span> <span class="pre">basis_name</span> <span class="pre">{...}</span></code> blocks where the contents of
+the block get associated with basis_name and assigned to your
+basis_keyword.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">basis_block</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^(\s*?)(basis|df_basis_scf|df_basis_mp2|df_basis_cc|df_basis_sapt)[=\s]*(\w*?)\s*\{(.*?)\}&#39;</span><span class="p">,</span>
+                         <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="deprecated-steps-don-t-do-these-anymore">
+<h2>Deprecated Steps: Don&#8217;t do these anymore!<a class="headerlink" href="#deprecated-steps-don-t-do-these-anymore" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Deprecated Step: registering non-basis keywords that contain the word
+BASIS in <cite>check_for_basis</cite> function in <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/bin/psi4/python.cc">psi4/src/bin/psi4/python.cc</a>.
+Don&#8217;t do this anymore!</p>
+</li>
+<li><p class="first">Deprecated Step: adding <cite>corresponding_rifit</cite> and surrounding
+boilerplate to <cite>run_{method}</cite> function <a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/python/proc.py">psi4/share/python/proc.py</a>.
+Don&#8217;t do this anymore!</p>
+</li>
+<li><p class="first">Building a parser object in module code as preparation to building a
+BasisSet.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>boost::shared_ptr&lt;BasisSetParser&gt; parser(new Gaussian94BasisSetParser(old_forced_puream));
+boost::shared_ptr&lt;BasisSet&gt; dual_basis = BasisSet::construct(parser, molecule_, &quot;DUAL_BASIS_SCF&quot;);
+</pre></div>
+</div>
+</li>
+</ul>
+<p>key: label by which basis name gets attached to mol&#8217;s CoordEntry-s</p>
+<dl class="docutils">
+<dt>TODO    check that can just pass stirng instead of options.get_str(&#8220;BASIS&#8221;) etc.</dt>
+<dd>make form fn on the fly. do this in pyconstruct instead of inputparser for ordinary (non-block) basis sets?</dd>
+</dl>
+<p>//  BasisSet::pyconstruct(mol, key, ?, ?, target)
+//  mol, key, target &#8211;&gt; smol, targetfunc &#8211;&gt; (s O)
+//  <a href="#id1"><span class="problematic" id="id2">primary_</span></a>   = BasisSet::pyconstruct(<a href="#id3"><span class="problematic" id="id4">molecule_</span></a>, &#8220;BASIS&#8221;, <a href="#id5"><span class="problematic" id="id6">options_</span></a>.get_str(&#8220;BASIS&#8221;));
+//  <a href="#id7"><span class="problematic" id="id8">auxiliary_</span></a> = BasisSet::pyconstruct(<a href="#id9"><span class="problematic" id="id10">molecule_</span></a>, &#8220;DF_BASIS_MP2&#8221;, options.get_str(&#8220;DF_BASIS_MP2&#8221;),
+//      &#8220;RIFIT&#8221;, options_get_str(&#8220;BASIS&#8221;));
+//  mol, key, target, role, orbital &#8211;&gt; smol, orbitalfunc, targetfunc, role &#8211;&gt; (s O O s)
+//  BasisSet::pyconstruct(mol, key, aux, role, orb)</p>
+<ul class="simple">
+<li>Note that the basis set specification in psi4 does not permit the assignment of basis sets to</li>
+</ul>
+<p>an atom <em>number</em>. This is because multi-fragment methods (e.g., SAPT, efp) can involve the internal
+chopping up and reinstantiation of molecules, which coule make the user&#8217;s instructions ambiguous.
+Thus, basis set specifictation is</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>molecule mymol {</dt>
+<dd># water dimer where
+O  -2  0 0
+H_hb  -1  0 0
+H  -1 -1 0
+&#8211;
+O   2  0 0
+H_hb  1  0 0
+H   2  1 0</dd>
+</dl>
+<p>}
+* per molecule</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>set basis cc-pv(d+d)z</dt>
+<dd>&#8211;or&#8211;</dd>
+<dt>basis mydz {</dt>
+<dd>assign cc-pv(d+d)z</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>per element</dt>
+<dd><dl class="first last docutils">
+<dt>basis mydz {</dt>
+<dd><p class="first last">assign cc-pv(d+d)z</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p class="first">per</p>
+</li>
+</ul>
+</div></blockquote>
+<p>&lt;&lt;&lt; Q for Jet/Andy/Rob &gt;&gt;&gt;</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Shouldn&#8217;t <a href="#id11"><span class="problematic" id="id12">lock_frame_</span></a> be reset to False for set_basis_all_atoms/by_symbol/by_label?</dt>
+<dd><p class="first last">Need to trigger reeval of symm upon geometry_update(). Doing this with set_shell....</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Ok that maybe can&#8217;t form a basisset name using a key that&#8217;s not a keyword</p>
+</li>
+<li><p class="first">Ok to remove parser from arg list</p>
+</li>
+<li><dl class="first docutils">
+<dt>since set_basis by number being removed from user domain, switching it to 0-indexing (more natural</dt>
+<dd><p class="first last">for c-side prog code) and to not indluce dummies (why give a dummy a basis set)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">ok that symm lowering won&#8217;t show up until basis built?</p>
+</li>
+<li><p class="first">order of searching for basissets</p>
+</li>
+<li><p class="first">get approval for bas search order: strings, here, PSIPATH, library (I think)</p>
+</li>
+</ul>
+<p>&lt;&lt;&lt; todo &gt;&gt;&gt;</p>
+<ul class="simple">
+<li>make sure PSIDATDIR getting searched right, esp for installed copy</li>
+<li>transfer load_basis printing to output file</li>
+<li>check puream handling</li>
+<li>get correct full PT basis aux sets</li>
+<li>empty mol before adding basis sets in basis {} block</li>
+<li>establish that a basis spec must cover the whole molecule</li>
+</ul>
+<p>&lt;&lt;    boost::shared_ptr&lt;BasisSetParser&gt; parser(new Gaussian94BasisSetParser());
+&lt;&lt;    <a class="reference internal" href="#basisset">basisset</a> = BasisSet::construct(parser, <a href="#id13"><span class="problematic" id="id14">molecule_</span></a>, &#8220;BASIS&#8221;);</p>
+<p>&gt;&gt;    <a class="reference internal" href="#basisset">basisset</a> = BasisSet::pyconstruct(<a href="#id15"><span class="problematic" id="id16">molecule_</span></a>, &#8220;BASIS&#8221;, <a href="#id17"><span class="problematic" id="id18">options_</span></a>.get_str(&#8220;BASIS&#8221;));</p>
+<p>&lt;&lt;    boost::shared_ptr&lt;BasisSet&gt; auxiliary = BasisSet::construct(parser, primary-&gt;molecule(), &#8220;DF_BASIS_SCF&#8221;);</p>
+<dl class="docutils">
+<dt>&gt;&gt;    boost::shared_ptr&lt;BasisSet&gt; auxiliary = BasisSet::pyconstruct(primary-&gt;molecule(),</dt>
+<dd><blockquote class="first">
+<div>&#8220;DF_BASIS_SCF&#8221;, options.get_str(&#8220;DF_BASIS_SCF&#8221;), &#8220;JKFIT&#8221;, options.get_str(&#8220;BASIS&#8221;));</div></blockquote>
+<p class="last">boost::shared_ptr&lt;BasisSetParser&gt; parser(new Gaussian94BasisSetParser(old_forced_puream));
+<a href="#id19"><span class="problematic" id="id20">molecule_</span></a>-&gt;set_basis_all_atoms(basisname, &#8220;DUAL_BASIS_SCF&#8221;);
+boost::shared_ptr&lt;BasisSet&gt; dual_basis = BasisSet::construct(parser, <a href="#id21"><span class="problematic" id="id22">molecule_</span></a>, &#8220;DUAL_BASIS_SCF&#8221;);</p>
+</dd>
+</dl>
+<ul class="simple">
+<li>// TODO: oh my, forced_puream!</li>
+<li>// TODO: oh my, a basis for which a fn hasn&#8217;t been set in the input translation</li>
+<li>// TODO: oh my, a non-fitting basis to be looked up (in Mol) not under BASIS</li>
+<li>//boost::shared_ptr&lt;BasisSet&gt; dual_basis = BasisSet::pyconstruct(<a href="#id23"><span class="problematic" id="id24">molecule_</span></a>, basisname,</li>
+<li>//            &#8220;DUAL_BASIS_SCF&#8221;);</li>
+<li>// TODO: I think Rob was planning to rework this projection bit anyways</li>
+</ul>
+<ul class="simple">
+<li>check with everyone about order in which directories searched</li>
+</ul>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">BasisSet</a><ul>
+<li><a class="reference internal" href="#advantages-to-new-scheme-aka-why">Advantages to New Scheme (aka <em>Why</em>)</a></li>
+<li><a class="reference internal" href="#how-for-programmers"><em>How</em> for Programmers</a><ul>
+<li><a class="reference internal" href="#orbital-basis">Orbital Basis</a></li>
+<li><a class="reference internal" href="#auxiliary-basis">Auxiliary Basis</a></li>
+<li><a class="reference internal" href="#adding-basis-option-to-code">Adding Basis Option to Code</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deprecated-steps-don-t-do-these-anymore">Deprecated Steps: Don&#8217;t do these anymore!</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="proc_py.html"
+                        title="previous chapter">Adding Methods to Driver</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="autodoc_driver.html"
+                        title="next chapter">Python Driver</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/prog_basissets.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="autodoc_driver.html" title="Python Driver"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="proc_py.html" title="Adding Methods to Driver"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="programming.html" >Programming: Using the Core Libraries</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

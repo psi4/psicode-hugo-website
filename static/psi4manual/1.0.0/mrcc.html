@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to MRCC by M. Kállay &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" />
+    <link rel="next" title="Psithon Functions: Invoking a Calculation" href="psithonfunc.html" />
+    <link rel="prev" title="Interface to Molden, molden()" href="molden.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psithonfunc.html" title="Psithon Functions: Invoking a Calculation"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="molden.html" title="Interface to Molden, molden()"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="interface-to-mrcc-by-m-ka-acutellay">
+<span id="sec-mrcc"></span><span id="index-0"></span><h1>Interface to MRCC by M. Kállay<a class="headerlink" href="#interface-to-mrcc-by-m-ka-acutellay" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Justin M. Turney and Andrew C. Simmonett</em></p>
+<p><em>Section author: Justin M. Turney</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__mrcc.html#apdx-mrcc"><span>Keywords</span></a>, <a class="reference internal" href="autodir_psivariables/module__mrcc.html#apdx-mrcc-psivar"><span>PSI Variables</span></a>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/src/bin/mrcc">MRCC</a>, <a class="reference internal" href="autodoc_testsuite_dftd3.html#apdx-testsuitedftd3"><span>Samples</span></a></p>
+<p><span class="sc">Psi4</span> contains code to interface to the MRCC program of M. Kállay
+and J. Gauss.  The license and source code of the MRCC program must be
+obtained from Mihály Kállay (<a class="reference external" href="http://www.mrcc.hu/">http://www.mrcc.hu/</a>).</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Follow the instructions provided with the source to build the MRCC programs.
+To be used by <span class="sc">Psi4</span>, ensure that the program binary (<code class="docutils literal"><span class="pre">dmrcc</span></code>) can be
+found in your <span class="target" id="index-1"></span><a class="reference internal" href="external.html#envvar-PATH"><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code></a>. If <span class="sc">Psi4</span> is unable to execute the binary, an
+error will be reported.</p>
+</div>
+<div class="section" id="running-mrcc">
+<h2>Running MRCC<a class="headerlink" href="#running-mrcc" title="Permalink to this headline">¶</a></h2>
+<p>MRCC can be invoked in similar fashion as other theories provided in <span class="sc">Psi4</span>.
+For example, if you want to obtain the CCSDT energy for water with cc-pVDZ using
+MRCC simply provide the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule h2o {
+     O
+     H 1 1.0
+     H 1 1.0 2 104.5
+}
+set {
+     basis cc-pVDZ
+}
+energy(&#39;mrccsdt&#39;)
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">'mrccsdt'</span></code> in the call to <a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a> instructs <span class="sc">Psi4</span> to first
+perform an RHF calculation and then call MRCC to compute the CCSDT energy.
+For a CCSDT(Q) energy, simply use <code class="docutils literal"><span class="pre">'mrccsdt(q)'</span></code> in the call to
+<a class="reference internal" href="energy.html#driver.energy" title="driver.energy"><code class="xref py py-func docutils literal"><span class="pre">energy()</span></code></a>. MRCC can be used to perform geometry optimization and
+frequency calculations for electronic ground states only.</p>
+<p>At this time, <span class="sc">Psi4</span> is only able to automatically generate the proper
+input file for MRCC for the methods listed in table below.
+To utilize any method described in the table, you must prefix
+the method name with <code class="docutils literal"><span class="pre">MR</span></code>. For other methods, you will be required to
+use the MRCC keywords described in Appendix <a class="reference internal" href="autodir_options_c/module__mrcc.html#apdx-mrcc"><span>MRCC</span></a>.
+Note that perturbative methods (<code class="docutils literal"><span class="pre">ccsd(t)</span></code>, <code class="docutils literal"><span class="pre">ccsdtqp(h)_l</span></code>, etc.)
+are not available with <a class="reference internal" href="autodoc_glossary_options_c.html#term-reference-scf"><span class="xref std std-term">REFERENCE</span></a> ROHF.</p>
+<blockquote id="table-energy-mrcc">
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method in Kallay&#8217;s MRCC program <a class="reference internal" href="#sec-mrcc"><span>[manual]</span></a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>mrccsd</td>
+<td>CC through doubles</td>
+</tr>
+<tr class="row-odd"><td>mrccsdt</td>
+<td>CC through triples</td>
+</tr>
+<tr class="row-even"><td>mrccsdtq</td>
+<td>CC through quadruples</td>
+</tr>
+<tr class="row-odd"><td>mrccsdtqp</td>
+<td>CC through quintuples</td>
+</tr>
+<tr class="row-even"><td>mrccsdtqph</td>
+<td>CC through sextuples</td>
+</tr>
+<tr class="row-odd"><td>mrccsd(t)</td>
+<td>CC through doubles with perturbative triples</td>
+</tr>
+<tr class="row-even"><td>mrccsdt(q)</td>
+<td>CC through triples with perturbative quadruples</td>
+</tr>
+<tr class="row-odd"><td>mrccsdtq(p)</td>
+<td>CC through quadruples with pertubative quintuples</td>
+</tr>
+<tr class="row-even"><td>mrccsdtqp(h)</td>
+<td>CC through quintuples with pertubative sextuples</td>
+</tr>
+<tr class="row-odd"><td>mrccsd(t)_l</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>mrccsdt(q)_l</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>mrccsdtq(p)_l</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>mrccsdtqp(h)_l</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>mrccsdt-1a</td>
+<td>CC through doubles with iterative triples (cheapest terms)</td>
+</tr>
+<tr class="row-even"><td>mrccsdtq-1a</td>
+<td>CC through triples with iterative quadruples (cheapest terms)</td>
+</tr>
+<tr class="row-odd"><td>mrccsdtqp-1a</td>
+<td>CC through quadruples with iterative quintuples (cheapest terms)</td>
+</tr>
+<tr class="row-even"><td>mrccsdtqph-1a</td>
+<td>CC through quintuples with iterative sextuples (cheapest terms)</td>
+</tr>
+<tr class="row-odd"><td>mrccsdt-1b</td>
+<td>CC through doubles with iterative triples (cheaper terms)</td>
+</tr>
+<tr class="row-even"><td>mrccsdtq-1b</td>
+<td>CC through triples with iterative quadruples (cheaper terms)</td>
+</tr>
+<tr class="row-odd"><td>mrccsdtqp-1b</td>
+<td>CC through quadruples with iterative quintuples (cheaper terms)</td>
+</tr>
+<tr class="row-even"><td>mrccsdtqph-1b</td>
+<td>CC through quintuples with iterative sextuples (cheaper terms)</td>
+</tr>
+<tr class="row-odd"><td>mrcc2</td>
+<td>approximate CC through doubles</td>
+</tr>
+<tr class="row-even"><td>mrcc3</td>
+<td>approximate CC through triples</td>
+</tr>
+<tr class="row-odd"><td>mrcc4</td>
+<td>approximate CC through quadruples</td>
+</tr>
+<tr class="row-even"><td>mrcc5</td>
+<td>approximate CC through quintuples</td>
+</tr>
+<tr class="row-odd"><td>mrcc6</td>
+<td>approximate CC through sextuples</td>
+</tr>
+<tr class="row-even"><td>mrccsdt-3</td>
+<td>CC through doubles with iterative triples (all but the most expensive terms)</td>
+</tr>
+<tr class="row-odd"><td>mrccsdtq-3</td>
+<td>CC through triples with iterative quadruples (all but the most expensive terms)</td>
+</tr>
+<tr class="row-even"><td>mrccsdtqp-3</td>
+<td>CC through quadruples with iterative quintuples (all but the most expensive terms)</td>
+</tr>
+<tr class="row-odd"><td>mrccsdtqph-3</td>
+<td>CC through quintuples with iterative sextuples (all but the most expensive terms)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Frozen-core approximation is also supported in the MRCC interface.
+To optimize CH<sub>4</sub> with CCSDT freezing the 1<em>s</em> on carbon, run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>molecule H2O {
+    O
+    H 1 r
+    H 1 r 2 104.5
+
+    r = 1.0
+}
+
+set {
+    basis cc-pVDZ
+    freeze_core true
+}
+
+optimize(&#39;mrccsdt&#39;)
+</pre></div>
+</div>
+</div>
+<div class="section" id="interface-details">
+<h2>Interface Details<a class="headerlink" href="#interface-details" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils" id="id1">
+<span id="table-mrcc-mrcc-method"></span><caption><span class="caption-text">MRCC methods</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="22%" />
+<col width="15%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><a class="reference internal" href="autodoc_glossary_options_c.html#term-mrcc-method-mrcc"><span class="xref std std-term">MRCC_METHOD</span></a></th>
+<th class="head">Method</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>CC</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>CC(n-1)[n]</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>CC(n-1)(n)</td>
+<td>(CC(n-1)[n] energy is also calculated)</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>CC(n-1)(n)_L</td>
+<td>(CC(n-1)[n] and CC(n-1)(n) energies are also calculated)</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>CC(n)-1a</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>CC(n)-1b</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>CCn</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>CC(n)-3</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface to MRCC by M. Kállay</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#running-mrcc">Running MRCC</a></li>
+<li><a class="reference internal" href="#interface-details">Interface Details</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="molden.html"
+                        title="previous chapter">Interface to Molden, <code class="docutils literal"><span class="pre">molden()</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="psithonfunc.html"
+                        title="next chapter">Psithon Functions: Invoking a Calculation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mrcc.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psithonfunc.html" title="Psithon Functions: Invoking a Calculation"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="molden.html" title="Interface to Molden, molden()"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

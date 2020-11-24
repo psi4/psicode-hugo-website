@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface to Molden, molden() &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Interfaces: Enhancing Psi4 Capabilities" href="interfacing.html" />
+    <link rel="next" title="Interface to MRCC by M. Kállay" href="mrcc.html" />
+    <link rel="prev" title="Interface to PCMSolver" href="pcmsolver.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="mrcc.html" title="Interface to MRCC by M. Kállay"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pcmsolver.html" title="Interface to PCMSolver"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<div class="section" id="interface-to-molden-molden">
+<span id="sec-molden"></span><span id="index-0"></span><h1>Interface to Molden, <a class="reference internal" href="#driver.molden" title="driver.molden"><code class="xref py py-func docutils literal"><span class="pre">molden()</span></code></a><a class="headerlink" href="#interface-to-molden-molden" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Justin M. Turney</em></p>
+<p><em>Section author: C. David Sherrill</em></p>
+<p><span class="sc">Psi4</span> contains an interface to the Molden program.  Molden is a
+visualization program for electronic structure developed by Gijs Schaftenaar
+at the University of of Nijmegen, Netherlands.  It is available at
+<a class="reference external" href="http://www.cmbi.ru.nl/molden/">http://www.cmbi.ru.nl/molden/</a>.  Molden can
+plot atomic orbitals, densities, electrostatic potentials (ESP&#8217;s), etc.
+<span class="sc">Psi4</span> can create a file containing
+atomic coordinates, basis set, and SCF orbital coefficients in the
+so-called Molden format.  This file is
+written by the SCF module (see Section <a class="reference internal" href="scf.html#sec-scf"><span>SCF</span></a>)
+if the user sets the <a class="reference internal" href="autodoc_glossary_options_c.html#term-molden-write-scf"><span class="xref std std-term">MOLDEN_WRITE</span></a> keyword to true.  This Molden file is
+also used to pass information between <span class="sc">Psi4</span> and WebMO, if <span class="sc">Psi4</span>
+computations are invoked using the WebMO GUI.  The filename of the
+Molden file ends in &#8221;.molden&#8221;, and the prefix is determined by
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> (if set), or else by the name of the output
+file plus the name of the current molecule.</p>
+<dl class="function">
+<dt id="driver.molden">
+<code class="descname">molden</code><span class="sig-paren">(</span><em>wfn</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/driver.html#molden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#driver.molden" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to write wavefunction information in <em>wfn</em> to <em>filename</em> in
+molden format. Will write natural orbitals from <em>density</em> (MO basis) if supplied.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.5: </span><em>wfn</em> parameter passed explicitly</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>wfn</strong> (<a class="reference internal" href="autodoc_psimod.html#sec-psimod-wavefunction"><span>Wavefunction</span></a>) &#8211; set of molecule, basis, orbitals from which to generate cube files</li>
+<li><strong>filename</strong> (<em>string</em>) &#8211; destination file name for MOLDEN file</li>
+<li><strong>density_a</strong> (<em>psi4.Matrix</em>) &#8211; density in the MO basis to build alpha NO&#8217;s from (optional)</li>
+<li><strong>density_b</strong> (<em>psi4.Matrix</em>) &#8211; density in the MO basis to build beta NO&#8217;s from, assumes restricted if not supplied (optional)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Molden file for DFT calculation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;b3lyp&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molden</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="s1">&#39;mycalc.molden&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [2] Molden file for CI/MCSCF computation using NO roots</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;ci&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molden</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="s1">&#39;no_root1.molden&#39;</span><span class="p">,</span> <span class="n">density_a</span><span class="o">=</span><span class="n">wfn</span><span class="o">.</span><span class="n">opdm</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="molden-write">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-molden-write-scf"><span class="xref std std-term">MOLDEN_WRITE</span></a><a class="headerlink" href="#molden-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do write a MOLDEN output file? If so, the filename will end in .molden, and the prefix is determined by <a class="reference internal" href="autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> (if set), or else by the name of the output file plus the name of the current molecule.</p>
+<ul class="simple">
+<li><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-boolean"><span>boolean</span></a></li>
+<li><strong>Default</strong>: false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="writer-file-label">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-writer-file-label-globals"><span class="xref std std-term">WRITER_FILE_LABEL</span></a><a class="headerlink" href="#writer-file-label" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Base filename for text files written by PSI, such as the MOLDEN output file, the Hessian file, the internal coordinate file, etc. Use the add_str_i function to make this string case sensitive.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface to Molden, <code class="docutils literal"><span class="pre">molden()</span></code></a><ul>
+<li><a class="reference internal" href="#options">Options</a><ul>
+<li><a class="reference internal" href="#molden-write"><code class="docutils literal"><span class="pre">MOLDEN_WRITE</span></code></a></li>
+<li><a class="reference internal" href="#writer-file-label"><code class="docutils literal"><span class="pre">WRITER_FILE_LABEL</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pcmsolver.html"
+                        title="previous chapter">Interface to PCMSolver</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mrcc.html"
+                        title="next chapter">Interface to MRCC by M. Kállay</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/molden.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="mrcc.html" title="Interface to MRCC by M. Kállay"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pcmsolver.html" title="Interface to PCMSolver"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>

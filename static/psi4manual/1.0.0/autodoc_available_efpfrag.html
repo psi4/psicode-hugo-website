@@ -1,0 +1,2043 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2aminopyridine &mdash; Psi4 [1.0.0 6a9a71b] Docs</title>
+    
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0 6a9a71b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/toggle_sections.js"></script>
+    <script type="text/javascript" src="_static/toggle_sidebar.js"></script>
+    <script type="text/javascript" src="_static/toggle_codeprompt.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="top" title="Psi4 [1.0.0 6a9a71b] Docs" href="index.html" />
+    <link rel="up" title="Interface to LIBEFP by I. Kaliman" href="libefp.html" />
+    <link rel="next" title="Interface to PCMSolver" href="pcmsolver.html" />
+    <link rel="prev" title="Interface to LIBEFP by I. Kaliman" href="libefp.html" /> 
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             accesskey="C">toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pcmsolver.html" title="Interface to PCMSolver"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="libefp.html" title="Interface to LIBEFP by I. Kaliman"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="libefp.html" accesskey="U">Interface to LIBEFP by I. Kaliman</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/psi4banner.png"><img alt="Psi4 Project Logo" src="_images/psi4banner.png" style="width: 100%;" /></a>
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<link rel="stylesheet" href="https://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.css" type="text/css">
+<script type="text/javascript" src="https://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb-libs.js"></script>
+<script type="text/javascript" src="https://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.js"></script>
+
+<script>
+  ChemDoodle.default_atoms_useJMOLColors = true;
+  ChemDoodle.default_atoms_circles_2D = true;
+  ChemDoodle.default_atoms_circleDiameter_2D = 0.7;
+  ChemDoodle.default_atoms_circleBorderWidth_2D = 0.05;
+  ChemDoodle.default_bonds_width_2D = 0.10;
+  ChemDoodle.default_shapes_lineWidth_2D = 0.1;
+  ChemDoodle.default_shapes_arrowLength_2D = 0.07;
+</script><div class="section" id="aminopyridine">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/2aminopyridine.efp">2aminopyridine</a><a class="headerlink" href="#aminopyridine" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('13\ncomment\nN         -0.297712    -1.170382     0.001714\nC         -0.912531     0.026013     0.004723\nC         -0.175714     1.226496     0.003700\nC          1.204216     1.176210     0.000547\nC          1.842683    -0.065832    -0.001280\nC          1.045154    -1.196712     0.000533\nH         -0.697132     2.173907     0.003778\nH          1.778223     2.092763     0.001427\nH          2.918377    -0.152929    -0.000909\nH          1.493951    -2.183173     0.004591\nN         -2.277071     0.027597    -0.043650\nH         -2.727502     0.885639     0.221497\nH         -2.756811    -0.823399     0.254372\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('2aminopyridine_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>2-aminopyridine, S22 Complex Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N         -0.297712    -1.170382     0.001714
+C         -0.912531     0.026013     0.004723
+C         -0.175714     1.226496     0.003700
+C          1.204216     1.176210     0.000547
+C          1.842683    -0.065832    -0.001280
+C          1.045154    -1.196712     0.000533
+H         -0.697132     2.173907     0.003778
+H          1.778223     2.092763     0.001427
+H          2.918377    -0.152929    -0.000909
+H          1.493951    -2.183173     0.004591
+N         -2.277071     0.027597    -0.043650
+H         -2.727502     0.885639     0.221497
+H         -2.756811    -0.823399     0.254372
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="pyrazine">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/pyrazine.efp">pyrazine</a><a class="headerlink" href="#pyrazine" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('10\ncomment\nC          0.696140    -1.130872    -0.001974\nC         -0.696140    -1.130872    -0.001974\nN         -1.414480     0.000953     0.003286\nC         -0.696730     1.129848    -0.001397\nC          0.696730     1.129848    -0.001397\nN          1.414480     0.000953     0.003286\nH          1.247280    -2.062705    -0.000861\nH         -1.247280    -2.062705    -0.000861\nH         -1.247560     2.061660    -0.004657\nH          1.247560     2.061660    -0.004657\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('pyrazine_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Pyrazine Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.696140    -1.130872    -0.001974
+C         -0.696140    -1.130872    -0.001974
+N         -1.414480     0.000953     0.003286
+C         -0.696730     1.129848    -0.001397
+C          0.696730     1.129848    -0.001397
+N          1.414480     0.000953     0.003286
+H          1.247280    -2.062705    -0.000861
+H         -1.247280    -2.062705    -0.000861
+H         -1.247560     2.061660    -0.004657
+H          1.247560     2.061660    -0.004657
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="phenol">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/phenol.efp">phenol</a><a class="headerlink" href="#phenol" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('13\ncomment\nC         -0.916997    -0.003850     0.000000\nC         -0.216641    -1.208924     0.000000\nC          1.176611    -1.202006     0.000000\nC          1.874269     0.002563     0.000000\nC          1.166193     1.203675     0.000000\nC         -0.224514     1.205644     0.000000\nO         -2.283318     0.056000     0.000000\nH         -2.621973    -0.845239     0.000000\nH         -0.757484    -2.147764     0.000000\nH          1.711976    -2.141562     0.000000\nH          2.954799     0.006025     0.000000\nH          1.696953     2.145764     0.000000\nH         -0.787062     2.128534     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('phenol_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Phenol Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.916997    -0.003850     0.000000
+C         -0.216641    -1.208924     0.000000
+C          1.176611    -1.202006     0.000000
+C          1.874269     0.002563     0.000000
+C          1.166193     1.203675     0.000000
+C         -0.224514     1.205644     0.000000
+O         -2.283318     0.056000     0.000000
+H         -2.621973    -0.845239     0.000000
+H         -0.757484    -2.147764     0.000000
+H          1.711976    -2.141562     0.000000
+H          2.954799     0.006025     0.000000
+H          1.696953     2.145764     0.000000
+H         -0.787062     2.128534     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="pyridone">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/pyridone.efp">pyridone</a><a class="headerlink" href="#pyridone" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('12\ncomment\nO         -2.242413    -0.023741    -0.004502\nN         -0.264207     1.117772     0.005036\nC          1.171258    -1.194422     0.000846\nC          1.847365     0.047728    -0.003389\nC          1.088474     1.183810    -0.001402\nC         -1.002652    -0.057887     0.000815\nC         -0.196628    -1.250542     0.003061\nH          1.740815    -2.114468     0.000629\nH          2.923048     0.113247    -0.008063\nH          1.510672     2.178411    -0.005974\nH         -0.724612    -2.192307     0.003870\nH         -0.813109     1.998495     0.011847\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('pyridone_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>2-pyridoxine, S22 Complex Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>O         -2.242413    -0.023741    -0.004502
+N         -0.264207     1.117772     0.005036
+C          1.171258    -1.194422     0.000846
+C          1.847365     0.047728    -0.003389
+C          1.088474     1.183810    -0.001402
+C         -1.002652    -0.057887     0.000815
+C         -0.196628    -1.250542     0.003061
+H          1.740815    -2.114468     0.000629
+H          2.923048     0.113247    -0.008063
+H          1.510672     2.178411    -0.005974
+H         -0.724612    -2.192307     0.003870
+H         -0.813109     1.998495     0.011847
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="adenine-wc">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/adenine-wc.efp">adenine-wc</a><a class="headerlink" href="#adenine-wc" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('15\ncomment\nN          1.946697    -0.459208     0.002694\nC          1.211505     0.664598     0.000648\nC         -0.190020     0.525984     0.000085\nC         -0.684328    -0.778091    -0.001247\nN          0.023373    -1.915426    -0.001448\nC          1.328477    -1.659339     0.001164\nN         -1.200813     1.458758     0.001843\nC         -2.297901     0.720321     0.001175\nN         -2.048907    -0.624562    -0.000942\nN          1.818193     1.859760    -0.009631\nH          1.995293    -2.512331     0.002475\nH         -3.302020     1.110149     0.002177\nH         -2.725592    -1.369501    -0.001541\nH          2.830565     1.920513     0.043317\nH          1.247354     2.683679     0.035843\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('adenine-wc_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Adenine, S22 WC Dimer Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N          1.946697    -0.459208     0.002694
+C          1.211505     0.664598     0.000648
+C         -0.190020     0.525984     0.000085
+C         -0.684328    -0.778091    -0.001247
+N          0.023373    -1.915426    -0.001448
+C          1.328477    -1.659339     0.001164
+N         -1.200813     1.458758     0.001843
+C         -2.297901     0.720321     0.001175
+N         -2.048907    -0.624562    -0.000942
+N          1.818193     1.859760    -0.009631
+H          1.995293    -2.512331     0.002475
+H         -3.302020     1.110149     0.002177
+H         -2.725592    -1.369501    -0.001541
+H          2.830565     1.920513     0.043317
+H          1.247354     2.683679     0.035843
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="dcm">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/dcm.efp">dcm</a><a class="headerlink" href="#dcm" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('5\ncomment\nC          0.000001    -0.801518    -0.000010\nH          0.000001    -1.404844     0.886898\nH         -0.000001    -1.405115    -0.886674\nCL         1.467770     0.178018    -0.000002\nCL        -1.467770     0.178018    -0.000002\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('dcm_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 14:30:26 2012
+ $DCM
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.000001    -0.801518    -0.000010
+H          0.000001    -1.404844     0.886898
+H         -0.000001    -1.405115    -0.886674
+CL         1.467770     0.178018    -0.000002
+CL        -1.467770     0.178018    -0.000002
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="pentane">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/pentane.efp">pentane</a><a class="headerlink" href="#pentane" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('17\ncomment\nC          0.000000     2.533200     0.334434\nH         -0.879710     2.565090     0.977044\nH          0.879710     2.565090     0.977044\nH          0.000000     3.433960    -0.277306\nC          0.000000     1.271780    -0.519136\nH          0.874580     1.269170    -1.173596\nH         -0.874580     1.269170    -1.173596\nC          0.000000     0.000000     0.318304\nH          0.875270     0.000000     0.974624\nH         -0.875270     0.000000     0.974624\nC          0.000000    -1.271780    -0.519136\nH          0.874580    -1.269170    -1.173596\nH         -0.874580    -1.269170    -1.173596\nC          0.000000    -2.533200     0.334434\nH         -0.879710    -2.565090     0.977044\nH          0.000000    -3.433960    -0.277306\nH          0.879710    -2.565090     0.977044\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('pentane_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Pentane, S66, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.000000     2.533200     0.334434
+H         -0.879710     2.565090     0.977044
+H          0.879710     2.565090     0.977044
+H          0.000000     3.433960    -0.277306
+C          0.000000     1.271780    -0.519136
+H          0.874580     1.269170    -1.173596
+H         -0.874580     1.269170    -1.173596
+C          0.000000     0.000000     0.318304
+H          0.875270     0.000000     0.974624
+H         -0.875270     0.000000     0.974624
+C          0.000000    -1.271780    -0.519136
+H          0.874580    -1.269170    -1.173596
+H         -0.874580    -1.269170    -1.173596
+C          0.000000    -2.533200     0.334434
+H         -0.879710    -2.565090     0.977044
+H          0.000000    -3.433960    -0.277306
+H          0.879710    -2.565090     0.977044
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="thymine-wc">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/thymine-wc.efp">thymine-wc</a><a class="headerlink" href="#thymine-wc" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('15\ncomment\nN         -1.107052    -1.237551    -0.000444\nC          0.232428    -1.528255    -0.000172\nC          1.179726    -0.564194     0.000001\nC          0.737089     0.822586    -0.000260\nN         -0.631886     1.017361    -0.001470\nC         -1.612422     0.050836    -0.000138\nC          2.646037    -0.841169     0.000415\nO          1.513440     1.779919     0.000594\nO         -2.806912     0.289393     0.001180\nH         -1.798058    -1.969059     0.000258\nH         -0.969551     2.003107    -0.001666\nH          0.482619    -2.579865     0.000083\nH          3.119129    -0.396887    -0.873926\nH          3.118566    -0.397012     0.875117\nH          2.839304    -1.911955     0.000403\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('thymine-wc_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Thymine, S22 WC Dimer Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N         -1.107052    -1.237551    -0.000444
+C          0.232428    -1.528255    -0.000172
+C          1.179726    -0.564194     0.000001
+C          0.737089     0.822586    -0.000260
+N         -0.631886     1.017361    -0.001470
+C         -1.612422     0.050836    -0.000138
+C          2.646037    -0.841169     0.000415
+O          1.513440     1.779919     0.000594
+O         -2.806912     0.289393     0.001180
+H         -1.798058    -1.969059     0.000258
+H         -0.969551     2.003107    -0.001666
+H          0.482619    -2.579865     0.000083
+H          3.119129    -0.396887    -0.873926
+H          3.118566    -0.397012     0.875117
+H          2.839304    -1.911955     0.000403
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="c2h5oh">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/c2h5oh.efp">c2h5oh</a><a class="headerlink" href="#c2h5oh" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('9\ncomment\nC         -1.270523     0.250209     0.013482\nC          0.014745    -0.557291    -0.030369\nO          1.161120     0.243635     0.058487\nH         -2.133098    -0.406516    -0.022769\nH         -1.334218     0.928151    -0.832514\nH         -1.321263     0.837360     0.922331\nH          0.060238    -1.232834     0.813290\nH          0.046243    -1.164406    -0.931998\nH          1.206620     0.827957    -0.675504\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('c2h5oh_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 11:34:09 2012
+ $C2H5OH
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -1.270523     0.250209     0.013482
+C          0.014745    -0.557291    -0.030369
+O          1.161120     0.243635     0.058487
+H         -2.133098    -0.406516    -0.022769
+H         -1.334218     0.928151    -0.832514
+H         -1.321263     0.837360     0.922331
+H          0.060238    -1.232834     0.813290
+H          0.046243    -1.164406    -0.931998
+H          1.206620     0.827957    -0.675504
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="acetone">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/acetone.efp">acetone</a><a class="headerlink" href="#acetone" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('10\ncomment\nC         -1.285598    -0.688680     0.000011\nC          0.000000     0.106222     0.000002\nC          1.285605    -0.688669    -0.000016\nO         -0.000007     1.291739     0.000000\nH         -2.133453    -0.021018    -0.000541\nH         -1.325618    -1.330608     0.873525\nH         -1.325183    -1.331262    -0.873061\nH          2.133453    -0.020997    -0.000449\nH          1.325147    -1.331335    -0.873014\nH          1.325680    -1.330511     0.873573\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('acetone_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 13:43:09 2012
+ $ACETONE
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -1.285598    -0.688680     0.000011
+C          0.000000     0.106222     0.000002
+C          1.285605    -0.688669    -0.000016
+O         -0.000007     1.291739     0.000000
+H         -2.133453    -0.021018    -0.000541
+H         -1.325618    -1.330608     0.873525
+H         -1.325183    -1.331262    -0.873061
+H          2.133453    -0.020997    -0.000449
+H          1.325147    -1.331335    -0.873014
+H          1.325680    -1.330511     0.873573
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="ethane">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/ethane.efp">ethane</a><a class="headerlink" href="#ethane" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('8\ncomment\nC         -0.762615     0.000001     0.000000\nC          0.762622     0.000002     0.000000\nH         -1.154948    -1.010792    -0.000154\nH         -1.154973     0.505513    -0.875291\nH         -1.154973     0.505245     0.875445\nH          1.154917     1.010805     0.000154\nH          1.154946    -0.505267    -0.875444\nH          1.154946    -0.505535     0.875290\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('ethane_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Tue Apr 30 16:36:03 2013
+ $ETHANE
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.762615     0.000001     0.000000
+C          0.762622     0.000002     0.000000
+H         -1.154948    -1.010792    -0.000154
+H         -1.154973     0.505513    -0.875291
+H         -1.154973     0.505245     0.875445
+H          1.154917     1.010805     0.000154
+H          1.154946    -0.505267    -0.875444
+H          1.154946    -0.505535     0.875290
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="dmso">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/dmso.efp">dmso</a><a class="headerlink" href="#dmso" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('10\ncomment\nC         -1.351465    -0.848122     0.222043\nS         -0.000001     0.139397    -0.408502\nC          1.351490    -0.848085     0.222043\nO         -0.000022     1.383228     0.354940\nH         -2.266866    -0.340402    -0.045273\nH         -1.275457    -0.919582     1.298559\nH         -1.332873    -1.829381    -0.234075\nH          2.266876    -0.340333    -0.045265\nH          1.332930    -1.829340    -0.234080\nH          1.275483    -0.919549     1.298560\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('dmso_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 14:07:02 2012
+ $DMSO
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -1.351465    -0.848122     0.222043
+S         -0.000001     0.139397    -0.408502
+C          1.351490    -0.848085     0.222043
+O         -0.000022     1.383228     0.354940
+H         -2.266866    -0.340402    -0.045273
+H         -1.275457    -0.919582     1.298559
+H         -1.332873    -1.829381    -0.234075
+H          2.266876    -0.340333    -0.045265
+H          1.332930    -1.829340    -0.234080
+H          1.275483    -0.919549     1.298560
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="aceticacid-gp">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/aceticacid-gp.efp">aceticacid-gp</a><a class="headerlink" href="#aceticacid-gp" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('8\ncomment\nC          0.039926    -0.101371     0.000000\nO          0.671568    -1.131236     0.000000\nO          0.631656     1.119162     0.000000\nH          1.583763     0.941625     0.000000\nC         -1.452898     0.022190     0.000000\nH         -1.897231    -0.965551     0.000000\nH         -1.772814     0.579167     0.877400\nH         -1.772814     0.579167    -0.877400\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('aceticacid-gp_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Acetic acid, gas phase monomer, S66, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.039926    -0.101371     0.000000
+O          0.671568    -1.131236     0.000000
+O          0.631656     1.119162     0.000000
+H          1.583763     0.941625     0.000000
+C         -1.452898     0.022190     0.000000
+H         -1.897231    -0.965551     0.000000
+H         -1.772814     0.579167     0.877400
+H         -1.772814     0.579167    -0.877400
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="ethene">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/ethene.efp">ethene</a><a class="headerlink" href="#ethene" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('6\ncomment\nC         -0.667396     0.000087     0.000000\nC          0.667396     0.000087     0.000000\nH         -1.233788     0.923077     0.000000\nH          1.233788     0.923077     0.000000\nH         -1.231016    -0.924113     0.000000\nH          1.231016    -0.924113     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('ethene_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Ethylene (ethene)  Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.667396     0.000087     0.000000
+C          0.667396     0.000087     0.000000
+H         -1.233788     0.923077     0.000000
+H          1.233788     0.923077     0.000000
+H         -1.231016    -0.924113     0.000000
+H          1.231016    -0.924113     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="methane">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/methane.efp">methane</a><a class="headerlink" href="#methane" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('5\ncomment\nC          0.000000     0.000000     0.000000\nH          0.626700     0.626700     0.626700\nH         -0.626700    -0.626700     0.626700\nH         -0.626700     0.626700    -0.626700\nH          0.626700    -0.626700    -0.626700\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('methane_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Methane Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.000000     0.000000     0.000000
+H          0.626700     0.626700     0.626700
+H         -0.626700    -0.626700     0.626700
+H         -0.626700     0.626700    -0.626700
+H          0.626700    -0.626700    -0.626700
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="methylamine">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/methylamine.efp">methylamine</a><a class="headerlink" href="#methylamine" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('7\ncomment\nN         -0.721090     0.000000     0.073284\nH         -1.089325     0.805920    -0.414424\nH         -1.089325    -0.805920    -0.414424\nC          0.738880     0.000000    -0.013895\nH          1.127039    -0.875000     0.502646\nH          1.145923     0.000000    -1.029223\nH          1.127039     0.875000     0.502646\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('methylamine_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Methylamine, S66, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N         -0.721090     0.000000     0.073284
+H         -1.089325     0.805920    -0.414424
+H         -1.089325    -0.805920    -0.414424
+C          0.738880     0.000000    -0.013895
+H          1.127039    -0.875000     0.502646
+H          1.145923     0.000000    -1.029223
+H          1.127039     0.875000     0.502646
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="h2o">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/h2o.efp">h2o</a><a class="headerlink" href="#h2o" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('3\ncomment\nO          0.000000     0.063030     0.000000\nH         -0.752652    -0.500166     0.000000\nH          0.752652    -0.500166     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('h2o_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Tue Mar 27 16:14:27 2012
+ $H2O
+EFP DATA FOR FRAGNAME SCFTYP=RHF   ... GENERATED WITH BASIS SET=6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>O          0.000000     0.063030     0.000000
+H         -0.752652    -0.500166     0.000000
+H          0.752652    -0.500166     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="ch4">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/ch4.efp">ch4</a><a class="headerlink" href="#ch4" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('5\ncomment\nC         -0.000007    -0.000002     0.000023\nH          0.559197    -0.843228     0.384108\nH         -1.038888    -0.094506     0.288197\nH          0.074416     0.020487    -1.079492\nH          0.405361     0.917269     0.406907\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('ch4_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 11:27:40 2012
+ $CH4
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.000007    -0.000002     0.000023
+H          0.559197    -0.843228     0.384108
+H         -1.038888    -0.094506     0.288197
+H          0.074416     0.020487    -1.079492
+H          0.405361     0.917269     0.406907
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="hydrogencyanide">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/hydrogencyanide.efp">hydrogencyanide</a><a class="headerlink" href="#hydrogencyanide" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('4\ncomment\nN         -0.602008     0.000025     0.000000\nC          0.565331    -0.000061     0.000000\nH          1.633210     0.000379     0.000000\nD          3.633210     0.000379     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('hydrogencyanide_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Hydrogen cyanide Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N         -0.602008     0.000025     0.000000
+C          0.565331    -0.000061     0.000000
+H          1.633210     0.000379     0.000000
+D          3.633210     0.000379     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="acetamide-gp">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/acetamide-gp.efp">acetamide-gp</a><a class="headerlink" href="#acetamide-gp" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('9\ncomment\nC          0.043961     0.085203    -0.005602\nO          0.471547     1.227060     0.003308\nN          0.868937    -1.004398    -0.020023\nH          1.850976    -0.843990     0.117452\nH          0.508877    -1.928314     0.122079\nC         -1.431795    -0.238820     0.000340\nH         -1.769813    -0.327018     1.031932\nH         -1.652592    -1.169599    -0.517030\nH         -1.969844     0.579150    -0.466069\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('acetamide-gp_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Acetamide, S66 gas phase monomer, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.043961     0.085203    -0.005602
+O          0.471547     1.227060     0.003308
+N          0.868937    -1.004398    -0.020023
+H          1.850976    -0.843990     0.117452
+H          0.508877    -1.928314     0.122079
+C         -1.431795    -0.238820     0.000340
+H         -1.769813    -0.327018     1.031932
+H         -1.652592    -1.169599    -0.517030
+H         -1.969844     0.579150    -0.466069
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="ch3oh">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/ch3oh.efp">ch3oh</a><a class="headerlink" href="#ch3oh" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('6\ncomment\nC         -0.717119     0.013446    -0.000001\nO          0.678634    -0.063043    -0.000001\nH         -1.094134     0.520396     0.883227\nH         -1.094993    -0.998593    -0.000048\nH         -1.094156     0.520490    -0.883163\nH          1.051482     0.798141     0.000002\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('ch3oh_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Fri Jun  8 14:12:58 2012
+ $CH3OH
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.717119     0.013446    -0.000001
+O          0.678634    -0.063043    -0.000001
+H         -1.094134     0.520396     0.883227
+H         -1.094993    -0.998593    -0.000048
+H         -1.094156     0.520490    -0.883163
+H          1.051482     0.798141     0.000002
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="ccl4">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/ccl4.efp">ccl4</a><a class="headerlink" href="#ccl4" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('5\ncomment\nC         -0.000049     0.000028    -0.000070\nCL         0.259957    -0.246051     1.724202\nCL        -1.717643     0.239125    -0.306444\nCL         0.563161    -1.413802    -0.886119\nCL         0.894541     1.420719    -0.531616\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('ccl4_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 13:15:17 2012
+ $CCL4
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.000049     0.000028    -0.000070
+CL         0.259957    -0.246051     1.724202
+CL        -1.717643     0.239125    -0.306444
+CL         0.563161    -1.413802    -0.886119
+CL         0.894541     1.420719    -0.531616
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="cyclopentane">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/cyclopentane.efp">cyclopentane</a><a class="headerlink" href="#cyclopentane" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('15\ncomment\nC          1.274536    -0.248276     0.015408\nH          1.896288    -0.262311     0.908883\nH          1.925746    -0.475194    -0.826626\nC          0.122240    -1.275242     0.135374\nH          0.030375    -1.612348     1.168149\nH          0.283877    -2.158931    -0.478951\nC         -1.141588    -0.502663    -0.256509\nH         -2.051894    -0.944460     0.145791\nH         -1.238924    -0.466814    -1.343857\nC         -0.855666     0.901314     0.270158\nH         -0.925362     0.902335     1.360459\nH         -1.539386     1.658704    -0.110278\nC          0.593814     1.127109    -0.164593\nH          1.090504     1.917557     0.395015\nH          0.608118     1.414764    -1.216652\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('cyclopentane_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Cyclopentane, S66, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          1.274536    -0.248276     0.015408
+H          1.896288    -0.262311     0.908883
+H          1.925746    -0.475194    -0.826626
+C          0.122240    -1.275242     0.135374
+H          0.030375    -1.612348     1.168149
+H          0.283877    -2.158931    -0.478951
+C         -1.141588    -0.502663    -0.256509
+H         -2.051894    -0.944460     0.145791
+H         -1.238924    -0.466814    -1.343857
+C         -0.855666     0.901314     0.270158
+H         -0.925362     0.902335     1.360459
+H         -1.539386     1.658704    -0.110278
+C          0.593814     1.127109    -0.164593
+H          1.090504     1.917557     0.395015
+H          0.608118     1.414764    -1.216652
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="uracil-gp">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/uracil-gp.efp">uracil-gp</a><a class="headerlink" href="#uracil-gp" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('12\ncomment\nN          0.035189     0.942883     0.000000\nH          0.048212     1.953603     0.000000\nC          1.288023     0.310598     0.000000\nO          2.313485     0.968410     0.000000\nC          1.199593    -1.140061     0.000000\nH          2.110130    -1.713656     0.000000\nC         -0.009221    -1.736613     0.000000\nH         -0.126582    -2.810017     0.000000\nN         -1.174184    -1.015535     0.000000\nH         -2.070599    -1.472561     0.000000\nC         -1.219411     0.368896     0.000000\nO         -2.258420     0.998327     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('uracil-gp_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Uracil, S66, gas-phase monomer, Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N          0.035189     0.942883     0.000000
+H          0.048212     1.953603     0.000000
+C          1.288023     0.310598     0.000000
+O          2.313485     0.968410     0.000000
+C          1.199593    -1.140061     0.000000
+H          2.110130    -1.713656     0.000000
+C         -0.009221    -1.736613     0.000000
+H         -0.126582    -2.810017     0.000000
+N         -1.174184    -1.015535     0.000000
+H         -2.070599    -1.472561     0.000000
+C         -1.219411     0.368896     0.000000
+O         -2.258420     0.998327     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="neopentane">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/neopentane.efp">neopentane</a><a class="headerlink" href="#neopentane" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('17\ncomment\nC          0.000000     0.000000     0.000000\nC          0.881340     0.881340     0.881340\nH          1.521730     1.521730     0.273200\nH          0.273200     1.521730     1.521730\nH          1.521730     0.273200     1.521730\nC         -0.881340     0.881340    -0.881340\nH         -1.521730     0.273200    -1.521730\nH         -1.521730     1.521730    -0.273200\nH         -0.273200     1.521730    -1.521730\nC         -0.881340    -0.881340     0.881340\nH         -1.521730    -1.521730     0.273200\nH         -1.521730    -0.273200     1.521730\nH         -0.273200    -1.521730     1.521730\nC          0.881340    -0.881340    -0.881340\nH          1.521730    -1.521730    -0.273200\nH          0.273200    -1.521730    -1.521730\nH          1.521730    -0.273200    -1.521730\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('neopentane_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Neopentane, S66, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.000000     0.000000     0.000000
+C          0.881340     0.881340     0.881340
+H          1.521730     1.521730     0.273200
+H          0.273200     1.521730     1.521730
+H          1.521730     0.273200     1.521730
+C         -0.881340     0.881340    -0.881340
+H         -1.521730     0.273200    -1.521730
+H         -1.521730     1.521730    -0.273200
+H         -0.273200     1.521730    -1.521730
+C         -0.881340    -0.881340     0.881340
+H         -1.521730    -1.521730     0.273200
+H         -1.521730    -0.273200     1.521730
+H         -0.273200    -1.521730     1.521730
+C          0.881340    -0.881340    -0.881340
+H          1.521730    -1.521730    -0.273200
+H          0.273200    -1.521730    -1.521730
+H          1.521730    -0.273200    -1.521730
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="adenine-stack">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/adenine-stack.efp">adenine-stack</a><a class="headerlink" href="#adenine-stack" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('15\ncomment\nC         -0.190801    -0.524795     0.001097\nN         -1.202629    -1.457753    -0.007931\nC         -2.298700    -0.718488    -0.005752\nH         -3.302884    -1.108459    -0.010975\nN         -2.051553     0.626758     0.004323\nH         -2.729780     1.370239     0.006955\nC         -0.686448     0.780599     0.005930\nN          0.025517     1.911707     0.005800\nC          1.333038     1.649644    -0.005645\nH          1.989156     2.509848    -0.011294\nN          1.955190     0.454345    -0.012177\nC          1.208229    -0.651995    -0.002132\nN          1.816774    -1.865535     0.044799\nH          1.259232    -2.666552    -0.195276\nH          2.792551    -1.883031    -0.195708\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('adenine-stack_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Adenine, S22 Stack Dimer Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.190801    -0.524795     0.001097
+N         -1.202629    -1.457753    -0.007931
+C         -2.298700    -0.718488    -0.005752
+H         -3.302884    -1.108459    -0.010975
+N         -2.051553     0.626758     0.004323
+H         -2.729780     1.370239     0.006955
+C         -0.686448     0.780599     0.005930
+N          0.025517     1.911707     0.005800
+C          1.333038     1.649644    -0.005645
+H          1.989156     2.509848    -0.011294
+N          1.955190     0.454345    -0.012177
+C          1.208229    -0.651995    -0.002132
+N          1.816774    -1.865535     0.044799
+H          1.259232    -2.666552    -0.195276
+H          2.792551    -1.883031    -0.195708
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="water">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/water.efp">water</a><a class="headerlink" href="#water" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('3\ncomment\nO          0.000000     0.000000     0.066433\nH          0.000000     0.753200    -0.527167\nH          0.000000    -0.753200    -0.527167\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('water_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Water Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>O          0.000000     0.000000     0.066433
+H          0.000000     0.753200    -0.527167
+H          0.000000    -0.753200    -0.527167
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="formicacid">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/formicacid.efp">formicacid</a><a class="headerlink" href="#formicacid" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('5\ncomment\nC          0.077691    -0.404110     0.000000\nO         -1.128002     0.119130     0.000000\nO          1.133662     0.208328     0.000000\nH          0.043506    -1.497035     0.000000\nH         -1.058384     1.111703     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('formicacid_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Formic Acid, S22 H-bond Dimer Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.077691    -0.404110     0.000000
+O         -1.128002     0.119130     0.000000
+O          1.133662     0.208328     0.000000
+H          0.043506    -1.497035     0.000000
+H         -1.058384     1.111703     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="pyridine">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/pyridine.efp">pyridine</a><a class="headerlink" href="#pyridine" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('11\ncomment\nN          0.000000     0.000000     1.393973\nC          0.000000    -1.140880     0.691923\nH          0.000000    -2.054940     1.273233\nC          0.000000    -1.194050    -0.699677\nH          0.000000    -2.148990    -1.206027\nC          0.000000     0.000000    -1.412947\nH          0.000000     0.000000    -2.494377\nC          0.000000     1.194050    -0.699677\nH          0.000000     2.148990    -1.206027\nC          0.000000     1.140880     0.691923\nH          0.000000     2.054940     1.273233\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('pyridine_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Pyridine, S66, Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N          0.000000     0.000000     1.393973
+C          0.000000    -1.140880     0.691923
+H          0.000000    -2.054940     1.273233
+C          0.000000    -1.194050    -0.699677
+H          0.000000    -2.148990    -1.206027
+C          0.000000     0.000000    -1.412947
+H          0.000000     0.000000    -2.494377
+C          0.000000     1.194050    -0.699677
+H          0.000000     2.148990    -1.206027
+C          0.000000     1.140880     0.691923
+H          0.000000     2.054940     1.273233
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="cl2">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/cl2.efp">cl2</a><a class="headerlink" href="#cl2" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('2\ncomment\nCL        -0.987026     0.000000     0.000000\nCL         0.987026     0.000000     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('cl2_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 15:34:43 2012
+ $CL2
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>CL        -0.987026     0.000000     0.000000
+CL         0.987026     0.000000     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="benzene">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/benzene.efp">benzene</a><a class="headerlink" href="#benzene" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('12\ncomment\nC          0.696821    -1.206894     0.000000\nC          1.393641     0.000000     0.000000\nC          0.696821     1.206894     0.000000\nC         -0.696821     1.206894     0.000000\nC         -1.393641     0.000000     0.000000\nC         -0.696821    -1.206894     0.000000\nH          1.237534    -2.143485     0.000000\nH          2.475068     0.000000     0.000000\nH          1.237534     2.143485     0.000000\nH         -1.237534     2.143485     0.000000\nH         -2.475068     0.000000     0.000000\nH         -1.237534    -2.143485     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('benzene_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Benzene Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.696821    -1.206894     0.000000
+C          1.393641     0.000000     0.000000
+C          0.696821     1.206894     0.000000
+C         -0.696821     1.206894     0.000000
+C         -1.393641     0.000000     0.000000
+C         -0.696821    -1.206894     0.000000
+H          1.237534    -2.143485     0.000000
+H          2.475068     0.000000     0.000000
+H          1.237534     2.143485     0.000000
+H         -1.237534     2.143485     0.000000
+H         -2.475068     0.000000     0.000000
+H         -1.237534    -2.143485     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="h2">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/h2.efp">h2</a><a class="headerlink" href="#h2" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('2\ncomment\nH         -0.367112     0.000000     0.000000\nH          0.367112     0.000000     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('h2_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 15:25:29 2012
+ $H2
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>H         -0.367112     0.000000     0.000000
+H          0.367112     0.000000     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="nmethylacetamide">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/nmethylacetamide.efp">nmethylacetamide</a><a class="headerlink" href="#nmethylacetamide" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('12\ncomment\nC          1.769122     0.676337    -0.000351\nH          1.631806     1.755107     0.004384\nH          2.340337     0.391745    -0.880485\nH          2.345268     0.384570     0.874148\nC          0.472184    -0.099167     0.000208\nO          0.451228    -1.322406     0.000079\nN         -0.656393     0.664064     0.000788\nH         -0.556234     1.662010    -0.000907\nC         -1.978861     0.079841    -0.000490\nH         -1.848969    -0.997750     0.008358\nH         -2.542617     0.378205     0.881590\nH         -2.535629     0.363993    -0.891762\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('nmethylacetamide_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Peptide bond model, S66, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          1.769122     0.676337    -0.000351
+H          1.631806     1.755107     0.004384
+H          2.340337     0.391745    -0.880485
+H          2.345268     0.384570     0.874148
+C          0.472184    -0.099167     0.000208
+O          0.451228    -1.322406     0.000079
+N         -0.656393     0.664064     0.000788
+H         -0.556234     1.662010    -0.000907
+C         -1.978861     0.079841    -0.000490
+H         -1.848969    -0.997750     0.008358
+H         -2.542617     0.378205     0.881590
+H         -2.535629     0.363993    -0.891762
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="c6h6">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/c6h6.efp">c6h6</a><a class="headerlink" href="#c6h6" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('12\ncomment\nC         -0.515357     1.283171     0.001941\nC          0.853604     1.087880    -0.004609\nC          1.369001    -0.195289     0.002620\nC         -1.369006     0.195278     0.002888\nC         -0.853584    -1.087872    -0.004803\nC          0.515338    -1.283143     0.002177\nH         -0.915324     2.279459     0.005656\nH          1.516245     1.932490    -0.015766\nH          2.431801    -0.346996     0.008184\nH         -2.431828     0.346799     0.009774\nH         -1.516042    -1.932593    -0.017856\nH          0.915184    -2.279454     0.007457\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('c6h6_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Wed Jul 18 19:03:10 2012
+ $C6H6
+EFP DATA FOR FRAGNAME SCFTYP=RHF     ... GENERATED WITH BASIS SET=XXX
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.515357     1.283171     0.001941
+C          0.853604     1.087880    -0.004609
+C          1.369001    -0.195289     0.002620
+C         -1.369006     0.195278     0.002888
+C         -0.853584    -1.087872    -0.004803
+C          0.515338    -1.283143     0.002177
+H         -0.915324     2.279459     0.005656
+H          1.516245     1.932490    -0.015766
+H          2.431801    -0.346996     0.008184
+H         -2.431828     0.346799     0.009774
+H         -1.516042    -1.932593    -0.017856
+H          0.915184    -2.279454     0.007457
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="nh3">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/nh3.efp">nh3</a><a class="headerlink" href="#nh3" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('4\ncomment\nN          0.000000     0.000000    -0.063177\nH         -0.466791    -0.808506     0.292603\nH         -0.466791     0.808506     0.292603\nH          0.933582     0.000000     0.292603\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('nh3_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>          FRAGNAMEEFP GENERATED AT Tue Mar 27 16:16:45 2012
+ $NH3
+EFP DATA FOR FRAGNAME SCFTYP=RHF   ... GENERATED WITH BASIS SET=6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N          0.000000     0.000000    -0.063177
+H         -0.466791    -0.808506     0.292603
+H         -0.466791     0.808506     0.292603
+H          0.933582     0.000000     0.292603
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="methanol">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/methanol.efp">methanol</a><a class="headerlink" href="#methanol" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('6\ncomment\nO          0.689845    -0.063814     0.000000\nH          1.026676     0.834594     0.000000\nC         -0.726417     0.012939     0.000000\nH         -1.095741    -1.008091     0.000000\nH         -1.114977     0.516104     0.887270\nH         -1.114977     0.516104    -0.887270\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('methanol_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Methanol, S66, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>O          0.689845    -0.063814     0.000000
+H          1.026676     0.834594     0.000000
+C         -0.726417     0.012939     0.000000
+H         -1.095741    -1.008091     0.000000
+H         -1.114977     0.516104     0.887270
+H         -1.114977     0.516104    -0.887270
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="formamide">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/formamide.efp">formamide</a><a class="headerlink" href="#formamide" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('6\ncomment\nC         -0.085066    -0.404452     0.000000\nO         -1.129812     0.205930     0.000000\nN          1.138474     0.166062     0.000000\nH         -0.043279    -1.493705     0.000000\nH          1.225622     1.163209     0.000000\nH          1.943097    -0.429351     0.000000\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('formamide_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Formamide, S22 Dimer Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.085066    -0.404452     0.000000
+O         -1.129812     0.205930     0.000000
+N          1.138474     0.166062     0.000000
+H         -0.043279    -1.493705     0.000000
+H          1.225622     1.163209     0.000000
+H          1.943097    -0.429351     0.000000
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="indole">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/indole.efp">indole</a><a class="headerlink" href="#indole" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('16\ncomment\nH          3.112818     1.194452     0.003879\nC          2.157723     0.686391     0.004452\nC          0.988223     1.429181    -0.000611\nH          1.022763     2.511112    -0.004525\nC         -0.243711     0.754051    -0.002940\nC         -1.607660     1.168976     0.000133\nH         -1.985680     2.177226    -0.009178\nC         -2.374160     0.025843     0.005666\nN         -1.552555    -1.074140    -0.009326\nC         -0.243529    -0.668572    -0.000083\nC          0.933683    -1.419112    -0.002547\nH          0.913892    -2.501057     0.001284\nC          2.132045    -0.722899     0.000520\nH          3.064732    -1.270666     0.000627\nH         -1.860733    -2.026513     0.074060\nH         -3.445035    -0.089573     0.008789\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('indole_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Indole, S22 Complex Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>H          3.112818     1.194452     0.003879
+C          2.157723     0.686391     0.004452
+C          0.988223     1.429181    -0.000611
+H          1.022763     2.511112    -0.004525
+C         -0.243711     0.754051    -0.002940
+C         -1.607660     1.168976     0.000133
+H         -1.985680     2.177226    -0.009178
+C         -2.374160     0.025843     0.005666
+N         -1.552555    -1.074140    -0.009326
+C         -0.243529    -0.668572    -0.000083
+C          0.933683    -1.419112    -0.002547
+H          0.913892    -2.501057     0.001284
+C          2.132045    -0.722899     0.000520
+H          3.064732    -1.270666     0.000627
+H         -1.860733    -2.026513     0.074060
+H         -3.445035    -0.089573     0.008789
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="aceticacid-hb">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/aceticacid-hb.efp">aceticacid-hb</a><a class="headerlink" href="#aceticacid-hb" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('8\ncomment\nC         -0.044538     0.078342     0.000537\nO         -0.602629     1.168456    -0.000109\nO         -0.683477    -1.080692     0.000022\nH         -1.662790    -0.908206    -0.001780\nC          1.444042    -0.084071     0.000078\nH          1.920832     0.888253     0.019147\nH          1.744328    -0.670527     0.864997\nH          1.745414    -0.634190    -0.888299\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('aceticacid-hb_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Acetic acid, H-bond monomer, S66, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.044538     0.078342     0.000537
+O         -0.602629     1.168456    -0.000109
+O         -0.683477    -1.080692     0.000022
+H         -1.662790    -0.908206    -0.001780
+C          1.444042    -0.084071     0.000078
+H          1.920832     0.888253     0.019147
+H          1.744328    -0.670527     0.864997
+H          1.745414    -0.634190    -0.888299
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="ethyne">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/ethyne.efp">ethyne</a><a class="headerlink" href="#ethyne" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('5\ncomment\nC          0.000000     0.000000     0.603725\nC          0.000000     0.000000    -0.603535\nH          0.000000     0.000000    -1.669425\nH          0.000000     0.000000     1.667155\nD          2.000000     0.000000     0.603725\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('ethyne_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Acetylene (ethyne) Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C          0.000000     0.000000     0.603725
+C          0.000000     0.000000    -0.603535
+H          0.000000     0.000000    -1.669425
+H          0.000000     0.000000     1.667155
+D          2.000000     0.000000     0.603725
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="acetamide-hb">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/acetamide-hb.efp">acetamide-hb</a><a class="headerlink" href="#acetamide-hb" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('9\ncomment\nC         -0.046141     0.068233     0.000369\nO         -0.356977     1.261505    -0.000067\nN         -0.952698    -0.925993     0.000094\nH         -1.951019    -0.708901    -0.001835\nH         -0.652211    -1.881153    -0.000309\nC          1.405590    -0.345673    -0.000025\nH          1.882100     0.069306    -0.884682\nH          1.547735    -1.423089     0.013128\nH          1.889264     0.092320     0.869357\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('acetamide-hb_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Acetamide, S66 H-bond monomer, Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>C         -0.046141     0.068233     0.000369
+O         -0.356977     1.261505    -0.000067
+N         -0.952698    -0.925993     0.000094
+H         -1.951019    -0.708901    -0.001835
+H         -0.652211    -1.881153    -0.000309
+C          1.405590    -0.345673    -0.000025
+H          1.882100     0.069306    -0.884682
+H          1.547735    -1.423089     0.013128
+H          1.889264     0.092320     0.869357
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="thymine-stack">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/thymine-stack.efp">thymine-stack</a><a class="headerlink" href="#thymine-stack" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('15\ncomment\nN         -0.631068     1.008373     0.000000\nH         -0.956616     1.965303     0.000000\nC         -1.621963     0.046276     0.000000\nO         -2.811896     0.294542     0.000000\nN         -1.111269    -1.236531     0.000000\nH         -1.799085    -1.970904     0.000000\nC          0.232329    -1.524996     0.000000\nH          0.479851    -2.577001     0.000000\nC          1.183246    -0.566233     0.000000\nC          0.755835     0.828589     0.000000\nO          1.508925     1.789508     0.000000\nC          2.648712    -0.848917     0.000000\nH          2.838441    -1.920120     0.000000\nH          3.122602    -0.405796    -0.874359\nH          3.122602    -0.405796     0.874359\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('thymine-stack_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Thymine, S22 Stack Dimer Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N         -0.631068     1.008373     0.000000
+H         -0.956616     1.965303     0.000000
+C         -1.621963     0.046276     0.000000
+O         -2.811896     0.294542     0.000000
+N         -1.111269    -1.236531     0.000000
+H         -1.799085    -1.970904     0.000000
+C          0.232329    -1.524996     0.000000
+H          0.479851    -2.577001     0.000000
+C          1.183246    -0.566233     0.000000
+C          0.755835     0.828589     0.000000
+O          1.508925     1.789508     0.000000
+C          2.648712    -0.848917     0.000000
+H          2.838441    -1.920120     0.000000
+H          3.122602    -0.405796    -0.874359
+H          3.122602    -0.405796     0.874359
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="uracil">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/uracil.efp">uracil</a><a class="headerlink" href="#uracil" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('12\ncomment\nN         -1.176150    -1.013895     0.009636\nC         -0.014859    -1.735764    -0.010189\nH         -0.135102    -2.807995    -0.049711\nC          1.195422    -1.139958     0.012847\nH          2.105169    -1.714739    -0.003735\nC          1.284759     0.308466     0.015077\nO          2.313695     0.963702    -0.052809\nN          0.038116     0.943313     0.083774\nH          0.044958     1.955145     0.033206\nC         -1.216003     0.367805     0.015837\nO         -2.251460     1.002337    -0.044844\nH         -2.065926    -1.465704    -0.127550\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('uracil_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Uracil, S22 H-Bond, Stack Dimer Elec.: 6-31G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N         -1.176150    -1.013895     0.009636
+C         -0.014859    -1.735764    -0.010189
+H         -0.135102    -2.807995    -0.049711
+C          1.195422    -1.139958     0.012847
+H          2.105169    -1.714739    -0.003735
+C          1.284759     0.308466     0.015077
+O          2.313695     0.963702    -0.052809
+N          0.038116     0.943313     0.083774
+H          0.044958     1.955145     0.033206
+C         -1.216003     0.367805     0.015837
+O         -2.251460     1.002337    -0.044844
+H         -2.065926    -1.465704    -0.127550
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="ammonia">
+<h1><a class="reference external" href="https://github.com/psi4/psi4/blob/master/share/efpfrag/ammonia.efp">ammonia</a><a class="headerlink" href="#ammonia" title="Permalink to this headline">¶</a></h1>
+<center>
+<script>
+
+  // Molecule from XYZ file
+  var mol = ChemDoodle.readXYZ('4\ncomment\nN          0.000000     0.000000     0.069609\nH          0.000000     0.932400    -0.322391\nH          0.807400    -0.466200    -0.322391\nH         -0.807400    -0.466200    -0.322391\n')
+
+  // the Canvas
+  var qq = new ChemDoodle.TransformCanvas('ammonia_l', 400, 300, true);
+  qq.loadContent([mol]);
+  qq.specs.scale = 25;
+  qq.repaint();
+
+</script>
+
+<center>
+<div style="font-size:12px;">
+<strong>rotate</strong>: click+drag<br>
+<strong>translate</strong>: alt+click+drag<br>
+<strong>zoom</strong>: scroll
+</div>
+Visualization by <a href="http://web.chemdoodle.com" target="_blank">ChemDoodle Web</a>
+</center><p>Comment</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Ammonia Elec.: 6-31+G* Rest: 6-311++G(3df,2p)
+</pre></div>
+</div>
+<p>Full Geometry in Angstroms</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>N          0.000000     0.000000     0.069609
+H          0.000000     0.932400    -0.322391
+H          0.807400    -0.466200    -0.322391
+H         -0.807400    -0.466200    -0.322391
+</pre></div>
+</div>
+<hr class="docutils" />
+<style type="text/css"><!--
+ .green {color: red;}
+ .sc {font-variant: small-caps;}
+ --></style></div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2aminopyridine</a></li>
+<li><a class="reference internal" href="#pyrazine">pyrazine</a></li>
+<li><a class="reference internal" href="#phenol">phenol</a></li>
+<li><a class="reference internal" href="#pyridone">pyridone</a></li>
+<li><a class="reference internal" href="#adenine-wc">adenine-wc</a></li>
+<li><a class="reference internal" href="#dcm">dcm</a></li>
+<li><a class="reference internal" href="#pentane">pentane</a></li>
+<li><a class="reference internal" href="#thymine-wc">thymine-wc</a></li>
+<li><a class="reference internal" href="#c2h5oh">c2h5oh</a></li>
+<li><a class="reference internal" href="#acetone">acetone</a></li>
+<li><a class="reference internal" href="#ethane">ethane</a></li>
+<li><a class="reference internal" href="#dmso">dmso</a></li>
+<li><a class="reference internal" href="#aceticacid-gp">aceticacid-gp</a></li>
+<li><a class="reference internal" href="#ethene">ethene</a></li>
+<li><a class="reference internal" href="#methane">methane</a></li>
+<li><a class="reference internal" href="#methylamine">methylamine</a></li>
+<li><a class="reference internal" href="#h2o">h2o</a></li>
+<li><a class="reference internal" href="#ch4">ch4</a></li>
+<li><a class="reference internal" href="#hydrogencyanide">hydrogencyanide</a></li>
+<li><a class="reference internal" href="#acetamide-gp">acetamide-gp</a></li>
+<li><a class="reference internal" href="#ch3oh">ch3oh</a></li>
+<li><a class="reference internal" href="#ccl4">ccl4</a></li>
+<li><a class="reference internal" href="#cyclopentane">cyclopentane</a></li>
+<li><a class="reference internal" href="#uracil-gp">uracil-gp</a></li>
+<li><a class="reference internal" href="#neopentane">neopentane</a></li>
+<li><a class="reference internal" href="#adenine-stack">adenine-stack</a></li>
+<li><a class="reference internal" href="#water">water</a></li>
+<li><a class="reference internal" href="#formicacid">formicacid</a></li>
+<li><a class="reference internal" href="#pyridine">pyridine</a></li>
+<li><a class="reference internal" href="#cl2">cl2</a></li>
+<li><a class="reference internal" href="#benzene">benzene</a></li>
+<li><a class="reference internal" href="#h2">h2</a></li>
+<li><a class="reference internal" href="#nmethylacetamide">nmethylacetamide</a></li>
+<li><a class="reference internal" href="#c6h6">c6h6</a></li>
+<li><a class="reference internal" href="#nh3">nh3</a></li>
+<li><a class="reference internal" href="#methanol">methanol</a></li>
+<li><a class="reference internal" href="#formamide">formamide</a></li>
+<li><a class="reference internal" href="#indole">indole</a></li>
+<li><a class="reference internal" href="#aceticacid-hb">aceticacid-hb</a></li>
+<li><a class="reference internal" href="#ethyne">ethyne</a></li>
+<li><a class="reference internal" href="#acetamide-hb">acetamide-hb</a></li>
+<li><a class="reference internal" href="#thymine-stack">thymine-stack</a></li>
+<li><a class="reference internal" href="#uracil">uracil</a></li>
+<li><a class="reference internal" href="#ammonia">ammonia</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="libefp.html"
+                        title="previous chapter">Interface to LIBEFP by I. Kaliman</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pcmsolver.html"
+                        title="next chapter">Interface to PCMSolver</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/autodoc_available_efpfrag.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="contents.html" title="Table Of Contents"
+             >toc</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pcmsolver.html" title="Interface to PCMSolver"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="libefp.html" title="Interface to LIBEFP by I. Kaliman"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Psi4 [1.0.0 6a9a71b]</a> &raquo; </li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span class="sc">Psi4</span> Capabilities</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="libefp.html" >Interface to LIBEFP by I. Kaliman</a> &raquo;</li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, The Psi4 Project.
+      Last updated on Tuesday, 05 July 2016 02:54AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+    <!-- cloud_sptheme 1.3 -->
+  </body>
+</html>
