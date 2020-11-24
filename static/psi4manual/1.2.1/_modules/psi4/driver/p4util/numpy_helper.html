@@ -1,0 +1,785 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>psi4.driver.p4util.numpy_helper</title>
+    <link rel="stylesheet" href="../../../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../../../_static/cloud.base.js"></script>
+    <script type="text/javascript" src="../../../../_static/cloud.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/p4util/numpy_helper.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/406f4de">1.2.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.p4util.numpy_helper</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2018 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">psi4</span> <span class="k">import</span> <span class="n">core</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="c1">### Matrix and Vector properties</span>
+
+
+<span class="k">def</span> <span class="nf">_get_raw_views</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets simple raw view of the passed in object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_interface</span><span class="p">()])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array_interface</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">_find_dim</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">ndim</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to help deal with zero or sized arrays</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Zero arrays</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">arr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">arr</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
+
+    <span class="c1"># Make sure this is a numpy array like thing</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="s1">&#39;shape&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Expected numpy array, found object of type &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="n">ndim</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndim</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Input array does not have a valid shape.&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="array_to_matrix"><a class="viewcode-back" href="../../../../numpy.html#psi4.core.array_to_matrix">[docs]</a><span class="k">def</span> <span class="nf">array_to_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;New Matrix&quot;</span><span class="p">,</span> <span class="n">dim1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dim2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a numpy array or list of numpy arrays into a Psi4 Matrix (irreped if list).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arr : array or list of arrays</span>
+<span class="sd">        Numpy array or list of arrays to use as the data for a new core.Matrix</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name to give the new core.Matrix</span>
+<span class="sd">    dim1 : list, tuple, or core.Dimension (optional)</span>
+<span class="sd">        If a single dense numpy array is given, a dimension can be supplied to</span>
+<span class="sd">        apply irreps to this array. Note that this discards all extra information</span>
+<span class="sd">        given in the matrix besides the diagonal blocks determined by the passed</span>
+<span class="sd">        dimension.</span>
+<span class="sd">    dim2 :</span>
+<span class="sd">        Same as dim1 only if using a psi4.core.Dimension object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matrix : :py:class:`~psi4.core.Matrix` or :py:class:`~psi4.core.Vector`</span>
+<span class="sd">       Returns the given Psi4 object</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is a generalized function to convert a NumPy array to a Psi4 object</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; data = np.random.rand(20)</span>
+<span class="sd">    &gt;&gt;&gt; vector = array_to_matrix(data)</span>
+
+<span class="sd">    &gt;&gt;&gt; irrep_data = [np.random.rand(2, 2), np.empty(shape=(0,3)), np.random.rand(4, 4)]</span>
+<span class="sd">    &gt;&gt;&gt; matrix = array_to_matrix(irrep_data)</span>
+<span class="sd">    &gt;&gt;&gt; print matrix.rowspi().to_tuple()</span>
+<span class="sd">    (2, 0, 4)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># What type is it? MRO can help.</span>
+    <span class="n">arr_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Irreped case</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">dim1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">dim2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Array_to_Matrix: If passed input is list of arrays dimension cannot be specified.&quot;</span><span class="p">)</span>
+
+        <span class="n">irreps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">arr_type</span> <span class="o">==</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">:</span>
+            <span class="n">sdim1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="p">(</span><span class="n">irreps</span><span class="p">)</span>
+            <span class="n">sdim2</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="p">(</span><span class="n">irreps</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">irreps</span><span class="p">):</span>
+                <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">_find_dim</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">sdim1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">d1</span>
+                <span class="n">sdim2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">d2</span>
+
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sdim1</span><span class="p">,</span> <span class="n">sdim2</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">arr_type</span> <span class="o">==</span> <span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+            <span class="n">sdim1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="p">(</span><span class="n">irreps</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">irreps</span><span class="p">):</span>
+                <span class="n">d1</span> <span class="o">=</span> <span class="n">_find_dim</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">sdim1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">d1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sdim1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Array_to_Matrix: type &#39;</span><span class="si">%s</span><span class="s2">&#39; is not recognized.&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">arr_type</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">view</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">nph</span><span class="p">,</span> <span class="n">arr</span><span class="p">):</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">view</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="n">view</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">vals</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="c1"># No irreps implied by list</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arr_type</span> <span class="o">==</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">:</span>
+
+            <span class="c1"># Build an irreped array back out</span>
+            <span class="k">if</span> <span class="n">dim1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dim2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Array_to_Matrix: If dim1 is supplied must supply dim2 also&quot;</span><span class="p">)</span>
+
+                <span class="n">dim1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">dim1</span><span class="p">)</span>
+                <span class="n">dim2</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">dim2</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">dim1</span><span class="o">.</span><span class="n">n</span><span class="p">()</span> <span class="o">!=</span> <span class="n">dim2</span><span class="o">.</span><span class="n">n</span><span class="p">():</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Array_to_Matrix: Length of passed dim1 must equal length of dim2.&quot;</span><span class="p">)</span>
+
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dim1</span><span class="p">,</span> <span class="n">dim2</span><span class="p">)</span>
+
+                <span class="n">start1</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">start2</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">interface</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">nph</span><span class="p">):</span>
+                    <span class="n">d1</span> <span class="o">=</span> <span class="n">dim1</span><span class="p">[</span><span class="n">num</span><span class="p">]</span>
+                    <span class="n">d2</span> <span class="o">=</span> <span class="n">dim2</span><span class="p">[</span><span class="n">num</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">d1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">d2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">view</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">interface</span><span class="p">)</span>
+                    <span class="n">view</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">start1</span><span class="p">:</span><span class="n">start1</span> <span class="o">+</span> <span class="n">d1</span><span class="p">,</span> <span class="n">start2</span><span class="p">:</span><span class="n">start2</span> <span class="o">+</span> <span class="n">d2</span><span class="p">]</span>
+                    <span class="n">start1</span> <span class="o">+=</span> <span class="n">d1</span>
+                    <span class="n">start2</span> <span class="o">+=</span> <span class="n">d2</span>
+
+                <span class="k">return</span> <span class="n">ret</span>
+
+            <span class="c1"># Simple case without irreps</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">np</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">arr</span>
+                <span class="k">return</span> <span class="n">ret</span>
+
+        <span class="k">elif</span> <span class="n">arr_type</span> <span class="o">==</span> <span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+            <span class="c1"># Build an irreped array back out</span>
+            <span class="k">if</span> <span class="n">dim1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dim2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Array_to_Matrix: If dim2 should not be supplied for 1D vectors.&quot;</span><span class="p">)</span>
+
+                <span class="n">dim1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">dim1</span><span class="p">)</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dim1</span><span class="p">)</span>
+
+                <span class="n">start1</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">interface</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">nph</span><span class="p">):</span>
+                    <span class="n">d1</span> <span class="o">=</span> <span class="n">dim1</span><span class="p">[</span><span class="n">num</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">d1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">view</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">interface</span><span class="p">)</span>
+                    <span class="n">view</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">start1</span><span class="p">:</span><span class="n">start1</span> <span class="o">+</span> <span class="n">d1</span><span class="p">]</span>
+                    <span class="n">start1</span> <span class="o">+=</span> <span class="n">d1</span>
+
+                <span class="k">return</span> <span class="n">ret</span>
+
+            <span class="c1"># Simple case without irreps</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">np</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">arr</span>
+                <span class="k">return</span> <span class="n">ret</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Array_to_Matrix: type &#39;</span><span class="si">%s</span><span class="s2">&#39; is not recognized.&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">arr_type</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="_to_array"><a class="viewcode-back" href="../../../../numpy.html#psi4.core._to_array">[docs]</a><span class="k">def</span> <span class="nf">_to_array</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dense</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a Psi4 Matrix or Vector to a numpy array. Either copies the data or simply</span>
+<span class="sd">    constructs a view.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : :py:class:`~psi4.core.Matrix` or :py:class:`~psi4.core.Vector`</span>
+<span class="sd">        Pointers to which Psi4 core class should be used in the construction.</span>
+<span class="sd">    copy : bool, optional</span>
+<span class="sd">        Copy the data if `True`, return a view otherwise</span>
+<span class="sd">    dense : bool, optional</span>
+<span class="sd">        Converts irreped Psi4 objects to diagonally blocked dense arrays if `True`. Returns a list of arrays otherwise.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array : ndarray or list of ndarray</span>
+<span class="sd">       Returns either a list of np.array&#39;s or the base array depending on options.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is a generalized function to convert a Psi4 object to a NumPy array</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; data = psi4.Matrix(3, 3)</span>
+<span class="sd">    &gt;&gt;&gt; data.to_array()</span>
+<span class="sd">    [[ 0.  0.  0.]</span>
+<span class="sd">     [ 0.  0.  0.]</span>
+<span class="sd">     [ 0.  0.  0.]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+        <span class="c1"># We will copy when we make a large matrix</span>
+        <span class="k">if</span> <span class="n">dense</span><span class="p">:</span>
+            <span class="n">copy</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">matrix_views</span> <span class="o">=</span> <span class="n">_get_raw_views</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+
+        <span class="c1"># Return the list of arrays</span>
+        <span class="k">if</span> <span class="n">dense</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matrix_views</span>
+
+        <span class="c1"># Build the dense matrix</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">):</span>
+            <span class="n">ret_type</span> <span class="o">=</span> <span class="s1">&#39;1D&#39;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">):</span>
+            <span class="n">ret_type</span> <span class="o">=</span> <span class="s1">&#39;2D&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Array_to_Matrix: type &#39;</span><span class="si">%s</span><span class="s2">&#39; is not recognized.&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">matrix</span><span class="p">))</span>
+
+        <span class="n">dim1</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dim2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">matrix_views</span><span class="p">:</span>
+            <span class="c1"># Ignore zero dim irreps</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                <span class="n">dim1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">dim2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dim1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">ret_type</span> <span class="o">==</span> <span class="s1">&#39;2D&#39;</span><span class="p">:</span>
+                    <span class="n">dim2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">ndim1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim1</span><span class="p">)</span>
+        <span class="n">ndim2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ret_type</span> <span class="o">==</span> <span class="s1">&#39;1D&#39;</span><span class="p">:</span>
+            <span class="n">dense_ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">ndim1</span><span class="p">))</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">d1</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dim1</span><span class="p">,</span> <span class="n">matrix_views</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">d1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">dense_ret</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">d1</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="n">d1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dense_ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">ndim1</span><span class="p">,</span> <span class="n">ndim2</span><span class="p">))</span>
+            <span class="n">start1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">start2</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dim1</span><span class="p">,</span> <span class="n">dim2</span><span class="p">,</span> <span class="n">matrix_views</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">d1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">d2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span> <span class="k">continue</span>
+
+                <span class="n">dense_ret</span><span class="p">[</span><span class="n">start1</span><span class="p">:</span><span class="n">start1</span> <span class="o">+</span> <span class="n">d1</span><span class="p">,</span> <span class="n">start2</span><span class="p">:</span><span class="n">start2</span> <span class="o">+</span> <span class="n">d2</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span>
+                <span class="n">start1</span> <span class="o">+=</span> <span class="n">d1</span>
+                <span class="n">start2</span> <span class="o">+=</span> <span class="n">d2</span>
+
+        <span class="k">return</span> <span class="n">dense_ret</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_get_raw_views</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">_np_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shape of the Psi4 data object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">view_data</span> <span class="o">=</span> <span class="n">_get_raw_views</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">view_data</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">view_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">_np_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View without only one irrep</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Attempted to call .np on a Psi4 data object with multiple irreps.&quot;</span>
+                              <span class="s2">&quot;Please use .nph for objects with irreps.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_get_raw_views</span><span class="p">(</span><span class="bp">self</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">_nph_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View with irreps.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_get_raw_views</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">_array_conversion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides the array interface to simply classes so that np.array(core.Matrix(5, 5)) works flawlessly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;__array__interface__ can only be called on Psi4 data object with only one irrep!&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">np</span><span class="o">.</span><span class="n">__array_interface__</span>
+
+
+<span class="k">def</span> <span class="nf">_np_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Writes the irreped matrix to a NumPy zipped file.</span>
+
+<span class="sd">    Can return the packed data for saving many matrices into the same file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ret</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Irreps&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nirrep</span><span class="p">()</span>
+    <span class="n">ret</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nph</span><span class="p">):</span>
+        <span class="c1"># If returning arrays to user, we want to return copies (snapshot), not</span>
+        <span class="c1"># views of the core.Matrix&#39;s memory.</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;OWNDATA&#39;</span><span class="p">]:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;IrrepData&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="p">)]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">):</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Dim1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowdim</span><span class="p">()</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">()</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Dim2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coldim</span><span class="p">()</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">):</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Dim&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nirrep</span><span class="p">())]</span>
+
+    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">savez</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">ret</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_np_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads the data from a NumPy compress file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">npyio</span><span class="o">.</span><span class="n">NpzFile</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">filename</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.npz&#39;</span><span class="p">):</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;.npz&#39;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.npz&#39;</span><span class="p">):</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;.npz&#39;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Filename not understood: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">ret_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Irreps&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> <span class="p">((</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Name&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;File </span><span class="si">%s</span><span class="s2"> does not appear to be a numpyz save&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Irreps&quot;</span><span class="p">]):</span>
+        <span class="n">ret_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;IrrepData&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="p">)])</span>
+
+    <span class="n">arr_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">arr_type</span> <span class="o">==</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">:</span>
+        <span class="n">dim1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Dim1&quot;</span><span class="p">])</span>
+        <span class="n">dim2</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Dim2&quot;</span><span class="p">])</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Name&quot;</span><span class="p">]),</span> <span class="n">dim1</span><span class="p">,</span> <span class="n">dim2</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">arr_type</span> <span class="o">==</span> <span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">:</span>
+        <span class="n">dim1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Dim&quot;</span><span class="p">])</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Name&quot;</span><span class="p">]),</span> <span class="n">dim1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;Irreps&quot;</span><span class="p">]):</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">nph</span><span class="p">[</span><span class="n">h</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">ret_data</span><span class="p">[</span><span class="n">h</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="k">def</span> <span class="nf">_to_serial</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an object with a .nph accessor to a serialized dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">json_data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">view</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">nph</span><span class="p">:</span>
+        <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">view</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">view</span><span class="o">.</span><span class="n">tostring</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;vector&quot;</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;matrix&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;_to_json is only used for vector and matrix objects.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">json_data</span>
+
+
+<span class="k">def</span> <span class="nf">_from_serial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts serialized data to the correct Psi4 data type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;vector&quot;</span><span class="p">:</span>
+        <span class="n">dim1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]])</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="s2">&quot;Vector from JSON&quot;</span><span class="p">,</span> <span class="n">dim1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;matrix&quot;</span><span class="p">:</span>
+        <span class="n">dim1</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]])</span>
+        <span class="n">dim2</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]])</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="s2">&quot;Matrix from JSON&quot;</span><span class="p">,</span> <span class="n">dim1</span><span class="p">,</span> <span class="n">dim2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;_from_json did not recognize type option of </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]))</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">nph</span><span class="p">)):</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">nph</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">flat</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="k">def</span> <span class="nf">_chain_dot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Chains dot products together from a series of Psi4 Matrix classes.</span>
+
+<span class="sd">    By default there is no transposes, an optional vector of booleans can be passed in.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">trans</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;trans&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trans</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">trans</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">))]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="s2">&quot;Chain dot: The length of the transpose arguements is not equal to the length of args.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Setup chain</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">trans</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="c1"># Run through</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">doublet</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">mat</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="c1"># Matrix attributes</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">array_to_matrix</span><span class="p">)</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_list</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">array_to_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">to_array</span> <span class="o">=</span> <span class="n">_to_array</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">_np_shape</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">_np_view</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">nph</span> <span class="o">=</span> <span class="n">_nph_view</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">__array_interface__</span> <span class="o">=</span> <span class="n">_array_conversion</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">np_write</span> <span class="o">=</span> <span class="n">_np_write</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">np_read</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">_np_read</span><span class="p">)</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">to_serial</span> <span class="o">=</span> <span class="n">_to_serial</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_serial</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">_from_serial</span><span class="p">)</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">chain_dot</span> <span class="o">=</span> <span class="n">_chain_dot</span>
+
+<span class="c1"># Vector attributes</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">from_array</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">array_to_matrix</span><span class="p">)</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">from_list</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">array_to_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">to_array</span> <span class="o">=</span> <span class="n">_to_array</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">_np_shape</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">_np_view</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">nph</span> <span class="o">=</span> <span class="n">_nph_view</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">__array_interface__</span> <span class="o">=</span> <span class="n">_array_conversion</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">np_write</span> <span class="o">=</span> <span class="n">_np_write</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">np_read</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">_np_read</span><span class="p">)</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">to_serial</span> <span class="o">=</span> <span class="n">_to_serial</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">from_serial</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">_from_serial</span><span class="p">)</span>
+
+<span class="c1">### CIVector properties</span>
+
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">_civec_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a view of the CIVector&#39;s buffer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+<span class="n">core</span><span class="o">.</span><span class="n">CIVector</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">_civec_view</span>
+
+<span class="c1">### Dimension properties</span>
+
+
+<span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">_dimension_from_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;New Dimension&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds a core.Dimension object from a python list or tuple. If a dimension</span>
+<span class="sd">    object is passed a copy will be returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">irreps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="p">):</span>
+        <span class="n">irreps</span> <span class="o">=</span> <span class="n">dims</span><span class="o">.</span><span class="n">n</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Dimension from list: Type &#39;</span><span class="si">%s</span><span class="s2">&#39; not understood&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">dims</span><span class="p">))</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="p">(</span><span class="n">irreps</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">irreps</span><span class="p">):</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="k">def</span> <span class="nf">_dimension_to_tuple</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a core.Dimension object to a tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+
+    <span class="n">irreps</span> <span class="o">=</span> <span class="n">dim</span><span class="o">.</span><span class="n">n</span><span class="p">()</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">irreps</span><span class="p">):</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dim</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_dimension_iter</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides an iterator class for the Dimension object.</span>
+
+<span class="sd">    Allows:</span>
+<span class="sd">        dim = psi4.core.Dimension(...)</span>
+<span class="sd">        list(dim)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="o">.</span><span class="n">n</span><span class="p">()):</span>
+        <span class="k">yield</span> <span class="n">dim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+
+<span class="c1"># Dimension attributes</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span> <span class="o">=</span> <span class="n">_dimension_from_list</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">to_tuple</span> <span class="o">=</span> <span class="n">_dimension_to_tuple</span>
+<span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="fm">__iter__</span> <span class="o">=</span> <span class="n">_dimension_iter</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../../index.html" title="index">
+          <img class="logo" src="../../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/p4util/numpy_helper.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/406f4de">1.2.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, The Psi4 Project.
+      Last updated on Wednesday, 25 July 2018 04:21AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

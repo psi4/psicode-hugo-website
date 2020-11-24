@@ -1,0 +1,412 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Scalar relativistic Hamiltonians</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Geometry Optimization" href="optking.html" />
+    <link rel="prev" title="ADC: Ab Initio Polarization Propagator" href="adc.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optking.html" title="Geometry Optimization"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adc.html" title="ADC: Ab Initio Polarization Propagator"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/relativistic.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/ecbda83">1.3.2</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="scalar-relativistic-hamiltonians">
+<span id="sec-relativistic"></span><span id="index-0"></span><h1>Scalar relativistic Hamiltonians<a class="headerlink" href="#scalar-relativistic-hamiltonians" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Prakash Verma and Francesco A. Evangelista</em></p>
+<p><em>Section author: Prakash Verma, Wallace D. Derricotte, and Francesco A. Evangelista</em></p>
+<p>The exact-two-component (X2C) approach is a convenient way to introduce scalar
+relativistic effects in DFT and wave function-based methods.
+<span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> implements the spin-free one-electron version of X2C, which produces
+a modified one-electron Hamiltonian <span class="math notranslate nohighlight">\(H_{\rm X2C}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[H_{\rm X2C} = T_{\rm X2C} + V_{\rm X2C}\]</div>
+<p>that is a sum of a kinetic energy (<span class="math notranslate nohighlight">\(T_{\rm X2C}\)</span>) and potential energy
+(<span class="math notranslate nohighlight">\(V_{\rm X2C}\)</span>) operator.
+Our implementation is equivalent to the one reported by Cheng and Gauss <a class="reference internal" href="bibliography.html#cheng-084114" id="id1">[Cheng:084114]</a>.
+X2C calculations require the use of special (alternatively fully uncontracted) basis sets designed for relativistic
+calculations.  Common choices include the Dunning Douglass–Kroll basis sets
+(cc-pVXZ-DK, cc-pCVXZ-DK, cc-pwCVXZ-DK) and Roos’ ANO basis sets.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See also <a class="reference internal" href="dkh.html#sec-dkh"><span class="std std-ref">Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess</span></a> for another relativistic Hamiltonian.</p>
+</div>
+<div class="section" id="a-first-example">
+<span id="sec-scalarrelativistic"></span><h2>A First Example<a class="headerlink" href="#a-first-example" title="Permalink to this headline">¶</a></h2>
+<p>The following is a simple input that will perform a Hartree–Fock calculation
+using the X2C Hamiltonian.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">molecule</span> <span class="p">{</span>
+  <span class="n">H</span>
+  <span class="n">F</span> <span class="mi">1</span> <span class="mf">0.92</span>
+<span class="p">}</span>
+
+<span class="nb">set</span> <span class="p">{</span>
+    <span class="n">scf_type</span> <span class="n">pk</span>
+    <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pvdz</span>
+    <span class="n">relativistic</span> <span class="n">x2c</span>
+<span class="p">}</span>
+
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;hf&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This computation yields the following result:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@RHF</span> <span class="n">Final</span> <span class="n">Energy</span><span class="p">:</span>  <span class="o">-</span><span class="mf">100.10007984692388</span>
+
+ <span class="o">=&gt;</span> <span class="n">Energetics</span> <span class="o">&lt;=</span>
+
+  <span class="n">Nuclear</span> <span class="n">Repulsion</span> <span class="n">Energy</span> <span class="o">=</span>              <span class="mf">5.1767335622934780</span>
+  <span class="n">One</span><span class="o">-</span><span class="n">Electron</span> <span class="n">Energy</span> <span class="o">=</span>                <span class="o">-</span><span class="mf">150.7611816259664579</span>
+  <span class="n">Two</span><span class="o">-</span><span class="n">Electron</span> <span class="n">Energy</span> <span class="o">=</span>                  <span class="mf">45.4843682167491039</span>
+  <span class="n">Total</span> <span class="n">Energy</span> <span class="o">=</span>                       <span class="o">-</span><span class="mf">100.1000798469238902</span>
+</pre></div>
+</td></tr></table></div>
+<p>while a non-relativistic calculation yields the following energy:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@RHF</span> <span class="n">Final</span> <span class="n">Energy</span><span class="p">:</span>  <span class="o">-</span><span class="mf">100.01928891411315</span>
+
+ <span class="o">=&gt;</span> <span class="n">Energetics</span> <span class="o">&lt;=</span>
+
+  <span class="n">Nuclear</span> <span class="n">Repulsion</span> <span class="n">Energy</span> <span class="o">=</span>              <span class="mf">5.1767335622934780</span>
+  <span class="n">One</span><span class="o">-</span><span class="n">Electron</span> <span class="n">Energy</span> <span class="o">=</span>                <span class="o">-</span><span class="mf">150.6645256529074572</span>
+  <span class="n">Two</span><span class="o">-</span><span class="n">Electron</span> <span class="n">Energy</span> <span class="o">=</span>                  <span class="mf">45.4685031765008461</span>
+  <span class="n">Total</span> <span class="n">Energy</span> <span class="o">=</span>                       <span class="o">-</span><span class="mf">100.0192889141131474</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="basis-sets-options">
+<h2>Basis sets options<a class="headerlink" href="#basis-sets-options" title="Permalink to this headline">¶</a></h2>
+<p>The X2C module in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> supports different combinations of basis set.
+By default, if the input file specifies only <a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-mints"><span class="xref std std-term">BASIS</span></a>, then the X2C
+module will solve the modified Dirac equation in an uncontracted basis and then
+recontract the X2C Hamiltonian in the original basis.
+Alternatively, the user can use <a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-relativistic-globals"><span class="xref std std-term">BASIS_RELATIVISTIC</span></a> to specify a different
+basis set to solve the modified Dirac equation.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">set</span> <span class="p">{</span>
+    <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pvdz</span><span class="o">-</span><span class="n">dk</span>
+    <span class="n">basis_relativistic</span> <span class="n">cc</span><span class="o">-</span><span class="n">pvtz</span><span class="o">-</span><span class="n">dk</span>
+    <span class="n">relativistic</span> <span class="n">x2c</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>It is recommended that when employing the X2C relativistic Hamiltonian, that you use a fully
+decontracted basis set. This can be done simply in the input by adding “-decon” to the
+name of the primary basis you want to use for the calculation as detailed in
+<a class="reference internal" href="basissets.html#sec-basisdecontracted"><span class="std std-ref">Decontracted Basis Sets</span></a>. Publications resulting from the use
+of X2C should cite the following publication: <a class="reference internal" href="bibliography.html#verma-2015" id="id2">[Verma:2015]</a></p>
+</div>
+<div class="section" id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<p>X2C is based on exact decoupling of
+positive-energy ( <span class="math notranslate nohighlight">\(h^{FW}_{\rm ++}\)</span>
+) and negative-energy (<span class="math notranslate nohighlight">\(h^{FW}_{\rm --}\)</span> )
+blocks of the Dirac Hamiltonian (<span class="math notranslate nohighlight">\(h^{D}\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U^\dagger h^{\rm D} U =
+ U^\dagger
+ \begin{pmatrix}
+ h_{LL} &amp; h_{LS} \\
+ h_{SL} &amp; h_{SS}
+ \end{pmatrix}
+ U
+ =
+\begin{pmatrix}
+h^{\rm FW}_{++} &amp; 0 \\
+0 &amp; h^{\rm FW}_{--}
+\end{pmatrix}\end{split}\]</div>
+<p>The transformation ( <span class="math notranslate nohighlight">\(U\)</span> ) is  obtained from the solutions of the Dirac equation in kinetically balanced basis <a class="reference internal" href="bibliography.html#kutzelnigg-1984" id="id3">[Kutzelnigg:1984]</a> treatment.
+In the X2C treatment, the positive-energy block of the Hamiltonian ( <span class="math notranslate nohighlight">\(h^{FW}_{\rm ++}\)</span> )
+is given by the sum
+of a transformed kinetic (<span class="math notranslate nohighlight">\(T_{\rm X2C}\)</span>) and potential energy ( <span class="math notranslate nohighlight">\(V_{\rm X2C}\)</span> ) contribution.
+Relativistic kinetic energy ( <span class="math notranslate nohighlight">\(T_{\rm X2C}\)</span> ) and nuclear-electron interaction potential ( <span class="math notranslate nohighlight">\(V_{\rm X2C}\)</span> ) is given in terms of non-relativisitc kinetic (<span class="math notranslate nohighlight">\(T=\hat{p}^2/2\)</span>) energy and nuclear-electron interaction potential (<span class="math notranslate nohighlight">\(V\)</span>), coupling matrix ( <span class="math notranslate nohighlight">\(X\)</span>) and renormalization matrix ( <span class="math notranslate nohighlight">\(R\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[T_{\rm X2C} = R^{\dagger} (TX +  {X}^{\dagger}T - {X}^{\dagger}TX ) R\]</div>
+<div class="math notranslate nohighlight">
+\[V_{\rm X2C} = R^{\dagger}(V + \frac{1}{4c^2} X^{\dagger}W^{\text{SF}}X) R\]</div>
+<p>The coupling matrix ( <span class="math notranslate nohighlight">\({X} = C^{S} (C^{L})^{-1}\)</span> ) is obtained from the large (<span class="math notranslate nohighlight">\(C^{\rm L}\)</span>) and small (<span class="math notranslate nohighlight">\(C^{\rm S}\)</span>) components of the <span class="math notranslate nohighlight">\(N\)</span> positive energy solutions of the Dirac equation.
+The renormalization matrix
+<span class="math notranslate nohighlight">\({R}=S^{-1/2}(S^{-1/2}\tilde{S}S^{-1/2})^{-1/2}S^{1/2}\)</span>,
+depends on the modified overlap matrix
+<span class="math notranslate nohighlight">\(\tilde{S}=S+\frac{1}{2c^2}X^{\dagger}TX\)</span>. The integrals <span class="math notranslate nohighlight">\(W^{\rm SF}_{\mu\nu} = \langle {\chi_\mu} | \hat{p}\cdot (\hat{V}\hat{p}) |{\chi_\nu}\rangle\)</span> can be easily computed as derivatives of the nuclear-electron attraction integrals with respect to nuclear coordinates.
+Existing nonrelativistic electronic structure code can be extended to include scalar relativistic effects
+treated with the X2C method by replacing nonrelativistic kinetic and potential energy with the corresponding
+X2C operators <span class="math notranslate nohighlight">\(T_{X2C}\)</span> and <span class="math notranslate nohighlight">\(V_{X2C}\)</span>. It is important to note that fully uncontracted basis in needed for the construction of X2C Hamiltonian as Foldy-Wouthuysen (FW <a class="reference internal" href="bibliography.html#fw-1950" id="id4">[FW:1950]</a>) transformation is obtained in kinetically balance basis.</p>
+<div class="section" id="keywords">
+<h3>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="relativistic">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-relativistic-globals"><span class="xref std std-term">RELATIVISTIC</span></a><a class="headerlink" href="#relativistic" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Relativistic Hamiltonian type</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: NO, X2C</li>
+<li><strong>Default</strong>: NO</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="basis-relativistic">
+<h4><a class="reference internal" href="autodoc_glossary_options_c.html#term-basis-relativistic-globals"><span class="xref std std-term">BASIS_RELATIVISTIC</span></a><a class="headerlink" href="#basis-relativistic" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>Auxiliary basis set for solving Dirac equation in X2C and DKH calculations. Defaults to decontracted orbital basis.</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Default</strong>: No Default</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Scalar relativistic Hamiltonians</a><ul>
+<li><a class="reference internal" href="#a-first-example">A First Example</a></li>
+<li><a class="reference internal" href="#basis-sets-options">Basis sets options</a></li>
+<li><a class="reference internal" href="#theory">Theory</a><ul>
+<li><a class="reference internal" href="#keywords">Keywords</a><ul>
+<li><a class="reference internal" href="#relativistic"><code class="docutils literal notranslate"><span class="pre">RELATIVISTIC</span></code></a></li>
+<li><a class="reference internal" href="#basis-relativistic"><code class="docutils literal notranslate"><span class="pre">BASIS_RELATIVISTIC</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optking.html" title="Geometry Optimization"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adc.html" title="ADC: Ab Initio Polarization Propagator"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/relativistic.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/ecbda83">1.3.2</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" >Theoretical Methods: SCF to FCI</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Wednesday, 15 May 2019 08:49PM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
