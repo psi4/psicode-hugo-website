@@ -1,0 +1,977 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PSIOH Intermediate Files</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Physical Constants" href="autodoc_physconst.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="autodoc_dft_opt.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="autodoc_physconst.html" title="Physical Constants"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="autodoc_dft_opt.html" title="&lt;no title&gt;"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/autodoc_psifiles.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/406f4de">1.2.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="appendices.html" accesskey="U">Appendices</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="psioh-intermediate-files">
+<span id="apdx-psifiles"></span><span id="index-0"></span><h1>PSIOH Intermediate Files<a class="headerlink" href="#psioh-intermediate-files" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="docutils" id="id1">
+<caption><span class="caption-text">Auxiliary files in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="4%" />
+<col width="18%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">File</th>
+<th class="head">File Label</th>
+<th class="head">Contents</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>PSIF_OPTKING</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>11</td>
+<td>PSIF_GRAD</td>
+<td>geometry optimization, geometry, and gradient; currently is an ASCII file like output.grad</td>
+</tr>
+<tr class="row-even"><td>12</td>
+<td>PSIF_INTCO</td>
+<td>internal coordinates file, currently is ASCII file like output.intco</td>
+</tr>
+<tr class="row-odd"><td>16</td>
+<td>PSIF_3INDEX</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>31</td>
+<td>PSIF_DSCF</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>32</td>
+<td>PSIF_CHKPT</td>
+<td>new libpsio checkpoint file number</td>
+</tr>
+<tr class="row-even"><td>33</td>
+<td>PSIF_SO_TEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>34</td>
+<td>PSIF_SO_PK</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>35</td>
+<td>PSIF_OEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>36</td>
+<td>PSIF_SO_ERF_TEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>37</td>
+<td>PSIF_SO_ERFC_TEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>38</td>
+<td>PSIF_SO_R12</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>39</td>
+<td>PSIF_SO_R12T1</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>40</td>
+<td>PSIF_DERINFO</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>41</td>
+<td>PSIF_SO_PRESORT</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>42</td>
+<td>PSIF_OLD_CHKPT</td>
+<td>Until we have flexible PSIF_CHKPT this will store previous calculation info</td>
+</tr>
+<tr class="row-even"><td>43</td>
+<td>PSIF_CIVECT</td>
+<td>CI vector from DETCI along with string and determinant info</td>
+</tr>
+<tr class="row-odd"><td>44</td>
+<td>PSIF_AO_DGDBX</td>
+<td>B-field derivative AO integrals over GIAO Gaussians – only bra-ket permutational symmetry holds</td>
+</tr>
+<tr class="row-even"><td>45</td>
+<td>PSIF_AO_DGDBY</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>46</td>
+<td>PSIF_AO_DGDBZ</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>50</td>
+<td>PSIF_PSIMRCC_INTEGRALS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>51</td>
+<td>PSIF_PSIMRCC_RESTART</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>52</td>
+<td>PSIF_MCSCF</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>53</td>
+<td>PSIF_TPDM_HALFTRANS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>60</td>
+<td>PSIF_DETCAS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>61</td>
+<td>PSIF_LIBTRANS_DPD</td>
+<td>libtrans: All transformed integrals in DPD format are sent here by default</td>
+</tr>
+<tr class="row-even"><td>62</td>
+<td>PSIF_LIBTRANS_A_HT</td>
+<td>libtrans: Alpha half-transformed integrals in DPD format</td>
+</tr>
+<tr class="row-odd"><td>63</td>
+<td>PSIF_LIBTRANS_B_HT</td>
+<td>libtrans: Beta half-tranformed integrals in DPD format</td>
+</tr>
+<tr class="row-even"><td>64</td>
+<td>PSIF_LIBDIIS</td>
+<td>Storage for libdiis</td>
+</tr>
+<tr class="row-odd"><td>65</td>
+<td>PSIF_DFT_GRID</td>
+<td>Storage for DFT/pseudospectral grid</td>
+</tr>
+<tr class="row-even"><td>66</td>
+<td>PSIF_DF_TENSOR</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>67</td>
+<td>PSIF_PS_TENSOR</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>71</td>
+<td>PSIF_TPDM_PRESORT</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>72</td>
+<td>PSIF_MO_TEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>73</td>
+<td>PSIF_MO_OPDM</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>74</td>
+<td>PSIF_MO_TPDM</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>75</td>
+<td>PSIF_MO_LAG</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>76</td>
+<td>PSIF_AO_OPDM</td>
+<td>PSIF_AO_OPDM also contains AO Lagrangian</td>
+</tr>
+<tr class="row-even"><td>77</td>
+<td>PSIF_AO_TPDM</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>78</td>
+<td>PSIF_DBOC</td>
+<td>dboc:</td>
+</tr>
+<tr class="row-even"><td>79</td>
+<td>PSIF_MO_R12</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>80</td>
+<td>PSIF_MO_R12T2</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>81</td>
+<td>PSIF_MO_AA_TEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>82</td>
+<td>PSIF_MO_BB_TEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>83</td>
+<td>PSIF_MO_AB_TEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>84</td>
+<td>PSIF_MO_AA_TPDM</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>85</td>
+<td>PSIF_MO_BB_TPDM</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>86</td>
+<td>PSIF_MO_AB_TPDM</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>87</td>
+<td>PSIF_AA_PRESORT</td>
+<td>AA UHF twopdm presort file</td>
+</tr>
+<tr class="row-odd"><td>88</td>
+<td>PSIF_BB_PRESORT</td>
+<td>BB UHF twopdm presort file</td>
+</tr>
+<tr class="row-even"><td>89</td>
+<td>PSIF_AB_PRESORT</td>
+<td>AB UHF twopdm presort file</td>
+</tr>
+<tr class="row-odd"><td>90</td>
+<td>PSIF_MO_HESS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>91</td>
+<td>PSIF_CPHF</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>92</td>
+<td>PSIF_SO_PKSUPER1</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>93</td>
+<td>PSIF_SO_PKSUPER2</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>94</td>
+<td>PSIF_HALFT0</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>95</td>
+<td>PSIF_HALFT1</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>96</td>
+<td>PSIF_DFSCF_A</td>
+<td>B Matrix containing 3-index tensor in AOs for use with DF-SCF</td>
+</tr>
+<tr class="row-even"><td>97</td>
+<td>PSIF_DFSCF_BJ</td>
+<td>B Matrix containing 3-index tensor in AOs with J^-1/2 for use with DF-SCF</td>
+</tr>
+<tr class="row-odd"><td>98</td>
+<td>PSIF_DFSCF_K</td>
+<td>Exchange tensor for DF-SCF</td>
+</tr>
+<tr class="row-even"><td>99</td>
+<td>PSIF_DFSCF_BJI</td>
+<td>The three-center integrals for DF-SCF</td>
+</tr>
+<tr class="row-odd"><td>100</td>
+<td>PSIF_CC_INFO</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>101</td>
+<td>PSIF_CC_OEI</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>102</td>
+<td>PSIF_CC_AINTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>103</td>
+<td>PSIF_CC_BINTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>104</td>
+<td>PSIF_CC_CINTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>105</td>
+<td>PSIF_CC_DINTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>106</td>
+<td>PSIF_CC_EINTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>107</td>
+<td>PSIF_CC_FINTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>108</td>
+<td>PSIF_CC_DENOM</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>109</td>
+<td>PSIF_CC_TAMPS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>110</td>
+<td>PSIF_CC_GAMMA</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>111</td>
+<td>PSIF_CC_MISC</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>112</td>
+<td>PSIF_CC_HBAR</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>113</td>
+<td>PSIF_CC_OEI_NEW</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>114</td>
+<td>PSIF_CC_GAMMA_NEW</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>115</td>
+<td>PSIF_CC_AINTS_NEW</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>116</td>
+<td>PSIF_CC_BINTS_NEW</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>117</td>
+<td>PSIF_CC_CINTS_NEW</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>118</td>
+<td>PSIF_CC_DINTS_NEW</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>119</td>
+<td>PSIF_CC_EINTS_NEW</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>120</td>
+<td>PSIF_CC_FINTS_NEW</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>121</td>
+<td>PSIF_CC_LAMBDA</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>122</td>
+<td>PSIF_CC_RAMPS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>123</td>
+<td>PSIF_CC_LAMPS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>124</td>
+<td>PSIF_CC_LR</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>125</td>
+<td>PSIF_CC_DIIS_ERR</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>126</td>
+<td>PSIF_CC_DIIS_AMP</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>127</td>
+<td>PSIF_CC_TMP</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>128</td>
+<td>PSIF_CC_TMP0</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>129</td>
+<td>PSIF_CC_TMP1</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>130</td>
+<td>PSIF_CC_TMP2</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>131</td>
+<td>PSIF_CC_TMP3</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>132</td>
+<td>PSIF_CC_TMP4</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>133</td>
+<td>PSIF_CC_TMP5</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>134</td>
+<td>PSIF_CC_TMP6</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>135</td>
+<td>PSIF_CC_TMP8</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>137</td>
+<td>PSIF_CC_TMP9</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>138</td>
+<td>PSIF_CC_TMP10</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>139</td>
+<td>PSIF_CC_TMP11</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>140</td>
+<td>PSIF_EOM_D</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>141</td>
+<td>PSIF_EOM_CME</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>142</td>
+<td>PSIF_EOM_Cme</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>143</td>
+<td>PSIF_EOM_CMNEF</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>144</td>
+<td>PSIF_EOM_Cmnef</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>145</td>
+<td>PSIF_EOM_CMnEf</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>146</td>
+<td>PSIF_EOM_SIA</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>147</td>
+<td>PSIF_EOM_Sia</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>148</td>
+<td>PSIF_EOM_SIJAB</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>149</td>
+<td>PSIF_EOM_Sijab</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>150</td>
+<td>PSIF_EOM_SIjAb</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>151</td>
+<td>PSIF_EOM_R</td>
+<td>holds residual</td>
+</tr>
+<tr class="row-even"><td>152</td>
+<td>PSIF_CC_GLG</td>
+<td>left-hand psi for g.s. parts of cc-density</td>
+</tr>
+<tr class="row-odd"><td>153</td>
+<td>PSIF_CC_GL</td>
+<td>left-hand psi for e.s. parts of cc-density</td>
+</tr>
+<tr class="row-even"><td>154</td>
+<td>PSIF_CC_GR</td>
+<td>right-hand eigenvector for cc-density</td>
+</tr>
+<tr class="row-odd"><td>155</td>
+<td>PSIF_EOM_TMP1</td>
+<td>intermediates just for single contractions</td>
+</tr>
+<tr class="row-even"><td>156</td>
+<td>PSIF_EOM_TMP0</td>
+<td>temporary copies of density</td>
+</tr>
+<tr class="row-odd"><td>157</td>
+<td>PSIF_EOM_TMP_XI</td>
+<td>intermediates for xi computation</td>
+</tr>
+<tr class="row-even"><td>158</td>
+<td>PSIF_EOM_XI</td>
+<td>xi = dE/dt amplitudes</td>
+</tr>
+<tr class="row-odd"><td>159</td>
+<td>PSIF_EOM_TMP</td>
+<td>intermediates used more than once</td>
+</tr>
+<tr class="row-even"><td>160</td>
+<td>PSIF_CC3_HET1</td>
+<td>[H,e^T1]</td>
+</tr>
+<tr class="row-odd"><td>161</td>
+<td>PSIF_CC3_HC1</td>
+<td>[H,C1]</td>
+</tr>
+<tr class="row-even"><td>162</td>
+<td>PSIF_CC3_HC1ET1</td>
+<td>[[H,e^T1],C1]</td>
+</tr>
+<tr class="row-odd"><td>163</td>
+<td>PSIF_CC3_MISC</td>
+<td>various intermediates needed in CC3 codes</td>
+</tr>
+<tr class="row-even"><td>164</td>
+<td>PSIF_CC2_HET1</td>
+<td>[H,e^T1]</td>
+</tr>
+<tr class="row-odd"><td>165</td>
+<td>PSIF_WK_PK</td>
+<td>File to contain wK pre-sorted integrals for PK</td>
+</tr>
+<tr class="row-even"><td>180</td>
+<td>PSIF_SCF_MOS</td>
+<td>Save SCF orbitals for re-use later as guess, etc.</td>
+</tr>
+<tr class="row-odd"><td>181</td>
+<td>PSIF_DFMP2_AIA</td>
+<td>Unfitted three-index MO ints for DFMP2</td>
+</tr>
+<tr class="row-even"><td>182</td>
+<td>PSIF_DFMP2_QIA</td>
+<td>Fitted-three index MO ints for DFMP2</td>
+</tr>
+<tr class="row-odd"><td>183</td>
+<td>PSIF_ADC</td>
+<td>ADC</td>
+</tr>
+<tr class="row-even"><td>184</td>
+<td>PSIF_ADC_SEM</td>
+<td>ADC</td>
+</tr>
+<tr class="row-odd"><td>190</td>
+<td>PSIF_SAPT_DIMER</td>
+<td>SAPT Two-Body Dimer</td>
+</tr>
+<tr class="row-even"><td>191</td>
+<td>PSIF_SAPT_MONOMERA</td>
+<td>SAPT Two-Body Mon A</td>
+</tr>
+<tr class="row-odd"><td>192</td>
+<td>PSIF_SAPT_MONOMERB</td>
+<td>SAPT Two-Body Mon B</td>
+</tr>
+<tr class="row-even"><td>193</td>
+<td>PSIF_SAPT_AA_DF_INTS</td>
+<td>SAPT AA DF Ints</td>
+</tr>
+<tr class="row-odd"><td>194</td>
+<td>PSIF_SAPT_AB_DF_INTS</td>
+<td>SAPT AB DF Ints</td>
+</tr>
+<tr class="row-even"><td>195</td>
+<td>PSIF_SAPT_BB_DF_INTS</td>
+<td>SAPT BB DF Ints</td>
+</tr>
+<tr class="row-odd"><td>196</td>
+<td>PSIF_SAPT_AMPS</td>
+<td>SAPT Amplitudes</td>
+</tr>
+<tr class="row-even"><td>197</td>
+<td>PSIF_SAPT_TEMP</td>
+<td>SAPT Temporary worlds fastest code file</td>
+</tr>
+<tr class="row-odd"><td>198</td>
+<td>PSIF_SAPT_LRINTS</td>
+<td>SAPT0 2-Body linear response LDA integrals</td>
+</tr>
+<tr class="row-even"><td>199</td>
+<td>PSIF_SO_D1OEI</td>
+<td>Derivative OEIs are stored in file 199</td>
+</tr>
+<tr class="row-odd"><td>200</td>
+<td>PSIF_SO_D1ERI</td>
+<td>Derivative ERIs are stored in files 200, 201, 202, etc. File 200</td>
+</tr>
+<tr class="row-even"><td>220</td>
+<td>PSIF_3B_SAPT_TRIMER</td>
+<td>SAPT Three-Body Trimer</td>
+</tr>
+<tr class="row-odd"><td>221</td>
+<td>PSIF_3B_SAPT_DIMER_AB</td>
+<td>SAPT Three-Body Dimer AB</td>
+</tr>
+<tr class="row-even"><td>222</td>
+<td>PSIF_3B_SAPT_DIMER_AC</td>
+<td>SAPT Three-Body Dimer AC</td>
+</tr>
+<tr class="row-odd"><td>223</td>
+<td>PSIF_3B_SAPT_DIMER_BC</td>
+<td>SAPT Three-Body Dimer BC</td>
+</tr>
+<tr class="row-even"><td>224</td>
+<td>PSIF_3B_SAPT_MONOMER_A</td>
+<td>SAPT Three-Body Mon A</td>
+</tr>
+<tr class="row-odd"><td>225</td>
+<td>PSIF_3B_SAPT_MONOMER_B</td>
+<td>SAPT Three-Body Mon B</td>
+</tr>
+<tr class="row-even"><td>226</td>
+<td>PSIF_3B_SAPT_MONOMER_C</td>
+<td>SAPT Three-Body Mon C</td>
+</tr>
+<tr class="row-odd"><td>227</td>
+<td>PSIF_3B_SAPT_AA_DF_INTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>228</td>
+<td>PSIF_3B_SAPT_BB_DF_INTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>229</td>
+<td>PSIF_3B_SAPT_CC_DF_INTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>230</td>
+<td>PSIF_3B_SAPT_AMPS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>250</td>
+<td>PSIF_DCC_IJAK</td>
+<td>CEPA/CC (ij|ak)</td>
+</tr>
+<tr class="row-even"><td>251</td>
+<td>PSIF_DCC_IJAK2</td>
+<td>CEPA/CC (ij|ak)</td>
+</tr>
+<tr class="row-odd"><td>252</td>
+<td>PSIF_DCC_ABCI</td>
+<td>CEPA/CC (ia|bc)</td>
+</tr>
+<tr class="row-even"><td>253</td>
+<td>PSIF_DCC_ABCI2</td>
+<td>CEPA/CC (ia|bc)</td>
+</tr>
+<tr class="row-odd"><td>254</td>
+<td>PSIF_DCC_ABCI3</td>
+<td>CEPA/CC (ia|bc)</td>
+</tr>
+<tr class="row-even"><td>255</td>
+<td>PSIF_DCC_ABCI4</td>
+<td>CEPA/CC (ia|bc)</td>
+</tr>
+<tr class="row-odd"><td>256</td>
+<td>PSIF_DCC_ABCI5</td>
+<td>CEPA/CC (ia|bc)</td>
+</tr>
+<tr class="row-even"><td>257</td>
+<td>PSIF_DCC_ABCD1</td>
+<td>CEPA/CC (ab|cd)+</td>
+</tr>
+<tr class="row-odd"><td>258</td>
+<td>PSIF_DCC_ABCD2</td>
+<td>CEPA/CC (ab|cd)-</td>
+</tr>
+<tr class="row-even"><td>259</td>
+<td>PSIF_DCC_IJAB</td>
+<td>CEPA/CC (ij|ab)</td>
+</tr>
+<tr class="row-odd"><td>260</td>
+<td>PSIF_DCC_IAJB</td>
+<td>CEPA/CC (ia|jb)</td>
+</tr>
+<tr class="row-even"><td>261</td>
+<td>PSIF_DCC_IJKL</td>
+<td>CEPA/CC (ij|kl)</td>
+</tr>
+<tr class="row-odd"><td>262</td>
+<td>PSIF_DCC_OVEC</td>
+<td>CEPA/CC old vectors for diis</td>
+</tr>
+<tr class="row-even"><td>263</td>
+<td>PSIF_DCC_EVEC</td>
+<td>CEPA/CC error vectors for diis</td>
+</tr>
+<tr class="row-odd"><td>264</td>
+<td>PSIF_DCC_R2</td>
+<td>CEPA/CC residual</td>
+</tr>
+<tr class="row-even"><td>265</td>
+<td>PSIF_DCC_TEMP</td>
+<td>CEPA/CC temporary storage</td>
+</tr>
+<tr class="row-odd"><td>266</td>
+<td>PSIF_DCC_T2</td>
+<td>CEPA/CC t2 amplitudes</td>
+</tr>
+<tr class="row-even"><td>267</td>
+<td>PSIF_DCC_QSO</td>
+<td>DFCC 3-index integrals</td>
+</tr>
+<tr class="row-odd"><td>270</td>
+<td>PSIF_DCC_SORT_START</td>
+<td>CEPA/CC integral sort starting file number</td>
+</tr>
+<tr class="row-even"><td>271</td>
+<td>PSIF_SAPT_CCD</td>
+<td>SAPT2+ CCD Utility File</td>
+</tr>
+<tr class="row-odd"><td>272</td>
+<td>PSIF_HESS</td>
+<td>Hessian Utility File</td>
+</tr>
+<tr class="row-even"><td>273</td>
+<td>PSIF_OCC_DPD</td>
+<td>OCC DPD</td>
+</tr>
+<tr class="row-odd"><td>274</td>
+<td>PSIF_OCC_DENSITY</td>
+<td>OCC Density</td>
+</tr>
+<tr class="row-even"><td>275</td>
+<td>PSIF_OCC_IABC</td>
+<td>OCC out-of-core &lt;IA|BC&gt;</td>
+</tr>
+<tr class="row-odd"><td>276</td>
+<td>PSIF_DFOCC_INTS</td>
+<td>DFOCC Integrals</td>
+</tr>
+<tr class="row-even"><td>277</td>
+<td>PSIF_DFOCC_AMPS</td>
+<td>DFOCC Amplitudes</td>
+</tr>
+<tr class="row-odd"><td>278</td>
+<td>PSIF_DFOCC_DENS</td>
+<td>DFOCC PDMs</td>
+</tr>
+<tr class="row-even"><td>279</td>
+<td>PSIF_DFOCC_IABC</td>
+<td>DFOCC (IA|BC)</td>
+</tr>
+<tr class="row-odd"><td>280</td>
+<td>PSIF_DFOCC_ABIC</td>
+<td>DFOCC &lt;AB|IC&gt;</td>
+</tr>
+<tr class="row-even"><td>281</td>
+<td>PSIF_DFOCC_MIABC</td>
+<td>DFOCC M_iabc</td>
+</tr>
+<tr class="row-odd"><td>282</td>
+<td>PSIF_DFOCC_TEMP</td>
+<td>DFOCC temporary storage</td>
+</tr>
+<tr class="row-even"><td>300</td>
+<td>PSIF_SAD</td>
+<td>A SAD file (File for SAD related quantities</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="autodoc_physconst.html" title="Physical Constants"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="autodoc_dft_opt.html" title="&lt;no title&gt;"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/autodoc_psifiles.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/406f4de">1.2.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="appendices.html" >Appendices</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, The Psi4 Project.
+      Last updated on Wednesday, 25 July 2018 04:21AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

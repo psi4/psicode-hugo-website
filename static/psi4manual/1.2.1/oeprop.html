@@ -1,0 +1,428 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Evaluation of One-Electron Properties — oeprop()</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Vibrational and Thermochemical Analysis" href="thermo.html" />
+    <link rel="prev" title="Geometry Optimization" href="optking.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="thermo.html" title="Vibrational and Thermochemical Analysis"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optking.html" title="Geometry Optimization"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/oeprop.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/406f4de">1.2.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="evaluation-of-one-electron-properties-w-w-oeprop">
+<span id="sec-oeprop"></span><span id="index-0"></span><h1>Evaluation of One-Electron Properties — <a class="reference internal" href="#psi4.oeprop" title="psi4.oeprop"><code class="xref py py-func docutils literal notranslate"><span class="pre">oeprop()</span></code></a><a class="headerlink" href="#evaluation-of-one-electron-properties-w-w-oeprop" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Robert M. Parrish and Andrew C. Simmonett</em></p>
+<p><em>Section author: Andrew C. Simmonett</em></p>
+<dl class="function">
+<dt id="psi4.oeprop">
+<code class="descclassname">psi4.</code><code class="descname">oeprop</code><span class="sig-paren">(</span><em>wfn</em>, <em>*args</em><span class="optional">[</span>, <em>title</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/p4util/util.html#oeprop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#psi4.oeprop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate one-electron properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>wfn</strong> (<a class="reference internal" href="psi4api.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>) – set of molecule, basis, orbitals from which to compute properties</td>
+</tr>
+</tbody>
+</table>
+<p>How to specify args, which are actually the most important</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>title</strong> (<em>string</em>) – label prepended to all psivars computed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Moments with specific label</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;hf&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">oeprop</span><span class="p">(</span><span class="n">wfn</span><span class="p">,</span> <span class="s1">&#39;DIPOLE&#39;</span><span class="p">,</span> <span class="s1">&#39;QUADRUPOLE&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;H3O+ SCF&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</dd></dl>
+
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> is capable of computing a number of one-electron properties
+summarized in the table below.</p>
+<table border="1" class="docutils" id="id1">
+<span id="table-oe-features"></span><caption><span class="caption-text">Current one-electron property capabilities of <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="25%" />
+<col width="16%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Feature</th>
+<th class="head">Keyword</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Electric dipole moment</td>
+<td>DIPOLE</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Electric quadrupole moment</td>
+<td>QUADRUPOLE</td>
+<td>Raw (traced) moments and traceless multipoles</td>
+</tr>
+<tr class="row-even"><td>All moments up order N</td>
+<td>MULTIPOLE(N)</td>
+<td>Only raw (traced) moments. Sets global variables e.g. “DIPOLE X”, “32-POLE XYYZZ”</td>
+</tr>
+<tr class="row-odd"><td>Electrostatic potential, at nuclei</td>
+<td>ESP_AT_NUCLEI</td>
+<td>Sets global variables “ESP AT CENTER n”, n = 1 to natoms</td>
+</tr>
+<tr class="row-even"><td>Electrostatic potential, on grid</td>
+<td>GRID_ESP</td>
+<td>Generates V at each point in grid_esp.dat. See <a class="reference internal" href="#sec-oeprop-grid"><span class="std std-ref">Properties evaluated on a grid</span></a></td>
+</tr>
+<tr class="row-odd"><td>Electric field, on grid</td>
+<td>GRID_FIELD</td>
+<td>Generates {Ex,Ey,Ez} at each point grid_field.dat. See <a class="reference internal" href="#sec-oeprop-grid"><span class="std std-ref">Properties evaluated on a grid</span></a></td>
+</tr>
+<tr class="row-even"><td>Molecular orbital extents</td>
+<td>MO_EXTENTS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Mulliken atomic charges</td>
+<td>MULLIKEN_CHARGES</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>Löwdin atomic charges</td>
+<td>LOWDIN_CHARGES</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Wiberg bond indices</td>
+<td>WIBERG_LOWDIN_INDICES</td>
+<td>Uses (Löwdin) symmetrically orthogonalized orbitals</td>
+</tr>
+<tr class="row-even"><td>Mayer bond indices</td>
+<td>MAYER_INDICES</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Natural orbital occupations</td>
+<td>NO_OCCUPATIONS</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<p>There are two ways the computation of one-electron properties can be requested.
+Firstly, the properties can be evaluated from the last
+computed one-particle density, using the following syntax:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">oeprop</span><span class="p">(</span><span class="s2">&quot;MO_EXTENTS&quot;</span><span class="p">,</span> <span class="s2">&quot;MULTIPOLE(4)&quot;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;hello!&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>Note that it is the user’s responsibility to ensure that the relaxed density
+matrix is computed using the method of interest, which may require setting
+additional keywords (see the method’s manual section for details). The named
+argument, <em>title</em>, is completely optional and is prepended to any
+globals variables set during the computation.  The unnamed arguments are the
+properties to be computed.  These can appear in any order, and multiple
+properties may be requested, as in the example above.  Note that, due to Python
+syntax restrictions, the title argument must appear after the list of
+properties to compute.  The available properties are shown in the table above.</p>
+<p>The syntax above works well for computing properties using the SCF
+wavefunction, however, may be difficult (or impossible) to use for some of the
+correlated levels of theory. Alternatively, one-electron properties can be
+computed using the built-in property() function, e.g.:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">property</span><span class="p">(</span><span class="s1">&#39;ccsd&#39;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dipole&#39;</span><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">property()</span></code> function provides limited functionality, but is a lot easier to
+use for correlated methods. For capabilities of <code class="xref py py-func docutils literal notranslate"><span class="pre">property()</span></code> see the
+corresponding section of the manual.</p>
+<div class="section" id="basic-keywords">
+<h2>Basic Keywords<a class="headerlink" href="#basic-keywords" title="Permalink to this headline">¶</a></h2>
+<p>Multipole moments may be computed at any origin, which is controlled by the
+global <a class="reference internal" href="autodoc_glossary_options_c.html#term-properties-origin-globals"><span class="xref std std-term">PROPERTIES_ORIGIN</span></a> keyword.  The keyword takes an array with
+the following possible values:</p>
+<table border="1" class="docutils" id="id2">
+<span id="table-oe-origin"></span><caption><span class="caption-text">Allowed origin specifications</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Keyword</th>
+<th class="head">Interpretation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>[x, y, z]</td>
+<td>Origin is at the coordinates, in the same units as the geometry specification</td>
+</tr>
+<tr class="row-odd"><td>[“COM”]</td>
+<td>Origin is at the center of mass</td>
+</tr>
+<tr class="row-even"><td>[“NUCLEAR_CHARGE”]</td>
+<td>Origin is at the center of nuclear charge</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="properties-evaluated-on-a-grid">
+<span id="sec-oeprop-grid"></span><h2>Properties evaluated on a grid<a class="headerlink" href="#properties-evaluated-on-a-grid" title="Permalink to this headline">¶</a></h2>
+<p>Certain properties may be evaluated a user-specified grid points.  The grid
+points are completely arbitrary and are specified by providing a file called
+grid.dat containing the x,y,z values separated with spaces for each point in order:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="n">y1</span> <span class="n">z1</span>
+<span class="n">x2</span> <span class="n">y2</span> <span class="n">z2</span>
+<span class="o">..........</span>
+<span class="n">xn</span> <span class="n">yn</span> <span class="n">zn</span>
+</pre></div>
+</td></tr></table></div>
+<p>The grid.dat file is completely free form; any number of spaces and/or newlines
+between entries is permitted.  The units of the coordinates in grid.dat are the
+same as those used to specify the molecule’s geometry, and the output
+quantities are always in atomic units.  The requested properties will be
+written out in the same order as the grid point specification in grid.dat; see
+the above table for the format and file name of the output.</p>
+<p>The grid may be generated in the input file using standard Python loops.  By
+capturing the wavefunction used to evaluate the one-electron properties, the
+values at each grid point may be captured as Python arrays in the input file:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">prop</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GRID_ESP&quot;</span><span class="p">,</span> <span class="s2">&quot;GRID_FIELD&quot;</span><span class="p">],</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">Vvals</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">oeprop</span><span class="o">.</span><span class="n">Vvals</span><span class="p">()</span>
+<span class="n">Exvals</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">oeprop</span><span class="o">.</span><span class="n">Exvals</span><span class="p">()</span>
+<span class="n">Eyvals</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">oeprop</span><span class="o">.</span><span class="n">Eyvals</span><span class="p">()</span>
+<span class="n">Ezvals</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">oeprop</span><span class="o">.</span><span class="n">Ezvals</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>In this example, the <em>Vvals</em> array contains the electrostatic potential at each
+grid point, in the order that the grid was specified, while the <em>Exvals</em>,
+<em>Eyvals</em> and <em>Ezvals</em> arrays contain the <em>x</em>, <em>y</em> and <em>z</em> components of the
+electric field, respectively; all of these arrays can be iterated and
+manipulated using standard Python syntax.  For a complete demonstration of this
+utility, see the <a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples/props4/input.dat">props4</a> test case.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Evaluation of One-Electron Properties — <code class="docutils literal notranslate"><span class="pre">oeprop()</span></code></a><ul>
+<li><a class="reference internal" href="#basic-keywords">Basic Keywords</a></li>
+<li><a class="reference internal" href="#properties-evaluated-on-a-grid">Properties evaluated on a grid</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="thermo.html" title="Vibrational and Thermochemical Analysis"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="optking.html" title="Geometry Optimization"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/oeprop.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/406f4de">1.2.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" >Theoretical Methods: SCF to FCI</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, The Psi4 Project.
+      Last updated on Wednesday, 25 July 2018 04:21AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

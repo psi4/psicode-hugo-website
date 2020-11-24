@@ -1,0 +1,392 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ADC: Ab Initio Polarization Propagator</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Scalar relativistic Hamiltonians" href="relativistic.html" />
+    <link rel="prev" title="F/I-SAPT: Functional Group and/or Intramolecular SAPT" href="fisapt.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="relativistic.html" title="Scalar relativistic Hamiltonians"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="fisapt.html" title="F/I-SAPT: Functional Group and/or Intramolecular SAPT"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/adc.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/ecbda83">1.3.2</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="index-0"></span><span class="target" id="index-1"></span><div class="section" id="adc-ab-initio-polarization-propagator">
+<span id="sec-adc"></span><span id="index-2"></span><h1>ADC: Ab Initio Polarization Propagator<a class="headerlink" href="#adc-ab-initio-polarization-propagator" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Masaaki Saitow</em></p>
+<p><em>Section author: Masaaki Saitow</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__adc.html#apdx-adc"><span class="std std-ref">Keywords</span></a>, <a class="reference internal" href="autodir_psivariables/module__adc.html#apdx-adc-psivar"><span class="std std-ref">PSI Variables</span></a>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/src/psi4/adc">ADC</a></p>
+<p>The ADC code seeks the pole structure of the polarization
+propagator, which is equivalent to the correlated excitation energy,
+in terms of the second order algebraic-diagrammatic construction
+(ADC(2)) scheme.  Originally, the ADC scheme was derived in purely
+the diagrammatic language by Schirmer <a class="reference internal" href="bibliography.html#schirmer-1982" id="id1">[Schirmer:1982]</a> and later,
+a sophisticated algebraic scheme was developed <a class="reference internal" href="bibliography.html#trofimov-2006" id="id2">[Trofimov:2006]</a>
+by Trofimov et al. In general by n-th order ADC theory, the
+excited state is treated at completely equivalent level to the
+Møller–Plesset perturbation expansion of the same order.
+Hence the ADC(2)
+can be described as MP2 theory for the excited state and the relation
+to such other response theories as CC2-LR, CIS(D) and CIS(D<span class="math notranslate nohighlight">\(_n\)</span>) has
+been addressed <a class="reference internal" href="bibliography.html#haettig-2002" id="id3">[Haettig:2002]</a> by Hattig et al.  In the ADC theory,
+the residue calculus of the propagator is translated into the eigenvalue
+problem with respect to the correlated response matrix, also known as the
+shifted-Hamiltonian. The σ-vectors (Hamiltonian-vector products)
+are constructed several times in the simultaneous expansion method (SEM)
+to solve the eigenvalue problem, and each σ-vector construction
+has a computational cost that scales as <span class="math notranslate nohighlight">\({\cal O}(N^5)\)</span>. In addition,
+the tensorial form of the σ-vector resembles to that of the
+doubles correction in the CIS(D) energetic equation. As a consequence,
+the pre-factor in the polynomial scaling becomes far larger than that
+of the CIS(D) even though the quasi-degeneracy of the excited state is
+properly accounted for in the ADC(2) model.</p>
+<p>The ADC code makes use of the libtrans library for efficient and flexible
+integral-transformation and also the libdpd library to
+utilize molecular symmetry in the tensorial manipulations in framework
+of the direct-product decomposition algorithm. By this feature, the Ritz
+space and intermediate tensors are blocked according to the irreducible
+representations of the point group, and the excited states that belong
+to different symmetry are sought separately.</p>
+<p>In the output of ADC, the ADC(2) results may look as follows:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">-&gt;</span>  <span class="mi">1</span> <span class="n">B1</span> <span class="n">state</span>   <span class="p">:</span>  <span class="mf">0.2565095</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="p">),</span>  <span class="mf">6.9799824</span> <span class="p">(</span><span class="n">eV</span><span class="p">)</span>
+<span class="n">Non</span><span class="o">-</span><span class="n">iterative</span><span class="p">:</span>  <span class="mf">0.2565636</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="p">),</span>  <span class="mf">6.9814532</span> <span class="p">(</span><span class="n">eV</span><span class="p">)</span>
+         <span class="n">Occ</span> <span class="n">Vir</span>        <span class="n">Coefficient</span>
+<span class="o">---------------------------------------------</span>
+          <span class="mi">3</span>   <span class="mi">0</span>        <span class="o">-</span><span class="mf">0.9017047264</span>
+          <span class="mi">3</span>   <span class="mi">2</span>         <span class="mf">0.3038332241</span>
+          <span class="mi">3</span>   <span class="mi">1</span>         <span class="mf">0.2907567119</span>
+          <span class="mi">3</span>   <span class="mi">5</span>        <span class="o">-</span><span class="mf">0.0790167706</span>
+          <span class="mi">3</span>   <span class="mi">4</span>        <span class="o">-</span><span class="mf">0.0425829926</span>
+
+<span class="n">Converged</span> <span class="ow">in</span>   <span class="mi">4</span> <span class="n">iteration</span><span class="o">.</span>
+<span class="n">Squared</span> <span class="n">norm</span> <span class="n">of</span> <span class="n">the</span> <span class="n">S</span> <span class="n">component</span><span class="p">:</span>  <span class="mf">0.9315336</span>
+<span class="n">The</span> <span class="n">S</span> <span class="n">vector</span> <span class="ow">is</span> <span class="n">rotated</span> <span class="n">up</span> <span class="n">to</span>  <span class="mf">8.102</span> <span class="p">(</span><span class="n">deg</span><span class="o">.</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>in which the ADC(2) excitation energy is indicated with arrow symbol
+and the pseudo-perturbative value, which is calculated in very similar
+fashion to the CIS(D) energy, is also presented on the following line. In
+this implementation, the ADC(2) secular matrix is treated effectively
+by renormalization of the double excitation manifold into the single
+excitation manifold. So, the effective secular equation is solved for
+several times for the specific state due to the eigenvalue dependence of
+the effective response matrix. Only the S component of the transition
+amplitude is obtained explicitly and the squared norm of the S block
+and the rotation angle from the corresponding CIS vector are given
+below the element of the amplitude. The difference between the ADC(2)
+value and its non-iterative counterpart is mostly negligible if the
+mixture among the CIS excited states is small and the quasi-degeneracy
+in the excited state is tolerably weak. But if there is a significant
+discrepancy in these energies, or the rotation angle is visibly large,
+special care may have to be taken for the strong effects caused by the
+higher excited states.</p>
+<div class="section" id="partial-renormalization-scheme">
+<h2>Partial Renormalization Scheme<a class="headerlink" href="#partial-renormalization-scheme" title="Permalink to this headline">¶</a></h2>
+<p>The ADC code is capable of performing the partially-renormalized
+ADC(2) computation, termed PR-ADC(2). In the perturbative treatment of
+the singly-excited state, the doubly and triply excited configurations
+are accounted for as in the case of CIS(D). In the language of
+CIS(D), the former is regarded to introduce the orbital relaxation (OR)
+effect while the latter is argued to give rise to the differential
+correlation (DC) correction to the excited state. In the PR-ADC(2)
+scheme, the DC term is corrected according to the ground state
+PR-MP2 correlation, in which the correlation between the electron pairs
+is accounted for in size-consistent and unitary-invariant fashion by
+modulating the MP1 amplitude. By utilizing the <a class="reference internal" href="autodoc_glossary_options_c.html#term-pr-adc"><span class="xref std std-term">PR</span></a> scheme, substantial
+resistance against quasi-degeneracy is readily granted as discussed
+in Ref. <a class="reference internal" href="bibliography.html#saitow-2012" id="id4">[Saitow:2012]</a>.</p>
+</div>
+<div class="section" id="using-the-adc-2-code">
+<h2>Using the ADC(2) code<a class="headerlink" href="#using-the-adc-2-code" title="Permalink to this headline">¶</a></h2>
+<p>A complete list of keywords related to ADC(2) computations is provided in
+Appendix <a class="reference internal" href="autodir_options_c/module__adc.html#apdx-adc"><span class="std std-ref">ADC</span></a>.  Some sample inputs are provided in
+<a class="reference external" href="https://github.com/psi4/psi4/blob/master/samples">psi4/samples</a>, in directories starting with the name adc.  The most
+important keyword is <a class="reference internal" href="autodoc_glossary_options_c.html#term-roots-per-irrep-adc"><span class="xref std std-term">ROOTS_PER_IRREP</span></a>, which is an array
+giving the number of excited states desired for each irreducible
+representation.</p>
+</div>
+<div class="section" id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<p>Some very essential points are emphasized for understanding of the
+nature and the limitations of the theory. The ADC(2) response matrix,
+denoted as <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>, is expanded in the single (S) and double (D)
+excitation manifolds as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix}
+\mathbf{A_{SS}^{(2)}} &amp; \mathbf{A_{SD}^{(1)}}\\
+\mathbf{A_{DS}^{(1)}} &amp; \mathbf{A_{DD}^{(0)}}
+\end{pmatrix}
+\begin{pmatrix}
+\mathbf{X_S}\\
+\mathbf{X_D}
+\end{pmatrix}
+=\omega
+\begin{pmatrix}
+\mathbf{X_S}\\
+\mathbf{X_D}
+\end{pmatrix}\end{split}\]</div>
+<p>where the superscript on each matrix block indicates the order of
+the fluctuation. Instead of solving the above equation explicitly,
+the large D manifold is treated effectively as</p>
+<div class="math notranslate nohighlight">
+\[[\mathbf{A_{SS}^{(2)}}+
+\mathbf{A_{SD}^{(1)}}^{\dagger}(\omega-
+\mathbf{A_{DD}^{(0)}})^{-1}\mathbf{A_{DS}^{(1)}}]\mathbf{X_{S}}=
+\omega\mathbf{X_{S}}.\]</div>
+<p>This form of the ADC(2) equation requires 7–10 iterations for
+convergence on only one root. But thanks to Newton-Raphson
+acceleration,</p>
+<div class="math notranslate nohighlight">
+\[\omega^{n+1}=\omega^{n}-
+\frac{\omega^n-\mathbf{X_{S}}(\omega^n)^{\dagger}
+[\mathbf{A_{SS}^{(2)}}+
+\mathbf{A_{SD}^{(1)}}^{\dagger}(\omega^n-\mathbf{A_{DD}^{(0)}})^{-1}
+\mathbf{A_{DS}^{(1)}}]\mathbf{X_{S}}(\omega^n)}{1+\mathbf{X_{S}}
+(\omega^n)^{\dagger}[\mathbf{A_{SD}^{(1)}}^{\dagger}
+(\omega^n-\mathbf{A_{DD}^{(0)}})^{-2}\mathbf{A_{DS}^{(1)}}]\mathbf{X_{S}}
+(\omega^n)}\]</div>
+<p>the computational time reduces to shorter than half of the simple iterative
+procedure. Construction of the denominator of the second term in the above
+equation is less computationally expensive than construction of one <span class="math notranslate nohighlight">\(\sigma\)</span>-vector with respect to the effective response matrix. The non-iterative excitation energy stated above is calculated as a diagonal element of the Davidson mini-Hamiltonian matrix in the SEM as,</p>
+<div class="math notranslate nohighlight">
+\[\omega^{Non-Iterative}=
+\mathbf{X_{CIS}}^{\dagger}[\mathbf{A_{SS}^{(2)}}+
+\mathbf{A_{SD}^{(1)}}^{\dagger}(\omega^{CIS}-\mathbf{A_{DD}^{(0)}})^{-1}
+\mathbf{A_{DS}^{(1)}}]\mathbf{X_{CIS}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\omega^{CIS}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{X_{CIS}}\)</span> denote the CIS
+excitation energy and wave function, respectively. The explicit form of the
+σ-vector is provided in a note accompanying the source code,
+in the file <a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/src/psi4/adc/sigma.pdf">psi4/psi4/src/psi4/adc/sigma.pdf</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">ADC: Ab Initio Polarization Propagator</a><ul>
+<li><a class="reference internal" href="#partial-renormalization-scheme">Partial Renormalization Scheme</a></li>
+<li><a class="reference internal" href="#using-the-adc-2-code">Using the ADC(2) code</a></li>
+<li><a class="reference internal" href="#theory">Theory</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="relativistic.html" title="Scalar relativistic Hamiltonians"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="fisapt.html" title="F/I-SAPT: Functional Group and/or Intramolecular SAPT"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/adc.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/ecbda83">1.3.2</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" >Theoretical Methods: SCF to FCI</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Wednesday, 15 May 2019 08:49PM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

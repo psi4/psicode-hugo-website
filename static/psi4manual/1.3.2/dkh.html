@@ -1,0 +1,393 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interface to LIBEFP by I. Kaliman" href="libefp.html" />
+    <link rel="prev" title="Interface to DFTD3 by S. Grimme" href="dftd3.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="libefp.html" title="Interface to LIBEFP by I. Kaliman"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dftd3.html" title="Interface to DFTD3 by S. Grimme"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/dkh.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/ecbda83">1.3.2</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="interface-to-dkh-by-a-wolf-m-reiher-and-b-a-hess">
+<span id="sec-dkh"></span><span id="index-0"></span><h1>Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess<a class="headerlink" href="#interface-to-dkh-by-a-wolf-m-reiher-and-b-a-hess" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Justin M. Turney</em></p>
+<p><em>Section author: Justin M. Turney</em></p>
+<p><em>Module:</em> <span class="xref std std-ref">Keywords</span>, <a class="reference internal" href="autodoc_testsuite_dkh.html#apdx-testsuitedkh"><span class="std std-ref">Samples</span></a></p>
+<a class="reference external image-reference" href="https://github.com/psi4/dkh"><img alt="https://img.shields.io/badge/home-dkh-5077AB.svg" src="https://img.shields.io/badge/home-dkh-5077AB.svg" /></a>
+<br><a class="reference external image-reference" href="http://www.reiher.ethz.ch/software/dkh-x2c.html"><img alt="https://img.shields.io/badge/docs-latest-5077AB.svg" src="https://img.shields.io/badge/docs-latest-5077AB.svg" /></a>
+<div class="section" id="installation">
+<span id="sec-dkhinstall"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Binary</strong></p>
+<ul>
+<li><a class="first reference external image-reference" href="https://anaconda.org/psi4/dkh"><img alt="https://anaconda.org/psi4/dkh/badges/version.svg" src="https://anaconda.org/psi4/dkh/badges/version.svg" /></a>
+</li>
+<li><p class="first">DKH is available as a conda package for Linux and macOS (and Windows, through the Ubuntu shell).</p>
+</li>
+<li><p class="first">If using the <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> binary, dkh has already been installed alongside.</p>
+</li>
+<li><p class="first">If using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> built from source, and anaconda or miniconda has
+already been installed (instructions at <a class="reference internal" href="conda.html#sec-quickconda"><span class="std std-ref">Quick Installation</span></a>),
+dkh can be obtained through <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">dkh</span> <span class="pre">-c</span> <span class="pre">psi4</span></code>.
+Then enable it as a feature with <strong class="makevar">ENABLE_dkh</strong>,
+hint its location with <strong class="makevar">CMAKE_PREFIX_PATH</strong>,
+and rebuild <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> to detect dkh and activate dependent code.</p>
+</li>
+<li><p class="first">Previous bullet had details. To build <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> from source and use
+dkh from conda without thinking, consult <span class="xref std std-ref">sec:condapsi4dev</span>.</p>
+</li>
+<li><p class="first">To remove a conda installation, <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">dkh</span></code>.</p>
+</li>
+</ul>
+<p><strong>Source</strong></p>
+<ul>
+<li><a class="first reference external image-reference" href="https://github.com/psi4/dkh"><img alt="https://img.shields.io/github/tag/psi4/dkh.svg?maxAge=2592000" src="https://img.shields.io/github/tag/psi4/dkh.svg?maxAge=2592000" /></a>
+</li>
+<li><p class="first">If using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> built from source and you want dkh built from
+from source also,
+enable it as a feature with <strong class="makevar">ENABLE_dkh</strong>,
+and let the build system fetch and build it and activate dependent code.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="input">
+<span id="sec-dkhinput"></span><h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p>For all electron calculations one can use the Douglas-Kroll-Hess (DKH)
+Hamiltonian to take into account scalar relativistic effects.</p>
+<p>Minimal input for DKH single-point computation looks like this:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">molecule</span> <span class="p">{</span>
+<span class="n">Mg</span>
+<span class="p">}</span>
+
+<span class="nb">set</span> <span class="n">basis</span> <span class="n">aug</span><span class="o">-</span><span class="n">cc</span><span class="o">-</span><span class="n">pvdz</span><span class="o">-</span><span class="n">dk</span>
+<span class="nb">set</span> <span class="n">relativistic</span> <span class="n">dkh</span>
+
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>By default a 2nd-order DKH calculation is performed. To change the default
+order use the <a class="reference internal" href="autodoc_glossary_options_c.html#term-dkh-order-globals"><span class="xref std std-term">DKH_ORDER</span></a> option. The version of the code found in
+<span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> is capable of up to 4th-order DKH calculations.</p>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="relativistic">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-relativistic-globals"><span class="xref std std-term">RELATIVISTIC</span></a><a class="headerlink" href="#relativistic" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Relativistic Hamiltonian type</p>
+<ul class="simple">
+<li><strong>Type</strong>: string</li>
+<li><strong>Possible Values</strong>: NO, X2C</li>
+<li><strong>Default</strong>: NO</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="dkh-order">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-dkh-order-globals"><span class="xref std std-term">DKH_ORDER</span></a><a class="headerlink" href="#dkh-order" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Order of Douglas-Kroll-Hess</p>
+<ul class="simple">
+<li><strong>Type</strong>: integer</li>
+<li><strong>Default</strong>: 2</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<p>When using this code please make reference to the appropriate following paper:</p>
+<ul class="simple">
+<li>“The Generalized Douglas-Kroll Transformation,” A. Wolf,
+M. Reiher, and B. A. Hess, <em>J. Chem. Phys.</em> <strong>117</strong>, 9215 (2002).
+(doi: <a class="reference external" href="http://dx.doi.org/10.1063/1.1515314">10.1063/1.1515314</a>)</li>
+</ul>
+</div>
+<div class="section" id="how-to-configure-dkh-for-building-psi4">
+<span id="cmake-dkh"></span><h2>How to configure dkh for building Psi4<a class="headerlink" href="#how-to-configure-dkh-for-building-psi4" title="Permalink to this headline">¶</a></h2>
+<p><strong>Role and Dependencies</strong></p>
+<ul class="simple">
+<li>Role — In <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>, DKH is a library that provides additional
+quantum chemical capabilities (relativistic effects).</li>
+<li>Downstream Dependencies — <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> (<span class="math notranslate nohighlight">\(\Leftarrow\)</span> optional) dkh</li>
+<li>Upstream Dependencies — dkh <span class="math notranslate nohighlight">\(\Leftarrow\)</span> Fortran</li>
+</ul>
+<p><strong>CMake Variables</strong></p>
+<ul class="simple">
+<li><strong class="makevar">ENABLE_dkh</strong> — CMake variable toggling whether Psi4 builds with dkh</li>
+<li><strong class="makevar">CMAKE_PREFIX_PATH</strong> — CMake list variable to specify where pre-built dependencies can be found. For dkh, set to an installation directory containing <code class="docutils literal notranslate"><span class="pre">include/DKH/DKH_MANGLE.h</span></code></li>
+<li><strong class="makevar">dkh_DIR</strong> — CMake variable to specify where pre-built dkh can be found. Set to installation directory containing <code class="docutils literal notranslate"><span class="pre">share/cmake/dkh/dkhConfig.cmake</span></code></li>
+<li><strong class="makevar">CMAKE_DISABLE_FIND_PACKAGE_dkh</strong> — CMake variable to force internal build of dkh instead of detecting pre-built</li>
+<li><strong class="makevar">CMAKE_INSIST_FIND_PACKAGE_dkh</strong> — CMake variable to force detecting pre-built dkh and not falling back on internal build</li>
+</ul>
+<p><strong>Examples</strong></p>
+<ol class="upperalpha simple">
+<li>Build bundled</li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_dkh<span class="o">=</span>ON
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="2">
+<li>Build <em>without</em> dkh</li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="3">
+<li>Link against pre-built</li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_dkh<span class="o">=</span>ON -DCMAKE_PREFIX_PATH<span class="o">=</span>/path/to/dkh/root
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_dkh<span class="o">=</span>ON -Ddkh_DIR<span class="o">=</span>/path/to/dkh/configdir
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="4">
+<li>Build bundled despite pre-built being detectable</li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_dkh<span class="o">=</span>ON -DCMAKE_PREFIX_PATH<span class="o">=</span>/path/to/unwanted/dkh/root/and/wanted/other/dependencies/root -DCMAKE_DISABLE_FIND_PACKAGE_dkh<span class="o">=</span>ON
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#input">Input</a></li>
+<li><a class="reference internal" href="#keywords">Keywords</a><ul>
+<li><a class="reference internal" href="#relativistic"><code class="docutils literal notranslate"><span class="pre">RELATIVISTIC</span></code></a></li>
+<li><a class="reference internal" href="#dkh-order"><code class="docutils literal notranslate"><span class="pre">DKH_ORDER</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reference">Reference</a></li>
+<li><a class="reference internal" href="#how-to-configure-dkh-for-building-psi4">How to configure dkh for building Psi4</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="libefp.html" title="Interface to LIBEFP by I. Kaliman"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dftd3.html" title="Interface to DFTD3 by S. Grimme"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/dkh.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/ecbda83">1.3.2</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Wednesday, 15 May 2019 08:49PM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

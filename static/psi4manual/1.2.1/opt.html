@@ -1,0 +1,473 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Geometry Optimization — optimize() and gradient()</title>
+    <link rel="stylesheet" href="_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Harmonic Vibrational Analysis and Visualization of Normal Modes — frequency() and hessian()" href="freq.html" />
+    <link rel="prev" title="Basis Set Superposition Corrections" href="nbody.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="freq.html" title="Harmonic Vibrational Analysis and Visualization of Normal Modes — frequency() and hessian()"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="nbody.html" title="Basis Set Superposition Corrections"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/opt.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/406f4de">1.2.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="geometry-optimization-w-w-optimize-and-gradient">
+<span id="sec-opt"></span><span id="index-0"></span><h1>Geometry Optimization — <a class="reference internal" href="#psi4.optimize" title="psi4.optimize"><code class="xref py py-func docutils literal notranslate"><span class="pre">optimize()</span></code></a> and <a class="reference internal" href="#psi4.gradient" title="psi4.gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">gradient()</span></code></a><a class="headerlink" href="#geometry-optimization-w-w-optimize-and-gradient" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="#table-grad-gen"><span class="std std-ref">Psi4 Native Gradient Methods</span></a></li>
+<li><a class="reference internal" href="#table-grad-gen"><span class="std std-ref">Psi4 Native DFT Gradient Methods (excepting double-hybrids)</span></a></li>
+<li><a class="reference internal" href="cfour_table_grad.html#table-grad-cfour"><span class="std std-ref">CFOUR Interfaced Gradient Methods</span></a></li>
+</ul>
+<p>For further discussion of geometry optimization, see
+Sec. <a class="reference internal" href="optking.html#sec-optking"><span class="std std-ref">Geometry Optimization</span></a>.</p>
+<p><a class="reference internal" href="#psi4.optimize" title="psi4.optimize"><code class="xref py py-func docutils literal notranslate"><span class="pre">optimize()</span></code></a> is the only command most users will ever
+need to access directly to perform geometry optimizations. Behind
+the scenes, <a class="reference internal" href="#psi4.optimize" title="psi4.optimize"><code class="xref py py-func docutils literal notranslate"><span class="pre">optimize()</span></code></a> is a wrapper that repeatedly
+calls <a class="reference internal" href="#psi4.gradient" title="psi4.gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">gradient()</span></code></a> that computes the gradient then adds a
+call to the <a class="reference internal" href="optking.html#sec-optking"><span class="std std-ref">geometry optimization module</span></a>.</p>
+<dl class="function">
+<dt id="psi4.optimize">
+<code class="descclassname">psi4.</code><code class="descname">optimize</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>molecule</em>, <em>return_wfn</em>, <em>func</em>, <em>mode</em>, <em>dertype</em>, <em>hessian_with</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/driver.html#optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#psi4.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to perform a geometry optimization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Aliases:</th><td class="field-body">opt()</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>float</em> – Total electronic energy of optimized structure in Hartrees.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(<em>float</em>, <a class="reference internal" href="psi4api.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>) – energy and wavefunction when <strong>return_wfn</strong> specified.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">psi4.OptimizationConvergenceError if <a class="reference internal" href="autodoc_glossary_options_c.html#term-geom-maxiter-optking"><span class="xref std std-term">GEOM_MAXITER</span></a> exceeded without reaching geometry convergence.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">PSI variables:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<table class="hlist"><tr><td><ul class="simple">
+<li><a class="reference internal" href="glossary_psivariables.html#psivar-CURRENTENERGY"><code class="xref std std-psivar docutils literal notranslate"><span class="pre">CURRENT</span> <span class="pre">ENERGY</span></code></a></li>
+</ul>
+</td></tr></table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) – <p><code class="docutils literal notranslate"><span class="pre">'scf'</span></code> || <code class="docutils literal notranslate"><span class="pre">'mp2'</span></code> || <code class="docutils literal notranslate"><span class="pre">'ci5'</span></code> || etc.</p>
+<p>First argument, usually unlabeled. Indicates the computational method
+to be applied to the database. May be any valid argument to
+<a class="reference internal" href="api/psi4.driver.energy.html#psi4.driver.energy" title="psi4.driver.energy"><code class="xref py py-func docutils literal notranslate"><span class="pre">energy()</span></code></a>.</p>
+</li>
+<li><strong>molecule</strong> (<a class="reference internal" href="notes_py.html#op-py-molecule"><span class="std std-ref">molecule</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">h2o</span></code> || etc.</p>
+<p>The target molecule, if not the last molecule defined.</p>
+</li>
+<li><strong>return_wfn</strong> (<a class="reference internal" href="notes_py.html#op-py-boolean"><span class="std std-ref">boolean</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">'on'</span></code> || <span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">'off'</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span></p>
+<p>Indicate to additionally return the <a class="reference internal" href="psi4api.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>
+calculation result as the second element (after <em>float</em> energy) of a tuple.</p>
+</li>
+<li><strong>return_history</strong> (<a class="reference internal" href="notes_py.html#op-py-boolean"><span class="std std-ref">boolean</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">'on'</span></code> || <span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">'off'</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span></p>
+<p>Indicate to additionally return dictionary of lists of geometries,
+energies, and gradients at each step in the optimization.</p>
+</li>
+<li><strong>func</strong> (<a class="reference internal" href="notes_py.html#op-py-function"><span class="std std-ref">function</span></a>) – <p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">gradient</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span> || <code class="docutils literal notranslate"><span class="pre">energy</span></code> || <code class="docutils literal notranslate"><span class="pre">cbs</span></code></p>
+<p>Indicates the type of calculation to be performed on the molecule.
+The default dertype accesses <code class="docutils literal notranslate"><span class="pre">'gradient'</span></code> or <code class="docutils literal notranslate"><span class="pre">'energy'</span></code>, while
+<code class="docutils literal notranslate"><span class="pre">'cbs'</span></code> performs a multistage finite difference calculation.
+If a nested series of python functions is intended (see <a class="reference internal" href="intercalls.html#sec-intercalls"><span class="std std-ref">Function Intercalls</span></a>),
+use keyword <code class="docutils literal notranslate"><span class="pre">opt_func</span></code> instead of <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p>
+</li>
+<li><strong>mode</strong> (<em>string</em>) – <p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">'continuous'</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span> || <code class="docutils literal notranslate"><span class="pre">'sow'</span></code> || <code class="docutils literal notranslate"><span class="pre">'reap'</span></code></p>
+<p>For a finite difference of energies optimization, indicates whether
+the calculations required to complete the
+optimization are to be run in one file (<code class="docutils literal notranslate"><span class="pre">'continuous'</span></code>) or are to be
+farmed out in an embarrassingly parallel fashion
+(<code class="docutils literal notranslate"><span class="pre">'sow'</span></code>/<code class="docutils literal notranslate"><span class="pre">'reap'</span></code>). For the latter, run an initial job with
+<code class="docutils literal notranslate"><span class="pre">'sow'</span></code> and follow instructions in its output file. For maximum
+flexibility, <code class="docutils literal notranslate"><span class="pre">return_wfn</span></code> is always on in <code class="docutils literal notranslate"><span class="pre">'reap'</span></code> mode.</p>
+</li>
+<li><strong>dertype</strong> (<a class="reference internal" href="notes_py.html#op-py-dertype"><span class="std std-ref">dertype</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">'gradient'</span></code> || <code class="docutils literal notranslate"><span class="pre">'energy'</span></code></p>
+<p>Indicates whether analytic (if available) or finite difference
+optimization is to be performed.</p>
+</li>
+<li><strong>hessian_with</strong> (<em>string</em>) – <p><code class="docutils literal notranslate"><span class="pre">'scf'</span></code> || <code class="docutils literal notranslate"><span class="pre">'mp2'</span></code> || etc.</p>
+<p>Indicates the computational method with which to perform a hessian
+analysis to guide the geometry optimization.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Optimizations where the molecule is specified in Z-matrix format
+with dummy atoms will result in the geometry being converted to a Cartesian representation.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Analytic gradients area available for all methods in the table
+below. Optimizations with other methods in the energy table proceed
+by finite differences.</p>
+</div>
+<table border="1" class="docutils" id="table-grad-gen">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">name</th>
+<th class="head">calls method</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>efp</td>
+<td>efp-only optimizations</td>
+</tr>
+<tr class="row-odd"><td>scf</td>
+<td>Hartree–Fock (HF) or density functional theory (DFT) <a class="reference internal" href="scf.html#sec-scf"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+<tr class="row-even"><td>hf</td>
+<td>HF self consistent field (SCF) <a class="reference internal" href="scf.html#sec-scf"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+<tr class="row-odd"><td>dcft</td>
+<td>density cumulant functional theory <a class="reference internal" href="dcft.html#sec-dcft"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+<tr class="row-even"><td>mp2</td>
+<td>2nd-order Møller–Plesset perturbation theory (MP2) <a class="reference internal" href="dfmp2.html#sec-dfmp2"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlmp2"><span class="std std-ref">[details]</span></a></td>
+</tr>
+<tr class="row-odd"><td>mp3</td>
+<td>3rd-order Møller–Plesset perturbation theory (MP3) <a class="reference internal" href="occ.html#sec-occ-nonoo"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlmp3"><span class="std std-ref">[details]</span></a></td>
+</tr>
+<tr class="row-even"><td>mp2.5</td>
+<td>average of MP2 and MP3 <a class="reference internal" href="occ.html#sec-occ-nonoo"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlmp25"><span class="std std-ref">[details]</span></a></td>
+</tr>
+<tr class="row-odd"><td>omp2</td>
+<td>orbital-optimized second-order MP perturbation theory <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+<tr class="row-even"><td>omp3</td>
+<td>orbital-optimized third-order MP perturbation theory <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+<tr class="row-odd"><td>omp2.5</td>
+<td>orbital-optimized MP2.5 <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+<tr class="row-even"><td>lccd</td>
+<td>Linear CCD <a class="reference internal" href="occ.html#sec-occ-nonoo"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tllccd"><span class="std std-ref">[details]</span></a></td>
+</tr>
+<tr class="row-odd"><td>olccd</td>
+<td>orbital optimized LCCD <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+<tr class="row-even"><td>ccd</td>
+<td>coupled cluster doubles  (CCD) <a class="reference internal" href="occ.html#sec-occ-nonoo"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+<tr class="row-odd"><td>ccsd</td>
+<td>coupled cluster singles and doubles (CCSD) <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlccsd"><span class="std std-ref">[details]</span></a></td>
+</tr>
+<tr class="row-even"><td>ccsd(t)</td>
+<td>CCSD with perturbative triples (CCSD(T)) <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlccsdt"><span class="std std-ref">[details]</span></a></td>
+</tr>
+<tr class="row-odd"><td>eom-ccsd</td>
+<td>equation of motion (EOM) CCSD <a class="reference internal" href="cc.html#sec-eomcc"><span class="std std-ref">[manual]</span></a></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Analytic hf optimization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;hf&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [2] Finite difference mp5 optimization with gradient</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     printed to output file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">opt</span><span class="p">(</span><span class="s1">&#39;mp5&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="s1">&#39;yes&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wfn</span><span class="o">.</span><span class="n">gradient</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [3] Forced finite difference hf optimization run in</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     embarrassingly parallel fashion</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;hf&#39;</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;sow&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [4] Can automatically perform complete basis set extrapolations</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;MP2/cc-pV([D,T]+d)Z&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [5] Can automatically perform delta corrections that include extrapolations</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># even with a user-defined extrapolation formula. See sample inputs named</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># cbs-xtpl* for more examples of this input style</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimize</span><span class="p">(</span><span class="s2">&quot;MP2/aug-cc-pv([d,t]+d)z + d:ccsd(t)/cc-pvdz&quot;</span><span class="p">,</span> <span class="n">corl_scheme</span><span class="o">=</span><span class="n">myxtplfn_2</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [6] Get info like geometry, gradient, energy back after an</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     optimization fails. Note that the energy and gradient</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     correspond to the last optimization cycle, whereas the</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     geometry (by default) is the anticipated *next* optimization step.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">optimize</span><span class="p">(</span><span class="s1">&#39;hf/cc-pvtz&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">psi4</span><span class="o">.</span><span class="n">OptimizationConvergenceError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">next_geom_coords_as_numpy_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">wfn</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">geometry</span><span class="p">())</span>
+</pre></div>
+</td></tr></table></div>
+</dd></dl>
+
+<dl class="function">
+<dt id="psi4.gradient">
+<code class="descclassname">psi4.</code><code class="descname">gradient</code><span class="sig-paren">(</span><em>name</em><span class="optional">[</span>, <em>molecule</em>, <em>return_wfn</em>, <em>func</em>, <em>dertype</em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/driver.html#gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#psi4.gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function complementary to :py:func:~driver.optimize(). Carries out one gradient pass,
+deciding analytic or finite difference.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="psi4api.html#psi4.core.Matrix" title="psi4.core.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> – Total electronic gradient in Hartrees/Bohr.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(<a class="reference internal" href="psi4api.html#psi4.core.Matrix" title="psi4.core.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a>, <a class="reference internal" href="psi4api.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>) – gradient and wavefunction when <strong>return_wfn</strong> specified.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Single-point dft gradient getting the gradient</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     in file, core.Matrix, and np.array forms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">gradient_write</span> <span class="n">on</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="s1">&#39;b3lyp-d&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wfn</span><span class="o">.</span><span class="n">gradient</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="freq.html" title="Harmonic Vibrational Analysis and Visualization of Normal Modes — frequency() and hessian()"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="nbody.html" title="Basis Set Superposition Corrections"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/opt.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/406f4de">1.2.1</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, The Psi4 Project.
+      Last updated on Wednesday, 25 July 2018 04:21AM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

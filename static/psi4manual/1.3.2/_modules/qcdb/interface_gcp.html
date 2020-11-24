@@ -1,0 +1,510 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>qcdb.interface_gcp</title>
+    <link rel="stylesheet" href="../../_static/psi4.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script type="text/javascript" src="../../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/cloud.base.js"></script>
+    <script type="text/javascript" src="../../_static/cloud.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/qcdb/interface_gcp.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/ecbda83">1.3.2</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for qcdb.interface_gcp</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2019 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;Module with functions that interface with Grimme&#39;s GCP code.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">psi4.driver.p4util.exceptions</span> <span class="k">import</span> <span class="o">*</span>
+    <span class="kn">from</span> <span class="nn">psi4</span> <span class="k">import</span> <span class="n">core</span>
+    <span class="n">isP4regime</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="o">*</span>
+    <span class="n">isP4regime</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">parse_dertype</span>
+<span class="kn">from</span> <span class="nn">.molecule</span> <span class="k">import</span> <span class="n">Molecule</span>
+
+
+<div class="viewcode-block" id="run_gcp"><a class="viewcode-back" href="../../gcp.html#psi4.core.run_gcp">[docs]</a><span class="k">def</span> <span class="nf">run_gcp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dertype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>  <span class="c1"># dashlvl=None, dashparam=None</span>
+    <span class="sd">&quot;&quot;&quot;Function to call Grimme&#39;s GCP program</span>
+<span class="sd">    https://www.chemie.uni-bonn.de/pctc/mulliken-center/software/gcp/gcp</span>
+<span class="sd">    to compute an a posteriori geometrical BSSE correction to *self* for</span>
+<span class="sd">    several HF, generic DFT, and specific HF-3c and PBEh-3c method/basis</span>
+<span class="sd">    combinations, *func*. Returns energy if *dertype* is 0, gradient</span>
+<span class="sd">    if *dertype* is 1, else tuple of energy and gradient if *dertype*</span>
+<span class="sd">    unspecified. The gcp executable must be independently compiled and</span>
+<span class="sd">    found in :envvar:`PATH` or :envvar:`PSIPATH`. *self* may be either a</span>
+<span class="sd">    qcdb.Molecule (sensibly) or a psi4.Molecule (works b/c psi4.Molecule</span>
+<span class="sd">    has been extended by this method py-side and only public interface</span>
+<span class="sd">    fns used) or a string that can be instantiated into a qcdb.Molecule.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create (if necessary) and update qcdb.Molecule</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">):</span>
+        <span class="c1"># called on a qcdb.Molecule</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">):</span>
+        <span class="c1"># called on a python export of a psi4.core.Molecule (py-side through Psi4&#39;s driver)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_psi4_string_from_molecule</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># called on a string representation of a psi4.Molecule (c-side through psi4.Dispersion)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Argument mol must be psi4string or qcdb.Molecule&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+
+<span class="c1">#    # Validate arguments</span>
+<span class="c1">#    dashlvl = dashlvl.lower()</span>
+<span class="c1">#    dashlvl = dash_alias[&#39;-&#39; + dashlvl][1:] if (&#39;-&#39; + dashlvl) in dash_alias.keys() else dashlvl</span>
+<span class="c1">#    if dashlvl not in dashcoeff.keys():</span>
+<span class="c1">#        raise ValidationError(&quot;&quot;&quot;-D correction level %s is not available. Choose among %s.&quot;&quot;&quot; % (dashlvl, dashcoeff.keys()))</span>
+
+    <span class="k">if</span> <span class="n">dertype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">derint</span><span class="p">,</span> <span class="n">derdriver</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;gradient&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">derint</span><span class="p">,</span> <span class="n">derdriver</span> <span class="o">=</span> <span class="n">parse_dertype</span><span class="p">(</span><span class="n">dertype</span><span class="p">,</span> <span class="n">max_derivative</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#    if func is None:</span>
+<span class="c1">#        if dashparam is None:</span>
+<span class="c1">#            # defunct case</span>
+<span class="c1">#            raise ValidationError(&quot;&quot;&quot;Parameters for -D correction missing. Provide a func or a dashparam kwarg.&quot;&quot;&quot;)</span>
+<span class="c1">#        else:</span>
+<span class="c1">#            # case where all param read from dashparam dict (which must have all correct keys)</span>
+<span class="c1">#            func = &#39;custom&#39;</span>
+<span class="c1">#            dashcoeff[dashlvl][func] = {}</span>
+<span class="c1">#            dashparam = dict((k.lower(), v) for k, v in dashparam.iteritems())</span>
+<span class="c1">#            for key in dashcoeff[dashlvl][&#39;b3lyp&#39;].keys():</span>
+<span class="c1">#                if key in dashparam.keys():</span>
+<span class="c1">#                    dashcoeff[dashlvl][func][key] = dashparam[key]</span>
+<span class="c1">#                else:</span>
+<span class="c1">#                    raise ValidationError(&quot;&quot;&quot;Parameter %s is missing from dashparam dict %s.&quot;&quot;&quot; % (key, dashparam))</span>
+<span class="c1">#    else:</span>
+<span class="c1">#        func = func.lower()</span>
+<span class="c1">#        if func not in dashcoeff[dashlvl].keys():</span>
+<span class="c1">#            raise ValidationError(&quot;&quot;&quot;Functional %s is not available for -D level %s.&quot;&quot;&quot; % (func, dashlvl))</span>
+<span class="c1">#        if dashparam is None:</span>
+<span class="c1">#            # (normal) case where all param taken from dashcoeff above</span>
+<span class="c1">#            pass</span>
+<span class="c1">#        else:</span>
+<span class="c1">#            # case where items in dashparam dict can override param taken from dashcoeff above</span>
+<span class="c1">#            dashparam = dict((k.lower(), v) for k, v in dashparam.iteritems())</span>
+<span class="c1">#            for key in dashcoeff[dashlvl][&#39;b3lyp&#39;].keys():</span>
+<span class="c1">#                if key in dashparam.keys():</span>
+<span class="c1">#                    dashcoeff[dashlvl][func][key] = dashparam[key]</span>
+
+    <span class="c1"># TODO temp until figure out paramfile</span>
+    <span class="n">allowed_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;HF/MINIS&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/MINIS&#39;</span><span class="p">,</span> <span class="s1">&#39;HF/MINIX&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/MINIX&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HF/SV&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/SV&#39;</span><span class="p">,</span> <span class="s1">&#39;HF/def2-SV(P)&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/def2-SV(P)&#39;</span><span class="p">,</span> <span class="s1">&#39;HF/def2-SVP&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DFT/def2-SVP&#39;</span><span class="p">,</span> <span class="s1">&#39;HF/DZP&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/DZP&#39;</span><span class="p">,</span> <span class="s1">&#39;HF/def-TZVP&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/def-TZVP&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HF/def2-TZVP&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/def2-TZVP&#39;</span><span class="p">,</span> <span class="s1">&#39;HF/631Gd&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/631Gd&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HF/def2-TZVP&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/def2-TZVP&#39;</span><span class="p">,</span> <span class="s1">&#39;HF/cc-pVDZ&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/cc-pVDZ&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HF/aug-cc-pVDZ&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/aug-cc-pVDZ&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/SV(P/h,c)&#39;</span><span class="p">,</span> <span class="s1">&#39;DFT/LANL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DFT/pobTZVP&#39;</span><span class="p">,</span> <span class="s1">&#39;TPSS/def2-SVP&#39;</span><span class="p">,</span> <span class="s1">&#39;PW6B95/def2-SVP&#39;</span><span class="p">,</span>
+        <span class="c1"># specials</span>
+        <span class="s1">&#39;hf3c&#39;</span><span class="p">,</span> <span class="s1">&#39;pbeh3c&#39;</span><span class="p">]</span>
+    <span class="n">allowed_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">allowed_funcs</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">func</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_funcs</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Dftd3Error</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;bad gCP func: </span><span class="si">%s</span><span class="s2">. need one of: </span><span class="si">%r</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">allowed_funcs</span><span class="p">))</span>
+
+    <span class="c1"># Move ~/.dftd3par.&lt;hostname&gt; out of the way so it won&#39;t interfere</span>
+    <span class="n">defaultfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/.dftd3par.&#39;</span> <span class="o">+</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+    <span class="n">defmoved</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">defaultfile</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">defaultfile</span><span class="p">,</span> <span class="n">defaultfile</span> <span class="o">+</span> <span class="s1">&#39;_hide&#39;</span><span class="p">)</span>
+        <span class="n">defmoved</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Find environment by merging PSIPATH and PATH environment variables</span>
+    <span class="n">lenv</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;PATH&#39;</span><span class="p">:</span> <span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PSIPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">])</span> <span class="o">+</span> \
+                <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;LD_LIBRARY_PATH&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;LD_LIBRARY_PATH&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="c1">#   Filter out None values as subprocess will fault on them</span>
+    <span class="n">lenv</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lenv</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="c1"># Find out if running from Psi4 for scratch details and such</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">psi4</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">isP4regime</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">isP4regime</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Setup unique scratch directory and move in</span>
+    <span class="n">current_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">isP4regime</span><span class="p">:</span>
+        <span class="n">psioh</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IOManager</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span>
+        <span class="n">psio</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">psioh</span><span class="o">.</span><span class="n">get_default_path</span><span class="p">())</span>
+        <span class="n">gcp_tmpdir</span> <span class="o">=</span> <span class="s1">&#39;psi.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">psio</span><span class="o">.</span><span class="n">get_default_namespace</span><span class="p">()</span> <span class="o">+</span> \
+            <span class="s1">&#39;.gcp.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gcp_tmpdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HOME&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s1">&#39;gcp_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">gcp_tmpdir</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">gcp_tmpdir</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">gcp_tmpdir</span><span class="p">)</span>
+
+    <span class="c1"># Write gcp_parameters file that governs cp correction</span>
+<span class="c1">#    paramcontents = gcp_server(func, dashlvl, &#39;dftd3&#39;)</span>
+<span class="c1">#    paramfile1 = &#39;dftd3_parameters&#39;  # older patched name</span>
+<span class="c1">#    with open(paramfile1, &#39;w&#39;) as handle:</span>
+<span class="c1">#        handle.write(paramcontents)</span>
+<span class="c1">#    paramfile2 = &#39;.gcppar&#39;</span>
+<span class="c1">#    with open(paramfile2, &#39;w&#39;) as handle:</span>
+<span class="c1">#        handle.write(paramcontents)</span>
+
+<span class="c1">###Two kinds of parameter files can be read in: A short and an extended version. Both are read from</span>
+<span class="c1">###$HOME/.gcppar.$HOSTNAME by default. If the option -local is specified the file is read in from</span>
+<span class="c1">###the current working directory: .gcppar</span>
+<span class="c1">###The short version reads in: basis-keywo</span>
+
+    <span class="c1"># Write dftd3_geometry file that supplies geometry to dispersion calc</span>
+    <span class="n">numAtoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">()</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_string_xyz</span><span class="p">()</span>
+    <span class="n">reals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="n">lline</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Gh&#39;</span><span class="p">:</span>
+            <span class="n">numAtoms</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="n">geomtext</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">numAtoms</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reals</span><span class="p">:</span>
+        <span class="n">geomtext</span> <span class="o">+=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">geomfile</span> <span class="o">=</span> <span class="s1">&#39;./gcp_geometry.xyz&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">geomfile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+        <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">geomtext</span><span class="p">)</span>
+    <span class="c1"># TODO somehow the variations on save_string_xyz and</span>
+    <span class="c1">#   whether natom and chgmult does or doesn&#39;t get written</span>
+    <span class="c1">#   have gotten all tangled. I fear this doesn&#39;t work</span>
+    <span class="c1">#   the same btwn libmints and qcdb or for ghosts</span>
+
+    <span class="c1"># Call gcp program</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gcp&#39;</span><span class="p">,</span> <span class="n">geomfile</span><span class="p">]</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-level&#39;</span><span class="p">,</span> <span class="n">func</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">derint</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-grad&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1">#print(&#39;command&#39;, command)</span>
+        <span class="n">dashout</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">lenv</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Program gcp not found in path. </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">dashout</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+
+    <span class="c1"># Parse output</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;  Egcp:&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+            <span class="n">sline</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">dashd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">sline</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;     normal termination of gCP&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_directory</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">Dftd3Error</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Unsuccessful gCP run.&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Parse grad output</span>
+    <span class="k">if</span> <span class="n">derint</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">derivfile</span> <span class="o">=</span> <span class="s1">&#39;./gcp_gradient&#39;</span>
+        <span class="n">dfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">derivfile</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">dashdderiv</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+            <span class="n">lline</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Gh&#39;</span><span class="p">:</span>
+                <span class="n">dashdderiv</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dashdderiv</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dfile</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
+        <span class="n">dfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dashdderiv</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s1">&#39;Program gcp gradient file has </span><span class="si">%d</span><span class="s1"> atoms- </span><span class="si">%d</span><span class="s1"> expected.&#39;</span> <span class="o">%</span> \
+                <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dashdderiv</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">natom</span><span class="p">()))</span>
+
+    <span class="c1"># Prepare results for Psi4</span>
+    <span class="k">if</span> <span class="n">isP4regime</span> <span class="ow">and</span> <span class="n">derint</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s1">&#39;GCP CORRECTION ENERGY&#39;</span><span class="p">,</span> <span class="n">dashd</span><span class="p">)</span>
+        <span class="n">psi_dashdderiv</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">dashdderiv</span><span class="p">)</span>
+
+    <span class="c1"># Print program output to file if verbose</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">isP4regime</span><span class="p">:</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;SCF&#39;</span><span class="p">,</span> <span class="s1">&#39;PRINT&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  ==&gt; GCP Output &lt;==</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="n">out</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">derint</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">derivfile</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">isP4regime</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1">#    # Clean up files and remove scratch directory</span>
+<span class="c1">#    os.unlink(paramfile1)</span>
+<span class="c1">#    os.unlink(paramfile2)</span>
+<span class="c1">#    os.unlink(geomfile)</span>
+<span class="c1">#    if derint != 0:</span>
+<span class="c1">#        os.unlink(derivfile)</span>
+<span class="c1">#    if defmoved is True:</span>
+<span class="c1">#        os.rename(defaultfile + &#39;_hide&#39;, defaultfile)</span>
+
+    <span class="c1"># clean up files and remove scratch directory</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">gcp_tmpdir</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">&#39;Unable to remove gcp temporary directory: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gcp_tmpdir</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">err</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_directory</span><span class="p">)</span>
+
+    <span class="c1"># return -D &amp; d(-D)/dx</span>
+    <span class="k">if</span> <span class="n">derint</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dashd</span><span class="p">,</span> <span class="n">dashdderiv</span>
+    <span class="k">elif</span> <span class="n">derint</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dashd</span>
+    <span class="k">elif</span> <span class="n">derint</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">psi_dashdderiv</span></div>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Attach method to libmints psi4.Molecule class</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">run_gcp</span> <span class="o">=</span> <span class="n">run_gcp</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">NameError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+    <span class="c1"># But don&#39;t worry if that doesn&#39;t work b/c</span>
+    <span class="c1">#   it&#39;ll get attached to qcdb.Molecule class</span>
+    <span class="k">pass</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../index.html" title="index">
+          <img class="logo" src="../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/qcdb/interface_gcp.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/ecbda83">1.3.2</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, The Psi4 Project.
+      Last updated on Wednesday, 15 May 2019 08:49PM.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
