@@ -9,10 +9,11 @@ categories: ["events"]
 
 # Meeting Time and Location
 
-This year's meeting will be held virtually over BlueJeans. A draft
-schedule is shown below. Participants are welcome to attend any or all
-days. Optional tutorials and breakout sessions will be held in the
-afternoons. [Registration](https://forms.gle/S63JcyRgM5DpihGE8) is free.
+This year's meeting will be held virtually over BlueJeans.
+A draft schedule is shown below.
+Participants are welcome to attend any or all days.
+Optional tutorials and breakout sessions will be held in the afternoons.
+[Registration](https://forms.gle/S63JcyRgM5DpihGE8) is free.
 Mornings will be 10am-12pm; all times in Eastern.
 
 
