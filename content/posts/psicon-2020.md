@@ -104,7 +104,7 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
   1. [Dataset Generation with Psi4: Fitting Force Fields and Machine Learning Models](https://www.youtube.com/watch?v=lKBJmj2GgVw) -- Zach Glick, Georgia Tech
 * 1:30pm-2:30pm: Tutorial for Psi4 Users
   1. [Basic Introduction to Using Psi4](https://www.youtube.com/watch?v=Z0gmVDI5mkQ) -- David Sherrill, Georgia Tech
-  1. [Using Symmetry-Adapted Perturbation Theory in Psi4](https://www.youtube.com/watch?v=mKhbBoiklNE) -- Zach Glick, Georgia Tech
+  1. [Using Symmetry-Adapted Perturbation Theory in Psi4](https://www.youtube.com/watch?v=mKhbBoiklNE) -- Zach Glick, Georgia Tech [(repo)](https://github.com/zachglick/PsiCon2020-SAPT)
   1. [TDDFT Computations in Psi4, and Using the Python API](https://www.youtube.com/watch?v=MmG-g3SEFbk) -- Roberto Di Remigio, European National Competence Centre Sweden
 
 ### Friday, December 4
