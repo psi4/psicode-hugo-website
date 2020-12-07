@@ -90,22 +90,22 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
 * 9:45am--10:00am --- Meeting open for login
 * 10:00am-10:30am --- [General introduction to Psi4](https://www.youtube.com/watch?v=1WybjSppXTg) -- Daniel Crawford, Virginia Tech, and David Sherrill, Georgia Tech
 * 10:30am--10:40am --- What's new in Psi4 1.4 -- David Sherrill, Georgia Tech, and contributors
-* 10:40am--10:50am --- GPU Computing with Psi4 and BrianQC -- István Ladjánszki, BrianQC
+* 10:40am--10:50am --- [GPU Computing with Psi4 and BrianQC](https://www.youtube.com/watch?v=PT7dWp6aAEQ) -- István Ladjánszki, BrianQC
 * 10:50am--10:55am --- How to Get Psi4 -- Lori Burns, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_How-to-get-Psi4.pdf)
-* 10:55am--11:10am --- The PyOptKing optimizer -- Rollin King, Bethel University
+* 10:55am--11:10am --- [The PyOptKing optimizer](https://www.youtube.com/watch?v=WQBvTRbLPvc) -- Rollin King, Bethel University
 * 11:10am--11:20am --- Break
-* 11:20am--11:35am --- Introduction to Psi4Education -- Ashley McDonald, Cal Poly
-* 11:35am--11:50am --- Using Psi4 through Jupyter for Teaching -- Francesco Evangelista, Emory University
+* 11:20am--11:35am --- [Introduction to Psi4Education](https://www.youtube.com/watch?v=uhNjFcTsGo8) -- Ashley McDonald, Cal Poly
+* 11:35am--11:50am --- [Using Psi4 through Jupyter for Teaching](https://www.youtube.com/watch?v=ItNdmODVgp0) -- Francesco Evangelista, Emory University
 * 11:50am--12:20pm --- Lightning Talks
-  1. Using Psi4 for Crystal Structure Prediction -- Tom Darden, OpenEye Scientific Software
-  1. Quantum-based Structure Refinement of Biomolecules -- Holger Kruse, Institute of Biophysics of the Czech Academy of Sciences
+  1. [Using Psi4 for Crystal Structure Prediction](https://www.youtube.com/watch?v=DW3DHnFqspI) -- Tom Darden, OpenEye Scientific Software
+  1. [Quantum-based Structure Refinement of Biomolecules](https://www.youtube.com/watch?v=d_1jgrcyIuA) -- Holger Kruse, Institute of Biophysics of the Czech Academy of Sciences
   1. Polymer Featurization with Psi4 on the Azure Cloud -- Carlos Borca, Princeton
-  1. Using MBIS in Psi4 1.4 -- Andy Jiang, Georgia Tech
-  1. Dataset Generation with Psi4: Fitting Force Fields and Machine Learning Models -- Zach Glick, Georgia Tech
+  1. [Using MBIS in Psi4 1.4](https://www.youtube.com/watch?v=9oIuK2O6TLg) -- Andy Jiang, Georgia Tech
+  1. [Dataset Generation with Psi4: Fitting Force Fields and Machine Learning Models](https://www.youtube.com/watch?v=lKBJmj2GgVw) -- Zach Glick, Georgia Tech
 * 1:30pm-2:30pm: Tutorial for Psi4 Users
-  1. Basic Introduction to Using Psi4 -- David Sherrill, Georgia Tech
-  1. Using Symmetry-Adapted Perturbation Theory in Psi4 -- Zach Glick, Georgia Tech
-  1. TDDFT Computations in Psi4, and Using the Python API -- Roberto Di Remigio, European National Competence Centre Sweden
+  1. [Basic Introduction to Using Psi4](https://www.youtube.com/watch?v=Z0gmVDI5mkQ) -- David Sherrill, Georgia Tech
+  1. [Using Symmetry-Adapted Perturbation Theory in Psi4](https://www.youtube.com/watch?v=mKhbBoiklNE) -- Zach Glick, Georgia Tech
+  1. [TDDFT Computations in Psi4, and Using the Python API](https://www.youtube.com/watch?v=MmG-g3SEFbk) -- Roberto Di Remigio, European National Competence Centre Sweden
 
 ### Friday, December 4
 #### Developers Day
@@ -129,7 +129,7 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
   1. The HelPME Library for Periodic Calculations -- Andy Simmonett, NIH
 * 1:30pm--3:00pm --- Tutorial for New Psi4 Developers
   1. How to Make Simple Changes to Psi4 -- Jeff Schriber, Georgia Tech
-  1. How to Use the libmints Library -- Justin Turney, University of Georgia
+  1. [How to Use the libmints Library](https://www.youtube.com/watch?v=dvzS3RwL6Do) -- Justin Turney, University of Georgia
   1. Where in Psi4 is X? -- Lori Burns, Georgia Tech
   1. How to Compile Psi4 (without Compilers) -- Lori Burns, Georgia Tech
 
@@ -137,7 +137,7 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
 #### Psi4Education Day
 
 * 9:45am--10:00am --- Meeting open for login
-* 10:00am--10:20am --- Psi4Education General Update -- Ashley McDonald, CalPoly
+* 10:00am--10:20am --- [Psi4Education General Update](https://www.youtube.com/watch?v=x3zqC4vJKSw) -- Ashley McDonald, CalPoly
 * 10:20am--11:00am --- Lightning Talks Highlighting the Newest Labs
   1. Intermolecular Interactions and Symmetry-Adapted Perturbation Theory -- Konrad Patkowski, Auburn University
   1. Determining Structure from Microwave Spectroscopy -- Brandon Magers, Belhaven University
