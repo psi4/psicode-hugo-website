@@ -142,7 +142,7 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
   1. Intermolecular Interactions and Symmetry-Adapted Perturbation Theory -- Konrad Patkowski, Auburn University
   1. Determining Structure from Microwave Spectroscopy -- Brandon Magers, Belhaven University
   1. Machine Learning in Computational Chemistry -- Ben Peyton, Virginia Tech [(repo)](https://github.com/Psi4Education/psi4education/blob/master/labs/Machine_Learning/Machine_Learning_Student.ipynb)
-  1. Analysis of Basis Sets in Quantum Chemistry Calculations -- Victor Chavez, Purdue University
+  1. Analysis of Basis Sets in Quantum Chemistry Calculations -- Victor H. Chavez, Purdue University [(repo)](https://github.com/Psi4Education/psi4education/blob/master/labs/Basis_Sets/Basis_Sets_student.ipynb)
 * 11:00am--11:20am --- How to Contribute to Psi4Education
 * 11:20am--12:00pm --- Discussion/Brainstorm New Lab Ideas
 
