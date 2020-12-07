@@ -10,91 +10,139 @@ categories: ["events"]
 # Meeting Time and Location
 
 This year's meeting will be held virtually over BlueJeans.
-A draft schedule is shown below.
+The program is shown below.
 Participants are welcome to attend any or all days.
 Optional tutorials and breakout sessions will be held in the afternoons.
 [Registration](https://forms.gle/S63JcyRgM5DpihGE8) is free.
-Mornings will be 10am-12pm; all times in Eastern.
+Mornings will be 10am-12pm; all times in Eastern Standard Time.
 
-
-<!--
-# Participating Institutions
+# Participating Institutions, Speakers
 
 * Auburn University
 * Belhaven University
-* Bristol-Myers Squibb
+* Bethel University
+* BrianQC
 * Cal Poly San Luis Obispo 
 * Emory University
-* Franklin & Marshall College
-* Fritz Haber Institute
+* Entos
+* European National Competence Centre Sweden
+* Florida State University
 * Georgia Institute of Technology
-* Georgia Southern University
-* Georgia State University
-* Hylleraas Centre for Quantum Molecular Sciences
+* Hacettepe University
 * Institute of Biophysics of the Czech Academy of Sciences
-* Khalifa University
-* McMaster University
-* Morehouse College
-* Open Force Field Initiative / MSKCC
+* National Institutes of Health
 * OpenEye Scientific Software
-* Pontificia Universidad Católica de Chile
+* Princeton University
 * Purdue University
-* Universidad de Concepción 
-* University of California, Berkeley
+* Sandia National Laboratories
 * University of Georgia
-* University of Mississippi
-* University of Oxford
+* University of Heidelberg
+* University of Richmond
 * Virginia Tech
+
+<!--
+# Participating Institutions, Attendees
+
+* Auburn University
+* Belhaven University
+* Bethel University
+* BrianQC
+#* Bristol-Myers Squibb
+* Cal Poly San Luis Obispo 
+* Emory University
+* Entos
+* European National Competence Centre Sweden
+* Florida State University
+#* Franklin & Marshall College
+#* Fritz Haber Institute
+* Georgia Institute of Technology
+#* Georgia Southern University
+#* Georgia State University
+* Hacettepe University
+#* Hylleraas Centre for Quantum Molecular Sciences
+* Institute of Biophysics of the Czech Academy of Sciences
+#* Khalifa University
+#* McMaster University
+#* Morehouse College
+* National Institutes of Health
+#* Open Force Field Initiative / MSKCC
+* OpenEye Scientific Software
+#* Pontificia Universidad Católica de Chile
+* Princeton University
+* Purdue University
+* Sandia National Laboratories
+#* Universidad de Concepción
+#* University of California, Berkeley
+* University of Georgia
+* University of Heidelberg
+#* University of Mississippi
+#* University of Oxford
+* University of Richmond
+* Virginia Tech
+
 -->
 
 # PsiCon 2020 Agenda
 
 ### Thursday, December 3
-#### Users
+#### Users Day
 
-* 10:00-? General introduction to Psi4
-* What's new in Psi4 1.4
-* Psi4 and GPUs with BrianQC
-* The PyOptKing optimizer
-* Introduction to Psi4Education
-* 11:00-11:05 - Coffee Break
-* Lightning talks
-  1. talk 1
-  1. talk 2
-* Afternoon: Tutorial for Psi4 Users
-
-<!--
-* 9:30-10:00 - Light breakfast
-* 10:00-10:15 - Opening Comments - David Sherrill
-* 10:15-10:45 - Psi4: The Past - Justin Turney 
-* 10:45-11:15 - Psi4: The Future - Lori Burns
-* 11:15-11:45 - The MolSSI QCArchive - Daniel Smith
-* 11:45-1:00 - Lunch (on your own)
-* 1:00-1:30 - Correlated Gradients and Hessians I: The Refactoring - Jonathon Misiewicz
-* 1:30-2:00 - Correlated Gradients and Hessians II: MP2 Hessians - Kirk Pearce
-* 2:00-2:20 - External potentials/multipoles - Andrew Simmonett
-* 2:20-2:40 - Empirical Dispersion Corrections for Symmetry-Adapted Perturbation Theory - Dominic Sirianni
-* 3:30-4:30 - Lightning Talks
-  1. Using xtensor in Psi4. Why, how, pains, and tribulations - Roberto Di Remigio
-  1. Integration of SAPT-related methods in drug discovery - Dan Cheney
-  1. Helpful Open-source Research TOol for N-electron systems (HORTON) - Paul Ayers
-* 4:30-5:00 - Discussion of future features of Psi4
--->
+* 9:45am--10:00am --- Meeting open for login
+* 10:00am-10:30am --- [General introduction to Psi4](https://www.youtube.com/watch?v=1WybjSppXTg) -- Daniel Crawford, Virginia Tech, and David Sherrill, Georgia Tech
+* 10:30am--10:40am --- What's new in Psi4 1.4 -- David Sherrill, Georgia Tech, and contributors
+* 10:40am--10:50am --- GPU Computing with Psi4 and BrianQC -- István Ladjánszki, BrianQC
+* 10:50am--10:55am --- How to Get Psi4 -- Lori Burns, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_How-to-get-Psi4.pdf)
+* 10:55am--11:10am --- The PyOptKing optimizer -- Rollin King, Bethel University
+* 11:10am--11:20am --- Break
+* 11:20am--11:35am --- Introduction to Psi4Education -- Ashley McDonald, Cal Poly
+* 11:35am--11:50am --- Using Psi4 through Jupyter for Teaching -- Francesco Evangelista, Emory University
+* 11:50am--12:20pm --- Lightning Talks
+  1. Using Psi4 for Crystal Structure Prediction -- Tom Darden, OpenEye Scientific Software
+  1. Quantum-based Structure Refinement of Biomolecules -- Holger Kruse, Institute of Biophysics of the Czech Academy of Sciences
+  1. Polymer Featurization with Psi4 on the Azure Cloud -- Carlos Borca, Princeton
+  1. Using MBIS in Psi4 1.4 -- Andy Jiang, Georgia Tech
+  1. Dataset Generation with Psi4: Fitting Force Fields and Machine Learning Models -- Zach Glick, Georgia Tech
+* 1:30pm-2:30pm: Tutorial for Psi4 Users
+  1. Basic Introduction to Using Psi4 -- David Sherrill, Georgia Tech
+  1. Using Symmetry-Adapted Perturbation Theory in Psi4 -- Zach Glick, Georgia Tech
+  1. TDDFT Computations in Psi4, and Using the Python API -- Roberto Di Remigio, European National Competence Centre Sweden
 
 ### Friday, December 4
-#### Developers
+#### Developers Day
 
-* Overview of recent infrastructure changes
-* Updates on analytic gradient methods by the Bozkaya group
-* Lightning talks by developers
-* Afternoon: Tutorial for New Psi4 Developers
+* 9:45am--10:00am --- Meeting open for login
+* 10:00am--11:00am --- Overview of Recent Infrastructure Changes
+* 10:00am--10:15am --- Psithon, PsiAPI, and QCSchema: Data Paths to Use Psi4 -- Lori Burns, Georgia Tech [(repo)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_Psithon-PsiAPI-QCSchema.ipynb)
+* 10:15am--10:20am --- The Distributed Driver -- Lori Burns, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_Distributed-driver.pdf)
+* 10:20am--10:40am ---The QCArchive Infrastructure and Psi4 -- Daniel Smith, Entos
+* 10:40am--10:50am --- The Upgrade to libint2, Andy Simmonett, NIH
+* 10:50am--11:00am --- DFT Grid Options, Pruning, and Density Screening, Holger Kruse
+* 11:00am--11:10am --- Break
+* 11:10am--11:20am --- Linear Scaling Coupled-Cluster Methods -- Ugur Bozkaya, Hacettepe University
+* 11:20am--12:00pm --- Lightning talks by developers
+  1. Coupled-Cluster-Based Descriptions of Photon-Electron Interactions -- Eugene DePrince, Florida State University
+  1. Revisiting the Hellmann-Feynman Theorem -- Joshua Rackers, Sandia National Laboratories
+  1. CLIFF:A Machine-Learned, Component-Based Intermolecular Force Field -- Jeff Schriber, Georgia Tech
+  1. Polarizable Embedding in Psi4 -- Maximilian Scheurer, University of Heidelberg
+  1. Multicore and Psi4 -- David Sherrill, Georgia Tech
+  1. Diagrammatic Coupled Cluster Monte Carlo -- Roberto Di Remigio, European National Competence Centre Sweden
+  1. The HelPME Library for Periodic Calculations -- Andy Simmonett, NIH
+* 1:30pm--3:00pm --- Tutorial for New Psi4 Developers
+  1. How to Make Simple Changes to Psi4 -- Jeff Schriber, Georgia Tech
+  1. How to Use the libmints Library -- Justin Turney, University of Georgia
+  1. Where in Psi4 is X? -- Lori Burns, Georgia Tech
+  1. How to Compile Psi4 (without Compilers) -- Lori Burns, Georgia Tech
 
 ### Saturday, December 5
-#### Psi4Education
+#### Psi4Education Day
 
-* 10:00-10:20 Psi4Education general update
-* 10:20-11:00 Lightning talks highlighting some of our newest, most awesome labs
-* 11:00-11:20 How to contribute to Psi4Education
-* 11:20-12:00 Discussion/brainstorm new lab ideas
-
+* 9:45am--10:00am --- Meeting open for login
+* 10:00am--10:20am --- Psi4Education General Update -- Ashley McDonald, CalPoly
+* 10:20am--11:00am --- Lightning Talks Highlighting the Newest Labs
+  1. Intermolecular Interactions and Symmetry-Adapted Perturbation Theory -- Konrad Patkowski, Auburn University
+  1. Determining Structure from Microwave Spectroscopy -- Brandon Magers, Belhaven University
+  1. Machine Learning in Computational Chemistry -- Ben Peyton, Virginia Tech
+  1. Analysis of Basis Sets in Quantum Chemistry Calculations -- Victor Chavez, Purdue University
+* 11:00am--11:20am --- How to Contribute to Psi4Education
+* 11:20am--12:00pm --- Discussion/Brainstorm New Lab Ideas
 
