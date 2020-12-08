@@ -52,14 +52,14 @@ Hacking session for core developers
 #### MoSE 3201A
 
 * 9:30-10:00 - Light breakfast
-* 10:00-10:15 - Opening Comments - David Sherrill
-* 10:15-10:45 - 2018 Psi4 Ordnance Survey (part a, part b) - Lori Burns
-* 10:45-11:15 - Meta-Observations and Outlooks of Community Trends in Quantum Chemistry - Daniel Smith
+* 10:00-10:15 - Opening Comments - David Sherrill [(slides)](https://github.com/psi4/PsiCon2018/blob/master/DavidSherrill_Update-on-the-Psi4-Project.pdf)
+* 10:15-10:45 - 2018 Psi4 Ordnance Survey (part a, part b) - Lori Burns [(slides part a)](https://github.com/psi4/PsiCon2018/blob/master/LoriBurns_2018-Psi4-Ordnance-Survey_partA.pdf) [(slides part b)](https://github.com/psi4/PsiCon2018/blob/master/LoriBurns_2018-Psi4-Ordnance-Survey_partB.pdf)
+* 10:45-11:15 - Meta-Observations and Outlooks of Community Trends in Quantum Chemistry - Daniel Smith [(slides)](https://github.com/psi4/PsiCon2018/blob/master/DanielSmith_Meta-Observations-and-Outlooks-of-Community-Trends-in-Quantum-Chemistry.pdf)
 * 11:15-11:30 - Optimizer Interfaces and Interoperability - Alex Heide
 * 11:30-1:00 - Lunch (provided)
 * 1:00-1:30 - New Theoretical Methods for Excited States and Spectroscopy - Alex Sokolov
-* 1:30-1:40 - The Psi4 User Forum - Jonathon Misiewicz
-* 1:40-2:00 - Psi4 Survey Results - David Sherrill
+* 1:30-1:40 - The Psi4 User Forum - Jonathon Misiewicz [(slides)](https://github.com/psi4/PsiCon2018/blob/master/JonathonMisiewicz_State-of-Psi-Forum.pdf)
+* 1:40-2:00 - Psi4 Survey Results - David Sherrill [(slides)](https://github.com/psi4/PsiCon2018/blob/master/DavidSherrill_2018-Psi4-Survey.pdf)
 * 2:00-3:00 - Breakout Session 1
 * 3:00-3:30 - Coffee Break
 * 3:30-4:30 - Breakout Session 2
@@ -76,7 +76,7 @@ Note: We have rooms 3201A, 4202A, the 4th floor atrium, and two research scienti
 * 10:00-11:30 - Lightning Talks
 * Jacob Townsend, UTK, Can we Learn CC Amplitudes from MP2 using ML?
 * Harper Grimsley, VT, Psi4 Implementation of Molecule-in-molecule Geometry Optimization
-* Tianyuan (Sam) Zhang, Emory, Recent Developments in Ambit
+* Tianyuan (Sam) Zhang, Emory, Recent Developments in Ambit [(slides)](https://github.com/psi4/PsiCon2018/blob/master/SamZhang_What-I-Learned-Implementing-CCSD-in-Ambit.pdf)
 * Asim Alenaizan, GT, The Many-Body Expansion Driver: Features and Parallelism
 * Andy Simmonett, NIH, QM/MM and HelPME
 * Justin Turney, UGA, JupyterHub

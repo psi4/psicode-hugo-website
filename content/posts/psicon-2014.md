@@ -35,25 +35,25 @@ Saturday, November 15 at Georgia Tech.
 #### MoSE 4202A
 
 * 10:00am-10:10am: Welcome and Introductions
-* 10:10am-10:25am: David Sherrill: Response of the Community to Psi4
+* 10:10am-10:25am: David Sherrill: Response of the Community to Psi4 [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/david_sherrill.pdf)
 * 10:25am-11:15am: Updates from developers:
-    * Daniel Crawford: PCMSolver and potential infrastructure changes (10 mins)
+    * Daniel Crawford: PCMSolver and potential infrastructure changes (10 mins) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/daniel_crawford.pdf)
     * Ugur Bozkaya: DF-GRAD (5 mins)
-    * Rollin King: Optimizer improvements, XML output (15 min) (Summary of Optking changes)
+    * Rollin King: Optimizer improvements, XML output (15 min) ([slides])(https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/rollin_king.pdf) ([Summary of Optking changes](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/optking-changes.pdf))
     * Bing Wang and Neil Ostlund: Enriching Psi4 Data with the Semantic Web (20 min)
 * 11:15am-11:30am: Coffee Break
 * 11:30am-12:00pm: Updates from developers:
-    * Justin Turney: Density Cumulant and Transcorrelated Methods (15 min)
-    * Daniel Smith: MCSCF and psi4numpy (10 min)
-    * Lubos Horny: Parity violation code (5 min)
+    * Justin Turney: Density Cumulant and Transcorrelated Methods (15 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/justin_turney.pdf)
+    * Daniel Smith: MCSCF and psi4numpy (10 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/daniel_smith.pdf)
+    * Lubos Horny: Parity violation code (5 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/lubos_horny.pdf)
 * 12:00pm- 1:00pm: Lunch (provided)
 * 1:00pm-2:00pm: Updates from developers:
-    * Ryan Richard: Parallelization, Many-body expansion, GTFock interface to Psi4 (15 min)
-    * Ben Pritchard: PANACHE update (5 min)
-    * Francesco Evangelista: Scalar relativistic methods (15 min)
-    * Lori Burns: Common Driver, Databases, and Basis Sets (10 min)
-    * Rob Parrish: A-SAPT, F-SAPT, I-SAPT (10 min)
-    * Jerome Gonthier: Open-shell SAPT (5 min)
+    * Ryan Richard: Parallelization, Many-body expansion, GTFock interface to Psi4 (15 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/ryan_richard.pdf)
+    * Ben Pritchard: PANACHE update (5 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/ben_pritchard.pdf)
+    * Francesco Evangelista: Scalar relativistic methods (15 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/francesco_evangelista.pdf)
+    * Lori Burns: Common Driver, Databases, and Basis Sets (10 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/lori_burns.pdf)
+    * Rob Parrish: A-SAPT, F-SAPT, I-SAPT (10 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/rob_parrish.pdf)
+    * Jerome Gonthier: Open-shell SAPT (5 min) [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2014/jerome_gonthier.pdf)
 * 2:00pm-2:15pm: Break
 * 2:15pm-3:15pm: Breakout Session I:
     * Data archiving and interchange: Export to XML, CML, CSX, etc.
