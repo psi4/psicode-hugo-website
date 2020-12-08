@@ -40,47 +40,87 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
 * University of Richmond
 * Virginia Tech
 
-<!--
 # Participating Institutions, Attendees
 
+* Arak University, Iran
 * Auburn University
 * Belhaven University
 * Bethel University
-* BrianQC
-#* Bristol-Myers Squibb
+* BrianQC, Hungary
 * Cal Poly San Luis Obispo 
+* CSIR-Central Electro Chemical Research Institute, India
+* CSIR-Central Leather Research Institute, India
+* Curtin University, Australia
+* Diamatec/University of Burgundy, France
 * Emory University
 * Entos
 * European National Competence Centre Sweden
 * Florida State University
-#* Franklin & Marshall College
-#* Fritz Haber Institute
+* Fluminense Federal University, Brazil
 * Georgia Institute of Technology
-#* Georgia Southern University
-#* Georgia State University
-* Hacettepe University
-#* Hylleraas Centre for Quantum Molecular Sciences
+* Hacettepe University, Turkey
+* Haverford College
+* Hunsberger
+* Husky Energy, Canada
+* Imperial College London, UK
 * Institute of Biophysics of the Czech Academy of Sciences
-#* Khalifa University
-#* McMaster University
-#* Morehouse College
-* National Institutes of Health
-#* Open Force Field Initiative / MSKCC
+* Institute of Materials Research and Engineering, A*STAR, Singapore
+* Kansas State University
+* Kent State University
+* King Khalid University, Saudi Arabia
+* La Salle University
+* La Trobe University, Australia
+* McMaster University, Canada
+* Molecular Software Sciences Institute (MolSSI)
+* Morehouse College
+* National Institutes of Health (NIH)
+* Newcastle University, UK
+* Nicolaus Copernicus University, Torun, Poland
+* Omeros
+* Open Force Field Initiative
 * OpenEye Scientific Software
-#* Pontificia Universidad Católica de Chile
+* Periyar University, India
+* PI Industries, India
 * Princeton University
 * Purdue University
+* Queen Mary University London, UK
+* RMIT University, Australia
 * Sandia National Laboratories
-#* Universidad de Concepción
-#* University of California, Berkeley
+* Shanghai University, China
+* Smt. S. M. Panchal Science College, Talod, India
+* Sorbonne University, France
+* Southern Methodist University
+* Spelman College
+* StreamNovation, Hungary
+* Syngene, India
+* Tata Institute of Fundamental Research Hyderabad, India
+* thinkMolecular technologies, India
+* Technical University of Denmark
+* Tulane University
+* Ube, Japan
+* Universidad Autónoma de San Luis Potosí, Mexico
+* Universidad de Concepción, Chile
+* University of California, Merced
+* University of Florida
 * University of Georgia
-* University of Heidelberg
-#* University of Mississippi
-#* University of Oxford
+* University of Heidelberg, Germany
+* University of Maine
+* University of Mount Union
+* University of North Texas
+* University of Pittsburgh
+* University of Puerto Rico
 * University of Richmond
+* Universitat Rovira i Virgili, Spain
+* University of Sao Paulo, Brazil
+* University of St. Thomas
+* University of Victoria, Canada
+* University of Vienna, Austria
+* University of Zurich, Switzerland
+* Uppsala University, Sweden
 * Virginia Tech
+* Western Washington University
+* William Paterson University
 
--->
 
 # PsiCon 2020 Agenda
 
@@ -104,7 +144,7 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
   1. [Dataset Generation with Psi4: Fitting Force Fields and Machine Learning Models](https://www.youtube.com/watch?v=lKBJmj2GgVw) -- Zach Glick, Georgia Tech
 * 1:30pm-2:30pm: Tutorial for Psi4 Users
   1. [Basic Introduction to Using Psi4](https://www.youtube.com/watch?v=Z0gmVDI5mkQ) -- David Sherrill, Georgia Tech
-  1. [Using Symmetry-Adapted Perturbation Theory in Psi4](https://www.youtube.com/watch?v=mKhbBoiklNE) -- Zach Glick, Georgia Tech ([slides])(https://github.com/psi4/PsiCon2020/blob/master/ZachGlick_SAPT-Demo-Materials/PsiCon2020_SAPT_Tutorial.pdf) [(repo)](https://github.com/zachglick/PsiCon2020-SAPT) ([materials])(https://github.com/psi4/PsiCon2020/tree/master/ZachGlick_SAPT-Demo-Materials) ([selected papers])(https://github.com/psi4/PsiCon2020/tree/master/DavidSherrill_Some-SAPT-Papers)
+  1. [Using Symmetry-Adapted Perturbation Theory in Psi4](https://www.youtube.com/watch?v=mKhbBoiklNE) -- Zach Glick, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/ZachGlick_SAPT-Demo-Materials/PsiCon2020_SAPT_Tutorial.pdf) [(repo)](https://github.com/zachglick/PsiCon2020-SAPT) [(materials)](https://github.com/psi4/PsiCon2020/tree/master/ZachGlick_SAPT-Demo-Materials) ([selected papers])(https://github.com/psi4/PsiCon2020/tree/master/DavidSherrill_Some-SAPT-Papers)
   1. [TDDFT Computations in Psi4, and Using the Python API](https://www.youtube.com/watch?v=MmG-g3SEFbk) -- Roberto Di Remigio, European National Competence Centre Sweden
 
 ### Friday, December 4
