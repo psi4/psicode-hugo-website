@@ -35,7 +35,7 @@ The meeting was held Friday and Saturday, Nov 13-14, at Emory featuring particip
 
 * 9:30am-10:00am: Welcome (coffee and doughnuts provided)
 * 10:00am-11:00am: Update Session 1
-	* Lori Burns: Psi4.0 Update and Plans
+	* Lori Burns: Psi4.0 Update and Plans [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2015/psi4-11-2015-lori.pdf)
 	* Ben Pritchard: Framework for Interoperability
 	* Daniel Crawford: The Future of Psi4
 * 11:00am-11:15am: Coffee Break

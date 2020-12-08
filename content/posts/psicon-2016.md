@@ -32,11 +32,11 @@ The meeting was held Friday and Saturday, Nov 4-5, at CCQC at UGA featuring part
 * 9:50am-10:00am: Welcome
 * 10:00am-11:00am: Session 1
 	* David Sherrill: Impact of the Psi4 Project
-	* Daniel G. A. Smith: Psi4: Benefits of Becoming a Library
+	* Daniel G. A. Smith: Psi4: Benefits of Becoming a Library [(demo)](https://www.youtube.com/watch?v=WBEUhfMzsxM&feature=youtu.be)
 	* Andrew James: Making LibDPD Great Again
 * 11:00am-11:15am: Coffee Break
 * 11:15am-12:00pm: Session 2
-	* Andrew Simmonett, Lori Burns, Justin Turney: Psi4 Then and Now
+	* Andrew Simmonett, Lori Burns, Justin Turney: Psi4 Then and Now [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2016/acslabjmt-11-2016-sides.pdf)
 	* Ryan Richard: Pulsar
 * 12:00pm-1:30pm: Lunch provided by Dell - "Lunch and Learn"
 * 11:15am-12:00pm: Session 3
