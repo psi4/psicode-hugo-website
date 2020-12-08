@@ -141,14 +141,8 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
 * 10:20am--11:00am --- Lightning Talks Highlighting the Newest Labs
   1. Intermolecular Interactions and Symmetry-Adapted Perturbation Theory -- Konrad Patkowski, Auburn University
   1. Determining Structure from Microwave Spectroscopy -- Brandon Magers, Belhaven University
-<<<<<<< 61aece58921cbb7c497b0b16cfaa3154e6465b92
   1. Machine Learning in Computational Chemistry -- Ben Peyton, Virginia Tech [(repo)](https://github.com/Psi4Education/psi4education/blob/master/labs/Machine_Learning/Machine_Learning_Student.ipynb)
   1. Analysis of Basis Sets in Quantum Chemistry Calculations -- Victor H. Chavez, Purdue University [(repo)](https://github.com/Psi4Education/psi4education/blob/master/labs/Basis_Sets/Basis_Sets_student.ipynb)
-* 11:00am--11:20am --- How to Contribute to Psi4Education
-=======
-  1. Machine Learning in Computational Chemistry -- Ben Peyton, Virginia Tech
-  1. Analysis of Basis Sets in Quantum Chemistry Calculations -- Victor Chavez, Purdue University
 * 11:00am--11:20am --- How to Contribute to Psi4Education -- Dom Sirianni, University of Richmond [(slides)](https://github.com/psi4/PsiCon2020/blob/master/DomSirianni_2020_contributing-to-psi4education.pptx)
->>>>>>> more links, incl. Google Drive materials
 * 11:20am--12:00pm --- Discussion/Brainstorm New Lab Ideas
 
