@@ -160,13 +160,13 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
 * 11:00am--11:10am --- Break
 * 11:10am--11:20am --- Linear Scaling Coupled-Cluster Methods -- Ugur Bozkaya, Hacettepe University
 * 11:20am--12:00pm --- Lightning talks by developers
-  1. Coupled-Cluster-Based Descriptions of Photon-Electron Interactions -- Eugene DePrince, Florida State University
-  1. Revisiting the Hellmann-Feynman Theorem -- Joshua Rackers, Sandia National Laboratories
+  1. [Coupled-Cluster-Based Descriptions of Photon-Electron Interactions](https://www.youtube.com/watch?v=mhy0NCLKZXw) -- Eugene DePrince, Florida State University
+  1. [Revisiting the Hellmann-Feynman Theorem](https://www.youtube.com/watch?v=mbd63RC3YLk) -- Joshua Rackers, Sandia National Laboratories
   1. CLIFF: A Machine-Learned, Component-Based Intermolecular Force Field -- Jeff Schriber, Georgia Tech
-  1. Polarizable Embedding in Psi4 -- Maximilian Scheurer, University of Heidelberg
-  1. Multicore and Psi4 -- David Sherrill, Georgia Tech
-  1. Diagrammatic Coupled Cluster Monte Carlo -- Roberto Di Remigio, European National Competence Centre Sweden
-  1. The HelPME Library for Periodic Calculations -- Andy Simmonett, NIH
+  1. [Polarizable Embedding in Psi4](https://www.youtube.com/watch?v=mKu0tI-_1qM) -- Maximilian Scheurer, University of Heidelberg
+  1. [Multicore and Psi4](https://www.youtube.com/watch?v=FOU4gb178S0) -- David Sherrill, Georgia Tech
+  1. [Diagrammatic Coupled Cluster Monte Carlo](https://www.youtube.com/watch?v=RghGFpTWnks) -- Roberto Di Remigio, European National Competence Centre Sweden
+  1. [The HelPME Library for Periodic Calculations](https://www.youtube.com/watch?v=HTjAYqWX7u4) -- Andy Simmonett, NIH
 * 1:30pm--3:00pm --- Tutorial for New Psi4 Developers
   1. How to Make Simple Changes to Psi4 -- Jeff Schriber, Georgia Tech [(materials)](https://github.com/psi4/PsiCon2020/tree/master/JeffSchriber_GithubProcess)
   1. [How to Use the libmints Library](https://www.youtube.com/watch?v=dvzS3RwL6Do) -- Justin Turney, University of Georgia
