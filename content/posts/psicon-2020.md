@@ -152,10 +152,10 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
 
 * 9:45am--10:00am --- Meeting open for login
 * 10:00am--11:00am --- Overview of Recent Infrastructure Changes
-* 10:00am--10:15am --- Psithon, PsiAPI, and QCSchema: Data Paths to Use Psi4 -- Lori Burns, Georgia Tech [(repo)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_Psithon-PsiAPI-QCSchema.ipynb)
-* 10:15am--10:20am --- The Distributed Driver -- Lori Burns, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_Distributed-driver.pdf)
-* 10:20am--10:40am ---The QCArchive Infrastructure and Psi4 -- Daniel Smith, Entos
-* 10:40am--10:50am --- The Upgrade to libint2, Andy Simmonett, NIH
+* 10:00am--10:15am --- [Psithon, PsiAPI, and QCSchema: Data Paths to Use Psi4](https://www.youtube.com/watch?v=bYuxB37ewf0) -- Lori Burns, Georgia Tech [(repo)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_Psithon-PsiAPI-QCSchema.ipynb)
+* 10:15am--10:20am --- [The Distributed Driver](https://www.youtube.com/watch?v=9HalTRdmkto) -- Lori Burns, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_Distributed-driver.pdf)
+* 10:20am--10:40am ---[The QCArchive Infrastructure and Psi4](https://www.youtube.com/watch?v=bIhHbA-8fC4) -- Daniel Smith, Entos
+* 10:40am--10:50am --- [The Upgrade to libint2](https://www.youtube.com/watch?v=eEkv3P66sO0), Andy Simmonett, NIH
 * 10:50am--11:00am --- DFT Grid Options, Pruning, and Density Screening, Holger Kruse [(slides)](https://github.com/psi4/PsiCon2020/blob/master/HolgerKruse_2020_DFT_grid_options.pdf)
 * 11:00am--11:10am --- Break
 * 11:10am--11:20am --- Linear Scaling Coupled-Cluster Methods -- Ugur Bozkaya, Hacettepe University
