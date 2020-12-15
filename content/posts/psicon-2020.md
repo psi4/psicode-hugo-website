@@ -155,23 +155,23 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
 * 10:00am--10:15am --- [Psithon, PsiAPI, and QCSchema: Data Paths to Use Psi4](https://www.youtube.com/watch?v=bYuxB37ewf0) -- Lori Burns, Georgia Tech [(repo)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_Psithon-PsiAPI-QCSchema.ipynb)
 * 10:15am--10:20am --- [The Distributed Driver](https://www.youtube.com/watch?v=9HalTRdmkto) -- Lori Burns, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/LoriBurns_2020_Distributed-driver.pdf)
 * 10:20am--10:40am ---[The QCArchive Infrastructure and Psi4](https://www.youtube.com/watch?v=bIhHbA-8fC4) -- Daniel Smith, Entos
-* 10:40am--10:50am --- [The Upgrade to libint2](https://www.youtube.com/watch?v=eEkv3P66sO0), Andy Simmonett, NIH
-* 10:50am--11:00am --- DFT Grid Options, Pruning, and Density Screening, Holger Kruse [(slides)](https://github.com/psi4/PsiCon2020/blob/master/HolgerKruse_2020_DFT_grid_options.pdf)
+* 10:40am--10:50am --- [The Upgrade to libint2](https://www.youtube.com/watch?v=eEkv3P66sO0) -- Andy Simmonett, NIH
+* 10:50am--11:00am --- [DFT Grid Options, Pruning, and Density Screening](https://www.youtube.com/watch?v=mHWi0149a7Y) -- Holger Kruse [(slides)](https://github.com/psi4/PsiCon2020/blob/master/HolgerKruse_2020_DFT_grid_options.pdf)
 * 11:00am--11:10am --- Break
-* 11:10am--11:20am --- Linear Scaling Coupled-Cluster Methods -- Ugur Bozkaya, Hacettepe University
+* 11:10am--11:20am --- [Linear Scaling Coupled-Cluster Methods](https://www.youtube.com/watch?v=isWCuF-K-Ng) -- Ugur Bozkaya, Hacettepe University
 * 11:20am--12:00pm --- Lightning talks by developers
   1. [Coupled-Cluster-Based Descriptions of Photon-Electron Interactions](https://www.youtube.com/watch?v=mhy0NCLKZXw) -- Eugene DePrince, Florida State University
   1. [Revisiting the Hellmann-Feynman Theorem](https://www.youtube.com/watch?v=mbd63RC3YLk) -- Joshua Rackers, Sandia National Laboratories
-  1. CLIFF: A Machine-Learned, Component-Based Intermolecular Force Field -- Jeff Schriber, Georgia Tech
+  1. [CLIFF: A Machine-Learned, Component-Based Intermolecular Force Field](https://www.youtube.com/watch?v=sUjyXcy8jc8) -- Jeff Schriber, Georgia Tech
   1. [Polarizable Embedding in Psi4](https://www.youtube.com/watch?v=mKu0tI-_1qM) -- Maximilian Scheurer, University of Heidelberg
   1. [Multicore and Psi4](https://www.youtube.com/watch?v=FOU4gb178S0) -- David Sherrill, Georgia Tech
   1. [Diagrammatic Coupled Cluster Monte Carlo](https://www.youtube.com/watch?v=RghGFpTWnks) -- Roberto Di Remigio, European National Competence Centre Sweden
   1. [The HelPME Library for Periodic Calculations](https://www.youtube.com/watch?v=HTjAYqWX7u4) -- Andy Simmonett, NIH
 * 1:30pm--3:00pm --- Tutorial for New Psi4 Developers
-  1. How to Make Simple Changes to Psi4 -- Jeff Schriber, Georgia Tech [(materials)](https://github.com/psi4/PsiCon2020/tree/master/JeffSchriber_GithubProcess)
+  1. [How to Make Simple Changes to Psi4](https://www.youtube.com/watch?v=15SbVfyET9E) -- Jeff Schriber, Georgia Tech [(materials)](https://github.com/psi4/PsiCon2020/tree/master/JeffSchriber_GithubProcess)
   1. [How to Use the libmints Library](https://www.youtube.com/watch?v=dvzS3RwL6Do) -- Justin Turney, University of Georgia
-  1. Where in Psi4 is X? -- Lori Burns, Georgia Tech
-  1. How to Compile Psi4 (without Compilers) -- Lori Burns, Georgia Tech
+  1. [Where in Psi4 is X?](https://www.youtube.com/watch?v=JukWhlVgisc) -- Lori Burns, Georgia Tech
+  1. [How to Compile Psi4 (without Compilers)](https://www.youtube.com/watch?v=2c0Q8hsF9Ek) -- Lori Burns, Georgia Tech
 
 ### Saturday, December 5
 #### Psi4Education Day
@@ -179,10 +179,11 @@ Mornings will be 10am-12pm; all times in Eastern Standard Time.
 * 9:45am--10:00am --- Meeting open for login
 * 10:00am--10:20am --- [Psi4Education General Update](https://www.youtube.com/watch?v=x3zqC4vJKSw) -- Ashley McDonald, CalPoly
 * 10:20am--11:00am --- Lightning Talks Highlighting the Newest Labs
-  1. Intermolecular Interactions and Symmetry-Adapted Perturbation Theory -- Konrad Patkowski, Auburn University
-  1. Determining Structure from Microwave Spectroscopy -- Brandon Magers, Belhaven University
-  1. Machine Learning in Computational Chemistry -- Ben Peyton, Virginia Tech [(repo)](https://github.com/Psi4Education/psi4education/blob/master/labs/Machine_Learning/Machine_Learning_Student.ipynb)
-  1. Analysis of Basis Sets in Quantum Chemistry Calculations -- Victor H. Chavez, Purdue University [(repo)](https://github.com/Psi4Education/psi4education/blob/master/labs/Basis_Sets/Basis_Sets_student.ipynb)
-* 11:00am--11:20am --- How to Contribute to Psi4Education -- Dom Sirianni, University of Richmond [(slides)](https://github.com/psi4/PsiCon2020/blob/master/DomSirianni_2020_contributing-to-psi4education.pptx)
+  1. [Intermolecular Interactions and Symmetry-Adapted Perturbation Theory](https://www.youtube.com/watch?v=EnVNE_9-7mo) -- Konrad Patkowski, Auburn University
+  1. [Determining Structure from Microwave Spectroscopy](https://www.youtube.com/watch?v=Xze6ZSOHGaM) -- Brandon Magers, Belhaven University
+  1. [Machine Learning in Computational Chemistry](https://www.youtube.com/watch?v=clLKcWFU4-k) -- Ben Peyton, Virginia Tech [(repo)](https://github.com/Psi4Education/psi4education/blob/master/labs/Machine_Learning/Machine_Learning_Student.ipynb)
+  1. [Analysis of Basis Sets in Quantum Chemistry Calculations](https://www.youtube.com/watch?v=OEZdlfA-ZX0) -- Victor H. Chavez, Purdue University [(repo)](https://github.com/Psi4Education/psi4education/blob/master/labs/Basis_Sets/Basis_Sets_student.ipynb)
+  1. [WebMO, Psi4, and the Cloud](https://www.youtube.com/watch?v=93V0Tlka0so) -- Brandon Magers, Belhaven University
+* 11:00am--11:20am --- [How to Contribute to Psi4Education](https://www.youtube.com/watch?v=7B4ZJSjVmxI) -- Dom Sirianni, University of Richmond [(slides)](https://github.com/psi4/PsiCon2020/blob/master/DomSirianni_2020_contributing-to-psi4education.pptx)
 * 11:20am--12:00pm --- Discussion/Brainstorm New Lab Ideas
 
