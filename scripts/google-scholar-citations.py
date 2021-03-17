@@ -36,7 +36,7 @@ for psipub in ydict:
     ## total citation count
     res = requests.get(article_summary)
     res.raise_for_status()
-    print("res", res.text)
+    # print("res", res.text)
 
     citedby = re.search('Cited by (\d+)', res.text)
     print("citedby", citedby.groups())
