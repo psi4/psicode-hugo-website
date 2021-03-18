@@ -3,23 +3,70 @@ import yaml
 
 ## Inputs
 #  * `data/installs/{edition}.yaml` for branch info
-#  * menu arrays below (should match menu in file above)
 #  * installers_built dict below (should be defined for all != brn)
+#  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = 'v132'
+edition = 'v14rc1'
 
-pms = ['installer', 'conda', 'source']
-oss = ['linux', 'macos', 'windows wsl']
-pys = ['py2.7', 'py3.5', 'py3.6', 'py3.7']
-brs = ['brp', 'brs', 'brn']
+# remember, WSL = Linux
+cycle_12 = [
+        ('linux', 'py2.7'),
+        ('linux', 'py3.5'),
+        ('linux', 'py3.6'),
+        ('macos', 'py2.7'),
+        ('macos', 'py3.5'),
+        ('macos', 'py3.6'),
+        ('windows wsl', 'py2.7'),
+        ('windows wsl', 'py3.5'),
+        ('windows wsl', 'py3.6'),
+]
+cycle_13 = [
+        ('linux', 'py3.6'),
+        ('linux', 'py3.7'),
+        ('macos', 'py3.6'),
+        ('macos', 'py3.7'),
+        ('windows wsl', 'py3.6'),
+        ('windows wsl', 'py3.7'),
+]
+cycle_14 = [
+        ('linux', 'py3.6'),
+        ('linux', 'py3.7'),
+        ('linux', 'py3.8'),
+        ('linux', 'py3.9'),
+        ('macos', 'py3.6'),
+        ('macos', 'py3.7'),
+        ('macos', 'py3.8'),
+        ('macos', 'py3.9'),
+        ('windows wsl', 'py3.6'),
+        ('windows wsl', 'py3.7'),
+        ('windows wsl', 'py3.8'),
+        ('windows wsl', 'py3.9'),
+        ('windows native', 'py3.8'),
+]
+cycle_15 = [
+        ('linux', 'py3.7'),
+        ('linux', 'py3.8'),
+        ('linux', 'py3.9'),
+        ('macos', 'py3.7'),
+        ('macos', 'py3.8'),
+        ('macos', 'py3.9'),
+        ('windows wsl', 'py3.7'),
+        ('windows wsl', 'py3.8'),
+        ('windows wsl', 'py3.9'),
+        #('windows native', 'py3.7'),
+        ('windows native', 'py3.8'),
+        #('windows native', 'py3.9'),
+]
 
 installers_built = {
-    '1.2.1': ['py2.7', 'py3.5', 'py3.6'],
-    '1.3rc2': ['py3.6', 'py3.7'],
-    '1.3': ['py3.6', 'py3.7'],
-    '1.3.1': ['py3.6', 'py3.7'],
-    '1.3.2': ['py3.6', 'py3.7'],
+    '1.2.1': cycle_12,
+    '1.3rc2': cycle_13,
+    '1.3': cycle_13,
+    '1.3.1': cycle_13,
+    '1.3.2': cycle_13,
+    '1.4rc1': cycle_14,
     False: [],
+    '1.5dev': cycle_15,
 }
 
 psi4rt = {
@@ -27,6 +74,7 @@ psi4rt = {
     '1.3': '1.3',
     '1.3.1': '1.3.1',
     '1.3.2': '1.3.2',
+    '1.4rc1': '1.4.dev30',
 }
 
 ## Outputs
@@ -34,44 +82,57 @@ psi4rt = {
 #  * `data/installs/dlbtn/{edition}.json`
 
 with open(f'../data/installs/{edition}.yaml') as fp:
-    ydict = yaml.load(fp)
+    ydict = yaml.load(fp, Loader=yaml.FullLoader)
 
 for br in ydict['menu']:
     if br['datakey'] == 'branch':
         branches = br['cells']
-brchnls = {br['jscode']: br['channel'] for br in branches}
-brhashs = {br['jscode']: br['hash'] for br in branches}
-brvvs = {br['jscode']: br['tag'] for br in branches}
+    if br['datakey'] == 'python':
+        pythons = br['cells']
+    if br['datakey'] == 'os':
+        oses = br['cells']
+    if br['datakey'] == 'pm':
+        managers = br['cells']
 
-osp4cs = {'linux': 'Linux', 'macos': 'MacOSX', 'windows wsl': 'WindowsWSL'}
-oscplrs = {'linux': 'gcc', 'macos': 'clang', 'windows wsl': 'gcc'}
-osbashs = {'linux': 'bashrc', 'macos': 'bash_profile', 'windows wsl': 'bashrc'}
+brs = [i['jscode'] for i in branches]
+brchnls = {i['jscode']: i['channel'] for i in branches}
+brhashs = {i['jscode']: i['hash'] for i in branches}
+brvvs = {i['jscode']: i['tag'] for i in branches}
+
+pys = [i["jscode"] for i in pythons]
+
+oss = [i["jscode"] for i in oses]
+osp4cs = {i['jscode']: i['psi4conda'] for i in oses}
+osexts = {i['jscode']: i['psi4condaext'] for i in oses}
+oscplrs = {i['jscode']: i['condacompiler'] for i in oses}
+osbashs = {i['jscode']: i['bashrc'] for i in oses}
+ostitles = {i['jscode']: i['title'] for i in oses}
+oschnls = {i['jscode']: i['channel'] for i in oses}
+
+pms = [i["jscode"] for i in managers]
+
+
+def psi4conda_filename(os, py, pm, br):
+    vergil = "http://vergil.chemistry.gatech.edu/psicode-download/"
+    psi4conda = f"Psi4conda-{brvvs[br]}-{py.replace('.', '')}-{osp4cs[os]}-x86_64.{osexts[os]}"
+    return vergil, psi4conda
 
 
 def compute_command(os, py, pm, br):
-    osp4c = osp4cs[os]
-    oscplr = oscplrs[os]
-    osbash = osbashs[os]
-
-    pynn = py.replace('.', '')
     pyvv = py.replace('py', '')
-
-    brchnl = brchnls[br]
-    brhash = brhashs[br]
     brvv = brvvs[br]
 
-    if py in ['py2.7', 'py3.5'] and br != 'brp':
-        return """'# old python not supported after v1.2.1'"""
+    vergil, psi4conda = psi4conda_filename(os, py, pm, br)
 
     if pm == 'installer':
         if br == 'brn':
             return """'# installers provided only for release versions'"""
         else:
-            if py in installers_built[brvv]:
+            if (os, py) in installers_built[brvv]:
                 return rf"""'# download via button above  -OR-  following line' +
-                          brprompt + 'curl "http://vergil.chemistry.gatech.edu/psicode-download/Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh" -o Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh --keepalive-time 2' +
-                          brprompt + 'bash Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh -b -p $HOME/psi4conda' +
-                          bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbash}' +
+                          brprompt + 'curl "{vergil}{psi4conda}" -o {psi4conda} --keepalive-time 2' +
+                          brprompt + 'bash {psi4conda} -b -p $HOME/psi4conda' +
+                          bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbashs[os]}' +
                           tcsh + 'echo "source $HOME/psi4conda/etc/profile.d/conda.csh\\nconda activate" >> ~/.tcshrc' +
                           '<br /># log out, log back in so conda and psi4 in path' +
                           brprompt + 'psi4 --test'"""
@@ -79,36 +140,40 @@ def compute_command(os, py, pm, br):
                 return """'# installers not provided for this python version'"""
 
     elif pm == 'conda':
-        if (br == 'brs' and 'rc' not in edition) or br == 'brn':
-            return f"""pprompt + 'conda install psi4 psi4-rt python={pyvv} {brchnl}'"""
+        if (os, py) not in installers_built[brvv]:
+            return """'# conda packages not provided for this python version'"""
+        elif (br == 'brs' and 'rc' not in edition) or br == 'brn':
+            return f"""pprompt + 'conda install psi4 psi4-rt python={pyvv} {brchnls[br]} {oschnls[os]}'"""
         else:
             extras = ''
             #if os in ['linux', 'windows wsl'] and brvv == '1.2.1':
             #    extras = ' libint=1.2.1=h87b9b30_4'
-            return f"""pprompt + 'conda install psi4={brvv} psi4-rt={psi4rt[brvv]}{extras} python={pyvv} {brchnl}'"""
+            return f"""pprompt + 'conda install psi4={brvv} psi4-rt={psi4rt[brvv]}{extras} python={pyvv} {brchnls[br]} {oschnls[os]}'"""
 
     elif pm == 'source':
-        if br == 'brn':
+        if (os, py) not in installers_built[brvv]:
+            return """'# source code does not support this python version'"""
+        elif br == 'brn':
             checkout = ''
         else:
-            checkout = f""" && git checkout {brhash}"""
+            checkout = f""" && git checkout {brhashs[br]}"""
 
         return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
-                      brprompt + 'conda create -n p4dev psi4-dev python={pyvv} {brchnl}' +
+                      brprompt + 'conda create -n p4dev psi4-dev python={pyvv} {brchnls[br]} {oschnls[os]}' +
                       brprompt + 'conda activate p4dev' +
-                      brprompt + '`psi4-path-advisor --{oscplr}`' +
+                      brprompt + '`psi4-path-advisor --{oscplrs[os]}`' +
                       brprompt + 'cd objdir && make -j`getconf _NPROCESSORS_ONLN`'"""
 
 
 def compute_download_button(os, py, pm, br):
-    osp4c = osp4cs[os]
-    pynn = py.replace('.', '')
     brvv = brvvs[br]
 
-    if pm == 'installer' and br != 'brn' and (py in installers_built[brvv]):
+    vergil, psi4conda = psi4conda_filename(os, py, pm, br)
+
+    if pm == 'installer' and br != 'brn' and ((os, py) in installers_built[brvv]):
             return rf"""['<i class="fa fa-download" aria-hidden="true"></i> download psi4conda installer',
-                         'http://vergil.chemistry.gatech.edu/psicode-download/Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
-                         'Psi4conda-{brvv}-{pynn}-{osp4c}-x86_64.sh',
+                         '{vergil}{psi4conda}',
+                         '{psi4conda}',
                          '/images/installs/conda_ovals.{pm}.jpeg']"""
 
     else:
@@ -124,7 +189,7 @@ for os in oss:
     for py in pys:
         for pm in pms:
             for br in brs:
-                key = ','.join([pm, os, py, br])
+                key = ','.join([pm, ostitles[os].lower(), py, br])
 
                 ans = compute_command(os, py, pm, br)
                 if ans is not None:
@@ -133,10 +198,6 @@ for os in oss:
                 ans = compute_download_button(os, py, pm, br)
                 if ans is not None:
                     dlbtndict[key] = ans
-
-#with open(f'{edition}-cmd.dat', 'w') as fp:
-#    for k, v in cmddict.items():
-#        fp.write(f"""        '{k}': {v},\n\n""")
 
 with open(f'../data/installs/cmd/{edition}.json', 'w') as fp:
     json.dump(cmddict, fp, indent=4, sort_keys=True)
