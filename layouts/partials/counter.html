@@ -24,13 +24,15 @@
                         {{ $count = div (sub now.Unix $ghcreated.Unix) 86400 }}
                     {{ else if eq .title "Contributors" }}
                         <!-- max per_page is 100 and we're at 91. so coordinate page number and addend -->
-                        {{ $ghapi := getJSON "https://api.github.com/repos/psi4/psi4/contributors?per_page=100&page=1" }}
-                        {{ $count = add (len $ghapi) 0 }}
+                        {{ $ghapi := getJSON "https://api.github.com/repos/psi4/psi4/contributors?per_page=100&page=2" }}
+                        {{ $count = add (len $ghapi) 100 }}
                         {{/* {{ range $ghapi }} {{ .login }} {{ end }} */}}
                     {{ else if eq .title "Citing Papers" }}
                         {{ $count1 := $.Site.Data.pubs.google_scholar_citations.psi41p1.citation_count }}
                         {{ $count2 := $.Site.Data.pubs.google_scholar_citations.psi4.citation_count }}
-                        {{ $count = add $count1 $count2 }}
+                        {{ $count3 := $.Site.Data.pubs.google_scholar_citations.psi41p4.citation_count }}
+                        {{ $count12 := add $count1 $count2 }}
+                        {{ $count = add $count12 $count3 }}
                     {{ end }}
                     <span data-speed="3000" data-to="{{ $count }}">{{ $count }}</span>
                     <h3><a href={{ .URL }}>{{ $title }}</a></h3>
