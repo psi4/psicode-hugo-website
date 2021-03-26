@@ -62,9 +62,9 @@ __[Calculating Spectroscopic Constants from a Potential Energy Surface](https://
 [Right click to download](https://raw.githubusercontent.com/Psi4Education/psi4education/master/labs/spectroscopic_constants/spectroscopic_constants_student.ipynb) \\
 *Jupyter notebook, quantum mechanics, spectroscopy*
 
-__[How do we calculate the most accurate energies for a boron atom?](https://github.com/Psi4Education/psi4education/blob/master/labs/B_atom_basis_sets/Basis_Sets_student.ipynb)__
+__[How do we calculate the most accurate energies for a boron atom?](https://github.com/Psi4Education/psi4education/blob/master/labs/Basis_Sets/Basis_Sets_student.ipynb)__
 In order to gain a better understanding of how computational chemistry functions and what types of questions it answers, this lab calculates the energy of the boron atom using different basis sets and levels of theory. The students will see the patterns that emerge from the usage of basis sets as well as computational methods such as Hartree-Fock (HF/SCF), MP2/MP4, and CCSD/CCSD(T). Electron affinities and spin states are also discussed. \\
-[Right click to download](https://raw.githubusercontent.com/Psi4Education/psi4education/master/labs/B_atom_basis_sets/Basis_Sets_student.ipynb) \\
+[Right click to download](https://raw.githubusercontent.com/Psi4Education/psi4education/master/labs/Basis_Sets/Basis_Sets_student.ipynb) \\
 *Jupyter notebook, quantum mechanics, computational chemistry*
 
 __[Can we visually predict binding energies?](https://github.com/Psi4Education/psi4education/blob/master/labs/CationPi/CationPi_student.pdf)__
