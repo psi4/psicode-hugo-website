@@ -1,9 +1,0 @@
-:term:`CFOUR_AO_LADDERS <CFOUR_AO_LADDERS (CFOUR)>`
-"""""""""""""""""""""""""""""""""""""""""""""""""""
-
-      Can be used to control the algorithm used by CFOUR when terms involving :math:`\langle ab||cd\rangle` molecular orbital integrals are calculated in the atomic orbital basis (see :term:`CFOUR_ABCDTYPE <CFOUR_ABCDTYPE (CFOUR)>` . MULTIPASS (= 0) uses an approach where the AO integral file is read a number of times in order to ensure maximal vectorization and is usually the optimal strategy on supercomputers; SINGLEPASS (= 1) determines the contributions with only a single pass through the AO integrals, but at the cost of significantly reduced vectorization. In general, however, SINGLEPASS is definitely preferable on workstations with RISC architectures. (Default : MULTIPASS on all 64-bit machines (e.g., CRAY-YMP) ; SINGLEPASS on all 32-bit machines (e.g., IBM-RS6000, HP-735, SGI-Indigo, DEC alphastations)). SPARSE_AO (=2) uses a sparse matrix algorithm which first rearranges the integral matrix in order to get "well-occupied" and "very sparse" blocks. "Well-occupied" blocks will be multiplied by matrix multiplication while in "very sparse" blocks only the non-zero elements are considered. The computational time is further reduced using symmetrized and anti-symmetrized integral and amplitude matrices in the multiplication. Substantial saving is assumed if SPARSE_AO (=2) is used.
-
-      * **Type**: string
-      * **Possible Values**: MULTIPASS, SINGLEPASS
-      * **Default**: SINGLEPASS
-
