@@ -7,7 +7,7 @@ This is the home of the new psicode website generated with Hugo. Committers to p
 ##### get Hugo
 
 * download and extract tarball from https://github.com/gohugoio/hugo/releases . add `hugo` command to `PATH` envvar
-* works for Linux: `wget https://github.com/gohugoio/hugo/releases/download/v0.54.0/hugo_0.54.0_Linux-64bit.tar.gz`
+* works for Linux: `wget https://github.com/gohugoio/hugo/releases/download/v0.82.0/hugo_0.82.0_Linux-64bit.tar.gz`
 
 ##### get website
 
