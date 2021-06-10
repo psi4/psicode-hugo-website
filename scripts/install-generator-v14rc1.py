@@ -6,7 +6,7 @@ import yaml
 #  * installers_built dict below (should be defined for all != brn)
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v14rc2"
+edition = "v14rc1"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -65,7 +65,6 @@ installers_built = {
     "1.3.1": cycle_13,
     "1.3.2": cycle_13,
     "1.4rc1": cycle_14,
-    "1.4rc2": cycle_14,
     False: [],
     "1.5dev": cycle_15,
 }
@@ -76,7 +75,6 @@ psi4rt = {
     "1.3.1": "1.3.1",
     "1.3.2": "1.3.2",
     "1.4rc1": "1.4.dev30",
-    "1.4rc2": "1.4.dev33",
 }
 
 ## Outputs
@@ -152,14 +150,12 @@ def compute_command(os, py, pm, br):
         if (os, py) not in installers_built[brvv]:
             return """'# conda packages not provided for this python version'"""
         elif (br == "brs" and "rc" not in edition) or br == "brn":
-            return f"""pprompt + 'conda install psi4 python={pyvv} {brchnls[br]} {oschnls[os]}'"""
+            return f"""pprompt + 'conda install psi4 psi4-rt python={pyvv} {brchnls[br]} {oschnls[os]}'"""
         else:
             extras = ""
-            if os == "windows native" and brvv in ["1.4rc2"]:
-                brvv = "1.4rc3.dev1"
             # if os in ['linux', 'windows wsl'] and brvv == '1.2.1':
             #    extras = ' libint=1.2.1=h87b9b30_4'
-            return f"""pprompt + 'conda install psi4={brvv}{extras} python={pyvv} {brchnls[br]} {oschnls[os]}'"""
+            return f"""pprompt + 'conda install psi4={brvv} psi4-rt={psi4rt[brvv]}{extras} python={pyvv} {brchnls[br]} {oschnls[os]}'"""
 
     elif pm == "source":
         if (os, py) not in installers_built[brvv]:
@@ -169,15 +165,11 @@ def compute_command(os, py, pm, br):
         else:
             checkout = f""" && git checkout {brhashs[br]}"""
 
-        if os == "windows native":
-            return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
-                    '<br /># see https://github.com/psi4/psi4/blob/master/.azure-pipelines/azure-pipelines-windows.yml to set up a build environment'"""
-        else:
-            return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
-                    brprompt + 'conda create -n p4dev psi4-dev python={pyvv} {brchnls[br]} {oschnls[os]}' +
-                    brprompt + 'conda activate p4dev' +
-                    brprompt + '`psi4-path-advisor --{oscplrs[os]}`' +
-                    brprompt + 'cd objdir && make -j`getconf _NPROCESSORS_ONLN`'"""
+        return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
+                 brprompt + 'conda create -n p4dev psi4-dev python={pyvv} {brchnls[br]} {oschnls[os]}' +
+                 brprompt + 'conda activate p4dev' +
+                 brprompt + '`psi4-path-advisor --{oscplrs[os]}`' +
+                 brprompt + 'cd objdir && make -j`getconf _NPROCESSORS_ONLN`'"""
 
 
 def compute_download_button(os, py, pm, br):
