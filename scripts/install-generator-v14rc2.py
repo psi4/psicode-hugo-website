@@ -6,7 +6,7 @@ import yaml
 #  * installers_built dict below (should be defined for all != brn)
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v14rc3"
+edition = "v14rc2"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -66,7 +66,6 @@ installers_built = {
     "1.3.2": cycle_13,
     "1.4rc1": cycle_14,
     "1.4rc2": cycle_14,
-    "1.4rc3": cycle_14,
     False: [],
     "1.5dev": cycle_15,
 }
@@ -78,7 +77,6 @@ psi4rt = {
     "1.3.2": "1.3.2",
     "1.4rc1": "1.4.dev30",
     "1.4rc2": "1.4.dev33",
-    "1.4rc3": "1.4.dev35",
 }
 
 ## Outputs
@@ -157,8 +155,8 @@ def compute_command(os, py, pm, br):
             return f"""pprompt + 'conda install psi4 python={pyvv} {brchnls[br]} {oschnls[os]}'"""
         else:
             extras = ""
-            if os == "windows native" and brvv in ["1.4rc3"]:
-                brvv = "1.4rc4.dev1"
+            if os == "windows native" and brvv in ["1.4rc2"]:
+                brvv = "1.4rc3.dev1"
             # if os in ['linux', 'windows wsl'] and brvv == '1.2.1':
             #    extras = ' libint=1.2.1=h87b9b30_4'
             return f"""pprompt + 'conda install psi4={brvv}{extras} python={pyvv} {brchnls[br]} {oschnls[os]}'"""
