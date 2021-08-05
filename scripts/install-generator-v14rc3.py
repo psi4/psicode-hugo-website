@@ -3,11 +3,10 @@ import yaml
 
 ## Inputs
 #  * `data/installs/{edition}.yaml` for branch info
-#  * `installers_built` dict below (should be defined for all != brn)
-#  * `psi4rt` dict below
+#  * installers_built dict below (should be defined for all != brn)
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v14"
+edition = "v14rc3"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -54,7 +53,9 @@ cycle_15 = [
     ("windows wsl", "py3.7"),
     ("windows wsl", "py3.8"),
     ("windows wsl", "py3.9"),
+    # ('windows native', 'py3.7'),
     ("windows native", "py3.8"),
+    # ('windows native', 'py3.9'),
 ]
 
 installers_built = {
@@ -66,7 +67,6 @@ installers_built = {
     "1.4rc1": cycle_14,
     "1.4rc2": cycle_14,
     "1.4rc3": cycle_14,
-    "1.4": cycle_14,
     False: [],
     "1.5dev": cycle_15,
 }
@@ -79,7 +79,6 @@ psi4rt = {
     "1.4rc1": "1.4.dev30",
     "1.4rc2": "1.4.dev33",
     "1.4rc3": "1.4.dev35",
-    "1.4": "1.4",
 }
 
 ## Outputs
@@ -166,12 +165,8 @@ def compute_command(os, py, pm, br):
 
     elif pm == "source":
         if (os, py) not in installers_built[brvv]:
-            if os == "windows native" and ("linux", py) in installers_built[brvv] and brvv != "1.3.2":
-                pass
-            else:
-                return """'# source code does not support this python version'"""
-
-        if br == "brn":
+            return """'# source code does not support this python version'"""
+        elif br == "brn":
             checkout = ""
         else:
             checkout = f""" && git checkout {brhashs[br]}"""
