@@ -1,0 +1,352 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Interface to SIMINT by B. Pritchard</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Spin-Network-Scaled MP2 (SNS-MP2) by D. E. Shaw" href="plugin_snsmp2.html" />
+    <link rel="prev" title="Interface to PCMSolver by R. Di Remigio" href="pcmsolver.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="plugin_snsmp2.html" title="Spin-Network-Scaled MP2 (SNS-MP2) by D. E. Shaw"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pcmsolver.html" title="Interface to PCMSolver by R. Di Remigio"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/simint.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Interface to SIMINT by B. Pritchard</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="interface-to-simint-by-b-pritchard">
+<span id="sec-simint"></span><span id="index-0"></span><h1>Interface to SIMINT by B. Pritchard<a class="headerlink" href="#interface-to-simint-by-b-pritchard" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Benjamin P. Pritchard</em></p>
+<p><em>Section author: Lori A. Burns</em></p>
+<a class="reference external image-reference" href="http://www.bennyp.org/research/simint/"><img alt="https://img.shields.io/badge/home-simint-5077AB.svg" src="https://img.shields.io/badge/home-simint-5077AB.svg" /></a>
+<br><a class="reference external image-reference" href="http://www.bennyp.org/research/simint/"><img alt="https://img.shields.io/badge/docs-latest-5077AB.svg" src="https://img.shields.io/badge/docs-latest-5077AB.svg" /></a>
+<p>These are the vectorized implementation of the Obara-Saika (OS) method of
+calculating electron repulsion integrals developed by B. Pritchard and
+interfaced into libmints. Enabling simint and adding <code class="docutils literal notranslate"><span class="pre">set</span>
+<span class="pre">integral_package</span> <span class="pre">simint</span></code> (do this in <code class="docutils literal notranslate"><span class="pre">~/.psi4rc</span></code> for universal effect)
+runs libderiv from Libint for derivative integrals and simint for
+non-derivative integrals. Note that present AM maximum is <code class="docutils literal notranslate"><span class="pre">$$(gg|gg)$$</span></code></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>simint seems to be having some problems with Intel 2018 compilers. presently disabled in conda package.</p>
+</div>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Binary</strong></p>
+<ul>
+<li><a class="reference external image-reference" href="https://anaconda.org/psi4/simint"><img alt="https://anaconda.org/psi4/simint/badges/version.svg" src="https://anaconda.org/psi4/simint/badges/version.svg" /></a>
+</li>
+<li><p>SIMINT is available as a conda package for Linux and macOS (and Windows, through the Ubuntu shell).</p></li>
+<li><p>The conda package is compiled to least-common-denominator, namely SSE instruction set.</p></li>
+<li><p>If using the <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> binary, simint has already been installed alongside.</p></li>
+<li><p>If using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> built from source, and anaconda or miniconda has
+already been installed (instructions at <a class="reference internal" href="conda.html#sec-quickconda"><span class="std std-ref">Quick Installation</span></a>),
+simint can be obtained through <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">simint</span> <span class="pre">-c</span> <span class="pre">psi4</span></code>.
+Then enable it as a feature with <strong class="makevar">ENABLE_simint</strong>,
+hint its location with <strong class="makevar">CMAKE_PREFIX_PATH</strong>,
+and rebuild <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> to detect simint and activate dependent code.</p></li>
+</ul>
+<ul class="simple">
+<li><p>To remove a conda installation, <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">simint</span></code>.</p></li>
+</ul>
+<p><strong>Source</strong></p>
+<ul>
+<li><img alt="https://img.shields.io/github/tag/psi4/simint.svg?maxAge=2592000" src="https://img.shields.io/github/tag/psi4/simint.svg?maxAge=2592000" />
+</li>
+</ul>
+<ul class="simple">
+<li><p>If using <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> built from source and you want simint built from
+from source also,
+enable it as a feature with <strong class="makevar">ENABLE_simint</strong>,
+and let the build system fetch and build it and activate dependent code.</p></li>
+</ul>
+</section>
+<section id="how-to-configure-simint-for-building-psi4">
+<span id="cmake-simint"></span><h2>How to configure simint for building Psi4<a class="headerlink" href="#how-to-configure-simint-for-building-psi4" title="Permalink to this headline">¶</a></h2>
+<p><strong>Role and Dependencies</strong></p>
+<ul class="simple">
+<li><p>Role — In <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>, simint is a library that provides alternate
+integrals.</p></li>
+<li><p>Downstream Dependencies — <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> (<span class="math notranslate nohighlight">\(\Leftarrow\)</span> optional) simint</p></li>
+<li><p>Upstream Dependencies — simint <span class="math notranslate nohighlight">\(\Leftarrow\)</span> None</p></li>
+</ul>
+<p><strong>CMake Variables</strong></p>
+<ul class="simple">
+<li><p><strong class="makevar">ENABLE_simint</strong> — CMake variable toggling whether <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> builds with simint</p></li>
+<li><p><strong class="makevar">CMAKE_PREFIX_PATH</strong> — CMake list variable to specify where pre-built dependencies can be found. For simint, set to an installation directory containing <code class="docutils literal notranslate"><span class="pre">include/simint/simint.h</span></code></p></li>
+<li><p><strong class="makevar">simint_DIR</strong> — CMake variable to specify where pre-built simint can be found. Set to installation directory containing <code class="docutils literal notranslate"><span class="pre">share/cmake/simint/simintConfig.cmake</span></code></p></li>
+<li><p><strong class="makevar">CMAKE_DISABLE_FIND_PACKAGE_simint</strong> — CMake variable to force internal build of simint instead of detecting pre-built</p></li>
+<li><p><strong class="makevar">CMAKE_INSIST_FIND_PACKAGE_simint</strong> — CMake variable to force detecting pre-built simint and not falling back on internal build</p></li>
+<li><p><strong class="makevar">SIMINT_VECTOR</strong> — CMake variable for simint vectorization (i.e., scalar sse avx avxfma micavx512). Default is <code class="docutils literal notranslate"><span class="pre">avx</span></code>, <em>not</em> detected, so <code class="docutils literal notranslate"><span class="pre">sse</span></code> may be required for older chipsets. See <a class="reference external" href="http://www.bennyp.org/research/simint/README.txt">http://www.bennyp.org/research/simint/README.txt</a> for details.</p></li>
+</ul>
+<p><strong>Examples</strong></p>
+<ol class="upperalpha simple">
+<li><p>Build bundled</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_simint<span class="o">=</span>ON
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="2">
+<li><p>Build <em>without</em> simint</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="3">
+<li><p>Link against pre-built</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_simint<span class="o">=</span>ON -DCMAKE_PREFIX_PATH<span class="o">=</span>/path/to/simint/root
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_simint<span class="o">=</span>ON -Dsimint_DIR<span class="o">=</span>/path/to/simint/configdir
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="upperalpha simple" start="4">
+<li><p>Build bundled despite pre-built being detectable</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; cmake -DENABLE_simint<span class="o">=</span>ON -DCMAKE_PREFIX_PATH<span class="o">=</span>/path/to/unwanted/simint/root/and/wanted/other/dependencies/root -DCMAKE_DISABLE_FIND_PACKAGE_simint<span class="o">=</span>ON
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Interface to SIMINT by B. Pritchard</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#how-to-configure-simint-for-building-psi4">How to configure simint for building Psi4</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="plugin_snsmp2.html" title="Spin-Network-Scaled MP2 (SNS-MP2) by D. E. Shaw"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="pcmsolver.html" title="Interface to PCMSolver by R. Di Remigio"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/simint.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Interface to SIMINT by B. Pritchard</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

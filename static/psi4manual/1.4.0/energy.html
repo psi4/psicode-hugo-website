@@ -1,0 +1,1641 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Single-Point Energy — energy()</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Property" href="prop.html" />
+    <link rel="prev" title="Notes on Options" href="notes_py.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prop.html" title="Property"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="notes_py.html" title="Notes on Options"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/energy.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Single-Point Energy — <code class="xref py py-func docutils literal notranslate"><span class="pre">energy()</span></code></a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="single-point-energy-w-w-energy">
+<span id="sec-energy"></span><span id="index-0"></span><h1>Single-Point Energy — <code class="xref py py-func docutils literal notranslate"><span class="pre">energy()</span></code><a class="headerlink" href="#single-point-energy-w-w-energy" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#table-energy-gen"><span class="std std-ref">Psi4 Native Energy Methods</span></a></p></li>
+<li><p><a class="reference internal" href="#table-energy-dft"><span class="std std-ref">Psi4 Native DFT Energy Methods</span></a></p></li>
+<li><p><a class="reference internal" href="mrcc_table_energy.html#table-energy-mrcc"><span class="std std-ref">MRCC Interfaced Energy Methods</span></a></p></li>
+<li><p><a class="reference internal" href="#table-energy-cfour"><span class="std std-ref">CFOUR Interfaced Energy Methods</span></a></p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">psi4.</span></span><span class="sig-name descname"><span class="pre">energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">molecule</span></em>, <em class="sig-param"><span class="pre">return_wfn</span></em>, <em class="sig-param"><span class="pre">restart_file</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/driver.html#energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Function to compute the single-point electronic energy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>float</em> – Total electronic energy in Hartrees. SAPT &amp; EFP return interaction energy.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(<em>float</em>, <a class="reference internal" href="api/psi4.core.Wavefunction.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>) – energy and wavefunction when <strong>return_wfn</strong> specified.</p>
+</dd>
+<dt class="field-odd">PSI variables</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p><a class="reference internal" href="glossary_psivariables.html#psivar-CURRENT-ENERGY"><code class="xref std std-psivar docutils literal notranslate"><span class="pre">CURRENT</span> <span class="pre">ENERGY</span></code></a></p></li>
+<li><p><a class="reference internal" href="glossary_psivariables.html#psivar-CURRENT-REFERENCE-ENERGY"><code class="xref std std-psivar docutils literal notranslate"><span class="pre">CURRENT</span> <span class="pre">REFERENCE</span> <span class="pre">ENERGY</span></code></a></p></li>
+<li><p><a class="reference internal" href="glossary_psivariables.html#psivar-CURRENT-CORRELATION-ENERGY"><code class="xref std std-psivar docutils literal notranslate"><span class="pre">CURRENT</span> <span class="pre">CORRELATION</span> <span class="pre">ENERGY</span></code></a></p></li>
+</ul>
+</td></tr></table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – <p><code class="docutils literal notranslate"><span class="pre">'scf'</span></code> || <code class="docutils literal notranslate"><span class="pre">'mp2'</span></code> || <code class="docutils literal notranslate"><span class="pre">'ci5'</span></code> || etc.</p>
+<p>First argument, usually unlabeled. Indicates the computational method
+to be applied to the system.</p>
+</p></li>
+<li><p><strong>molecule</strong> (<a class="reference internal" href="notes_py.html#op-py-molecule"><span class="std std-ref">molecule</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">h2o</span></code> || etc.</p>
+<p>The target molecule, if not the last molecule defined.</p>
+</p></li>
+<li><p><strong>return_wfn</strong> (<a class="reference internal" href="notes_py.html#op-py-boolean"><span class="std std-ref">boolean</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">'on'</span></code> || <span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">'off'</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span></p>
+<p>Indicate to additionally return the <a class="reference internal" href="api/psi4.core.Wavefunction.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>
+calculation result as the second element (after <em>float</em> energy) of a tuple.</p>
+</p></li>
+<li><p><strong>write_orbitals</strong> (str, <a class="reference internal" href="notes_py.html#op-py-boolean"><span class="std std-ref">boolean</span></a>) – <p><code class="docutils literal notranslate"><span class="pre">filename</span></code> || <span class="math notranslate nohighlight">\(\Rightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">'on'</span></code> <span class="math notranslate nohighlight">\(\Leftarrow\)</span> || <code class="docutils literal notranslate"><span class="pre">'off'</span></code></p>
+<p>(str) Save wfn containing current orbitals to the given file name after each SCF iteration
+and retain after <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> finishes.</p>
+<p>(<a class="reference internal" href="notes_py.html#op-py-boolean"><span class="std std-ref">boolean</span></a>) Turns writing the orbitals after the converged SCF on/off.
+Orbital file will be deleted unless <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> is called with <cite>-m</cite> flag.</p>
+</p></li>
+<li><p><strong>restart_file</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – <p><code class="docutils literal notranslate"><span class="pre">['file.1,</span> <span class="pre">file.32]</span></code> || <code class="docutils literal notranslate"><span class="pre">./file</span></code> || etc.</p>
+<p>Existing files to be renamed and copied for calculation restart, e.g. a serialized wfn or module-specific binary data.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+<table class="docutils align-default" id="table-energy-gen">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>calls method</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>efp</p></td>
+<td><p>effective fragment potential (EFP) <a class="reference internal" href="libefp.html#sec-libefp"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>scf</p></td>
+<td><p>Hartree–Fock (HF) or density functional theory (DFT) <a class="reference internal" href="scf.html#sec-scf"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>hf</p></td>
+<td><p>HF self consistent field (SCF) <a class="reference internal" href="scf.html#sec-scf"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>hf3c</p></td>
+<td><p>HF with dispersion, BSSE, and basis set corrections <a class="reference internal" href="gcp.html#sec-gcp"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>pbeh3c</p></td>
+<td><p>PBEh with dispersion, BSSE, and basis set corrections <a class="reference internal" href="gcp.html#sec-gcp"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>dct</p></td>
+<td><p>density cumulant (functional) theory <a class="reference internal" href="dct.html#sec-dct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>mp2</p></td>
+<td><p>2nd-order Møller–Plesset perturbation theory (MP2) <a class="reference internal" href="dfmp2.html#sec-dfmp2"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlmp2"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>mp3</p></td>
+<td><p>3rd-order Møller–Plesset perturbation theory (MP3) <a class="reference internal" href="occ.html#sec-occ-nonoo"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlmp3"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-mp3</p></td>
+<td><p>MP3 with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>mp2.5</p></td>
+<td><p>average of MP2 and MP3 <a class="reference internal" href="occ.html#sec-occ-nonoo"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlmp25"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>mp4(sdq)</p></td>
+<td><p>4th-order MP perturbation theory (MP4) less triples <a class="reference internal" href="fnocc.html#sec-fnompn"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>fno-mp4(sdq)</p></td>
+<td><p>MP4 (less triples) with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>mp4</p></td>
+<td><p>full MP4 <a class="reference internal" href="fnocc.html#sec-fnompn"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlmp4"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>fno-mp4</p></td>
+<td><p>full MP4 with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>mp<em>n</em></p></td>
+<td><p><em>n</em>th-order Møller–Plesset (MP) perturbation theory <a class="reference internal" href="detci.html#sec-arbpt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>zapt<em>n</em></p></td>
+<td><p><em>n</em>th-order z-averaged perturbation theory (ZAPT) <a class="reference internal" href="detci.html#sec-arbpt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>omp2</p></td>
+<td><p>orbital-optimized second-order MP perturbation theory <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>scs-omp2</p></td>
+<td><p>spin-component scaled OMP2 <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>scs(n)-omp2</p></td>
+<td><p>a special version of SCS-OMP2 for nucleobase interactions <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>scs-omp2-vdw</p></td>
+<td><p>a special version of SCS-OMP2 (from ethene dimers) <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sos-omp2</p></td>
+<td><p>spin-opposite scaled OMP2 <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sos-pi-omp2</p></td>
+<td><p>A special version of SOS-OMP2 for pi systems <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>omp3</p></td>
+<td><p>orbital-optimized third-order MP perturbation theory <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>scs-omp3</p></td>
+<td><p>spin-component scaled OMP3 <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>scs(n)-omp3</p></td>
+<td><p>a special version of SCS-OMP3 for nucleobase interactions <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>scs-omp3-vdw</p></td>
+<td><p>a special version of SCS-OMP3 (from ethene dimers) <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sos-omp3</p></td>
+<td><p>spin-opposite scaled OMP3 <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sos-pi-omp3</p></td>
+<td><p>A special version of SOS-OMP3 for pi systems <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>omp2.5</p></td>
+<td><p>orbital-optimized MP2.5 <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>lccsd, cepa(0)</p></td>
+<td><p>coupled electron pair approximation variant 0 <a class="reference internal" href="fnocc.html#sec-fnocepa"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tllccsd"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-lccsd, fno-cepa(0)</p></td>
+<td><p>CEPA(0) with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>cepa(1)</p></td>
+<td><p>coupled electron pair approximation variant 1 <a class="reference internal" href="fnocc.html#sec-fnocepa"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-cepa(1)</p></td>
+<td><p>CEPA(1) with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>cepa(3)</p></td>
+<td><p>coupled electron pair approximation variant 3 <a class="reference internal" href="fnocc.html#sec-fnocepa"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-cepa(3)</p></td>
+<td><p>CEPA(3) with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>acpf</p></td>
+<td><p>averaged coupled-pair functional <a class="reference internal" href="fnocc.html#sec-fnocepa"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-acpf</p></td>
+<td><p>ACPF with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>aqcc</p></td>
+<td><p>averaged quadratic coupled cluster <a class="reference internal" href="fnocc.html#sec-fnocepa"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-aqcc</p></td>
+<td><p>AQCC with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>qcisd</p></td>
+<td><p>quadratic CI singles doubles (QCISD) <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-qcisd</p></td>
+<td><p>QCISD with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>lccd</p></td>
+<td><p>Linear CCD <a class="reference internal" href="occ.html#sec-occ-nonoo"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tllccd"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-lccd</p></td>
+<td><p>LCCD with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>olccd</p></td>
+<td><p>orbital optimized LCCD <a class="reference internal" href="occ.html#sec-occ-oo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>cc2</p></td>
+<td><p>approximate coupled cluster singles and doubles (CC2) <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ccd</p></td>
+<td><p>coupled cluster doubles  (CCD) <a class="reference internal" href="occ.html#sec-occ-nonoo"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>ccsd</p></td>
+<td><p>coupled cluster singles and doubles (CCSD) <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlccsd"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>bccd</p></td>
+<td><p>Brueckner coupled cluster doubles (BCCD) <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-ccsd</p></td>
+<td><p>CCSD with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>qcisd(t)</p></td>
+<td><p>QCISD with perturbative triples <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-qcisd(t)</p></td>
+<td><p>QCISD(T) with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ccsd(t)</p></td>
+<td><p>CCSD with perturbative triples (CCSD(T)) <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlccsdt"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>a-ccsd(t)</p></td>
+<td><p>CCSD with asymmetric perturbative triples (A-CCSD(T)) <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlccsdat"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>bccd(t)</p></td>
+<td><p>BCCD with perturbative triples <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fno-ccsd(t)</p></td>
+<td><p>CCSD(T) with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>cc3</p></td>
+<td><p>approximate CC singles, doubles, and triples (CC3) <a class="reference internal" href="cc.html#sec-cc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>ccenergy</p></td>
+<td><p><strong>expert</strong> full control over ccenergy module</p></td>
+</tr>
+<tr class="row-odd"><td><p>dfocc</p></td>
+<td><p><strong>expert</strong> full control over dfocc module</p></td>
+</tr>
+<tr class="row-even"><td><p>cisd</p></td>
+<td><p>configuration interaction (CI) singles and doubles (CISD) <a class="reference internal" href="detci.html#sec-ci"><span class="std std-ref">[manual]</span></a> <a class="reference internal" href="notes_c.html#tlcisd"><span class="std std-ref">[details]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>fno-cisd</p></td>
+<td><p>CISD with frozen natural orbitals <a class="reference internal" href="fnocc.html#sec-fnocc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>cisdt</p></td>
+<td><p>CI singles, doubles, and triples (CISDT) <a class="reference internal" href="detci.html#sec-ci"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>cisdtq</p></td>
+<td><p>CI singles, doubles, triples, and quadruples (CISDTQ) <a class="reference internal" href="detci.html#sec-ci"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>ci<em>n</em></p></td>
+<td><p><em>n</em>th-order CI <a class="reference internal" href="detci.html#sec-ci"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>fci</p></td>
+<td><p>full configuration interaction (FCI) <a class="reference internal" href="detci.html#sec-ci"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>detci</p></td>
+<td><p><strong>expert</strong> full control over detci module</p></td>
+</tr>
+<tr class="row-odd"><td><p>casscf</p></td>
+<td><p>complete active space self consistent field (CASSCF)  <a class="reference internal" href="detci.html#sec-ci"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>rasscf</p></td>
+<td><p>restricted active space self consistent field (RASSCF)  <a class="reference internal" href="detci.html#sec-ci"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>mcscf</p></td>
+<td><p>multiconfigurational self consistent field (SCF) <a class="reference internal" href="psimrcc.html#sec-psimrcc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>psimrcc</p></td>
+<td><p>Mukherjee multireference coupled cluster (Mk-MRCC) <a class="reference internal" href="psimrcc.html#sec-psimrcc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>dmrg-scf</p></td>
+<td><p>density matrix renormalization group SCF <a class="reference internal" href="chemps2.html#sec-chemps2"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>dmrg-caspt2</p></td>
+<td><p>density matrix renormalization group CASPT2 <a class="reference internal" href="chemps2.html#sec-chemps2"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>dmrg-ci</p></td>
+<td><p>density matrix renormalization group CI <a class="reference internal" href="chemps2.html#sec-chemps2"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt0</p></td>
+<td><p>0th-order symmetry adapted perturbation theory (SAPT) <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ssapt0</p></td>
+<td><p>0th-order SAPT with special exchange scaling <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>fisapt0</p></td>
+<td><p>0th-order functional and/or intramolecular SAPT <a class="reference internal" href="fisapt.html#sec-fisapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2</p></td>
+<td><p>2nd-order SAPT, traditional definition <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+</p></td>
+<td><p>SAPT including all 2nd-order terms <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+(3)</p></td>
+<td><p>SAPT including perturbative triples <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+3</p></td>
+<td><p>SAPT including all 3rd-order terms <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+(ccd)</p></td>
+<td><p>SAPT2+ with CC-based dispersion <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+(3)(ccd)</p></td>
+<td><p>SAPT2+(3) with CC-based dispersion <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+3(ccd)</p></td>
+<td><p>SAPT2+3 with CC-based dispersion <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+dmp2</p></td>
+<td><p>SAPT including all 2nd-order terms and MP2 correction <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+(3)dmp2</p></td>
+<td><p>SAPT including perturbative triples and MP2 correction <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+3dmp2</p></td>
+<td><p>SAPT including all 3rd-order terms and MP2 correction <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+(ccd)dmp2</p></td>
+<td><p>SAPT2+ with CC-based dispersion and MP2 correction <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+(3)(ccd)dmp2</p></td>
+<td><p>SAPT2+(3) with CC-based dispersion and MP2 correction <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+3(ccd)dmp2</p></td>
+<td><p>SAPT2+3 with CC-based dispersion and MP2 correction <a class="reference internal" href="sapt.html#sec-sapt"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt0-ct</p></td>
+<td><p>0th-order SAPT plus charge transfer (CT) calculation <a class="reference internal" href="sapt.html#sec-saptct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2-ct</p></td>
+<td><p>SAPT2 plus CT <a class="reference internal" href="sapt.html#sec-saptct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+-ct</p></td>
+<td><p>SAPT2+ plus CT <a class="reference internal" href="sapt.html#sec-saptct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+(3)-ct</p></td>
+<td><p>SAPT2+(3) plus CT <a class="reference internal" href="sapt.html#sec-saptct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+3-ct</p></td>
+<td><p>SAPT2+3 plus CT <a class="reference internal" href="sapt.html#sec-saptct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+(ccd)-ct</p></td>
+<td><p>SAPT2+(CCD) plus CT <a class="reference internal" href="sapt.html#sec-saptct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>sapt2+(3)(ccd)-ct</p></td>
+<td><p>SAPT2+(3)(CCD) plus CT <a class="reference internal" href="sapt.html#sec-saptct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>sapt2+3(ccd)-ct</p></td>
+<td><p>SAPT2+3(CCD) plus CT <a class="reference internal" href="sapt.html#sec-saptct"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>adc</p></td>
+<td><p>2nd-order algebraic diagrammatic construction (ADC) <a class="reference internal" href="adc.html#sec-adc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>eom-cc2</p></td>
+<td><p>EOM-CC2 <a class="reference internal" href="cc.html#sec-eomcc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>eom-ccsd</p></td>
+<td><p>equation of motion (EOM) CCSD <a class="reference internal" href="cc.html#sec-eomcc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>eom-cc3</p></td>
+<td><p>EOM-CC3 <a class="reference internal" href="cc.html#sec-eomcc"><span class="std std-ref">[manual]</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="table-energy-dft">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>calls method DFT <a class="reference internal" href="dft.html#sec-dft"><span class="std std-ref">[manual]</span></a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>b1lyp</p></td>
+<td><p>B1LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b1lyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>b1pw91</p></td>
+<td><p>B1PW91 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b1wc</p></td>
+<td><p>B1WC Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b2gpplyp</p></td>
+<td><p>B2GPPLYP Double Hybrid Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b2gpplyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>b2gpplyp-nl</p></td>
+<td><p>B2GPPLYP Double Hybrid Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b2plyp</p></td>
+<td><p>B2PLYP Double Hybrid Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b2plyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>b2plyp-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>b2plyp-nl</p></td>
+<td><p>B2PLYP Double Hybrid Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b3lyp</p></td>
+<td><p>B3LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b3lyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>b3lyp-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>b3lyp-nl</p></td>
+<td><p>B3LYP-nl Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b3lyp5</p></td>
+<td><p>B3LYP5 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b3lyps</p></td>
+<td><p>B3LYPs Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b3p86</p></td>
+<td><p>B3P86 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b3p86-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>b3pw91</p></td>
+<td><p>B3PW91 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b3pw91-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>b3pw91-nl</p></td>
+<td><p>B3PW91-nl Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b5050lyp</p></td>
+<td><p>B5050LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b86b95</p></td>
+<td><p>B86B95 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b86bpbe</p></td>
+<td><p>B86BPBE GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b88b95</p></td>
+<td><p>B88B95 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b88b95-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>b97-0</p></td>
+<td><p>B97-0 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b97-1</p></td>
+<td><p>B97-1 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b97-1-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>b97-1p</p></td>
+<td><p>B97-1p Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b97-2</p></td>
+<td><p>B97-2 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b97-2-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>b97-3</p></td>
+<td><p>B97-3 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b97-d</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>b97-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>b97-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>b97-gga1</p></td>
+<td><p>B97-GGA1 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>b97-k</p></td>
+<td><p>B97-K Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>b97m-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>b97m-v</p></td>
+<td><p>B97M-V GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>bb1k</p></td>
+<td><p>BB1K Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>bhandh</p></td>
+<td><p>BHandH Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>bhandhlyp</p></td>
+<td><p>BHandHLYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>blyp</p></td>
+<td><p>BLYP GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>blyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>blyp-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>blyp-nl</p></td>
+<td><p>BLYP GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>bmk</p></td>
+<td><p>BMK Hybrid Meta-GGA XC Functional for kinetics</p></td>
+</tr>
+<tr class="row-odd"><td><p>bmk-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>bop</p></td>
+<td><p>BOP GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>bop-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>bp86</p></td>
+<td><p>BP86 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>bp86-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>bp86-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>bp86-nl</p></td>
+<td><p>BP86 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>bp86-vwn</p></td>
+<td><p>BP86 GGA XC Functional based on VWN5 corr. &amp; more accurate ftilde value</p></td>
+</tr>
+<tr class="row-odd"><td><p>cam-b3lyp</p></td>
+<td><p>CAM-B3LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>cam-b3lyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>cam-lda0</p></td>
+<td><p>CAM-LDA0 Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>cap0</p></td>
+<td><p>CAP0 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>core-dsd-blyp</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>core-dsd-blyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>dldf</p></td>
+<td><p>Dispersionless Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>dldf+d09</p></td>
+<td><p>Dispersionless Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>dldf+d10</p></td>
+<td><p>Dispersionless Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>dsd-blyp</p></td>
+<td><p>DSD-BLYP SCS Double Hybrid XC Functional (not dispersion corrected)</p></td>
+</tr>
+<tr class="row-odd"><td><p>dsd-blyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>dsd-blyp-nl</p></td>
+<td><p>DSD-BLYP-NL (D3BJ,FC parameters) VV10 SCS Double Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>dsd-pbeb95</p></td>
+<td><p>DSD-PBEB95 SCS Double Hybrid Meta-GGA XC Functional (not dispersion corrected)</p></td>
+</tr>
+<tr class="row-even"><td><p>dsd-pbeb95-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>dsd-pbeb95-nl</p></td>
+<td><p>DSD-PBEB95-NL (D3BJ parameters) VV10 SCS Double Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>dsd-pbep86</p></td>
+<td><p>DSD-PBEP86 SCS Double Hybrid XC Functional (not dispersion corrected)</p></td>
+</tr>
+<tr class="row-odd"><td><p>dsd-pbep86-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>dsd-pbep86-nl</p></td>
+<td><p>DSD-PBEP86-NL (D3BJ parameters) VV10 SCS Double Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>dsd-pbepbe</p></td>
+<td><p>DSD-PBEPBE SCS Double Hybrid XC Functional (not dispersion corrected)</p></td>
+</tr>
+<tr class="row-even"><td><p>dsd-pbepbe-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>dsd-pbepbe-nl</p></td>
+<td><p>DSD-PBEPBE-NL (D3BJ parameters) VV10 SCS Double Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>edf1</p></td>
+<td><p>EDF1 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>edf2</p></td>
+<td><p>EDF2 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>ft97</p></td>
+<td><p>FT97 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>gam</p></td>
+<td><p>GAM GGA Minessota Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>hcth120</p></td>
+<td><p>HCTH120 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>hcth120-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>hcth147</p></td>
+<td><p>HCTH147 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>hcth407</p></td>
+<td><p>HCTH407 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>hcth407-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>hcth407p</p></td>
+<td><p>HCTH407P GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>hcth93</p></td>
+<td><p>HCTH93 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>hcthp14</p></td>
+<td><p>HCTHP14 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>hcthp76</p></td>
+<td><p>HCTHP76 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>hf</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>hf+d</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>hf-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>hf-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>hf-nl</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>hf3c</p></td>
+<td><p>Hartree Fock based 3C composite method with minimal basis set, gCP and D3(BJ)</p></td>
+</tr>
+<tr class="row-odd"><td><p>hjs-b88</p></td>
+<td><p>HJS-B88 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>hjs-b97x</p></td>
+<td><p>HJS-B97X Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>hjs-pbe</p></td>
+<td><p>HJS-PBE Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>hjs-pbe-sol</p></td>
+<td><p>HJS-PBE-SOL Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>hpbeint</p></td>
+<td><p>HPBEINT Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>hse03</p></td>
+<td><p>HSE03 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>hse03-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>hse06</p></td>
+<td><p>HSE06 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>hse06-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>kmlyp</p></td>
+<td><p>KMLYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>ksdt</p></td>
+<td><p>KSDT Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>kt2</p></td>
+<td><p>KT2 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>lc-bop</p></td>
+<td><p>LC-BOP GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>lc-vv10</p></td>
+<td><p>LC-VV10 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>lda0</p></td>
+<td><p>LDA0 Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>lrc-wpbe</p></td>
+<td><p>LRC-WPBE GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>lrc-wpbeh</p></td>
+<td><p>LRC-wPBEh Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>m05</p></td>
+<td><p>M05 Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>m05-2x</p></td>
+<td><p>Heavily Parameterized Hybrid M05-2X Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>m06</p></td>
+<td><p>M06 Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>m06-2x</p></td>
+<td><p>Hybrid M06-2X Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>m06-hf</p></td>
+<td><p>Minnesota M06-HF Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>m06-l</p></td>
+<td><p>M06-L Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>m08-hx</p></td>
+<td><p>Minnesota M08-HX Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>m08-so</p></td>
+<td><p>Minnesota M08-SO Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>m11</p></td>
+<td><p>M11 Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>m11-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>m11-l</p></td>
+<td><p>M11-L Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>m11-l-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>mb3lyp-rc04</p></td>
+<td><p>MB3LYP-RC04 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mgga_ms0</p></td>
+<td><p>MGGA_MS0 Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mgga_ms1</p></td>
+<td><p>MGGA_MS1 Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mgga_ms2</p></td>
+<td><p>MGGA_MS2 Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mgga_ms2h</p></td>
+<td><p>MGGA_MS2h Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mgga_mvs</p></td>
+<td><p>MGGA_MVS Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mgga_mvsh</p></td>
+<td><p>MGGA_MV2h Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mn12-l</p></td>
+<td><p>MN12-L Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mn12-l-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mn12-sx</p></td>
+<td><p>MN12-SX Meta-GGA Hybrid Screened Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mn12-sx-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mn15</p></td>
+<td><p>MN15 Hybrid Meta-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mn15-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mn15-l</p></td>
+<td><p>MN15-L Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mohlyp</p></td>
+<td><p>MOHLYP GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mohlyp2</p></td>
+<td><p>MOHLYP2 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mp2d</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mp2mp2</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>mpw1b95</p></td>
+<td><p>mPW1B95 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mpw1b95-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>mpw1k</p></td>
+<td><p>mPW1K Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mpw1lyp</p></td>
+<td><p>mPW1LYP Hybrid GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mpw1pbe</p></td>
+<td><p>mPW1PBE Hybrid GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mpw1pw</p></td>
+<td><p>mPW1PW Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mpw1pw-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mpw3lyp</p></td>
+<td><p>mPW3LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mpw3pw</p></td>
+<td><p>mPW3PW Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mpwb1k</p></td>
+<td><p>mPWB1K Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mpwb1k-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mpwlyp1m</p></td>
+<td><p>mPWLYP1M Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>mpwlyp1w</p></td>
+<td><p>mPWLYP1W GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>mpwpw</p></td>
+<td><p>mPWPW GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>n12</p></td>
+<td><p>N12 nonseparable GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>n12-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>n12-sx</p></td>
+<td><p>N12-SX Hybrid nonseparable GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>n12-sx-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>o3lyp</p></td>
+<td><p>O3LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>o3lyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>oblyp-d</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>op-pbe</p></td>
+<td><p>BP86 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>opbe-d</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>opwlyp-d</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>otpss-d</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pbe</p></td>
+<td><p>PBE GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>pbe-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pbe-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pbe-nl</p></td>
+<td><p>PBE GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pbe-sol</p></td>
+<td><p>Perdew, Burke &amp; Ernzerhof exchange (solids)</p></td>
+</tr>
+<tr class="row-even"><td><p>pbe-sol-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pbe0</p></td>
+<td><p>PBE0 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>pbe0-13</p></td>
+<td><p>PBE0-13 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pbe0-2</p></td>
+<td><p>PBE0-2 Double Hybrid Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>pbe0-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pbe0-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pbe0-dh</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>pbe0-dh-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pbe0-nl</p></td>
+<td><p>PBE0-nl Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pbe1w</p></td>
+<td><p>PBE1W GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>pbe50</p></td>
+<td><p>PBE50 Hybrid GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pbeh3c</p></td>
+<td><p>PBE Hybrid based 3C composite method with a small basis set, gCP and D3(BJ)</p></td>
+</tr>
+<tr class="row-even"><td><p>pbelyp1w</p></td>
+<td><p>PBELYP1W GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pkzb</p></td>
+<td><p>PKZB Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>ptpss</p></td>
+<td><p>PTPSS SOS Double Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>ptpss-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pw6b95</p></td>
+<td><p>PW6B95 Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pw6b95-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pw86b95</p></td>
+<td><p>PW86B95 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pw86pbe</p></td>
+<td><p>PW86PBE GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>pw91</p></td>
+<td><p>PW91 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pw91-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pwb6k</p></td>
+<td><p>PWB6K Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pwb6k-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pwpb95</p></td>
+<td><p>PWPB95 SOS Double Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>pwpb95-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>pwpb95-nl</p></td>
+<td><p>PWPB95 SOS Double Hybrid XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>revb3lyp</p></td>
+<td><p>revB3LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>revm06-l</p></td>
+<td><p>Revised M06-L Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>revpbe</p></td>
+<td><p>revPBE GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>revpbe-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>revpbe-nl</p></td>
+<td><p>revPBE GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>revpbe0</p></td>
+<td><p>revPBE0 Hybrid GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>revpbe0-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>revpbe0-nl</p></td>
+<td><p>revPBE0 Hybrid GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>revscan</p></td>
+<td><p>Revised SCAN Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>revscan0</p></td>
+<td><p>Revised SCAN0 Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>revtpss</p></td>
+<td><p>revised TPSS Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>revtpss-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>revtpss-nl</p></td>
+<td><p>revised TPSS Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>revtpssh</p></td>
+<td><p>revTPSSh Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>revtpssh-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>rpbe</p></td>
+<td><p>RPBE GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>rpbe-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>sb98-1a</p></td>
+<td><p>SB98-1a Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>sb98-1b</p></td>
+<td><p>SB98-1b Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>sb98-1c</p></td>
+<td><p>SB98-1c Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>sb98-2a</p></td>
+<td><p>SB98-2a Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>sb98-2b</p></td>
+<td><p>SB98-2b Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>sb98-2c</p></td>
+<td><p>SB98-2c Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>scan</p></td>
+<td><p>SCAN Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>scan-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>scan0</p></td>
+<td><p>SCAN0 Hybrid Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>sogga</p></td>
+<td><p>SOGGA Exchange + PBE Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>sogga11</p></td>
+<td><p>SOGGA11 Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>sogga11-x</p></td>
+<td><p>SOGGA11-X Hybrid Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>sogga11-x-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>svwn</p></td>
+<td><p>SVWN3 (RPA) LSDA Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>t-hcth</p></td>
+<td><p>Tau HCTH Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>t-hcth-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>t-hcthh</p></td>
+<td><p>Hybrid Tau HCTH Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>teter93</p></td>
+<td><p>TETER93 Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>th-fc</p></td>
+<td><p>TH-FC GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>th-fcfo</p></td>
+<td><p>TH-FCFO GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>th-fco</p></td>
+<td><p>TH-FCO GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>th-fl</p></td>
+<td><p>TH-FL GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>th1</p></td>
+<td><p>TH1 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>th2</p></td>
+<td><p>TH2 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>th3</p></td>
+<td><p>TH3 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>th4</p></td>
+<td><p>TH4 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>tpss</p></td>
+<td><p>TPSS Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>tpss-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>tpss-nl</p></td>
+<td><p>TPSS Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>tpssh</p></td>
+<td><p>TPSSh Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>tpssh-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>tpssh-nl</p></td>
+<td><p>TPSSh-nl Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>tpsslyp1w</p></td>
+<td><p>TPSSLYP1W GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>tuned-cam-b3lyp</p></td>
+<td><p>TUNED-CAM-B3LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>vsxc</p></td>
+<td><p>VSXC Meta-GGA XC Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>vv10</p></td>
+<td><p>VV10 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>wb97</p></td>
+<td><p>wB97 GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>wb97m-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>wb97m-v</p></td>
+<td><p>wB97M-V Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>wb97x</p></td>
+<td><p>wB97X Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>wb97x-d</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>wb97x-d3</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>wb97x-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>wb97x-v</p></td>
+<td><p>wB97X-V Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>wpbe</p></td>
+<td><p>PBE SR-XC Functional (HJS Model)</p></td>
+</tr>
+<tr class="row-odd"><td><p>wpbe-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>wpbe-d3mbj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>wpbe0</p></td>
+<td><p>PBE0 SR-XC Functional (HJS Model)</p></td>
+</tr>
+<tr class="row-even"><td><p>x1b95</p></td>
+<td><p>X1B95 Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>x3lyp</p></td>
+<td><p>X3LYP Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>x3lyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>xb1k</p></td>
+<td><p>XB1K Hyb-GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-even"><td><p>xlyp</p></td>
+<td><p>XLYP GGA Exchange-Correlation Functional</p></td>
+</tr>
+<tr class="row-odd"><td><p>xlyp-d3bj</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>zlp</p></td>
+<td><p>ZLP GGA Exchange-Correlation Functional</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote id="table-energy-mrcc">
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>calls method in Kallay’s MRCC program <a class="reference internal" href="mrcc.html#sec-mrcc"><span class="std std-ref">[manual]</span></a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mrccsd</p></td>
+<td><p>CC through doubles</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdt</p></td>
+<td><p>CC through triples</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtq</p></td>
+<td><p>CC through quadruples</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdtqp</p></td>
+<td><p>CC through quintuples</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtqph</p></td>
+<td><p>CC through sextuples</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsd(t)</p></td>
+<td><p>CC through doubles with perturbative triples</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdt(q)</p></td>
+<td><p>CC through triples with perturbative quadruples</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdtq(p)</p></td>
+<td><p>CC through quadruples with pertubative quintuples</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtqp(h)</p></td>
+<td><p>CC through quintuples with pertubative sextuples</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsd(t)_l</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdt(q)_l</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdtq(p)_l</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtqp(h)_l</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdt-1a</p></td>
+<td><p>CC through doubles with iterative triples (cheapest terms)</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtq-1a</p></td>
+<td><p>CC through triples with iterative quadruples (cheapest terms)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdtqp-1a</p></td>
+<td><p>CC through quadruples with iterative quintuples (cheapest terms)</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtqph-1a</p></td>
+<td><p>CC through quintuples with iterative sextuples (cheapest terms)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdt-1b</p></td>
+<td><p>CC through doubles with iterative triples (cheaper terms)</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtq-1b</p></td>
+<td><p>CC through triples with iterative quadruples (cheaper terms)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdtqp-1b</p></td>
+<td><p>CC through quadruples with iterative quintuples (cheaper terms)</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtqph-1b</p></td>
+<td><p>CC through quintuples with iterative sextuples (cheaper terms)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrcc2</p></td>
+<td><p>approximate CC through doubles</p></td>
+</tr>
+<tr class="row-even"><td><p>mrcc3</p></td>
+<td><p>approximate CC through triples</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrcc4</p></td>
+<td><p>approximate CC through quadruples</p></td>
+</tr>
+<tr class="row-even"><td><p>mrcc5</p></td>
+<td><p>approximate CC through quintuples</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrcc6</p></td>
+<td><p>approximate CC through sextuples</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdt-3</p></td>
+<td><p>CC through doubles with iterative triples (all but the most expensive terms)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdtq-3</p></td>
+<td><p>CC through triples with iterative quadruples (all but the most expensive terms)</p></td>
+</tr>
+<tr class="row-even"><td><p>mrccsdtqp-3</p></td>
+<td><p>CC through quadruples with iterative quintuples (all but the most expensive terms)</p></td>
+</tr>
+<tr class="row-odd"><td><p>mrccsdtqph-3</p></td>
+<td><p>CC through quintuples with iterative sextuples (all but the most expensive terms)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<blockquote id="table-energy-cfour">
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>calls method in Stanton and Gauss’s CFOUR program <a class="reference internal" href="cfour.html#sec-cfour"><span class="std std-ref">[manual]</span></a></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>c4-scf</p></td>
+<td><p>Hartree–Fock (HF)</p></td>
+</tr>
+<tr class="row-odd"><td><p>c4-mp2</p></td>
+<td><p>2nd-order Møller–Plesset perturbation theory (non-density-fitting) (MP2)</p></td>
+</tr>
+<tr class="row-even"><td><p>c4-mp3</p></td>
+<td><p>3rd-order Møller–Plesset perturbation theory (MP3)</p></td>
+</tr>
+<tr class="row-odd"><td><p>c4-mp4(sdq)</p></td>
+<td><p>4th-order MP perturbation theory (MP4) less triples</p></td>
+</tr>
+<tr class="row-even"><td><p>c4-mp4</p></td>
+<td><p>full MP4</p></td>
+</tr>
+<tr class="row-odd"><td><p>c4-cc2</p></td>
+<td><p>approximate coupled cluster singles and doubles (CC2)</p></td>
+</tr>
+<tr class="row-even"><td><p>c4-ccsd</p></td>
+<td><p>coupled cluster singles and doubles (CCSD)</p></td>
+</tr>
+<tr class="row-odd"><td><p>c4-cc3</p></td>
+<td><p>approximate CC singles, doubles, and triples (CC3)</p></td>
+</tr>
+<tr class="row-even"><td><p>c4-ccsd(t)</p></td>
+<td><p>CCSD with perturbative triples (CCSD(T))</p></td>
+</tr>
+<tr class="row-odd"><td><p>c4-ccsdt</p></td>
+<td><p>coupled cluster singles, doubles, and triples (CCSDT)</p></td>
+</tr>
+<tr class="row-even"><td><p>cfour</p></td>
+<td><p><strong>expert</strong> full control over cfour program</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Examples</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Coupled-cluster singles and doubles calculation with psi code</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;ccsd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [2] Charge-transfer SAPT calculation with scf projection from small into</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     requested basis, with specified projection fitting basis</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">basis_guess</span> <span class="n">true</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">df_basis_guess</span> <span class="n">jun</span><span class="o">-</span><span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span><span class="o">-</span><span class="n">JKFIT</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;sapt0-ct&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [3] Arbitrary-order MPn calculation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;mp7&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [4] Converge scf as singlet, then run detci as triplet upon singlet reference</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Note that the integral transformation is not done automatically when detci is run in a separate step.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span> <span class="n">H2</span> <span class="p">{</span>\<span class="n">n0</span> <span class="mi">1</span>\<span class="n">nH</span>\<span class="n">nH</span> <span class="mi">1</span> <span class="mf">0.74</span>\<span class="n">n</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">reference</span> <span class="n">rohf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scf_e</span><span class="p">,</span> <span class="n">scf_wfn</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H2</span><span class="o">.</span><span class="n">set_multiplicity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="n">scf_wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span><span class="o">.</span><span class="n">integrals</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;detci&#39;</span><span class="p">,</span> <span class="n">ref_wfn</span><span class="o">=</span><span class="n">scf_wfn</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [5] Run two CI calculations, keeping the integrals generated in the first one.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span> <span class="n">ne</span> <span class="p">{</span>\<span class="n">nNe</span>\<span class="n">n</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cisd_e</span><span class="p">,</span> <span class="n">cisd_wfn</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;cisd&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">energy</span><span class="p">(</span><span class="s1">&#39;fci&#39;</span><span class="p">,</span> <span class="n">ref_wfn</span><span class="o">=</span><span class="n">cisd_wfn</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [6] Can automatically perform complete basis set extrapolations</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">energy</span><span class="p">(</span><span class="s2">&quot;CCSD/cc-pV[DT]Z&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [7] Can automatically perform delta corrections that include extrapolations</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># even with a user-defined extrapolation formula. See sample inputs named</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># cbs-xtpl* for more examples of this input style</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">energy</span><span class="p">(</span><span class="s2">&quot;MP2/aug-cc-pv([d,t]+d)z + d:ccsd(t)/cc-pvdz&quot;</span><span class="p">,</span> <span class="n">corl_scheme</span><span class="o">=</span><span class="n">myxtplfn_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prop.html" title="Property"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="notes_py.html" title="Notes on Options"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/energy.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Single-Point Energy — <code class="xref py py-func docutils literal notranslate"><span class="pre">energy()</span></code></a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

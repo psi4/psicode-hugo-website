@@ -1,0 +1,398 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>psi4.driver.qmmm</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+    
+    
+     
+        <script src="../../../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../../../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../../../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/qmmm.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">psi4.driver.qmmm</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.qmmm</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2021 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;Module with classes to integrate MM charges into</span>
+<span class="sd">a QM calculation.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">psi4.driver</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="k">class</span> <span class="nc">Diffuse</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">basisname</span><span class="p">,</span> <span class="n">ribasisname</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span> <span class="o">=</span> <span class="n">molecule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basisname</span> <span class="o">=</span> <span class="n">basisname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ribasisname</span> <span class="o">=</span> <span class="n">ribasisname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ribasis</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">da</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Da</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfn</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;    =&gt; Diffuse &lt;=</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;    &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;    &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">basisname</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;    &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ribasisname</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="k">def</span> <span class="nf">fitScf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to run scf and fit a system of diffuse charges to</span>
+<span class="sd">        resulting density.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">basisChanged</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">has_option_changed</span><span class="p">(</span><span class="s2">&quot;BASIS&quot;</span><span class="p">)</span>
+        <span class="n">ribasisChanged</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">has_option_changed</span><span class="p">(</span><span class="s2">&quot;DF_BASIS_SCF&quot;</span><span class="p">)</span>
+        <span class="n">scftypeChanged</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">has_option_changed</span><span class="p">(</span><span class="s2">&quot;SCF_TYPE&quot;</span><span class="p">)</span>
+
+        <span class="n">basis</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;BASIS&quot;</span><span class="p">)</span>
+        <span class="n">ribasis</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;DF_BASIS_SCF&quot;</span><span class="p">)</span>
+        <span class="n">scftype</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s2">&quot;SCF_TYPE&quot;</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    =&gt; Diffuse SCF (Determines Da) &lt;=</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s2">&quot;BASIS&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basisname</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s2">&quot;DF_BASIS_SCF&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ribasisname</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s2">&quot;SCF_TYPE&quot;</span><span class="p">,</span> <span class="s2">&quot;DF&quot;</span><span class="p">)</span>
+        <span class="n">E</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">molecule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfn</span> <span class="o">=</span> <span class="n">ref</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitGeneral</span><span class="p">()</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s2">&quot;BASIS&quot;</span><span class="p">,</span> <span class="n">basis</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s2">&quot;DF_BASIS_SCF&quot;</span><span class="p">,</span> <span class="n">ribasis</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s2">&quot;SCF_TYPE&quot;</span><span class="p">,</span> <span class="n">scftype</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">basisChanged</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">revoke_option_changed</span><span class="p">(</span><span class="s2">&quot;BASIS&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ribasisChanged</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">revoke_option_changed</span><span class="p">(</span><span class="s2">&quot;DF_BASIS_SCF&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">scftypeChanged</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">revoke_option_changed</span><span class="p">(</span><span class="s2">&quot;SCF_TYPE&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">fitGeneral</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to perform a general fit of diffuse charges</span>
+<span class="sd">        to wavefunction density.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;    =&gt; Diffuse Charge Fitting (Determines da) &lt;=</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Da</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">()</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Gaussian94BasisSetParser</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ribasis</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="p">,</span> <span class="s2">&quot;DF_BASIS_SCF&quot;</span><span class="p">)</span>
+
+        <span class="n">fitter</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">DFChargeFitter</span><span class="p">()</span>
+        <span class="n">fitter</span><span class="o">.</span><span class="n">setPrimary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+        <span class="n">fitter</span><span class="o">.</span><span class="n">setAuxiliary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ribasis</span><span class="p">)</span>
+        <span class="n">fitter</span><span class="o">.</span><span class="n">setD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Da</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">da</span> <span class="o">=</span> <span class="n">fitter</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">da</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">populateExtern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extern</span><span class="p">):</span>
+        <span class="c1"># Electronic Part</span>
+        <span class="n">extern</span><span class="o">.</span><span class="n">addBasis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ribasis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">da</span><span class="p">)</span>
+        <span class="c1"># Nuclear Part</span>
+        <span class="k">for</span> <span class="n">A</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">natom</span><span class="p">()):</span>
+            <span class="n">extern</span><span class="o">.</span><span class="n">addCharge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">Z</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">z</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="QMMM"><a class="viewcode-back" href="../../../api/psi4.driver.QMMM.html#psi4.driver.QMMM">[docs]</a><span class="k">class</span> <span class="nc">QMMM</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diffuses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extern</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">ExternalPotential</span><span class="p">()</span>
+
+<div class="viewcode-block" id="QMMM.addDiffuse"><a class="viewcode-back" href="../../../api/psi4.driver.QMMM.html#psi4.driver.QMMM.addDiffuse">[docs]</a>    <span class="k">def</span> <span class="nf">addDiffuse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffuse</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add a diffuse charge field *diffuse*.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diffuses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">diffuse</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QMMM.addChargeBohr"><a class="viewcode-back" href="../../../api/psi4.driver.QMMM.html#psi4.driver.QMMM.addChargeBohr">[docs]</a>    <span class="k">def</span> <span class="nf">addChargeBohr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add a point charge of magnitude *Q* at</span>
+<span class="sd">        position (*x*, *y*, *z*) Bohr.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">Q</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="QMMM.addChargeAngstrom"><a class="viewcode-back" href="../../../api/psi4.driver.QMMM.html#psi4.driver.QMMM.addChargeAngstrom">[docs]</a>    <span class="k">def</span> <span class="nf">addChargeAngstrom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to add a point charge of magnitude *Q* at</span>
+<span class="sd">        position (*x*, *y*, *z*) Angstroms.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">Q</span><span class="p">,</span> <span class="n">x</span> <span class="o">/</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span><span class="p">,</span> <span class="n">z</span> <span class="o">/</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span><span class="p">])</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;   ==&gt; QMMM &lt;==</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;   =&gt; Charges (a.u.) &lt;=</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;    </span><span class="si">%11s</span><span class="s1"> </span><span class="si">%11s</span><span class="s1"> </span><span class="si">%11s</span><span class="s1"> </span><span class="si">%11s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="p">)):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;    </span><span class="si">%11.7f</span><span class="s1"> </span><span class="si">%11.3E</span><span class="s1"> </span><span class="si">%11.3E</span><span class="s1"> </span><span class="si">%11.3E</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;    =&gt; Diffuses &lt;=</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diffuses</span><span class="p">)):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diffuses</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">s</span>
+
+<div class="viewcode-block" id="QMMM.populateExtern"><a class="viewcode-back" href="../../../api/psi4.driver.QMMM.html#psi4.driver.QMMM.populateExtern">[docs]</a>    <span class="k">def</span> <span class="nf">populateExtern</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to define a charge field external to the</span>
+<span class="sd">        molecule through point and diffuse charges.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Charges</span>
+        <span class="k">for</span> <span class="n">charge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extern</span><span class="o">.</span><span class="n">addCharge</span><span class="p">(</span><span class="n">charge</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">charge</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">charge</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">charge</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="c1"># Diffuses</span>
+        <span class="k">for</span> <span class="n">diffuse</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">diffuses</span><span class="p">:</span>
+            <span class="n">diffuse</span><span class="o">.</span><span class="n">populateExtern</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extern</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../index.html" title="index">
+          <img class="logo" src="../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/qmmm.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">psi4.driver.qmmm</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

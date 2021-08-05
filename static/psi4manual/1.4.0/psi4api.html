@@ -1,0 +1,1509 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>PSI4 API: Linking C++ and Python</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DASUM" href="api/psi4.core.DASUM.html" />
+    <link rel="prev" title="Release Procedures" href="manage_release.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="api/psi4.core.DASUM.html" title="DASUM"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="manage_release.html" title="Release Procedures"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/psi4api.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+        <li class="nav-item nav-item-this"><a href=""><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="psifour-api-linking-c-and-python">
+<span id="sec-psi4api"></span><h1><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python<a class="headerlink" href="#psifour-api-linking-c-and-python" title="Permalink to this headline">¶</a></h1>
+<section id="module-psi4.core">
+<span id="psi4-core-module"></span><h2>psi4.core Module<a class="headerlink" href="#module-psi4.core" title="Permalink to this headline">¶</a></h2>
+<p>C++ Innards of Psi4: Open-Source Quantum Chemistry</p>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DASUM.html#psi4.core.DASUM" title="psi4.core.DASUM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DASUM</span></code></a>(arg0, arg1, arg2, arg3)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DAXPY.html#psi4.core.DAXPY" title="psi4.core.DAXPY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DAXPY</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, arg6)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DCOPY.html#psi4.core.DCOPY" title="psi4.core.DCOPY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DCOPY</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DDOT.html#psi4.core.DDOT" title="psi4.core.DDOT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DDOT</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DGBMV.html#psi4.core.DGBMV" title="psi4.core.DGBMV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DGBMV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DGEEV.html#psi4.core.DGEEV" title="psi4.core.DGEEV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DGEEV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DGEMM.html#psi4.core.DGEMM" title="psi4.core.DGEMM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DGEMM</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DGEMV.html#psi4.core.DGEMV" title="psi4.core.DGEMV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DGEMV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DGER.html#psi4.core.DGER" title="psi4.core.DGER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DGER</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DGETRF.html#psi4.core.DGETRF" title="psi4.core.DGETRF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DGETRF</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DGETRI.html#psi4.core.DGETRI" title="psi4.core.DGETRI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DGETRI</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, arg6)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DGETRS.html#psi4.core.DGETRS" title="psi4.core.DGETRS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DGETRS</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DNRM2.html#psi4.core.DNRM2" title="psi4.core.DNRM2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DNRM2</span></code></a>(arg0, arg1, arg2, arg3)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DPOTRF.html#psi4.core.DPOTRF" title="psi4.core.DPOTRF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DPOTRF</span></code></a>(arg0, arg1, arg2, arg3, arg4)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DPOTRI.html#psi4.core.DPOTRI" title="psi4.core.DPOTRI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DPOTRI</span></code></a>(arg0, arg1, arg2, arg3, arg4)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DPOTRS.html#psi4.core.DPOTRS" title="psi4.core.DPOTRS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DPOTRS</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DROT.html#psi4.core.DROT" title="psi4.core.DROT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DROT</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DSBMV.html#psi4.core.DSBMV" title="psi4.core.DSBMV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSBMV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DSCAL.html#psi4.core.DSCAL" title="psi4.core.DSCAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSCAL</span></code></a>(arg0, arg1, arg2, arg3, arg4)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DSWAP.html#psi4.core.DSWAP" title="psi4.core.DSWAP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSWAP</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DSYEV.html#psi4.core.DSYEV" title="psi4.core.DSYEV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSYEV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DSYMM.html#psi4.core.DSYMM" title="psi4.core.DSYMM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSYMM</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DSYMV.html#psi4.core.DSYMV" title="psi4.core.DSYMV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSYMV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DSYR.html#psi4.core.DSYR" title="psi4.core.DSYR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSYR</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DSYR2.html#psi4.core.DSYR2" title="psi4.core.DSYR2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSYR2</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DSYR2K.html#psi4.core.DSYR2K" title="psi4.core.DSYR2K"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSYR2K</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DSYRK.html#psi4.core.DSYRK" title="psi4.core.DSYRK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSYRK</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DSYSV.html#psi4.core.DSYSV" title="psi4.core.DSYSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSYSV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DTBMV.html#psi4.core.DTBMV" title="psi4.core.DTBMV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DTBMV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DTBSV.html#psi4.core.DTBSV" title="psi4.core.DTBSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DTBSV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DTRMM.html#psi4.core.DTRMM" title="psi4.core.DTRMM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DTRMM</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DTRMV.html#psi4.core.DTRMV" title="psi4.core.DTRMV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DTRMV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DTRSM.html#psi4.core.DTRSM" title="psi4.core.DTRSM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DTRSM</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DTRSV.html#psi4.core.DTRSV" title="psi4.core.DTRSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DTRSV</span></code></a>(arg0, arg1, arg2, arg3, arg4, arg5, …)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.IDAMAX.html#psi4.core.IDAMAX" title="psi4.core.IDAMAX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IDAMAX</span></code></a>(arg0, arg1, arg2, arg3)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.adc.html#psi4.core.adc" title="psi4.core.adc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adc</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the ADC propagator code, for excited states.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.array_variable.html#psi4.core.array_variable" title="psi4.core.array_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_variable</span></code></a>(key)</p></td>
+<td><p>Returns copy of the Matrix QCVariable <em>key</em> (case-insensitive); prefer <code class="xref py py-func docutils literal notranslate"><span class="pre">variable()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.array_variables.html#psi4.core.array_variables" title="psi4.core.array_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_variables</span></code></a>()</p></td>
+<td><p>Returns dictionary of all Matrix QCVariables; prefer <a class="reference internal" href="api/psi4.core.variables.html#psi4.core.variables" title="psi4.core.variables"><code class="xref py py-func docutils literal notranslate"><span class="pre">variables()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.be_quiet.html#psi4.core.be_quiet" title="psi4.core.be_quiet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">be_quiet</span></code></a>()</p></td>
+<td><p>Redirects output to <code class="docutils literal notranslate"><span class="pre">/dev/null</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.benchmark_blas1.html#psi4.core.benchmark_blas1" title="psi4.core.benchmark_blas1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmark_blas1</span></code></a>(max_dim, min_time)</p></td>
+<td><p>Perform benchmark traverse of BLAS 1 routines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.benchmark_blas2.html#psi4.core.benchmark_blas2" title="psi4.core.benchmark_blas2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmark_blas2</span></code></a>(max_dim, min_time)</p></td>
+<td><p>Perform benchmark traverse of BLAS 2 routines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.benchmark_blas3.html#psi4.core.benchmark_blas3" title="psi4.core.benchmark_blas3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmark_blas3</span></code></a>(max_dim, min_time, nthread)</p></td>
+<td><p>Perform benchmark traverse of BLAS 3 routines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.benchmark_disk.html#psi4.core.benchmark_disk" title="psi4.core.benchmark_disk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmark_disk</span></code></a>(max_dim, min_time)</p></td>
+<td><p>Perform benchmark of PSIO disk performance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.benchmark_integrals.html#psi4.core.benchmark_integrals" title="psi4.core.benchmark_integrals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmark_integrals</span></code></a>(max_am, min_time)</p></td>
+<td><p>Perform benchmark of psi integrals (of libmints type).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.benchmark_math.html#psi4.core.benchmark_math" title="psi4.core.benchmark_math"><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmark_math</span></code></a>(min_time)</p></td>
+<td><p>Perform benchmark of common double floating point operations including most of cmath.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.ccdensity.html#psi4.core.ccdensity" title="psi4.core.ccdensity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ccdensity</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the code to compute coupled cluster density matrices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.ccenergy.html#psi4.core.ccenergy" title="psi4.core.ccenergy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ccenergy</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the coupled cluster energy code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.cceom.html#psi4.core.cceom" title="psi4.core.cceom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cceom</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the equation of motion coupled cluster code for excited states.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.cchbar.html#psi4.core.cchbar" title="psi4.core.cchbar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cchbar</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the code to generate the similarity transformed Hamiltonian.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.cclambda.html#psi4.core.cclambda" title="psi4.core.cclambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cclambda</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the coupled cluster lambda equations code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.ccresponse.html#psi4.core.ccresponse" title="psi4.core.ccresponse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ccresponse</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the coupled cluster response theory code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.cctransort.html#psi4.core.cctransort" title="psi4.core.cctransort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cctransort</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs cctransort that transforms and reorders integrals for use in the coupled cluster codes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.cctriples.html#psi4.core.cctriples" title="psi4.core.cctriples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cctriples</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the coupled cluster (T) energy code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.clean.html#psi4.core.clean" title="psi4.core.clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean</span></code></a>()</p></td>
+<td><p>Remove scratch files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.clean_options.html#psi4.core.clean_options" title="psi4.core.clean_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean_options</span></code></a>()</p></td>
+<td><p>Reset options to clean state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.clean_timers.html#psi4.core.clean_timers" title="psi4.core.clean_timers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean_timers</span></code></a>()</p></td>
+<td><p>Reinitialize timers for independent <code class="docutils literal notranslate"><span class="pre">timer.dat</span></code> entries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.clean_variables.html#psi4.core.clean_variables" title="psi4.core.clean_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean_variables</span></code></a>()</p></td>
+<td><p>Empties all double and Matrix QCVariables that have been set in global memory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.close_outfile.html#psi4.core.close_outfile" title="psi4.core.close_outfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_outfile</span></code></a>()</p></td>
+<td><p>Closes the output file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.dct.html#psi4.core.dct" title="psi4.core.dct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dct</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the density cumulant (functional) theory code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.del_array_variable.html#psi4.core.del_array_variable" title="psi4.core.del_array_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">del_array_variable</span></code></a>(key)</p></td>
+<td><p>Removes the Matrix QCVariable <em>key</em> (case-insensitive); prefer <a class="reference internal" href="api/psi4.core.del_variable.html#psi4.core.del_variable" title="psi4.core.del_variable"><code class="xref py py-func docutils literal notranslate"><span class="pre">del_variable()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.del_scalar_variable.html#psi4.core.del_scalar_variable" title="psi4.core.del_scalar_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">del_scalar_variable</span></code></a>(key)</p></td>
+<td><p>Removes the double QCVariable <em>key</em> (case-insensitive); prefer <a class="reference internal" href="api/psi4.core.del_variable.html#psi4.core.del_variable" title="psi4.core.del_variable"><code class="xref py py-func docutils literal notranslate"><span class="pre">del_variable()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.del_variable.html#psi4.core.del_variable" title="psi4.core.del_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">del_variable</span></code></a>(key)</p></td>
+<td><p>Removes scalar or array QCVariable <em>key</em> from global memory if present.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.detci.html#psi4.core.detci" title="psi4.core.detci"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detci</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the determinant-based configuration interaction code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.dfmp2.html#psi4.core.dfmp2" title="psi4.core.dfmp2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfmp2</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the DF-MP2 code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.dfocc.html#psi4.core.dfocc" title="psi4.core.dfocc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfocc</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the density-fitted orbital optimized CC codes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.dmrg.html#psi4.core.dmrg" title="psi4.core.dmrg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dmrg</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the CheMPS2 interface DMRG code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.doublet.html#psi4.core.doublet" title="psi4.core.doublet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doublet</span></code></a>(A, B, transA, transB)</p></td>
+<td><p>Returns the multiplication of two matrices A and B, with options to transpose each beforehand</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.fcidump_tei_helper.html#psi4.core.fcidump_tei_helper" title="psi4.core.fcidump_tei_helper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fcidump_tei_helper</span></code></a>(nirrep, restricted, …)</p></td>
+<td><p>Write integrals to file in FCIDUMP format</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.finalize.html#psi4.core.finalize" title="psi4.core.finalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finalize</span></code></a>()</p></td>
+<td><p>Called upon psi4 module exit to closes timers and I/O.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.flush_outfile.html#psi4.core.flush_outfile" title="psi4.core.flush_outfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flush_outfile</span></code></a>()</p></td>
+<td><p>Flushes the output file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.fnocc.html#psi4.core.fnocc" title="psi4.core.fnocc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fnocc</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the FNO-CCSD(T)/QCISD(T)/MP4/CEPA energy code</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_active_molecule.html#psi4.core.get_active_molecule" title="psi4.core.get_active_molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_active_molecule</span></code></a>()</p></td>
+<td><p>Returns the currently active molecule object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_array_variable.html#psi4.core.get_array_variable" title="psi4.core.get_array_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_array_variable</span></code></a>(key)</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_array_variables.html#psi4.core.get_array_variables" title="psi4.core.get_array_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_array_variables</span></code></a>()</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_atomic_point_charges.html#psi4.core.get_atomic_point_charges" title="psi4.core.get_atomic_point_charges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_atomic_point_charges</span></code></a>()</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_datadir.html#psi4.core.get_datadir" title="psi4.core.get_datadir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_datadir</span></code></a>()</p></td>
+<td><p>Returns the path to shared text resources, <span class="target" id="index-2"></span><a class="reference internal" href="external.html#envvar-PSIDATADIR"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PSIDATADIR</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_global_option.html#psi4.core.get_global_option" title="psi4.core.get_global_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_global_option</span></code></a>(key)</p></td>
+<td><p>Return keyword <em>key</em> value at global (all-module) scope.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_global_option_list.html#psi4.core.get_global_option_list" title="psi4.core.get_global_option_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_global_option_list</span></code></a>()</p></td>
+<td><p>Returns a list of all global options.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_gradient.html#psi4.core.get_gradient" title="psi4.core.get_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gradient</span></code></a>()</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.2.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_legacy_gradient.html#psi4.core.get_legacy_gradient" title="psi4.core.get_legacy_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_legacy_gradient</span></code></a>()</p></td>
+<td><p>Returns the global gradient as a (nat, 3) <a class="reference internal" href="api/psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_legacy_molecule.html#psi4.core.get_legacy_molecule" title="psi4.core.get_legacy_molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_legacy_molecule</span></code></a>()</p></td>
+<td><p>Returns the currently active legacy molecule object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_local_option.html#psi4.core.get_local_option" title="psi4.core.get_local_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_local_option</span></code></a>(module, key)</p></td>
+<td><p>Return keyword <em>key</em> value at <em>module</em> scope.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_memory.html#psi4.core.get_memory" title="psi4.core.get_memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_memory</span></code></a>()</p></td>
+<td><p>Returns the amount of memory available to Psi (in bytes).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_num_threads.html#psi4.core.get_num_threads" title="psi4.core.get_num_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_num_threads</span></code></a>()</p></td>
+<td><p>Returns the number of threads to use in SMP parallel computations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_option.html#psi4.core.get_option" title="psi4.core.get_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_option</span></code></a>(module, key)</p></td>
+<td><p>Return keyword <em>key</em> value used by <em>module</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_options.html#psi4.core.get_options" title="psi4.core.get_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_options</span></code></a>()</p></td>
+<td><p>Get options</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_output_file.html#psi4.core.get_output_file" title="psi4.core.get_output_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_output_file</span></code></a>()</p></td>
+<td><p>Returns output file name (stem + suffix, no directory).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_variable.html#psi4.core.get_variable" title="psi4.core.get_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_variable</span></code></a>(key)</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.get_variables.html#psi4.core.get_variables" title="psi4.core.get_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_variables</span></code></a>()</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.get_writer_file_prefix.html#psi4.core.get_writer_file_prefix" title="psi4.core.get_writer_file_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_writer_file_prefix</span></code></a>(molecule_name)</p></td>
+<td><p>Returns the prefix to use for writing files for external programs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.git_version.html#psi4.core.git_version" title="psi4.core.git_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">git_version</span></code></a>()</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.has_array_variable.html#psi4.core.has_array_variable" title="psi4.core.has_array_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_array_variable</span></code></a>(key)</p></td>
+<td><p>Is the Matrix QCVariable <em>key</em> (case-insensitive) set? Prefer <a class="reference internal" href="api/psi4.core.has_variable.html#psi4.core.has_variable" title="psi4.core.has_variable"><code class="xref py py-func docutils literal notranslate"><span class="pre">has_variable()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.has_global_option_changed.html#psi4.core.has_global_option_changed" title="psi4.core.has_global_option_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_global_option_changed</span></code></a>(key)</p></td>
+<td><p>Whether keyword <em>key</em> value has been touched at global (all-module) scope.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.has_local_option_changed.html#psi4.core.has_local_option_changed" title="psi4.core.has_local_option_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_local_option_changed</span></code></a>(module, key)</p></td>
+<td><p>Whether keyword <em>key</em> value has been touched at <em>module</em> scope.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.has_option_changed.html#psi4.core.has_option_changed" title="psi4.core.has_option_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_option_changed</span></code></a>(module, key)</p></td>
+<td><p>Whether keyword <em>key</em> value has been touched or is default.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.has_scalar_variable.html#psi4.core.has_scalar_variable" title="psi4.core.has_scalar_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_scalar_variable</span></code></a>(key)</p></td>
+<td><p>Is the double QCVariable <em>key</em> (case-insensitive) set? Prefer <a class="reference internal" href="api/psi4.core.has_variable.html#psi4.core.has_variable" title="psi4.core.has_variable"><code class="xref py py-func docutils literal notranslate"><span class="pre">has_variable()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.has_variable.html#psi4.core.has_variable" title="psi4.core.has_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_variable</span></code></a>(key)</p></td>
+<td><p>Whether scalar or array QCVariable <em>key</em> has been set in global memory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.initialize.html#psi4.core.initialize" title="psi4.core.initialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize</span></code></a>()</p></td>
+<td><p>Called upon psi4 module import to initialize timers, singletons, and I/O.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.legacy_wavefunction.html#psi4.core.legacy_wavefunction" title="psi4.core.legacy_wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legacy_wavefunction</span></code></a>()</p></td>
+<td><p>Returns the current legacy_wavefunction object from the most recent computation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.mcscf.html#psi4.core.mcscf" title="psi4.core.mcscf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mcscf</span></code></a>(arg0)</p></td>
+<td><p>Runs the MCSCF code, (N.B.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.mrcc_generate_input.html#psi4.core.mrcc_generate_input" title="psi4.core.mrcc_generate_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mrcc_generate_input</span></code></a>(arg0, arg1)</p></td>
+<td><p>Generates an input for Kallay’s MRCC code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.mrcc_load_densities.html#psi4.core.mrcc_load_densities" title="psi4.core.mrcc_load_densities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mrcc_load_densities</span></code></a>(arg0, arg1)</p></td>
+<td><p>Reads in the density matrices from Kallay’s MRCC code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.occ.html#psi4.core.occ" title="psi4.core.occ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">occ</span></code></a>(ref_wfn)</p></td>
+<td><p>Runs the orbital optimized CC codes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.opt_clean.html#psi4.core.opt_clean" title="psi4.core.opt_clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">opt_clean</span></code></a>()</p></td>
+<td><p>Cleans up the optimizer’s scratch files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.option_exists_in_module.html#psi4.core.option_exists_in_module" title="psi4.core.option_exists_in_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_exists_in_module</span></code></a>(module, key)</p></td>
+<td><p>Whether keyword <em>key</em> is a valid keyword for <em>module</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.options_to_python.html#psi4.core.options_to_python" title="psi4.core.options_to_python"><code class="xref py py-obj docutils literal notranslate"><span class="pre">options_to_python</span></code></a>(arg0)</p></td>
+<td><p>Get dictionary of whether options of module have changed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.optking.html#psi4.core.optking" title="psi4.core.optking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optking</span></code></a>()</p></td>
+<td><p>Runs the geometry optimization code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.outfile_name.html#psi4.core.outfile_name" title="psi4.core.outfile_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outfile_name</span></code></a>()</p></td>
+<td><p>Returns the name of the output file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.plugin.html#psi4.core.plugin" title="psi4.core.plugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plugin</span></code></a>(arg0, arg1)</p></td>
+<td><p>Call the plugin of name arg0.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.plugin_close.html#psi4.core.plugin_close" title="psi4.core.plugin_close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plugin_close</span></code></a>(arg0)</p></td>
+<td><p>Close the plugin of name arg0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.plugin_close_all.html#psi4.core.plugin_close_all" title="psi4.core.plugin_close_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plugin_close_all</span></code></a>()</p></td>
+<td><p>Close all open plugins.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.plugin_load.html#psi4.core.plugin_load" title="psi4.core.plugin_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plugin_load</span></code></a>(arg0)</p></td>
+<td><p>Load the plugin of name arg0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.prepare_options_for_module.html#psi4.core.prepare_options_for_module" title="psi4.core.prepare_options_for_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare_options_for_module</span></code></a>(name)</p></td>
+<td><p>Sets up the options library to return options pertaining to the module or plugin <em>name</em> (e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.print_global_options.html#psi4.core.print_global_options" title="psi4.core.print_global_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_global_options</span></code></a>()</p></td>
+<td><p>Prints the currently set global (all modules) options to the output file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.print_options.html#psi4.core.print_options" title="psi4.core.print_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_options</span></code></a>()</p></td>
+<td><p>Prints the currently set options (to the output file) for the current module.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.print_out.html#psi4.core.print_out" title="psi4.core.print_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_out</span></code></a>(arg0)</p></td>
+<td><p>Prints a string (using sprintf-like notation) to the output file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.print_variables.html#psi4.core.print_variables" title="psi4.core.print_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_variables</span></code></a>()</p></td>
+<td><p>Prints to output file all QCVariables that have been set in global memory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.psi_top_srcdir.html#psi4.core.psi_top_srcdir" title="psi4.core.psi_top_srcdir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">psi_top_srcdir</span></code></a>()</p></td>
+<td><p>Returns the location of the source code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.psimrcc.html#psi4.core.psimrcc" title="psi4.core.psimrcc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">psimrcc</span></code></a>(arg0)</p></td>
+<td><p>Runs the multireference coupled cluster code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.reopen_outfile.html#psi4.core.reopen_outfile" title="psi4.core.reopen_outfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reopen_outfile</span></code></a>()</p></td>
+<td><p>Reopens the output file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.revoke_global_option_changed.html#psi4.core.revoke_global_option_changed" title="psi4.core.revoke_global_option_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">revoke_global_option_changed</span></code></a>(key)</p></td>
+<td><p>Clear the touched status for keyword <em>key</em> at global (all-module) scope.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.revoke_local_option_changed.html#psi4.core.revoke_local_option_changed" title="psi4.core.revoke_local_option_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">revoke_local_option_changed</span></code></a>(module, key)</p></td>
+<td><p>Clear the touched status for keyword <em>key</em> at <em>module</em> scope.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.run_gdma.html#psi4.core.run_gdma" title="psi4.core.run_gdma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_gdma</span></code></a>(ref_wfn, datfilename)</p></td>
+<td><p>Runs the GDMA interface code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.sapt.html#psi4.core.sapt" title="psi4.core.sapt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sapt</span></code></a>(dimer_wfn, monoa_wfn, monob_wfn)</p></td>
+<td><p>Runs the symmetry adapted perturbation theory code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.scalar_variable.html#psi4.core.scalar_variable" title="psi4.core.scalar_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scalar_variable</span></code></a>(key)</p></td>
+<td><p>Returns the double QCVariable <em>key</em> (case-insensitive); prefer <code class="xref py py-func docutils literal notranslate"><span class="pre">variable()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.scalar_variables.html#psi4.core.scalar_variables" title="psi4.core.scalar_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scalar_variables</span></code></a>()</p></td>
+<td><p>Returns dictionary of all double QCVariables; prefer <a class="reference internal" href="api/psi4.core.variables.html#psi4.core.variables" title="psi4.core.variables"><code class="xref py py-func docutils literal notranslate"><span class="pre">variables()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.scatter.html#psi4.core.scatter" title="psi4.core.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter</span></code></a>(arg0, arg1, arg2, arg3, arg4)</p></td>
+<td><p>New Scatter function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.scfgrad.html#psi4.core.scfgrad" title="psi4.core.scfgrad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scfgrad</span></code></a>(ref_wfn)</p></td>
+<td><p>Run scfgrad, which is a specialized DF-SCF gradient program.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.scfhess.html#psi4.core.scfhess" title="psi4.core.scfhess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scfhess</span></code></a>(ref_wfn)</p></td>
+<td><p>Run scfhess, which is a specialized DF-SCF hessian program.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_active_molecule.html#psi4.core.set_active_molecule" title="psi4.core.set_active_molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_active_molecule</span></code></a>(molecule)</p></td>
+<td><p>Activates a previously defined <em>molecule</em> in global memory so next computations use it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.set_array_variable.html#psi4.core.set_array_variable" title="psi4.core.set_array_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_array_variable</span></code></a>(key, value)</p></td>
+<td><p>Sets the requested (case-insensitive) Matrix QCVariable; prefer <code class="xref py py-func docutils literal notranslate"><span class="pre">set_variable()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_datadir.html#psi4.core.set_datadir" title="psi4.core.set_datadir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_datadir</span></code></a>(psidatadir)</p></td>
+<td><p>Sets the path to shared text resources, <span class="target" id="index-3"></span><a class="reference internal" href="external.html#envvar-PSIDATADIR"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PSIDATADIR</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.set_global_option.html#psi4.core.set_global_option" title="psi4.core.set_global_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_global_option</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_global_option_python.html#psi4.core.set_global_option_python" title="psi4.core.set_global_option_python"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_global_option_python</span></code></a>(key, EXTERN)</p></td>
+<td><p>This is a fairly hacky way to get around EXTERN issues.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.set_gradient.html#psi4.core.set_gradient" title="psi4.core.set_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_gradient</span></code></a>(val)</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.2.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_legacy_gradient.html#psi4.core.set_legacy_gradient" title="psi4.core.set_legacy_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_legacy_gradient</span></code></a>(grad)</p></td>
+<td><p>Assigns the global gradient to the values in the (nat, 3) Matrix argument.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.set_legacy_molecule.html#psi4.core.set_legacy_molecule" title="psi4.core.set_legacy_molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_legacy_molecule</span></code></a>(molecule)</p></td>
+<td><p>Activates a previously defined <em>molecule</em> in global memory so next computations use it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_legacy_wavefunction.html#psi4.core.set_legacy_wavefunction" title="psi4.core.set_legacy_wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_legacy_wavefunction</span></code></a>(wfn)</p></td>
+<td><p>Sets the current legacy_wavefunction object from the most recent computation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.set_local_option.html#psi4.core.set_local_option" title="psi4.core.set_local_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_local_option</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_local_option_python.html#psi4.core.set_local_option_python" title="psi4.core.set_local_option_python"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_local_option_python</span></code></a>(key, value)</p></td>
+<td><p>Sets <em>value</em> to Python keyword <em>key</em> scoped only to a single module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.set_memory_bytes.html#psi4.core.set_memory_bytes" title="psi4.core.set_memory_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_memory_bytes</span></code></a>(memory, quiet)</p></td>
+<td><p>Sets the memory available to Psi (in bytes); prefer <code class="xref py py-func docutils literal notranslate"><span class="pre">psi4.set_memory()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_num_threads.html#psi4.core.set_num_threads" title="psi4.core.set_num_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_num_threads</span></code></a>(nthread, quiet)</p></td>
+<td><p>Sets the number of threads to use in SMP parallel computations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.set_output_file.html#psi4.core.set_output_file" title="psi4.core.set_output_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_output_file</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_psi_file_prefix.html#psi4.core.set_psi_file_prefix" title="psi4.core.set_psi_file_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_psi_file_prefix</span></code></a>()</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4.</span></p>
+</div>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.set_scalar_variable.html#psi4.core.set_scalar_variable" title="psi4.core.set_scalar_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_scalar_variable</span></code></a>(key, value)</p></td>
+<td><p>Sets the double QCVariable <em>key</em> (case-insensitive); prefer <code class="xref py py-func docutils literal notranslate"><span class="pre">set_variable()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.set_variable.html#psi4.core.set_variable" title="psi4.core.set_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_variable</span></code></a>(key, val)</p></td>
+<td><p>Sets scalar or array QCVariable <em>key</em> to <em>val</em> in global memory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.timer_off.html#psi4.core.timer_off" title="psi4.core.timer_off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timer_off</span></code></a>(label)</p></td>
+<td><p>Stop timer with <em>label</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.timer_on.html#psi4.core.timer_on" title="psi4.core.timer_on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timer_on</span></code></a>(label)</p></td>
+<td><p>Start timer with <em>label</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.triplet.html#psi4.core.triplet" title="psi4.core.triplet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">triplet</span></code></a>(A, B, C, transA, transB, transC)</p></td>
+<td><p>Returns the multiplication of three matrices, with options to transpose each beforehand.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.tstart.html#psi4.core.tstart" title="psi4.core.tstart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tstart</span></code></a>()</p></td>
+<td><p>Start module-level timer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.tstop.html#psi4.core.tstop" title="psi4.core.tstop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tstop</span></code></a>()</p></td>
+<td><p>Stop module-level timer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.variable.html#psi4.core.variable" title="psi4.core.variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variable</span></code></a>(key)</p></td>
+<td><p>Return copy of scalar or array QCVariable <em>key</em> from global memory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.variables.html#psi4.core.variables" title="psi4.core.variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variables</span></code></a>([include_deprecated_keys])</p></td>
+<td><p>Return all scalar or array QCVariables from global memory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.version.html#psi4.core.version" title="psi4.core.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a>()</p></td>
+<td><p><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4.</span></p>
+</div>
+</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.AOShellCombinationsIterator.html#psi4.core.AOShellCombinationsIterator" title="psi4.core.AOShellCombinationsIterator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AOShellCombinationsIterator</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.AngularMomentumInt.html#psi4.core.AngularMomentumInt" title="psi4.core.AngularMomentumInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AngularMomentumInt</span></code></a></p></td>
+<td><p>Computes angular momentum integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.BSVec.html#psi4.core.BSVec" title="psi4.core.BSVec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BSVec</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.BasisExtents.html#psi4.core.BasisExtents" title="psi4.core.BasisExtents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisExtents</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.BasisFunctions.html#psi4.core.BasisFunctions" title="psi4.core.BasisFunctions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisFunctions</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.BasisSet.html#psi4.core.BasisSet" title="psi4.core.BasisSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisSet</span></code></a></p></td>
+<td><p>Contains basis set information</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.BlockOPoints.html#psi4.core.BlockOPoints" title="psi4.core.BlockOPoints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockOPoints</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.BoysLocalizer.html#psi4.core.BoysLocalizer" title="psi4.core.BoysLocalizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BoysLocalizer</span></code></a></p></td>
+<td><p>Performs Boys orbital localization</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.CCWavefunction.html#psi4.core.CCWavefunction" title="psi4.core.CCWavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CCWavefunction</span></code></a></p></td>
+<td><p>Specialized Wavefunction used by the ccenergy, cceom, ccgradient, etc.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.CIVector.html#psi4.core.CIVector" title="psi4.core.CIVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CIVector</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.CIWavefunction.html#psi4.core.CIWavefunction" title="psi4.core.CIWavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CIWavefunction</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.CUHF.html#psi4.core.CUHF" title="psi4.core.CUHF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CUHF</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.CdSalc.html#psi4.core.CdSalc" title="psi4.core.CdSalc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CdSalc</span></code></a></p></td>
+<td><p>Cartesian displacement SALC</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.CdSalcList.html#psi4.core.CdSalcList" title="psi4.core.CdSalcList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CdSalcList</span></code></a></p></td>
+<td><p>Class for generating symmetry adapted linear combinations of Cartesian displacements</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.CharacterTable.html#psi4.core.CharacterTable" title="psi4.core.CharacterTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CharacterTable</span></code></a></p></td>
+<td><p>Contains the character table of the point group</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.CorrelationFactor.html#psi4.core.CorrelationFactor" title="psi4.core.CorrelationFactor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CorrelationFactor</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.CorrelationTable.html#psi4.core.CorrelationTable" title="psi4.core.CorrelationTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CorrelationTable</span></code></a></p></td>
+<td><p>Provides a correlation table between two point groups</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.CubeProperties.html#psi4.core.CubeProperties" title="psi4.core.CubeProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CubeProperties</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DFEP2Wavefunction.html#psi4.core.DFEP2Wavefunction" title="psi4.core.DFEP2Wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFEP2Wavefunction</span></code></a></p></td>
+<td><p>A density-fitted second-order Electron Propagator Wavefunction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DFHelper.html#psi4.core.DFHelper" title="psi4.core.DFHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFHelper</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DFSOMCSCF.html#psi4.core.DFSOMCSCF" title="psi4.core.DFSOMCSCF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFSOMCSCF</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DFTGrid.html#psi4.core.DFTGrid" title="psi4.core.DFTGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFTGrid</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DFTensor.html#psi4.core.DFTensor" title="psi4.core.DFTensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFTensor</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DIISManager.html#psi4.core.DIISManager" title="psi4.core.DIISManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DIISManager</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.Deriv.html#psi4.core.Deriv" title="psi4.core.Deriv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Deriv</span></code></a></p></td>
+<td><p>Computes gradients of wavefunctions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DerivCalcType.html#psi4.core.DerivCalcType" title="psi4.core.DerivCalcType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DerivCalcType</span></code></a></p></td>
+<td><p>Members:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DiagonalizeOrder.html#psi4.core.DiagonalizeOrder" title="psi4.core.DiagonalizeOrder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiagonalizeOrder</span></code></a></p></td>
+<td><p>Defines ordering of eigenvalues after diagonalization</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.Dimension.html#psi4.core.Dimension" title="psi4.core.Dimension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dimension</span></code></a></p></td>
+<td><p>Initializes and defines Dimension Objects</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.DipoleInt.html#psi4.core.DipoleInt" title="psi4.core.DipoleInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DipoleInt</span></code></a></p></td>
+<td><p>Computes dipole integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.DiskSOMCSCF.html#psi4.core.DiskSOMCSCF" title="psi4.core.DiskSOMCSCF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiskSOMCSCF</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.Dispersion.html#psi4.core.Dispersion" title="psi4.core.Dispersion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dispersion</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.ERI.html#psi4.core.ERI" title="psi4.core.ERI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ERI</span></code></a></p></td>
+<td><p>Computes normal two electron repulsion integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.ERISieve.html#psi4.core.ERISieve" title="psi4.core.ERISieve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ERISieve</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.ESPPropCalc.html#psi4.core.ESPPropCalc" title="psi4.core.ESPPropCalc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ESPPropCalc</span></code></a></p></td>
+<td><p>ESPPropCalc gives access to routines calculating the ESP on a grid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.ElectricFieldInt.html#psi4.core.ElectricFieldInt" title="psi4.core.ElectricFieldInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ElectricFieldInt</span></code></a></p></td>
+<td><p>Computes electric field integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.ElectrostaticInt.html#psi4.core.ElectrostaticInt" title="psi4.core.ElectrostaticInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ElectrostaticInt</span></code></a></p></td>
+<td><p>Computes electrostatic integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.ExternalPotential.html#psi4.core.ExternalPotential" title="psi4.core.ExternalPotential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExternalPotential</span></code></a></p></td>
+<td><p>Stores external potential field, computes external potential matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.FCHKWriter.html#psi4.core.FCHKWriter" title="psi4.core.FCHKWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FCHKWriter</span></code></a></p></td>
+<td><p>Extracts information from a wavefunction object,                                                                           and writes it to an FCHK file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.FDDS_Dispersion.html#psi4.core.FDDS_Dispersion" title="psi4.core.FDDS_Dispersion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FDDS_Dispersion</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.FISAPT.html#psi4.core.FISAPT" title="psi4.core.FISAPT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FISAPT</span></code></a></p></td>
+<td><p>A Fragment-SAPT Wavefunction</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.FittedSlaterCorrelationFactor.html#psi4.core.FittedSlaterCorrelationFactor" title="psi4.core.FittedSlaterCorrelationFactor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FittedSlaterCorrelationFactor</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.FittingMetric.html#psi4.core.FittingMetric" title="psi4.core.FittingMetric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FittingMetric</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.FragmentType.html#psi4.core.FragmentType" title="psi4.core.FragmentType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FragmentType</span></code></a></p></td>
+<td><p>Fragment activation status</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.Functional.html#psi4.core.Functional" title="psi4.core.Functional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Functional</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.GaussianShell.html#psi4.core.GaussianShell" title="psi4.core.GaussianShell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GaussianShell</span></code></a></p></td>
+<td><p>Class containing information about basis functions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.GaussianType.html#psi4.core.GaussianType" title="psi4.core.GaussianType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GaussianType</span></code></a></p></td>
+<td><p>0 if Cartesian, 1 if Pure</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.GeometryUnits.html#psi4.core.GeometryUnits" title="psi4.core.GeometryUnits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeometryUnits</span></code></a></p></td>
+<td><p>The units used to define the geometry</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.HF.html#psi4.core.HF" title="psi4.core.HF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HF</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.IO.html#psi4.core.IO" title="psi4.core.IO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IO</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.IOManager.html#psi4.core.IOManager" title="psi4.core.IOManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IOManager</span></code></a></p></td>
+<td><p>PSIOManager is a class designed to be used as a static object to track all PSIO operations in a given PSI4 computation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.IntVector.html#psi4.core.IntVector" title="psi4.core.IntVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IntVector</span></code></a></p></td>
+<td><p>Class handling vectors with integer values</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.IntegralFactory.html#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IntegralFactory</span></code></a></p></td>
+<td><p>Computes integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.IntegralTransform.html#psi4.core.IntegralTransform" title="psi4.core.IntegralTransform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IntegralTransform</span></code></a></p></td>
+<td><p>IntegralTransform transforms one- and two-electron integrals within general spaces</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.IrreducibleRepresentation.html#psi4.core.IrreducibleRepresentation" title="psi4.core.IrreducibleRepresentation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IrreducibleRepresentation</span></code></a></p></td>
+<td><p>An irreducible representation of the point group</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JK</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.KineticInt.html#psi4.core.KineticInt" title="psi4.core.KineticInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KineticInt</span></code></a></p></td>
+<td><p>Computes kinetic integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.LaplaceDenominator.html#psi4.core.LaplaceDenominator" title="psi4.core.LaplaceDenominator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LaplaceDenominator</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.LibXCFunctional.html#psi4.core.LibXCFunctional" title="psi4.core.LibXCFunctional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LibXCFunctional</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.Localizer.html#psi4.core.Localizer" title="psi4.core.Localizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Localizer</span></code></a></p></td>
+<td><p>Class containing orbital localization procedures</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.MOSpace.html#psi4.core.MOSpace" title="psi4.core.MOSpace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MOSpace</span></code></a></p></td>
+<td><p>Defines orbital spaces in which to transform integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.MOWriter.html#psi4.core.MOWriter" title="psi4.core.MOWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MOWriter</span></code></a></p></td>
+<td><p>Writes the MOs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Matrix</span></code></a></p></td>
+<td><p>Class for creating and manipulating matrices</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.MatrixFactory.html#psi4.core.MatrixFactory" title="psi4.core.MatrixFactory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MatrixFactory</span></code></a></p></td>
+<td><p>Creates Matrix objects</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.MemDFJK.html#psi4.core.MemDFJK" title="psi4.core.MemDFJK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MemDFJK</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.MintsHelper.html#psi4.core.MintsHelper" title="psi4.core.MintsHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MintsHelper</span></code></a></p></td>
+<td><p>Computes integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.MoldenWriter.html#psi4.core.MoldenWriter" title="psi4.core.MoldenWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MoldenWriter</span></code></a></p></td>
+<td><p>Writes wavefunction information in molden format</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.MolecularGrid.html#psi4.core.MolecularGrid" title="psi4.core.MolecularGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MolecularGrid</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.Molecule.html#psi4.core.Molecule" title="psi4.core.Molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Molecule</span></code></a></p></td>
+<td><p>Class to store the elements, coordinates, fragmentation pattern, basis sets, charge, multiplicity, etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.MultipoleInt.html#psi4.core.MultipoleInt" title="psi4.core.MultipoleInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultipoleInt</span></code></a></p></td>
+<td><p>Computes arbitrary-order multipole integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.MultipoleSymmetry.html#psi4.core.MultipoleSymmetry" title="psi4.core.MultipoleSymmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultipoleSymmetry</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.NBOWriter.html#psi4.core.NBOWriter" title="psi4.core.NBOWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NBOWriter</span></code></a></p></td>
+<td><p>The Natural Bond Orbital Writer</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.NablaInt.html#psi4.core.NablaInt" title="psi4.core.NablaInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NablaInt</span></code></a></p></td>
+<td><p>Computes nabla integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.OEProp.html#psi4.core.OEProp" title="psi4.core.OEProp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OEProp</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OneBodyAOInt</span></code></a></p></td>
+<td><p>Basis class for all one-electron integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OneBodySOInt</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.Options.html#psi4.core.Options" title="psi4.core.Options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Options</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.OrbitalSpace.html#psi4.core.OrbitalSpace" title="psi4.core.OrbitalSpace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrbitalSpace</span></code></a></p></td>
+<td><p>Contains information about the orbitals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.OverlapInt.html#psi4.core.OverlapInt" title="psi4.core.OverlapInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OverlapInt</span></code></a></p></td>
+<td><p>Computes overlap integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.PMLocalizer.html#psi4.core.PMLocalizer" title="psi4.core.PMLocalizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PMLocalizer</span></code></a></p></td>
+<td><p>Performs Pipek-Mezey orbital localization</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.PetiteList.html#psi4.core.PetiteList" title="psi4.core.PetiteList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PetiteList</span></code></a></p></td>
+<td><p>Handles symmetry transformations</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.PointFunctions.html#psi4.core.PointFunctions" title="psi4.core.PointFunctions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PointFunctions</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.PointGroup.html#psi4.core.PointGroup" title="psi4.core.PointGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PointGroup</span></code></a></p></td>
+<td><p>Contains information about the point group</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.PotentialInt.html#psi4.core.PotentialInt" title="psi4.core.PotentialInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PotentialInt</span></code></a></p></td>
+<td><p>Computes potential integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.PrimitiveType.html#psi4.core.PrimitiveType" title="psi4.core.PrimitiveType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PrimitiveType</span></code></a></p></td>
+<td><p>May be Normalized or Unnormalized</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.Prop.html#psi4.core.Prop" title="psi4.core.Prop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Prop</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.PseudospectralInt.html#psi4.core.PseudospectralInt" title="psi4.core.PseudospectralInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PseudospectralInt</span></code></a></p></td>
+<td><p>Computes pseudospectral integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.PsiReturnType.html#psi4.core.PsiReturnType" title="psi4.core.PsiReturnType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PsiReturnType</span></code></a></p></td>
+<td><p>Return status.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.QuadrupoleInt.html#psi4.core.QuadrupoleInt" title="psi4.core.QuadrupoleInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuadrupoleInt</span></code></a></p></td>
+<td><p>Computes quadrupole integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.RHF.html#psi4.core.RHF" title="psi4.core.RHF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RHF</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.RKSFunctions.html#psi4.core.RKSFunctions" title="psi4.core.RKSFunctions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RKSFunctions</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.ROHF.html#psi4.core.ROHF" title="psi4.core.ROHF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ROHF</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.SADGuess.html#psi4.core.SADGuess" title="psi4.core.SADGuess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SADGuess</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.SOBasisSet.html#psi4.core.SOBasisSet" title="psi4.core.SOBasisSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SOBasisSet</span></code></a></p></td>
+<td><p>An SOBasis object describes the transformation from an atomic orbital basis to a symmetry orbital basis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.SOMCSCF.html#psi4.core.SOMCSCF" title="psi4.core.SOMCSCF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SOMCSCF</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.SalcComponent.html#psi4.core.SalcComponent" title="psi4.core.SalcComponent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SalcComponent</span></code></a></p></td>
+<td><p>Component of a Cartesian displacement SALC in the basis of atomic displacements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.SaveType.html#psi4.core.SaveType" title="psi4.core.SaveType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SaveType</span></code></a></p></td>
+<td><p>The layout of the matrix for saving</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.ShellInfo.html#psi4.core.ShellInfo" title="psi4.core.ShellInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ShellInfo</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.Slice.html#psi4.core.Slice" title="psi4.core.Slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Slice</span></code></a></p></td>
+<td><p>Slicing for Matrix and Vector objects</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.SuperFunctional.html#psi4.core.SuperFunctional" title="psi4.core.SuperFunctional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SuperFunctional</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.SymmetryOperation.html#psi4.core.SymmetryOperation" title="psi4.core.SymmetryOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SymmetryOperation</span></code></a></p></td>
+<td><p>Class to provide a 3 by 3 matrix representation of a symmetry operation, such as a rotation or reflection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.TaskListComputer.html#psi4.core.TaskListComputer" title="psi4.core.TaskListComputer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskListComputer</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.ThreeCenterOverlapInt.html#psi4.core.ThreeCenterOverlapInt" title="psi4.core.ThreeCenterOverlapInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ThreeCenterOverlapInt</span></code></a></p></td>
+<td><p>Three center overlap integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.TracelessQuadrupoleInt.html#psi4.core.TracelessQuadrupoleInt" title="psi4.core.TracelessQuadrupoleInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TracelessQuadrupoleInt</span></code></a></p></td>
+<td><p>Computes traceless quadrupole integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" title="psi4.core.TwoBodyAOInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwoBodyAOInt</span></code></a></p></td>
+<td><p>Two body integral base class</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.TwoElectronInt.html#psi4.core.TwoElectronInt" title="psi4.core.TwoElectronInt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TwoElectronInt</span></code></a></p></td>
+<td><p>Computes two-electron repulsion integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.UHF.html#psi4.core.UHF" title="psi4.core.UHF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UHF</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.UKSFunctions.html#psi4.core.UKSFunctions" title="psi4.core.UKSFunctions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UKSFunctions</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.VBase.html#psi4.core.VBase" title="psi4.core.VBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VBase</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.Vector.html#psi4.core.Vector" title="psi4.core.Vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Vector</span></code></a></p></td>
+<td><p>Class for creating and manipulating vectors</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.Vector3.html#psi4.core.Vector3" title="psi4.core.Vector3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Vector3</span></code></a></p></td>
+<td><p>Class for vectors of length three, often Cartesian coordinate vectors, and their common operations</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.core.Wavefunction.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wavefunction</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.core.psio_entry.html#psi4.core.psio_entry" title="psi4.core.psio_entry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">psio_entry</span></code></a></p></td>
+<td><p>docstring</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="class-inheritance-diagram">
+<h3>Class Inheritance Diagram<a class="headerlink" href="#class-inheritance-diagram" title="Permalink to this headline">¶</a></h3>
+<div class="graphviz"><img src="_images/inheritance-b6a945af3781e2c9be366d2ccc80096ff8038a83.png" alt="Inheritance diagram of psi4.core.AOShellCombinationsIterator, psi4.core.AngularMomentumInt, psi4.core.BSVec, psi4.core.BasisExtents, psi4.core.BasisFunctions, psi4.core.BasisSet, psi4.core.BlockOPoints, psi4.core.BoysLocalizer, psi4.core.CCWavefunction, psi4.core.CIVector, psi4.core.CIWavefunction, psi4.core.CUHF, psi4.core.CdSalc, psi4.core.CdSalcList, psi4.core.CharacterTable, psi4.core.CorrelationFactor, psi4.core.CorrelationTable, psi4.core.CubeProperties, psi4.core.DFEP2Wavefunction, psi4.core.DFHelper, psi4.core.DFSOMCSCF, psi4.core.DFTGrid, psi4.core.DFTensor, psi4.core.DIISManager, psi4.core.Deriv, psi4.core.DerivCalcType, psi4.core.DiagonalizeOrder, psi4.core.Dimension, psi4.core.DipoleInt, psi4.core.DiskSOMCSCF, psi4.core.Dispersion, psi4.core.ERI, psi4.core.ERISieve, psi4.core.ESPPropCalc, psi4.core.ElectricFieldInt, psi4.core.ElectrostaticInt, psi4.core.ExternalPotential, psi4.core.FCHKWriter, psi4.core.FDDS_Dispersion, psi4.core.FISAPT, psi4.core.FittedSlaterCorrelationFactor, psi4.core.FittingMetric, psi4.core.FragmentType, psi4.core.Functional, psi4.core.GaussianShell, psi4.core.GaussianType, psi4.core.GeometryUnits, psi4.core.HF, psi4.core.IO, psi4.core.IOManager, psi4.core.IntVector, psi4.core.IntegralFactory, psi4.core.IntegralTransform, psi4.core.IrreducibleRepresentation, psi4.core.JK, psi4.core.KineticInt, psi4.core.LaplaceDenominator, psi4.core.LibXCFunctional, psi4.core.Localizer, psi4.core.MOSpace, psi4.core.MOWriter, psi4.core.Matrix, psi4.core.MatrixFactory, psi4.core.MemDFJK, psi4.core.MintsHelper, psi4.core.MoldenWriter, psi4.core.MolecularGrid, psi4.core.Molecule, psi4.core.MultipoleInt, psi4.core.MultipoleSymmetry, psi4.core.NBOWriter, psi4.core.NablaInt, psi4.core.OEProp, psi4.core.OneBodyAOInt, psi4.core.OneBodySOInt, psi4.core.Options, psi4.core.OrbitalSpace, psi4.core.OverlapInt, psi4.core.PMLocalizer, psi4.core.PetiteList, psi4.core.PointFunctions, psi4.core.PointGroup, psi4.core.PotentialInt, psi4.core.PrimitiveType, psi4.core.Prop, psi4.core.PseudospectralInt, psi4.core.PsiReturnType, psi4.core.QuadrupoleInt, psi4.core.RHF, psi4.core.RKSFunctions, psi4.core.ROHF, psi4.core.SADGuess, psi4.core.SOBasisSet, psi4.core.SOMCSCF, psi4.core.SalcComponent, psi4.core.SaveType, psi4.core.ShellInfo, psi4.core.Slice, psi4.core.SuperFunctional, psi4.core.SymmetryOperation, psi4.core.TaskListComputer, psi4.core.ThreeCenterOverlapInt, psi4.core.TracelessQuadrupoleInt, psi4.core.TwoBodyAOInt, psi4.core.TwoElectronInt, psi4.core.UHF, psi4.core.UKSFunctions, psi4.core.VBase, psi4.core.Vector, psi4.core.Vector3, psi4.core.Wavefunction, psi4.core.psio_entry" usemap="#inheritance9802a5f7fd" class="inheritance graphviz" /></div>
+<map id="inheritance9802a5f7fd" name="inheritance9802a5f7fd">
+<area shape="rect" id="node1" href="api/psi4.core.AOShellCombinationsIterator.html#psi4.core.AOShellCombinationsIterator" target="_top" title="AOShellCombinationsIterator" alt="" coords="51,77,110,84"/>
+<area shape="rect" id="node4" href="api/psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" target="_top" title="Basis class for all one&#45;electron integrals" alt="" coords="64,91,97,98"/>
+<area shape="rect" id="node5" href="api/psi4.core.BSVec.html#psi4.core.BSVec" target="_top" title="BSVec" alt="" coords="70,125,90,132"/>
+<area shape="rect" id="node6" href="api/psi4.core.BasisExtents.html#psi4.core.BasisExtents" target="_top" title="docstring" alt="" coords="65,139,95,146"/>
+<area shape="rect" id="node7" href="api/psi4.core.BasisFunctions.html#psi4.core.BasisFunctions" target="_top" title="docstring" alt="" coords="64,153,97,160"/>
+<area shape="rect" id="node8" href="api/psi4.core.BasisSet.html#psi4.core.BasisSet" target="_top" title="Contains basis set information" alt="" coords="69,167,91,174"/>
+<area shape="rect" id="node9" href="api/psi4.core.BlockOPoints.html#psi4.core.BlockOPoints" target="_top" title="docstring" alt="" coords="65,180,95,187"/>
+<area shape="rect" id="node11" href="api/psi4.core.Localizer.html#psi4.core.Localizer" target="_top" title="Class containing orbital localization procedures" alt="" coords="69,194,91,201"/>
+<area shape="rect" id="node13" href="api/psi4.core.Wavefunction.html#psi4.core.Wavefunction" target="_top" title="docstring" alt="" coords="65,208,96,215"/>
+<area shape="rect" id="node14" href="api/psi4.core.CIVector.html#psi4.core.CIVector" target="_top" title="docstring" alt="" coords="70,222,91,229"/>
+<area shape="rect" id="node18" href="api/psi4.core.CdSalc.html#psi4.core.CdSalc" target="_top" title="Cartesian displacement SALC" alt="" coords="70,235,90,242"/>
+<area shape="rect" id="node19" href="api/psi4.core.CdSalcList.html#psi4.core.CdSalcList" target="_top" title="Class for generating symmetry adapted linear combinations of Cartesian displacements" alt="" coords="68,249,93,256"/>
+<area shape="rect" id="node20" href="api/psi4.core.CharacterTable.html#psi4.core.CharacterTable" target="_top" title="Contains the character table of the point group" alt="" coords="64,263,97,270"/>
+<area shape="rect" id="node21" href="api/psi4.core.CorrelationFactor.html#psi4.core.CorrelationFactor" target="_top" title="docstring" alt="" coords="62,277,99,284"/>
+<area shape="rect" id="node22" href="api/psi4.core.CorrelationTable.html#psi4.core.CorrelationTable" target="_top" title="Provides a correlation table between two point groups" alt="" coords="62,290,98,297"/>
+<area shape="rect" id="node23" href="api/psi4.core.CubeProperties.html#psi4.core.CubeProperties" target="_top" title="docstring" alt="" coords="63,304,97,311"/>
+<area shape="rect" id="node25" href="api/psi4.core.DFHelper.html#psi4.core.DFHelper" target="_top" title="docstring" alt="" coords="69,318,92,325"/>
+<area shape="rect" id="node27" href="api/psi4.core.SOMCSCF.html#psi4.core.SOMCSCF" target="_top" title="docstring" alt="" coords="68,332,92,339"/>
+<area shape="rect" id="node29" href="api/psi4.core.MolecularGrid.html#psi4.core.MolecularGrid" target="_top" title="docstring" alt="" coords="65,345,96,353"/>
+<area shape="rect" id="node30" href="api/psi4.core.DFTensor.html#psi4.core.DFTensor" target="_top" title="docstring" alt="" coords="69,359,92,366"/>
+<area shape="rect" id="node31" href="api/psi4.core.DIISManager.html#psi4.core.DIISManager" target="_top" title="docstring" alt="" coords="66,373,95,380"/>
+<area shape="rect" id="node32" href="api/psi4.core.Deriv.html#psi4.core.Deriv" target="_top" title="Computes gradients of wavefunctions" alt="" coords="70,387,90,394"/>
+<area shape="rect" id="node33" href="api/psi4.core.DerivCalcType.html#psi4.core.DerivCalcType" target="_top" title="Members:" alt="" coords="64,400,96,408"/>
+<area shape="rect" id="node34" href="api/psi4.core.DiagonalizeOrder.html#psi4.core.DiagonalizeOrder" target="_top" title="Defines ordering of eigenvalues after diagonalization" alt="" coords="62,414,99,421"/>
+<area shape="rect" id="node35" href="api/psi4.core.Dimension.html#psi4.core.Dimension" target="_top" title="Initializes and defines Dimension Objects" alt="" coords="67,428,93,435"/>
+<area shape="rect" id="node38" href="api/psi4.core.Dispersion.html#psi4.core.Dispersion" target="_top" title="docstring" alt="" coords="68,442,93,449"/>
+<area shape="rect" id="node40" href="api/psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" target="_top" title="Two body integral base class" alt="" coords="64,456,96,463"/>
+<area shape="rect" id="node41" href="api/psi4.core.ERISieve.html#psi4.core.ERISieve" target="_top" title="docstring" alt="" coords="69,469,91,476"/>
+<area shape="rect" id="node43" href="api/psi4.core.Prop.html#psi4.core.Prop" target="_top" title="docstring" alt="" coords="70,483,90,490"/>
+<area shape="rect" id="node46" href="api/psi4.core.ExternalPotential.html#psi4.core.ExternalPotential" target="_top" title="Stores external potential field, computes external potential matrix" alt="" coords="62,497,99,504"/>
+<area shape="rect" id="node47" href="api/psi4.core.FCHKWriter.html#psi4.core.FCHKWriter" target="_top" title="Extracts information from a wavefunction object, &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and writes it to an FCHK file" alt="" coords="67,511,94,518"/>
+<area shape="rect" id="node48" href="api/psi4.core.FDDS_Dispersion.html#psi4.core.FDDS_Dispersion" target="_top" title="docstring" alt="" coords="62,524,99,531"/>
+<area shape="rect" id="node49" href="api/psi4.core.FISAPT.html#psi4.core.FISAPT" target="_top" title="A Fragment&#45;SAPT Wavefunction" alt="" coords="70,538,90,545"/>
+<area shape="rect" id="node51" href="api/psi4.core.FittingMetric.html#psi4.core.FittingMetric" target="_top" title="docstring" alt="" coords="66,552,95,559"/>
+<area shape="rect" id="node52" href="api/psi4.core.FragmentType.html#psi4.core.FragmentType" target="_top" title="Fragment activation status" alt="" coords="64,566,96,573"/>
+<area shape="rect" id="node53" href="api/psi4.core.Functional.html#psi4.core.Functional" target="_top" title="docstring" alt="" coords="68,579,93,586"/>
+<area shape="rect" id="node54" href="api/psi4.core.GaussianShell.html#psi4.core.GaussianShell" target="_top" title="Class containing information about basis functions" alt="" coords="64,593,96,600"/>
+<area shape="rect" id="node55" href="api/psi4.core.GaussianType.html#psi4.core.GaussianType" target="_top" title="0 if Cartesian, 1 if Pure" alt="" coords="65,607,96,614"/>
+<area shape="rect" id="node56" href="api/psi4.core.GeometryUnits.html#psi4.core.GeometryUnits" target="_top" title="The units used to define the geometry" alt="" coords="63,621,97,628"/>
+<area shape="rect" id="node57" href="api/psi4.core.IO.html#psi4.core.IO" target="_top" title="docstring" alt="" coords="70,634,90,641"/>
+<area shape="rect" id="node58" href="api/psi4.core.IOManager.html#psi4.core.IOManager" target="_top" title="PSIOManager is a class designed to be used as a static object to track all PSIO operations in a given PSI4 computation" alt="" coords="67,648,93,655"/>
+<area shape="rect" id="node59" href="api/psi4.core.IntVector.html#psi4.core.IntVector" target="_top" title="Class handling vectors with integer values" alt="" coords="69,662,91,669"/>
+<area shape="rect" id="node60" href="api/psi4.core.IntegralFactory.html#psi4.core.IntegralFactory" target="_top" title="Computes integrals" alt="" coords="64,676,97,683"/>
+<area shape="rect" id="node61" href="api/psi4.core.IntegralTransform.html#psi4.core.IntegralTransform" target="_top" title="IntegralTransform transforms one&#45; and two&#45;electron integrals within general spaces" alt="" coords="61,689,99,696"/>
+<area shape="rect" id="node62" href="api/psi4.core.IrreducibleRepresentation.html#psi4.core.IrreducibleRepresentation" target="_top" title="An irreducible representation of the point group" alt="" coords="54,703,107,710"/>
+<area shape="rect" id="node63" href="api/psi4.core.JK.html#psi4.core.JK" target="_top" title="docstring" alt="" coords="70,717,90,724"/>
+<area shape="rect" id="node65" href="api/psi4.core.LaplaceDenominator.html#psi4.core.LaplaceDenominator" target="_top" title="docstring" alt="" coords="58,731,102,738"/>
+<area shape="rect" id="node67" href="api/psi4.core.MOSpace.html#psi4.core.MOSpace" target="_top" title="Defines orbital spaces in which to transform integrals" alt="" coords="69,744,92,752"/>
+<area shape="rect" id="node68" href="api/psi4.core.MOWriter.html#psi4.core.MOWriter" target="_top" title="Writes the MOs" alt="" coords="69,758,92,765"/>
+<area shape="rect" id="node69" href="api/psi4.core.Matrix.html#psi4.core.Matrix" target="_top" title="Class for creating and manipulating matrices" alt="" coords="70,772,90,779"/>
+<area shape="rect" id="node70" href="api/psi4.core.MatrixFactory.html#psi4.core.MatrixFactory" target="_top" title="Creates Matrix objects" alt="" coords="65,786,96,793"/>
+<area shape="rect" id="node72" href="api/psi4.core.MintsHelper.html#psi4.core.MintsHelper" target="_top" title="Computes integrals" alt="" coords="66,799,94,807"/>
+<area shape="rect" id="node73" href="api/psi4.core.MoldenWriter.html#psi4.core.MoldenWriter" target="_top" title="Writes wavefunction information in molden format" alt="" coords="65,813,96,820"/>
+<area shape="rect" id="node74" href="api/psi4.core.Molecule.html#psi4.core.Molecule" target="_top" title="Class to store the elements, coordinates, fragmentation pattern, basis sets, charge, multiplicity, etc. of a molecule." alt="" coords="69,827,92,834"/>
+<area shape="rect" id="node76" href="api/psi4.core.MultipoleSymmetry.html#psi4.core.MultipoleSymmetry" target="_top" title="docstring" alt="" coords="59,841,101,848"/>
+<area shape="rect" id="node77" href="api/psi4.core.NBOWriter.html#psi4.core.NBOWriter" target="_top" title="The Natural Bond Orbital Writer" alt="" coords="68,855,93,862"/>
+<area shape="rect" id="node80" href="api/psi4.core.TaskListComputer.html#psi4.core.TaskListComputer" target="_top" title="docstring" alt="" coords="61,868,100,875"/>
+<area shape="rect" id="node81" href="api/psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" target="_top" title="OneBodySOInt" alt="" coords="64,882,96,889"/>
+<area shape="rect" id="node82" href="api/psi4.core.Options.html#psi4.core.Options" target="_top" title="docstring" alt="" coords="70,896,90,903"/>
+<area shape="rect" id="node83" href="api/psi4.core.OrbitalSpace.html#psi4.core.OrbitalSpace" target="_top" title="Contains information about the orbitals" alt="" coords="66,910,95,917"/>
+<area shape="rect" id="node86" href="api/psi4.core.PetiteList.html#psi4.core.PetiteList" target="_top" title="Handles symmetry transformations" alt="" coords="69,923,92,930"/>
+<area shape="rect" id="node88" href="api/psi4.core.PointGroup.html#psi4.core.PointGroup" target="_top" title="Contains information about the point group" alt="" coords="67,937,94,944"/>
+<area shape="rect" id="node90" href="api/psi4.core.PrimitiveType.html#psi4.core.PrimitiveType" target="_top" title="May be Normalized or Unnormalized" alt="" coords="65,951,96,958"/>
+<area shape="rect" id="node92" href="api/psi4.core.PsiReturnType.html#psi4.core.PsiReturnType" target="_top" title="Return status." alt="" coords="64,965,96,972"/>
+<area shape="rect" id="node97" href="api/psi4.core.SADGuess.html#psi4.core.SADGuess" target="_top" title="docstring" alt="" coords="68,978,93,985"/>
+<area shape="rect" id="node98" href="api/psi4.core.SOBasisSet.html#psi4.core.SOBasisSet" target="_top" title="An SOBasis object describes the transformation from an atomic orbital basis to a symmetry orbital basis." alt="" coords="67,992,94,999"/>
+<area shape="rect" id="node99" href="api/psi4.core.SalcComponent.html#psi4.core.SalcComponent" target="_top" title="Component of a Cartesian displacement SALC in the basis of atomic displacements." alt="" coords="63,1006,98,1013"/>
+<area shape="rect" id="node100" href="api/psi4.core.SaveType.html#psi4.core.SaveType" target="_top" title="The layout of the matrix for saving" alt="" coords="69,1020,92,1027"/>
+<area shape="rect" id="node101" href="api/psi4.core.ShellInfo.html#psi4.core.ShellInfo" target="_top" title="ShellInfo" alt="" coords="69,1033,91,1040"/>
+<area shape="rect" id="node102" href="api/psi4.core.Slice.html#psi4.core.Slice" target="_top" title="Slicing for Matrix and Vector objects" alt="" coords="70,1047,90,1054"/>
+<area shape="rect" id="node103" href="api/psi4.core.SuperFunctional.html#psi4.core.SuperFunctional" target="_top" title="docstring" alt="" coords="63,1061,98,1068"/>
+<area shape="rect" id="node104" href="api/psi4.core.SymmetryOperation.html#psi4.core.SymmetryOperation" target="_top" title="Class to provide a 3 by 3 matrix representation of a symmetry operation, such as a rotation or reflection." alt="" coords="59,1075,102,1082"/>
+<area shape="rect" id="node105" href="api/psi4.core.ThreeCenterOverlapInt.html#psi4.core.ThreeCenterOverlapInt" target="_top" title="Three center overlap integrals" alt="" coords="57,1088,104,1095"/>
+<area shape="rect" id="node110" href="api/psi4.core.VBase.html#psi4.core.VBase" target="_top" title="docstring" alt="" coords="70,1102,90,1109"/>
+<area shape="rect" id="node111" href="api/psi4.core.Vector.html#psi4.core.Vector" target="_top" title="Class for creating and manipulating vectors" alt="" coords="70,1116,90,1123"/>
+<area shape="rect" id="node112" href="api/psi4.core.Vector3.html#psi4.core.Vector3" target="_top" title="Class for vectors of length three, often Cartesian coordinate vectors, and their common operations" alt="" coords="70,1130,90,1137"/>
+<area shape="rect" id="node113" href="api/psi4.core.psio_entry.html#psi4.core.psio_entry" target="_top" title="docstring" alt="" coords="68,1143,93,1151"/>
+<area shape="rect" id="node3" href="api/psi4.core.AngularMomentumInt.html#psi4.core.AngularMomentumInt" target="_top" title="Computes angular momentum integrals" alt="" coords="129,1,175,9"/>
+<area shape="rect" id="node36" href="api/psi4.core.DipoleInt.html#psi4.core.DipoleInt" target="_top" title="Computes dipole integrals" alt="" coords="141,15,163,22"/>
+<area shape="rect" id="node44" href="api/psi4.core.ElectricFieldInt.html#psi4.core.ElectricFieldInt" target="_top" title="Computes electric field integrals" alt="" coords="136,29,169,36"/>
+<area shape="rect" id="node45" href="api/psi4.core.ElectrostaticInt.html#psi4.core.ElectrostaticInt" target="_top" title="Computes electrostatic integrals" alt="" coords="135,43,169,50"/>
+<area shape="rect" id="node64" href="api/psi4.core.KineticInt.html#psi4.core.KineticInt" target="_top" title="Computes kinetic integrals" alt="" coords="140,57,164,64"/>
+<area shape="rect" id="node75" href="api/psi4.core.MultipoleInt.html#psi4.core.MultipoleInt" target="_top" title="Computes arbitrary&#45;order multipole integrals" alt="" coords="138,70,166,77"/>
+<area shape="rect" id="node78" href="api/psi4.core.NablaInt.html#psi4.core.NablaInt" target="_top" title="Computes nabla integrals" alt="" coords="141,84,163,91"/>
+<area shape="rect" id="node84" href="api/psi4.core.OverlapInt.html#psi4.core.OverlapInt" target="_top" title="Computes overlap integrals" alt="" coords="139,98,165,105"/>
+<area shape="rect" id="node89" href="api/psi4.core.PotentialInt.html#psi4.core.PotentialInt" target="_top" title="Computes potential integrals" alt="" coords="139,112,166,119"/>
+<area shape="rect" id="node91" href="api/psi4.core.PseudospectralInt.html#psi4.core.PseudospectralInt" target="_top" title="Computes pseudospectral integrals" alt="" coords="133,125,171,132"/>
+<area shape="rect" id="node93" href="api/psi4.core.QuadrupoleInt.html#psi4.core.QuadrupoleInt" target="_top" title="Computes quadrupole integrals" alt="" coords="136,139,168,146"/>
+<area shape="rect" id="node106" href="api/psi4.core.TracelessQuadrupoleInt.html#psi4.core.TracelessQuadrupoleInt" target="_top" title="Computes traceless quadrupole integrals" alt="" coords="128,153,176,160"/>
+<area shape="rect" id="node87" href="api/psi4.core.PointFunctions.html#psi4.core.PointFunctions" target="_top" title="docstring" alt="" coords="136,167,168,174"/>
+<area shape="rect" id="node10" href="api/psi4.core.BoysLocalizer.html#psi4.core.BoysLocalizer" target="_top" title="Performs Boys orbital localization" alt="" coords="136,180,168,187"/>
+<area shape="rect" id="node85" href="api/psi4.core.PMLocalizer.html#psi4.core.PMLocalizer" target="_top" title="Performs Pipek&#45;Mezey orbital localization" alt="" coords="138,194,166,201"/>
+<area shape="rect" id="node12" href="api/psi4.core.CCWavefunction.html#psi4.core.CCWavefunction" target="_top" title="Specialized Wavefunction used by the ccenergy, cceom, ccgradient, etc. modules." alt="" coords="134,208,170,215"/>
+<area shape="rect" id="node15" href="api/psi4.core.CIWavefunction.html#psi4.core.CIWavefunction" target="_top" title="docstring" alt="" coords="135,222,169,229"/>
+<area shape="rect" id="node17" href="api/psi4.core.HF.html#psi4.core.HF" target="_top" title="docstring" alt="" coords="142,235,162,242"/>
+<area shape="rect" id="node24" href="api/psi4.core.DFEP2Wavefunction.html#psi4.core.DFEP2Wavefunction" target="_top" title="A density&#45;fitted second&#45;order Electron Propagator Wavefunction." alt="" coords="131,249,173,256"/>
+<area shape="rect" id="node16" href="api/psi4.core.CUHF.html#psi4.core.CUHF" target="_top" title="docstring" alt="" coords="200,215,220,222"/>
+<area shape="rect" id="node94" href="api/psi4.core.RHF.html#psi4.core.RHF" target="_top" title="docstring" alt="" coords="200,229,220,236"/>
+<area shape="rect" id="node96" href="api/psi4.core.ROHF.html#psi4.core.ROHF" target="_top" title="docstring" alt="" coords="200,242,220,250"/>
+<area shape="rect" id="node108" href="api/psi4.core.UHF.html#psi4.core.UHF" target="_top" title="docstring" alt="" coords="200,256,220,263"/>
+<area shape="rect" id="node50" href="api/psi4.core.FittedSlaterCorrelationFactor.html#psi4.core.FittedSlaterCorrelationFactor" target="_top" title="docstring" alt="" coords="123,277,181,284"/>
+<area shape="rect" id="node26" href="api/psi4.core.DFSOMCSCF.html#psi4.core.DFSOMCSCF" target="_top" title="docstring" alt="" coords="138,318,166,325"/>
+<area shape="rect" id="node37" href="api/psi4.core.DiskSOMCSCF.html#psi4.core.DiskSOMCSCF" target="_top" title="docstring" alt="" coords="136,332,168,339"/>
+<area shape="rect" id="node28" href="api/psi4.core.DFTGrid.html#psi4.core.DFTGrid" target="_top" title="docstring" alt="" coords="142,345,162,353"/>
+<area shape="rect" id="node39" href="api/psi4.core.ERI.html#psi4.core.ERI" target="_top" title="Computes normal two electron repulsion integrals" alt="" coords="142,448,162,456"/>
+<area shape="rect" id="node107" href="api/psi4.core.TwoElectronInt.html#psi4.core.TwoElectronInt" target="_top" title="Computes two&#45;electron repulsion integrals" alt="" coords="136,462,168,469"/>
+<area shape="rect" id="node42" href="api/psi4.core.ESPPropCalc.html#psi4.core.ESPPropCalc" target="_top" title="ESPPropCalc gives access to routines calculating the ESP on a grid" alt="" coords="138,483,166,490"/>
+<area shape="rect" id="node66" href="api/psi4.core.LibXCFunctional.html#psi4.core.LibXCFunctional" target="_top" title="docstring" alt="" coords="135,579,170,586"/>
+<area shape="rect" id="node71" href="api/psi4.core.MemDFJK.html#psi4.core.MemDFJK" target="_top" title="docstring" alt="" coords="140,717,164,724"/>
+<area shape="rect" id="node79" href="api/psi4.core.OEProp.html#psi4.core.OEProp" target="_top" title="docstring" alt="" coords="142,868,162,875"/>
+<area shape="rect" id="node95" href="api/psi4.core.RKSFunctions.html#psi4.core.RKSFunctions" target="_top" title="docstring" alt="" coords="194,160,225,167"/>
+<area shape="rect" id="node109" href="api/psi4.core.UKSFunctions.html#psi4.core.UKSFunctions" target="_top" title="docstring" alt="" coords="194,174,225,181"/>
+</map></section>
+</section>
+<section id="module-psi4.driver">
+<span id="psi4-driver-package"></span><h2>psi4.driver Package<a class="headerlink" href="#module-psi4.driver" title="Permalink to this headline">¶</a></h2>
+<section id="id1">
+<h3>Functions<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.activate.html#psi4.driver.activate" title="psi4.driver.activate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activate</span></code></a>(mol)</p></td>
+<td><p>Function to set molecule object <em>mol</em> as the current active molecule.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.ancestor.html#psi4.driver.ancestor" title="psi4.driver.ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ancestor</span></code></a>(dir[, n])</p></td>
+<td><p>Get the nth ancestor of a directory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.banner.html#psi4.driver.banner" title="psi4.driver.banner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">banner</span></code></a>(text[, type, width, strNotOutfile])</p></td>
+<td><p>Function to print <em>text</em> to output file in a banner of minimum width <em>width</em> and minimum three-line height for <em>type</em> = 1 or one-line height for <em>type</em> = 2.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.basis_helper.html#psi4.driver.basis_helper" title="psi4.driver.basis_helper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basis_helper</span></code></a>(block[, name, key, set_option])</p></td>
+<td><p>For PsiAPI mode, forms a basis specification function from <em>block</em> and associates it with keyword <em>key</em> under handle <em>name</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.cbs.html#psi4.driver.cbs" title="psi4.driver.cbs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cbs</span></code></a>(func, label, **kwargs)</p></td>
+<td><p>Function to define a multistage energy method from combinations of basis set extrapolations and delta corrections and condense the components into a minimum number of calculations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.check_iwl_file_from_scf_type.html#psi4.driver.check_iwl_file_from_scf_type" title="psi4.driver.check_iwl_file_from_scf_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_iwl_file_from_scf_type</span></code></a>(scf_type, wfn)</p></td>
+<td><p>Ensures that a IWL file has been written based on input SCF type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.compare_fchkfiles.html#psi4.driver.compare_fchkfiles" title="psi4.driver.compare_fchkfiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_fchkfiles</span></code></a>(expected, computed, …)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.compare_fcidumps.html#psi4.driver.compare_fcidumps" title="psi4.driver.compare_fcidumps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_fcidumps</span></code></a>(expected, computed, label)</p></td>
+<td><p>Function to compare two FCIDUMP files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.copy_file_from_scratch.html#psi4.driver.copy_file_from_scratch" title="psi4.driver.copy_file_from_scratch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_file_from_scratch</span></code></a>(filename, prefix, …)</p></td>
+<td><p>Function to move file out of scratch with correct naming convention.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.copy_file_to_scratch.html#psi4.driver.copy_file_to_scratch" title="psi4.driver.copy_file_to_scratch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_file_to_scratch</span></code></a>(filename, prefix, …)</p></td>
+<td><p>Function to move file into scratch with correct naming convention.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.create_plugin.html#psi4.driver.create_plugin" title="psi4.driver.create_plugin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_plugin</span></code></a>(name, template)</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.cubeprop.html#psi4.driver.cubeprop" title="psi4.driver.cubeprop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubeprop</span></code></a>(wfn, **kwargs)</p></td>
+<td><p>Evaluate properties on a grid and generate cube files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.dynamic_variable_bind.html#psi4.driver.dynamic_variable_bind" title="psi4.driver.dynamic_variable_bind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dynamic_variable_bind</span></code></a>(cls)</p></td>
+<td><p>Function to dynamically add extra members to the core.Molecule class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.energies_from_fcidump.html#psi4.driver.energies_from_fcidump" title="psi4.driver.energies_from_fcidump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energies_from_fcidump</span></code></a>(intdump)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.energy.html#psi4.driver.energy" title="psi4.driver.energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy</span></code></a>(name, **kwargs)</p></td>
+<td><p>Function to compute the single-point electronic energy.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.fchk.html#psi4.driver.fchk" title="psi4.driver.fchk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fchk</span></code></a>(wfn, filename, *[, debug, strict_label])</p></td>
+<td><p>Function to write wavefunction information in <em>wfn</em> to <em>filename</em> in Gaussian FCHK format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.fchkfile_to_string.html#psi4.driver.fchkfile_to_string" title="psi4.driver.fchkfile_to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fchkfile_to_string</span></code></a>(fname)</p></td>
+<td><p>Load FCHK file into a string</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.fcidump.html#psi4.driver.fcidump" title="psi4.driver.fcidump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fcidump</span></code></a>(wfn[, fname, oe_ints])</p></td>
+<td><p>Save integrals to file in FCIDUMP format as defined in Comp.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.fcidump_from_file.html#psi4.driver.fcidump_from_file" title="psi4.driver.fcidump_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fcidump_from_file</span></code></a>(fname)</p></td>
+<td><p>Function to read in a FCIDUMP file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.find_approximate_string_matches.html#psi4.driver.find_approximate_string_matches" title="psi4.driver.find_approximate_string_matches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_approximate_string_matches</span></code></a>(seq1, …)</p></td>
+<td><p>Find list of approximate (within <cite>max_distance</cite>) matches to string <cite>seq1</cite> among <cite>options</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.free_atom_volumes.html#psi4.driver.free_atom_volumes" title="psi4.driver.free_atom_volumes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_atom_volumes</span></code></a>(wfn, **kwargs)</p></td>
+<td><p>Computes free-atom volumes using MBIS density partitioning.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.freq.html#psi4.driver.freq" title="psi4.driver.freq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freq</span></code></a>(name, **kwargs)</p></td>
+<td><p>Function to compute harmonic vibrational frequencies.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.frequencies.html#psi4.driver.frequencies" title="psi4.driver.frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frequencies</span></code></a>(name, **kwargs)</p></td>
+<td><p>Function to compute harmonic vibrational frequencies.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.frequency.html#psi4.driver.frequency" title="psi4.driver.frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frequency</span></code></a>(name, **kwargs)</p></td>
+<td><p>Function to compute harmonic vibrational frequencies.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.gdma.html#psi4.driver.gdma" title="psi4.driver.gdma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gdma</span></code></a>(wfn[, datafile])</p></td>
+<td><p>Function to use wavefunction information in <em>wfn</em> and, if specified, additional commands in <em>filename</em> to run GDMA analysis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.geometry.html#psi4.driver.geometry" title="psi4.driver.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>(geom[, name])</p></td>
+<td><p>Function to create a molecule object of name <em>name</em> from the geometry in string <em>geom</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.get_memory.html#psi4.driver.get_memory" title="psi4.driver.get_memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_memory</span></code></a>()</p></td>
+<td><p>Function to return the total memory allocation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.gradient.html#psi4.driver.gradient" title="psi4.driver.gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gradient</span></code></a>(name, **kwargs)</p></td>
+<td><p>Function complementary to <code class="xref py py-func docutils literal notranslate"><span class="pre">optimize()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.hessian.html#psi4.driver.hessian" title="psi4.driver.hessian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hessian</span></code></a>(name, **kwargs)</p></td>
+<td><p>Function complementary to <a class="reference internal" href="api/psi4.driver.frequency.html#psi4.driver.frequency" title="psi4.driver.frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">frequency()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.ipi_broker.html#psi4.driver.ipi_broker" title="psi4.driver.ipi_broker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipi_broker</span></code></a>(LOT[, molecule, serverdata, options])</p></td>
+<td><p>Run IPIBroker to connect to i-pi</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.join_path.html#psi4.driver.join_path" title="psi4.driver.join_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_path</span></code></a>(prefix, *args)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.levenshtein.html#psi4.driver.levenshtein" title="psi4.driver.levenshtein"><code class="xref py py-obj docutils literal notranslate"><span class="pre">levenshtein</span></code></a>(seq1, seq2)</p></td>
+<td><p>Compute the Levenshtein distance between two strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.mdi_run.html#psi4.driver.mdi_run" title="psi4.driver.mdi_run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mdi_run</span></code></a>(scf_method, **kwargs)</p></td>
+<td><p>Begin functioning as an MDI engine</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.message_box.html#psi4.driver.message_box" title="psi4.driver.message_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">message_box</span></code></a>([message, max_width, min_width])</p></td>
+<td><p>put a message string into a box for extra attention</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.molden.html#psi4.driver.molden" title="psi4.driver.molden"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molden</span></code></a>(wfn[, filename, density_a, …])</p></td>
+<td><p>Function to write wavefunction information in <em>wfn</em> to <em>filename</em> in molden format.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.molecule_get_attr.html#psi4.driver.molecule_get_attr" title="psi4.driver.molecule_get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molecule_get_attr</span></code></a>(self, name)</p></td>
+<td><p>Function to redefine __getattr__ method of molecule class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.molecule_set_attr.html#psi4.driver.molecule_set_attr" title="psi4.driver.molecule_set_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molecule_set_attr</span></code></a>(self, name, value)</p></td>
+<td><p>Function to redefine __setattr__ method of molecule class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.oeprop.html#psi4.driver.oeprop" title="psi4.driver.oeprop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oeprop</span></code></a>(wfn, *args, **kwargs)</p></td>
+<td><p>Evaluate one-electron properties.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.opt.html#psi4.driver.opt" title="psi4.driver.opt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">opt</span></code></a>(name, **kwargs)</p></td>
+<td><p>Function to perform a geometry optimization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.optimize.html#psi4.driver.optimize" title="psi4.driver.optimize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimize</span></code></a>(name, **kwargs)</p></td>
+<td><p>Function to perform a geometry optimization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.optimize_geometric.html#psi4.driver.optimize_geometric" title="psi4.driver.optimize_geometric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimize_geometric</span></code></a>(name, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.pcm_helper.html#psi4.driver.pcm_helper" title="psi4.driver.pcm_helper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pcm_helper</span></code></a>(block)</p></td>
+<td><p>Passes multiline string <em>block</em> to PCMSolver parser.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.print_stderr.html#psi4.driver.print_stderr" title="psi4.driver.print_stderr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_stderr</span></code></a>(stuff)</p></td>
+<td><p>Function to print <em>stuff</em> to standard error stream.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.print_stdout.html#psi4.driver.print_stdout" title="psi4.driver.print_stdout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_stdout</span></code></a>(stuff)</p></td>
+<td><p>Function to print <em>stuff</em> to standard output stream.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.process_input.html#psi4.driver.process_input" title="psi4.driver.process_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_input</span></code></a>(raw_input[, print_level])</p></td>
+<td><p>Function to preprocess <em>raw input</em>, the text of the input file, then parse it, validate it for format, and convert it into legitimate Python.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.prop.html#psi4.driver.prop" title="psi4.driver.prop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prop</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Function to compute various properties.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.properties.html#psi4.driver.properties" title="psi4.driver.properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">properties</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Function to compute various properties.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.sanitize_name.html#psi4.driver.sanitize_name" title="psi4.driver.sanitize_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanitize_name</span></code></a>(name)</p></td>
+<td><p>Function to return <em>name</em> in coded form, stripped of characters that confuse filenames, characters into lowercase, <code class="docutils literal notranslate"><span class="pre">+</span></code> into <code class="docutils literal notranslate"><span class="pre">p</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code> into <code class="docutils literal notranslate"><span class="pre">s</span></code>, and <code class="docutils literal notranslate"><span class="pre">(</span></code>, <code class="docutils literal notranslate"><span class="pre">)</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, &amp; <code class="docutils literal notranslate"><span class="pre">,</span></code> into <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.scf_helper.html#psi4.driver.scf_helper" title="psi4.driver.scf_helper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scf_helper</span></code></a>(name[, post_scf])</p></td>
+<td><p>Function serving as helper to SCF, choosing whether to cast up or just run SCF with a standard guess.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.scf_wavefunction_factory.html#psi4.driver.scf_wavefunction_factory" title="psi4.driver.scf_wavefunction_factory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scf_wavefunction_factory</span></code></a>(name, ref_wfn, …)</p></td>
+<td><p>Builds the correct (R/U/RO/CU HF/KS) wavefunction from the provided information, sets relevant auxiliary basis sets on it, and prepares any empirical dispersion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.set_memory.html#psi4.driver.set_memory" title="psi4.driver.set_memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_memory</span></code></a>(inputval[, execute, quiet])</p></td>
+<td><p>Function to reset the total memory allocation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.set_module_options.html#psi4.driver.set_module_options" title="psi4.driver.set_module_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_module_options</span></code></a>(module, options_dict)</p></td>
+<td><p>Sets Psi4 module options from a module specification and input dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.set_options.html#psi4.driver.set_options" title="psi4.driver.set_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_options</span></code></a>(options_dict[, verbose])</p></td>
+<td><p>Sets Psi4 options from an input dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.tdscf.html#psi4.driver.tdscf" title="psi4.driver.tdscf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tdscf</span></code></a>(wfn, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.temp_circular_import_blocker.html#psi4.driver.temp_circular_import_blocker" title="psi4.driver.temp_circular_import_blocker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temp_circular_import_blocker</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.vibanal_wfn.html#psi4.driver.vibanal_wfn" title="psi4.driver.vibanal_wfn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vibanal_wfn</span></code></a>(wfn[, hess, irrep, molecule, …])</p></td>
+<td><p>Function to perform analysis of a hessian or hessian block, specifically.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.write_eigenvalues.html#psi4.driver.write_eigenvalues" title="psi4.driver.write_eigenvalues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_eigenvalues</span></code></a>(eigs, mo_idx)</p></td>
+<td><p>Prepare multi-line string with one-particle eigenvalues to be written to the FCIDUMP file.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h3>Classes<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.CSXError.html#psi4.driver.CSXError" title="psi4.driver.CSXError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSXError</span></code></a>(msg)</p></td>
+<td><p>Error called when CSX generation fails.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.ConvergenceError.html#psi4.driver.ConvergenceError" title="psi4.driver.ConvergenceError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConvergenceError</span></code></a>(eqn_description, iteration)</p></td>
+<td><p>Error called for problems with converging an iterative method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.Dftd3Error.html#psi4.driver.Dftd3Error" title="psi4.driver.Dftd3Error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dftd3Error</span></code></a>(msg)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.EmpiricalDispersion.html#psi4.driver.EmpiricalDispersion" title="psi4.driver.EmpiricalDispersion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EmpiricalDispersion</span></code></a>(*[, name_hint, …])</p></td>
+<td><p>Lightweight unification of empirical dispersion calculation modes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.ManagedMethodError.html#psi4.driver.ManagedMethodError" title="psi4.driver.ManagedMethodError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManagedMethodError</span></code></a>(circs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.MissingMethodError.html#psi4.driver.MissingMethodError" title="psi4.driver.MissingMethodError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingMethodError</span></code></a>(msg)</p></td>
+<td><p>Error called when method not available.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.OptimizationConvergenceError.html#psi4.driver.OptimizationConvergenceError" title="psi4.driver.OptimizationConvergenceError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OptimizationConvergenceError</span></code></a>(…)</p></td>
+<td><p>Error called for problems with geometry optimizer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.ParsingError.html#psi4.driver.ParsingError" title="psi4.driver.ParsingError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParsingError</span></code></a>(msg)</p></td>
+<td><p>Error called for problems parsing a text file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.PastureRequiredError.html#psi4.driver.PastureRequiredError" title="psi4.driver.PastureRequiredError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PastureRequiredError</span></code></a>(option)</p></td>
+<td><p>Error called when the specified value of <em>option</em> requires some module(s) from Psi4Pasture, but could not be imported.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.PsiException.html#psi4.driver.PsiException" title="psi4.driver.PsiException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PsiException</span></code></a></p></td>
+<td><p>Error class for Psi.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.PsiImportError.html#psi4.driver.PsiImportError" title="psi4.driver.PsiImportError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PsiImportError</span></code></a>(msg)</p></td>
+<td><p>Error called for problems import python dependencies.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.QMMM.html#psi4.driver.QMMM" title="psi4.driver.QMMM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QMMM</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.SCFConvergenceError.html#psi4.driver.SCFConvergenceError" title="psi4.driver.SCFConvergenceError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SCFConvergenceError</span></code></a>(eqn_description, …)</p></td>
+<td><p>Error called for problems with SCF iterations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.TDSCFConvergenceError.html#psi4.driver.TDSCFConvergenceError" title="psi4.driver.TDSCFConvergenceError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TDSCFConvergenceError</span></code></a>(iteration, wfn, what, …)</p></td>
+<td><p>Error called for problems with TDSCF iterations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.Table.html#psi4.driver.Table" title="psi4.driver.Table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Table</span></code></a>([rows, row_label_width, …])</p></td>
+<td><p>Class defining a flexible Table object for storing data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.TestComparisonError.html#psi4.driver.TestComparisonError" title="psi4.driver.TestComparisonError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestComparisonError</span></code></a>(msg)</p></td>
+<td><p>Error called when a test case fails due to a failed compare_values() call.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/psi4.driver.UpgradeHelper.html#psi4.driver.UpgradeHelper" title="psi4.driver.UpgradeHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UpgradeHelper</span></code></a>(old, new, version, elaboration)</p></td>
+<td><p>Error called on previously valid syntax that now isn’t and a simple syntax transition is possible.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/psi4.driver.ValidationError.html#psi4.driver.ValidationError" title="psi4.driver.ValidationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ValidationError</span></code></a>(msg)</p></td>
+<td><p>Error called for problems with the input file.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h3>Class Inheritance Diagram<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="graphviz"><img src="_images/inheritance-d09dff81f95d848a742da3ab82a24f58ac5be228.png" alt="Inheritance diagram of psi4.driver.p4util.exceptions.CSXError, psi4.driver.p4util.exceptions.ConvergenceError, psi4.driver.p4util.exceptions.Dftd3Error, psi4.driver.procrouting.empirical_dispersion.EmpiricalDispersion, psi4.driver.p4util.exceptions.ManagedMethodError, psi4.driver.p4util.exceptions.MissingMethodError, psi4.driver.p4util.exceptions.OptimizationConvergenceError, psi4.driver.p4util.exceptions.ParsingError, psi4.driver.p4util.exceptions.PastureRequiredError, psi4.driver.p4util.exceptions.PsiException, psi4.driver.p4util.exceptions.PsiImportError, psi4.driver.qmmm.QMMM, psi4.driver.p4util.exceptions.SCFConvergenceError, psi4.driver.p4util.exceptions.TDSCFConvergenceError, psi4.driver.p4util.text.Table, psi4.driver.p4util.exceptions.TestComparisonError, psi4.driver.p4util.exceptions.UpgradeHelper, psi4.driver.p4util.exceptions.ValidationError" usemap="#inheritanceb448c618eb" class="inheritance graphviz" /></div>
+<map id="inheritanceb448c618eb" name="inheritanceb448c618eb">
+<area shape="rect" id="node1" href="api/psi4.driver.CSXError.html#psi4.driver.CSXError" target="_top" title="Error called when CSX generation fails." alt="" coords="247,5,326,31"/>
+<area shape="rect" id="node2" href="api/psi4.driver.PsiException.html#psi4.driver.PsiException" target="_top" title="Error class for Psi." alt="" coords="29,228,134,253"/>
+<area shape="rect" id="node3" href="api/psi4.driver.ConvergenceError.html#psi4.driver.ConvergenceError" target="_top" title="Error called for problems with converging an iterative method." alt="" coords="217,55,356,80"/>
+<area shape="rect" id="node4" href="api/psi4.driver.Dftd3Error.html#psi4.driver.Dftd3Error" target="_top" title="Dftd3Error" alt="" coords="243,104,331,129"/>
+<area shape="rect" id="node6" href="api/psi4.driver.ManagedMethodError.html#psi4.driver.ManagedMethodError" target="_top" title="ManagedMethodError" alt="" coords="205,153,368,179"/>
+<area shape="rect" id="node8" href="api/psi4.driver.ValidationError.html#psi4.driver.ValidationError" target="_top" title="Error called for problems with the input file. Prints" alt="" coords="227,203,346,228"/>
+<area shape="rect" id="node10" href="api/psi4.driver.ParsingError.html#psi4.driver.ParsingError" target="_top" title="Error called for problems parsing a text file. Prints error message" alt="" coords="237,252,337,277"/>
+<area shape="rect" id="node11" href="api/psi4.driver.PastureRequiredError.html#psi4.driver.PastureRequiredError" target="_top" title="Error called when the specified value of *option* requires some" alt="" coords="207,301,366,327"/>
+<area shape="rect" id="node12" href="api/psi4.driver.PsiImportError.html#psi4.driver.PsiImportError" target="_top" title="Error called for problems import python dependencies. Prints error message" alt="" coords="229,351,344,376"/>
+<area shape="rect" id="node17" href="api/psi4.driver.TestComparisonError.html#psi4.driver.TestComparisonError" target="_top" title="Error called when a test case fails due to a failed" alt="" coords="208,400,365,425"/>
+<area shape="rect" id="node18" href="api/psi4.driver.UpgradeHelper.html#psi4.driver.UpgradeHelper" target="_top" title="Error called on previously valid syntax that now isn&#39;t and a" alt="" coords="227,449,347,475"/>
+<area shape="rect" id="node9" href="api/psi4.driver.OptimizationConvergenceError.html#psi4.driver.OptimizationConvergenceError" target="_top" title="Error called for problems with geometry optimizer." alt="" coords="416,5,639,31"/>
+<area shape="rect" id="node14" href="api/psi4.driver.SCFConvergenceError.html#psi4.driver.SCFConvergenceError" target="_top" title="Error called for problems with SCF iterations." alt="" coords="446,55,609,80"/>
+<area shape="rect" id="node15" href="api/psi4.driver.TDSCFConvergenceError.html#psi4.driver.TDSCFConvergenceError" target="_top" title="Error called for problems with TDSCF iterations." alt="" coords="437,104,618,129"/>
+<area shape="rect" id="node5" href="dftd3.html#psi4.driver.procrouting.empirical_dispersion.EmpiricalDispersion" target="_top" title="Lightweight unification of empirical dispersion calculation modes." alt="" coords="5,179,157,204"/>
+<area shape="rect" id="node7" href="api/psi4.driver.MissingMethodError.html#psi4.driver.MissingMethodError" target="_top" title="Error called when method not available." alt="" coords="451,203,603,228"/>
+<area shape="rect" id="node13" href="api/psi4.driver.QMMM.html#psi4.driver.QMMM" target="_top" title="QMMM" alt="" coords="45,129,117,155"/>
+<area shape="rect" id="node16" href="api/psi4.driver.Table.html#psi4.driver.Table" target="_top" title="Class defining a flexible Table object for storing data." alt="" coords="45,80,117,105"/>
+</map></section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><ul>
+<li><a class="reference internal" href="#module-psi4.core">psi4.core Module</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-psi4.driver">psi4.driver Package</a><ul>
+<li><a class="reference internal" href="#id1">Functions</a></li>
+<li><a class="reference internal" href="#id2">Classes</a></li>
+<li><a class="reference internal" href="#id3">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="api/psi4.core.DASUM.html" title="DASUM"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="manage_release.html" title="Release Procedures"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/psi4api.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+        <li class="nav-item nav-item-this"><a href=""><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

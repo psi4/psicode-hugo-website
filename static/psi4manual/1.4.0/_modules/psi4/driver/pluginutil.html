@@ -1,0 +1,391 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>psi4.driver.pluginutil</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+    
+    
+     
+        <script src="../../../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../../../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../../../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/pluginutil.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">psi4.driver.pluginutil</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.pluginutil</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2021 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">psi4</span> <span class="kn">import</span> <span class="n">core</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.util.filesystem</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.util</span> <span class="kn">import</span> <span class="n">tty</span>
+
+
+<div class="viewcode-block" id="sanitize_name"><a class="viewcode-back" href="../../../api/psi4.driver.sanitize_name.html#psi4.driver.sanitize_name">[docs]</a><span class="k">def</span> <span class="nf">sanitize_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to return *name* in coded form, stripped of</span>
+<span class="sd">    characters that confuse filenames, characters into lowercase,</span>
+<span class="sd">    ``+`` into ``p``, ``*`` into ``s``, and ``(``, ``)``, ``-``,</span>
+<span class="sd">    &amp; ``,`` into ``_``.</span>
+
+<span class="sd">    Also checks the sanitized name against a list of restricted C++ keywords.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Taken from http://en.cppreference.com/w/cpp/keyword</span>
+        <span class="n">cpp_keywords</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;alignas&quot;</span><span class="p">,</span> <span class="s2">&quot;alignof&quot;</span><span class="p">,</span> <span class="s2">&quot;and&quot;</span><span class="p">,</span> <span class="s2">&quot;and_eq&quot;</span><span class="p">,</span> <span class="s2">&quot;asm&quot;</span><span class="p">,</span> <span class="s2">&quot;atomic_cancel&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;atomic_commit&quot;</span><span class="p">,</span> <span class="s2">&quot;atomic_noexcept&quot;</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;bitand&quot;</span><span class="p">,</span> <span class="s2">&quot;bitor&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="s2">&quot;break&quot;</span><span class="p">,</span> <span class="s2">&quot;case&quot;</span><span class="p">,</span> <span class="s2">&quot;catch&quot;</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="s2">&quot;char16_t&quot;</span><span class="p">,</span> <span class="s2">&quot;char32_t&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;compl&quot;</span><span class="p">,</span> <span class="s2">&quot;concept&quot;</span><span class="p">,</span> <span class="s2">&quot;const&quot;</span><span class="p">,</span> <span class="s2">&quot;constexpr&quot;</span><span class="p">,</span> <span class="s2">&quot;const_cast&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;continue&quot;</span><span class="p">,</span> <span class="s2">&quot;decltype&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="s2">&quot;do&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dynamic_cast&quot;</span><span class="p">,</span> <span class="s2">&quot;else&quot;</span><span class="p">,</span> <span class="s2">&quot;enum&quot;</span><span class="p">,</span> <span class="s2">&quot;explicit&quot;</span><span class="p">,</span> <span class="s2">&quot;export&quot;</span><span class="p">,</span> <span class="s2">&quot;extern&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="s2">&quot;for&quot;</span><span class="p">,</span> <span class="s2">&quot;friend&quot;</span><span class="p">,</span> <span class="s2">&quot;goto&quot;</span><span class="p">,</span> <span class="s2">&quot;if&quot;</span><span class="p">,</span> <span class="s2">&quot;import&quot;</span><span class="p">,</span> <span class="s2">&quot;inline&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;long&quot;</span><span class="p">,</span> <span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="s2">&quot;mutable&quot;</span><span class="p">,</span> <span class="s2">&quot;namespace&quot;</span><span class="p">,</span> <span class="s2">&quot;new&quot;</span><span class="p">,</span> <span class="s2">&quot;noexcept&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;not&quot;</span><span class="p">,</span> <span class="s2">&quot;not_eq&quot;</span><span class="p">,</span> <span class="s2">&quot;nullptr&quot;</span><span class="p">,</span> <span class="s2">&quot;operator&quot;</span><span class="p">,</span> <span class="s2">&quot;or&quot;</span><span class="p">,</span> <span class="s2">&quot;or_eq&quot;</span><span class="p">,</span> <span class="s2">&quot;private&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;protected&quot;</span><span class="p">,</span> <span class="s2">&quot;public&quot;</span><span class="p">,</span> <span class="s2">&quot;register&quot;</span><span class="p">,</span> <span class="s2">&quot;reinterpret_cast&quot;</span><span class="p">,</span> <span class="s2">&quot;requires&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;return&quot;</span><span class="p">,</span> <span class="s2">&quot;short&quot;</span><span class="p">,</span> <span class="s2">&quot;signed&quot;</span><span class="p">,</span> <span class="s2">&quot;sizeof&quot;</span><span class="p">,</span> <span class="s2">&quot;static&quot;</span><span class="p">,</span> <span class="s2">&quot;static_assert&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;static_cast&quot;</span><span class="p">,</span> <span class="s2">&quot;struct&quot;</span><span class="p">,</span> <span class="s2">&quot;switch&quot;</span><span class="p">,</span> <span class="s2">&quot;synchronized&quot;</span><span class="p">,</span> <span class="s2">&quot;template&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="s2">&quot;thread_local&quot;</span><span class="p">,</span> <span class="s2">&quot;throw&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;try&quot;</span><span class="p">,</span> <span class="s2">&quot;typedef&quot;</span><span class="p">,</span> <span class="s2">&quot;typeid&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;typename&quot;</span><span class="p">,</span> <span class="s2">&quot;union&quot;</span><span class="p">,</span> <span class="s2">&quot;unsigned&quot;</span><span class="p">,</span> <span class="s2">&quot;using&quot;</span><span class="p">,</span> <span class="s2">&quot;virtual&quot;</span><span class="p">,</span> <span class="s2">&quot;void&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;volatile&quot;</span><span class="p">,</span> <span class="s2">&quot;wchar_t&quot;</span><span class="p">,</span> <span class="s2">&quot;while&quot;</span><span class="p">,</span> <span class="s2">&quot;xor&quot;</span><span class="p">,</span> <span class="s2">&quot;xor_eq&quot;</span><span class="p">,</span>
+
+            <span class="c1"># Identifiers with special meanings&quot;</span>
+            <span class="s2">&quot;override&quot;</span><span class="p">,</span> <span class="s2">&quot;final&quot;</span><span class="p">,</span> <span class="s2">&quot;transaction_safe&quot;</span><span class="p">,</span> <span class="s2">&quot;transaction_safe_dynamic&quot;</span><span class="p">,</span>
+
+            <span class="c1"># Preprocessor tokens</span>
+            <span class="s2">&quot;if&quot;</span><span class="p">,</span> <span class="s2">&quot;elif&quot;</span><span class="p">,</span> <span class="s2">&quot;else&quot;</span><span class="p">,</span> <span class="s2">&quot;endif&quot;</span><span class="p">,</span> <span class="s2">&quot;defined&quot;</span><span class="p">,</span> <span class="s2">&quot;ifdef&quot;</span><span class="p">,</span> <span class="s2">&quot;ifndef&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;define&quot;</span><span class="p">,</span> <span class="s2">&quot;undef&quot;</span><span class="p">,</span> <span class="s2">&quot;include&quot;</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;pragma&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_pragma&quot;</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">cpp_keywords</span><span class="p">:</span>
+            <span class="n">tty</span><span class="o">.</span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;The plugin name you provided is a C++ reserved keyword.  Please provide a different name.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">temp</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tty</span><span class="o">.</span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;Plugin name must begin with a letter.&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Determine the available plugins</span>
+<span class="n">available_plugins</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">psidatadir</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">()</span>
+<span class="n">plugin_path</span> <span class="o">=</span> <span class="n">join_path</span><span class="p">(</span><span class="n">psidatadir</span><span class="p">,</span> <span class="s2">&quot;plugin&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">sdir</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">plugin_path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">join_path</span><span class="p">(</span><span class="n">plugin_path</span><span class="p">,</span> <span class="n">sdir</span><span class="p">)):</span>
+        <span class="n">available_plugins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sdir</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="create_plugin"><a class="viewcode-back" href="../../../api/psi4.driver.create_plugin.html#psi4.driver.create_plugin">[docs]</a><span class="k">def</span> <span class="nf">create_plugin</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Generate plugin in directory with sanitized *name* based upon *template*.</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    name</span>
+<span class="s2">        Name of plugin. Should not have any fancy characters or reserved keywords.</span>
+<span class="s2">    template : </span><span class="se">{{</span><span class="si">{</span><span class="n">available_plugins</span><span class="si">}</span><span class="se">}}</span><span class="s2"></span>
+<span class="s2">        Which existing template to model off of.</span>
+
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">sanitize_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">template_path</span> <span class="o">=</span> <span class="n">join_path</span><span class="p">(</span><span class="n">plugin_path</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+
+    <span class="c1"># Create, but do not overwrite, plugin directory</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">tty</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Plugin directory &quot;</span><span class="si">{}</span><span class="s2">&quot; already exists.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="c1"># Do a first pass to determine the template temp_files</span>
+    <span class="n">template_files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">template_path</span><span class="p">)</span>
+    <span class="n">source_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">temp_file</span> <span class="ow">in</span> <span class="n">template_files</span><span class="p">:</span>
+        <span class="n">target_file</span> <span class="o">=</span> <span class="n">temp_file</span>
+
+        <span class="k">if</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.template&#39;</span><span class="p">):</span>
+            <span class="n">target_file</span> <span class="o">=</span> <span class="n">temp_file</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.cc.template&#39;</span><span class="p">):</span>
+            <span class="n">source_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_file</span><span class="p">)</span>
+
+    <span class="n">tty</span><span class="o">.</span><span class="n">hline</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Creating &quot;</span><span class="si">{}</span><span class="s2">&quot; with &quot;</span><span class="si">{}</span><span class="s2">&quot; template.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="p">))</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">created_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">source_file</span> <span class="ow">in</span> <span class="n">template_files</span><span class="p">:</span>
+
+        <span class="c1"># Skip swp files</span>
+        <span class="k">if</span> <span class="n">source_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.swp&quot;</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="n">target_file</span> <span class="o">=</span> <span class="n">source_file</span>
+
+        <span class="k">if</span> <span class="n">source_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.template&#39;</span><span class="p">):</span>
+            <span class="n">target_file</span> <span class="o">=</span> <span class="n">source_file</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">join_path</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">source_file</span><span class="p">))</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join_path</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">source_file</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp_file</span><span class="p">:</span>
+                <span class="n">contents</span> <span class="o">=</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">tty</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Unable to open </span><span class="si">{}</span><span class="s2"> template.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source_file</span><span class="p">))</span>
+            <span class="n">tty</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;@plugin@&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;@Plugin@&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;@PLUGIN@&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;@sources@&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_files</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join_path</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">target_file</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp_file</span><span class="p">:</span>
+                <span class="n">temp_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+                <span class="n">created_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_file</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">tty</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Unable to create </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target_file</span><span class="p">))</span>
+            <span class="n">tty</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">tty</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created plugin files (in </span><span class="si">{}</span><span class="s2"> as </span><span class="si">{}</span><span class="s2">): &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">template</span><span class="p">),</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">created_files</span><span class="p">))</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../index.html" title="index">
+          <img class="logo" src="../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/pluginutil.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">psi4.driver.pluginutil</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

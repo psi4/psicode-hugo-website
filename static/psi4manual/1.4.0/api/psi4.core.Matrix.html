@@ -1,0 +1,1028 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Matrix</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MatrixFactory" href="psi4.core.MatrixFactory.html" />
+    <link rel="prev" title="MOWriter" href="psi4.core.MOWriter.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.MatrixFactory.html" title="MatrixFactory"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.MOWriter.html" title="MOWriter"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.Matrix.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" accesskey="U"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Matrix</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="matrix">
+<h1>Matrix<a class="headerlink" href="#matrix" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="psi4.core.Matrix">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">psi4.core.</span></span><span class="sig-name descname"><span class="pre">Matrix</span></span><a class="headerlink" href="#psi4.core.Matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>Class for creating and manipulating matrices</p>
+<p class="rubric">Attributes Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.name" title="psi4.core.Matrix.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>The name of the Matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.np" title="psi4.core.Matrix.np"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np</span></code></a></p></td>
+<td><p>View with single irrep.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.nph" title="psi4.core.Matrix.nph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nph</span></code></a></p></td>
+<td><p>View with irreps.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.shape" title="psi4.core.Matrix.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<td><p>Shape of the Psi4 data object.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.absmax" title="psi4.core.Matrix.absmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absmax</span></code></a>(self)</p></td>
+<td><p>Returns the absolute maximum value</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.accumulate_product" title="psi4.core.Matrix.accumulate_product"><code class="xref py py-obj docutils literal notranslate"><span class="pre">accumulate_product</span></code></a>(self, arg0, arg1)</p></td>
+<td><p>Multiplies two arguments and adds the result to this matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.add" title="psi4.core.Matrix.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.add_and_orthogonalize_row" title="psi4.core.Matrix.add_and_orthogonalize_row"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_and_orthogonalize_row</span></code></a>(self, v)</p></td>
+<td><p>Expands the row dimension by one,               and then orthogonalizes vector v against the current rows               before setting the new row to the orthogonalized copy of v</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.apply_denominator" title="psi4.core.Matrix.apply_denominator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_denominator</span></code></a>(self, Matrix)</p></td>
+<td><p>Apply matrix of denominators to this matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.array_interface" title="psi4.core.Matrix.array_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_interface</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.axpy" title="psi4.core.Matrix.axpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axpy</span></code></a>(self, a, X)</p></td>
+<td><p>Add to this matrix another matrix scaled by a</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.back_transform" title="psi4.core.Matrix.back_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">back_transform</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.chain_dot" title="psi4.core.Matrix.chain_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chain_dot</span></code></a>(**kwargs)</p></td>
+<td><p>Chains dot products together from a series of Psi4 Matrix classes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.cholesky_factorize" title="psi4.core.Matrix.cholesky_factorize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cholesky_factorize</span></code></a>(self)</p></td>
+<td><p>Computes the Cholesky factorization of a real symmetric positive definite matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.clone" title="psi4.core.Matrix.clone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clone</span></code></a>(self)</p></td>
+<td><p>Creates exact copy of the matrix and returns it</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.coldim" title="psi4.core.Matrix.coldim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coldim</span></code></a>(self)</p></td>
+<td><p>Returns the columns per irrep array</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.cols" title="psi4.core.Matrix.cols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cols</span></code></a>(self, h)</p></td>
+<td><p>Returns the columns in irrep h</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.copy" title="psi4.core.Matrix.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(self, arg0)</p></td>
+<td><p>Returns a copy of the matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.copy_lower_to_upper" title="psi4.core.Matrix.copy_lower_to_upper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_lower_to_upper</span></code></a>(self)</p></td>
+<td><p>Copy the lower triangle to the upper triangle</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.copy_upper_to_lower" title="psi4.core.Matrix.copy_upper_to_lower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_upper_to_lower</span></code></a>(self)</p></td>
+<td><p>Copy the upper triangle to the lower triangle</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.diagonalize" title="psi4.core.Matrix.diagonalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagonalize</span></code></a>(self, eigvectors, eigvalues, order)</p></td>
+<td><p>Diagonalizes this matrix, space for the eigvectors and eigvalues must be created by caller.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.doublet" title="psi4.core.Matrix.doublet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doublet</span></code></a>(A, B, transA, transB)</p></td>
+<td><p>Multiply two matrices together.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.from_array" title="psi4.core.Matrix.from_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_array</span></code></a>([name, dim1, dim2])</p></td>
+<td><p>Converts a numpy array or list of numpy arrays into a Psi4 Matrix (irreped if list).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.from_list" title="psi4.core.Matrix.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(x)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.from_serial" title="psi4.core.Matrix.from_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_serial</span></code></a>(json_data)</p></td>
+<td><p>Converts serialized data to the correct Psi4 data type</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.gemm" title="psi4.core.Matrix.gemm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gemm</span></code></a>(self, transa, transb, alpha, a, b, beta)</p></td>
+<td><p>Generalized matrix multiplication               argument transa Transpose the left matrix?               argument transb Transpose the right matrix?               argument alpha Prefactor for the matrix multiplication               argument A Left matrix               argument B Right matrix               argument beta Prefactor for the resulting matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.general_invert" title="psi4.core.Matrix.general_invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">general_invert</span></code></a>(self)</p></td>
+<td><p>Computes the inverse of any nonsingular matrix using LU factorization</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.get" title="psi4.core.Matrix.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.get_block" title="psi4.core.Matrix.get_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_block</span></code></a>(self, rows, cols)</p></td>
+<td><p>Get a matrix block</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.hermitivitize" title="psi4.core.Matrix.hermitivitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hermitivitize</span></code></a>(self)</p></td>
+<td><p>Average off-diagonal element in-place</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.hermitize" title="psi4.core.Matrix.hermitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hermitize</span></code></a>(self)</p></td>
+<td><p>Makes a real matrix symmetric by averaging the matrix and its transpose.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.identity" title="psi4.core.Matrix.identity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">identity</span></code></a>(self)</p></td>
+<td><p>Sets the matrix to the identity</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.invert" title="psi4.core.Matrix.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>(self)</p></td>
+<td><p>Computes the inverse of a real symmetric positive definite matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.load" title="psi4.core.Matrix.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.load_mpqc" title="psi4.core.Matrix.load_mpqc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_mpqc</span></code></a>(self, filename)</p></td>
+<td><p>Loads a matrix from an ASCII file in MPQC format</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.nirrep" title="psi4.core.Matrix.nirrep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nirrep</span></code></a>(self)</p></td>
+<td><p>Returns the number of irreps</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.np_read" title="psi4.core.Matrix.np_read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_read</span></code></a>(filename[, prefix])</p></td>
+<td><p>Reads the data from a NumPy compress file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.np_write" title="psi4.core.Matrix.np_write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_write</span></code></a>([filename, prefix])</p></td>
+<td><p>Writes the irreped matrix to a NumPy zipped file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.partial_cholesky_factorize" title="psi4.core.Matrix.partial_cholesky_factorize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_cholesky_factorize</span></code></a>(self, delta, …)</p></td>
+<td><p>Computes the fully pivoted partial Cholesky factorization of a real symmetric positive semidefinite matrix,               to numerical precision delta</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.power" title="psi4.core.Matrix.power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">power</span></code></a>(self, alpha, cutoff)</p></td>
+<td><p>Takes the matrix to the alpha power with precision cutoff</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.print_atom_vector" title="psi4.core.Matrix.print_atom_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_atom_vector</span></code></a>(self, RMRoutfile)</p></td>
+<td><p>Print the matrix with atom labels, assuming it is an natom X 3 tensor</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.print_out" title="psi4.core.Matrix.print_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_out</span></code></a>(self)</p></td>
+<td><p>Prints the matrix to the output file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.pseudoinverse" title="psi4.core.Matrix.pseudoinverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pseudoinverse</span></code></a>(self, condition, nremoved)</p></td>
+<td><p>Computes the matrix which is the conditioned pseudoinverse of this matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.remove_symmetry" title="psi4.core.Matrix.remove_symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_symmetry</span></code></a>(self, a, transformer)</p></td>
+<td><p>Remove symmetry from a matrix A with PetiteList::sotoao()</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.rms" title="psi4.core.Matrix.rms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rms</span></code></a>(self)</p></td>
+<td><p>Returns the rms of this matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.rotate_columns" title="psi4.core.Matrix.rotate_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_columns</span></code></a>(self, h, i, j, theta)</p></td>
+<td><p>Rotates columns i and j in irrep h by angle theta</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.rowdim" title="psi4.core.Matrix.rowdim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rowdim</span></code></a>(self)</p></td>
+<td><p>Returns the rows per irrep array</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.rows" title="psi4.core.Matrix.rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rows</span></code></a>(self, h)</p></td>
+<td><p>Returns the rows in irrep h</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.save" title="psi4.core.Matrix.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(self, filename, append, …)</p></td>
+<td><p>Saves the matrix in ASCII format to filename, as symmetry blocks or full matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.scale" title="psi4.core.Matrix.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(self, a)</p></td>
+<td><p>Scales the matrix by the floating point value a</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.scale_column" title="psi4.core.Matrix.scale_column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_column</span></code></a>(self, h, n, a)</p></td>
+<td><p>Scales column n of irrep h by a</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.scale_row" title="psi4.core.Matrix.scale_row"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_row</span></code></a>(self, h, m, a)</p></td>
+<td><p>Scales row m of irrep h by a</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.schmidt" title="psi4.core.Matrix.schmidt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schmidt</span></code></a>(self)</p></td>
+<td><p>Calls the libqt schmidt function</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.set" title="psi4.core.Matrix.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.set_block" title="psi4.core.Matrix.set_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_block</span></code></a>(self, rows, cols, block)</p></td>
+<td><p>Set a matrix block</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.subtract" title="psi4.core.Matrix.subtract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subtract</span></code></a>(self, arg0)</p></td>
+<td><p>Substract a matrix from this matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.sum_of_squares" title="psi4.core.Matrix.sum_of_squares"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum_of_squares</span></code></a>(self)</p></td>
+<td><p>Returns the sum of the squares of this matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.symmetrize_gradient" title="psi4.core.Matrix.symmetrize_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetrize_gradient</span></code></a>(self, mol)</p></td>
+<td><p>Symmetrizes a gradient-like matrix (N,3) using information from a given molecule</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.symmetry" title="psi4.core.Matrix.symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetry</span></code></a>(self)</p></td>
+<td><p>Returns the overall symmetry of the matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.to_array" title="psi4.core.Matrix.to_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_array</span></code></a>([copy, dense])</p></td>
+<td><p>Converts a Psi4 Matrix or Vector to a NumPy array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.to_serial" title="psi4.core.Matrix.to_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_serial</span></code></a>()</p></td>
+<td><p>Converts an object with a .nph accessor to a serialized dictionary</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.trace" title="psi4.core.Matrix.trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trace</span></code></a>(self)</p></td>
+<td><p>Returns the trace of the matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.transform" title="psi4.core.Matrix.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.transpose" title="psi4.core.Matrix.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>(self)</p></td>
+<td><p>Creates a new matrix that is the transpose of this matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.transpose_this" title="psi4.core.Matrix.transpose_this"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose_this</span></code></a>(self)</p></td>
+<td><p>Transpose the matrix in-place</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.triplet" title="psi4.core.Matrix.triplet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">triplet</span></code></a>(A, B, C, transA, transB, transC)</p></td>
+<td><p>Multiply three matrices together.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.vector_dot" title="psi4.core.Matrix.vector_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_dot</span></code></a>(self, rhs)</p></td>
+<td><p>Returns the vector dot product of this with rhs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.zero" title="psi4.core.Matrix.zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero</span></code></a>(self)</p></td>
+<td><p>Zero all elements of the matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.zero_diagonal" title="psi4.core.Matrix.zero_diagonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_diagonal</span></code></a>(self)</p></td>
+<td><p>Zero the diagonal of the matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.Matrix.zero_lower" title="psi4.core.Matrix.zero_lower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_lower</span></code></a>(self)</p></td>
+<td><p>Zero the lower triangle</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.Matrix.zero_upper" title="psi4.core.Matrix.zero_upper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_upper</span></code></a>(self)</p></td>
+<td><p>Zero the upper triangle</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes Documentation</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="psi4.core.Matrix.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#psi4.core.Matrix.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the Matrix. Used in printing.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="psi4.core.Matrix.np">
+<span class="sig-name descname"><span class="pre">np</span></span><a class="headerlink" href="#psi4.core.Matrix.np" title="Permalink to this definition">¶</a></dt>
+<dd><p>View with single irrep.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="psi4.core.Matrix.nph">
+<span class="sig-name descname"><span class="pre">nph</span></span><a class="headerlink" href="#psi4.core.Matrix.nph" title="Permalink to this definition">¶</a></dt>
+<dd><p>View with irreps.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="psi4.core.Matrix.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#psi4.core.Matrix.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shape of the Psi4 data object.</p>
+</dd></dl>
+
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.absmax">
+<span class="sig-name descname"><span class="pre">absmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.absmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the absolute maximum value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.accumulate_product">
+<span class="sig-name descname"><span class="pre">accumulate_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.accumulate_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplies two arguments and adds the result to this matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>add(self: psi4.core.Matrix, arg0: psi4.core.Matrix) -&gt; None</p></li>
+</ol>
+<p>Adds a matrix to this matrix</p>
+<ol class="arabic simple" start="2">
+<li><p>add(self: psi4.core.Matrix, h: int, m: int, n: int, val: float) -&gt; None</p></li>
+</ol>
+<p>Increments row m and column n of irrep h’s block matrix by val.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.add_and_orthogonalize_row">
+<span class="sig-name descname"><span class="pre">add_and_orthogonalize_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.Vector.html#psi4.core.Vector" title="psi4.core.Vector"><span class="pre">psi4.core.Vector</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.add_and_orthogonalize_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands the row dimension by one,               and then orthogonalizes vector v against the current rows               before setting the new row to the orthogonalized copy of v</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.apply_denominator">
+<span class="sig-name descname"><span class="pre">apply_denominator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.apply_denominator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply matrix of denominators to this matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.array_interface">
+<span class="sig-name descname"><span class="pre">array_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.array_interface" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.axpy">
+<span class="sig-name descname"><span class="pre">axpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.axpy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add to this matrix another matrix scaled by a</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.back_transform">
+<span class="sig-name descname"><span class="pre">back_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.back_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>back_transform(self: psi4.core.Matrix, transformer: psi4.core.Matrix) -&gt; None</p></li>
+</ol>
+<p>Backtransform this with transformer</p>
+<ol class="arabic simple" start="2">
+<li><p>back_transform(self: psi4.core.Matrix, a: psi4.core.Matrix, transformer: psi4.core.Matrix) -&gt; None</p></li>
+</ol>
+<p>Backtransform A with transformer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.chain_dot">
+<span class="sig-name descname"><span class="pre">chain_dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.chain_dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chains dot products together from a series of Psi4 Matrix classes.</p>
+<p>By default there is no transposes, an optional vector of booleans can be passed in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.cholesky_factorize">
+<span class="sig-name descname"><span class="pre">cholesky_factorize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.cholesky_factorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Cholesky factorization of a real symmetric positive definite matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.clone">
+<span class="sig-name descname"><span class="pre">clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates exact copy of the matrix and returns it</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.coldim">
+<span class="sig-name descname"><span class="pre">coldim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.Dimension.html#psi4.core.Dimension" title="psi4.core.Dimension"><span class="pre">psi4.core.Dimension</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.coldim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the columns per irrep array</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.cols">
+<span class="sig-name descname"><span class="pre">cols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.cols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the columns in irrep h</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.copy_lower_to_upper">
+<span class="sig-name descname"><span class="pre">copy_lower_to_upper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.copy_lower_to_upper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the lower triangle to the upper triangle</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.copy_upper_to_lower">
+<span class="sig-name descname"><span class="pre">copy_upper_to_lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.copy_upper_to_lower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the upper triangle to the lower triangle</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.diagonalize">
+<span class="sig-name descname"><span class="pre">diagonalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self:</span> <span class="pre">psi4.core.Matrix</span></em>, <em class="sig-param"><span class="pre">eigvectors:</span> <span class="pre">psi4.core.Matrix</span></em>, <em class="sig-param"><span class="pre">eigvalues:</span> <span class="pre">psi4.core.Vector</span></em>, <em class="sig-param"><span class="pre">order:</span> <span class="pre">psi4.core.DiagonalizeOrder</span> <span class="pre">=</span> <span class="pre">&lt;DiagonalizeOrder.Ascending:</span> <span class="pre">1&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.diagonalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Diagonalizes this matrix, space for the eigvectors and eigvalues must be created by caller. Only for symmetric matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.doublet">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">doublet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transB</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.doublet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply two matrices together.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4: </span>Use <a class="reference internal" href="psi4.core.doublet.html#psi4.core.doublet" title="psi4.core.doublet"><code class="xref py py-func docutils literal notranslate"><span class="pre">psi4.core.doublet()</span></code></a> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.from_array">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'New</span> <span class="pre">Matrix'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.from_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a numpy array or list of numpy arrays into a Psi4 Matrix (irreped if list).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.List" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>]]) – Numpy array or list of arrays to use as the data for a new core.Matrix</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Name to give the new core.Matrix</p></li>
+<li><p><strong>dim1</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.List" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>, <a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Tuple" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>, <a class="reference internal" href="psi4.core.Dimension.html#psi4.core.Dimension" title="psi4.core.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>, <a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]) – If a single dense numpy array is given, a dimension can be supplied to
+apply irreps to this array. Note that this discards all extra information
+given in the matrix besides the diagonal blocks determined by the passed
+dimension.</p></li>
+<li><p><strong>dim2</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="psi4.core.Dimension.html#psi4.core.Dimension" title="psi4.core.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>]) – Same as dim1 only if using a psi4.core.Dimension object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the given Psi4 object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix">Matrix</a> or <a class="reference internal" href="psi4.core.Vector.html#psi4.core.Vector" title="psi4.core.Vector">Vector</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This is a generalized function to convert a NumPy array to a Psi4 object</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vector</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">irrep_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">irrep_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">rowdim</span><span class="p">()</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">())</span>
+<span class="go">(2, 0, 4)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.from_list">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.from_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.from_serial">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_serial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.from_serial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts serialized data to the correct Psi4 data type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.gemm">
+<span class="sig-name descname"><span class="pre">gemm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">transa</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">transb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.gemm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generalized matrix multiplication               argument transa Transpose the left matrix?               argument transb Transpose the right matrix?               argument alpha Prefactor for the matrix multiplication               argument A Left matrix               argument B Right matrix               argument beta Prefactor for the resulting matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.general_invert">
+<span class="sig-name descname"><span class="pre">general_invert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.general_invert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the inverse of any nonsingular matrix using LU factorization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>get(self: psi4.core.Matrix, h: int, m: int, n: int) -&gt; float</p></li>
+</ol>
+<p>Returns a single element of a matrix in subblock h, row m, col n</p>
+<ol class="arabic simple" start="2">
+<li><p>get(self: psi4.core.Matrix, m: int, n: int) -&gt; float</p></li>
+</ol>
+<p>Returns a single element of a matrix, row m, col n</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.get_block">
+<span class="sig-name descname"><span class="pre">get_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.Slice.html#psi4.core.Slice" title="psi4.core.Slice"><span class="pre">psi4.core.Slice</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.Slice.html#psi4.core.Slice" title="psi4.core.Slice"><span class="pre">psi4.core.Slice</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.get_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a matrix block</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.hermitivitize">
+<span class="sig-name descname"><span class="pre">hermitivitize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.hermitivitize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average off-diagonal element in-place</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.hermitize">
+<span class="sig-name descname"><span class="pre">hermitize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.hermitize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a real matrix symmetric by averaging the matrix and its transpose.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.identity">
+<span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the matrix to the identity</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.invert">
+<span class="sig-name descname"><span class="pre">invert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.invert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the inverse of a real symmetric positive definite matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>load(self: psi4.core.Matrix, filename: str) -&gt; None</p></li>
+</ol>
+<p>Loads a block matrix from an ASCII file (see tests/mints3 for format)</p>
+<ol class="arabic simple" start="2">
+<li><p>load(self: psi4.core.Matrix, psio: psi4.core.IO, fileno: int, tocentry: str, nso: int) -&gt; bool</p></li>
+</ol>
+<p>Load a matrix from a PSIO object from fileno with tocentry of size nso</p>
+<ol class="arabic simple" start="3">
+<li><p>load(self: psi4.core.Matrix, psio: psi4.core.IO, fileno: int, savetype: psi4.core.SaveType = &lt;SaveType.LowerTriangle: 2&gt;) -&gt; None</p></li>
+</ol>
+<p>Load a matrix from a PSIO object from fileno and with toc position of the name of the matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.load_mpqc">
+<span class="sig-name descname"><span class="pre">load_mpqc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.load_mpqc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a matrix from an ASCII file in MPQC format</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.nirrep">
+<span class="sig-name descname"><span class="pre">nirrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.nirrep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of irreps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.np_read">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">np_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.np_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the data from a NumPy compress file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.np_write">
+<span class="sig-name descname"><span class="pre">np_write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.np_write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the irreped matrix to a NumPy zipped file.</p>
+<p>Can return the packed data for saving many matrices into the same file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.partial_cholesky_factorize">
+<span class="sig-name descname"><span class="pre">partial_cholesky_factorize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_if_negative</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.partial_cholesky_factorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the fully pivoted partial Cholesky factorization of a real symmetric positive semidefinite matrix,               to numerical precision delta</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.power">
+<span class="sig-name descname"><span class="pre">power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.Dimension.html#psi4.core.Dimension" title="psi4.core.Dimension"><span class="pre">psi4.core.Dimension</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the matrix to the alpha power with precision cutoff</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.print_atom_vector">
+<span class="sig-name descname"><span class="pre">print_atom_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">RMRoutfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'outfile'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.print_atom_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the matrix with atom labels, assuming it is an natom X 3 tensor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.print_out">
+<span class="sig-name descname"><span class="pre">print_out</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.print_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the matrix to the output file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.pseudoinverse">
+<span class="sig-name descname"><span class="pre">pseudoinverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nremoved</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.pseudoinverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the matrix which is the conditioned pseudoinverse of this matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.remove_symmetry">
+<span class="sig-name descname"><span class="pre">remove_symmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.remove_symmetry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove symmetry from a matrix A with PetiteList::sotoao()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.rms">
+<span class="sig-name descname"><span class="pre">rms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.rms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rms of this matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.rotate_columns">
+<span class="sig-name descname"><span class="pre">rotate_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.rotate_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotates columns i and j in irrep h by angle theta</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.rowdim">
+<span class="sig-name descname"><span class="pre">rowdim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.Dimension.html#psi4.core.Dimension" title="psi4.core.Dimension"><span class="pre">psi4.core.Dimension</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.rowdim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rows per irrep array</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.rows">
+<span class="sig-name descname"><span class="pre">rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rows in irrep h</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">append</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saveLowerTriangle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saveSubBlocks</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the matrix in ASCII format to filename, as symmetry blocks or full matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.scale">
+<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales the matrix by the floating point value a</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.scale_column">
+<span class="sig-name descname"><span class="pre">scale_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.scale_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales column n of irrep h by a</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.scale_row">
+<span class="sig-name descname"><span class="pre">scale_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.scale_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales row m of irrep h by a</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.schmidt">
+<span class="sig-name descname"><span class="pre">schmidt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.schmidt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the libqt schmidt function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>set(self: psi4.core.Matrix, val: float) -&gt; None</p></li>
+</ol>
+<p>Sets every element of a matrix to val</p>
+<ol class="arabic simple" start="2">
+<li><p>set(self: psi4.core.Matrix, m: int, n: int, val: float) -&gt; None</p></li>
+</ol>
+<p>Sets a single element of a matrix to val at row m, col n</p>
+<ol class="arabic simple" start="3">
+<li><p>set(self: psi4.core.Matrix, h: int, m: int, n: int, val: float) -&gt; None</p></li>
+</ol>
+<p>Sets a single element of a matrix, subblock h, row m, col n, with value val</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.set_block">
+<span class="sig-name descname"><span class="pre">set_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.Slice.html#psi4.core.Slice" title="psi4.core.Slice"><span class="pre">psi4.core.Slice</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.Slice.html#psi4.core.Slice" title="psi4.core.Slice"><span class="pre">psi4.core.Slice</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">block</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.set_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a matrix block</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.subtract">
+<span class="sig-name descname"><span class="pre">subtract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.subtract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substract a matrix from this matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.sum_of_squares">
+<span class="sig-name descname"><span class="pre">sum_of_squares</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.sum_of_squares" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the sum of the squares of this matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.symmetrize_gradient">
+<span class="sig-name descname"><span class="pre">symmetrize_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self:</span> <span class="pre">psi4.core.Matrix</span></em>, <em class="sig-param"><span class="pre">mol:</span> <span class="pre">psi::Molecule</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.symmetrize_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Symmetrizes a gradient-like matrix (N,3) using information from a given molecule</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.symmetry">
+<span class="sig-name descname"><span class="pre">symmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.symmetry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the overall symmetry of the matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.to_array">
+<span class="sig-name descname"><span class="pre">to_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.to_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a Psi4 Matrix or Vector to a NumPy array. Either copies the data or simply
+constructs a view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrix</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a>, <a class="reference internal" href="psi4.core.Vector.html#psi4.core.Vector" title="psi4.core.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>]) – Pointers to which Psi4 core class should be used in the construction.</p></li>
+<li><p><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Copy the data if <cite>True</cite>, return a view otherwise</p></li>
+<li><p><strong>dense</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Converts irreped Psi4 objects to diagonally blocked dense arrays if <cite>True</cite>. Returns a list of arrays otherwise.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns either a list of np.array’s or the base array depending on options.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This is a generalized function to convert a Psi4 object to a NumPy array</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
+<span class="go">[[ 0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.to_serial">
+<span class="sig-name descname"><span class="pre">to_serial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.to_serial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an object with a .nph accessor to a serialized dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.trace">
+<span class="sig-name descname"><span class="pre">trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the trace of the matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>transform(self: psi4.core.Matrix, transformer: psi4.core.Matrix) -&gt; None</p></li>
+</ol>
+<p>Transform this matrix with transformer</p>
+<ol class="arabic simple" start="2">
+<li><p>transform(self: psi4.core.Matrix, a: psi4.core.Matrix, transformer: psi4.core.Matrix) -&gt; None</p></li>
+</ol>
+<p>Transform A with transformer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.transpose">
+<span class="sig-name descname"><span class="pre">transpose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new matrix that is the transpose of this matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.transpose_this">
+<span class="sig-name descname"><span class="pre">transpose_this</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.transpose_this" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transpose the matrix in-place</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.triplet">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">triplet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transC</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.Matrix.triplet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply three matrices together.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.4: </span>Use <a class="reference internal" href="psi4.core.triplet.html#psi4.core.triplet" title="psi4.core.triplet"><code class="xref py py-func docutils literal notranslate"><span class="pre">psi4.core.triplet()</span></code></a> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.vector_dot">
+<span class="sig-name descname"><span class="pre">vector_dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.vector_dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the vector dot product of this with rhs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.zero">
+<span class="sig-name descname"><span class="pre">zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zero all elements of the matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.zero_diagonal">
+<span class="sig-name descname"><span class="pre">zero_diagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.zero_diagonal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zero the diagonal of the matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.zero_lower">
+<span class="sig-name descname"><span class="pre">zero_lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.zero_lower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zero the lower triangle</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.Matrix.zero_upper">
+<span class="sig-name descname"><span class="pre">zero_upper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.Matrix.zero_upper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zero the upper triangle</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.MatrixFactory.html" title="MatrixFactory"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.MOWriter.html" title="MOWriter"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.Matrix.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" ><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Matrix</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

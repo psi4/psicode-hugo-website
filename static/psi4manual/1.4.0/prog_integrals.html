@@ -1,0 +1,486 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Integrals in PSI4</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Adding PSIthon Test Cases" href="add_tests.html" />
+    <link rel="prev" title="Linear Algebra in PSI4" href="prog_blas.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="add_tests.html" title="Adding PSIthon Test Cases"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prog_blas.html" title="Linear Algebra in PSI4"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/prog_integrals.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+        <li class="nav-item nav-item-this"><a href="">Integrals in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="integrals-in-psifour">
+<span id="sec-prog-integrals"></span><h1>Integrals in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span><a class="headerlink" href="#integrals-in-psifour" title="Permalink to this headline">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> has a number of backends available to compute integrals. In order to
+accomodate these options, while providing a clean interface to the programmer,
+an abstraction layer is implemented within Libmints.  A recent upgrade to the
+primary integral engine has seen some important changes to the way this
+interface layer is used; this document is designed to aid new developers as
+well as those familiar with the older calling conventions to ensure that the
+most efficient calling conventions are applied.</p>
+</section>
+<section id="the-older-style">
+<h2>The older style<a class="headerlink" href="#the-older-style" title="Permalink to this headline">¶</a></h2>
+<p>A very simple loop that does not use permutational symmetry might look
+something like this in the old scheme:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">sieve</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ERISieve</span><span class="o">&gt;</span><span class="p">(</span><span class="n">basisset</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">factory</span><span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">IntegralFactory</span><span class="o">&gt;</span><span class="p">(</span><span class="n">basisset</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">deriv_level</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">use_shell_pairs</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">eri</span> <span class="o">=</span> <span class="n">factory</span><span class="o">-&gt;</span><span class="n">eri</span><span class="p">(</span><span class="n">deriv_level</span><span class="p">,</span> <span class="n">use_shell_pairs</span><span class="p">);</span>
+<span class="k">const</span> <span class="kt">double</span><span class="o">*</span> <span class="n">buffer</span> <span class="o">=</span> <span class="n">eri_</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">();</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">P</span> <span class="o">&lt;</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">nshell</span><span class="p">();</span> <span class="o">++</span><span class="n">P</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">Pshell</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">shell</span><span class="p">(</span><span class="n">P</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">Q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">Q</span> <span class="o">&lt;</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">nshell</span><span class="p">();</span> <span class="o">++</span><span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">Qshell</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">shell</span><span class="p">(</span><span class="n">Q</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">R</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">R</span> <span class="o">&lt;</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">nshell</span><span class="p">();</span> <span class="o">++</span><span class="n">R</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">Rshell</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">shell</span><span class="p">(</span><span class="n">R</span><span class="p">);</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">S</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">S</span> <span class="o">&lt;</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">nshell</span><span class="p">();</span> <span class="o">++</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">Sshell</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">shell</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">sieve</span><span class="o">-&gt;</span><span class="n">shell_significant</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">eri</span><span class="o">-&gt;</span><span class="n">compute_shell</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">S</span><span class="p">);</span>
+                    <span class="c1">// results are in buffer, do something with them..</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>An integral factory is used, which can then produce integral object for various
+operator types and derivative levels.  A sieve is also constructed; this allows
+a quick determination of whether an integral shell quartet will be significant
+in magnitude or not, potentially saving a lot of work.  This simple scheme is
+clean and easy to understand, and is still supported in the latest version of
+<span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> with only a small change to the sieve syntax and handling of buffer
+addresses, noted below.</p>
+</section>
+<section id="the-new-syntax">
+<h2>The new syntax<a class="headerlink" href="#the-new-syntax" title="Permalink to this headline">¶</a></h2>
+<p>The newer integral engines being interfaced to <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> may or may not require
+a group of similar integrals to be computed together in a block using
+vectorized instructions.  To accomodate this possibility, a new syntax has been
+introduced in Libmints:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">blocksPQ</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_blocks12</span><span class="p">();</span>
+<span class="k">auto</span> <span class="n">blocksRS</span> <span class="o">=</span> <span class="n">ints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_blocks34</span><span class="p">();</span>
+
+<span class="k">auto</span> <span class="n">factory</span><span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">IntegralFactory</span><span class="o">&gt;</span><span class="p">(</span><span class="n">basisset</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">deriv_level</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">use_shell_pairs</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">needs_exchange</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">eri</span> <span class="o">=</span> <span class="n">factory</span><span class="o">-&gt;</span><span class="n">eri</span><span class="p">(</span><span class="n">deriv_level</span><span class="p">,</span> <span class="n">use_shell_pairs</span><span class="p">,</span> <span class="n">needs_exchange</span><span class="p">);</span>
+<span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="n">buffers</span> <span class="o">=</span> <span class="n">eri</span><span class="o">-&gt;</span><span class="n">buffers</span><span class="p">();</span>
+
+<span class="n">eri</span><span class="o">-&gt;</span><span class="n">update_density</span><span class="p">(</span><span class="n">D</span><span class="p">);</span>
+<span class="kt">bool</span> <span class="n">use_batching</span> <span class="o">=</span> <span class="n">eri</span><span class="o">-&gt;</span><span class="n">maximum_block_size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="c1">// loop over all the blocks of (P&gt;=Q|</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">blockPQ_idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">blockPQ_idx</span> <span class="o">&lt;</span> <span class="n">blocksPQ</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">blockPQ_idx</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">blockPQ</span> <span class="o">=</span> <span class="n">blocksPQ</span><span class="p">[</span><span class="n">blockPQ_idx</span><span class="p">];</span>
+    <span class="c1">// loop over all the blocks of |R&gt;=S)</span>
+    <span class="kt">size_t</span> <span class="n">start</span> <span class="o">=</span> <span class="n">eri</span><span class="o">-&gt;</span><span class="n">first_RS_shell_block</span><span class="p">(</span><span class="n">blockPQ_idx</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">blockRS_idx</span> <span class="o">=</span> <span class="n">loop_start</span><span class="p">;</span> <span class="n">blockRS_idx</span> <span class="o">&lt;</span> <span class="n">blocksRS</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">blockRS_idx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">blockRS</span> <span class="o">=</span> <span class="n">blocksRS</span><span class="p">[</span><span class="n">blockRS_idx</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">eri</span><span class="o">-&gt;</span><span class="n">shell_block_significant</span><span class="p">(</span><span class="n">blockPQ_idx</span><span class="p">,</span> <span class="n">blockRS_idx</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+
+        <span class="n">eri</span><span class="o">-&gt;</span><span class="n">compute_shell_blocks</span><span class="p">(</span><span class="n">blockPQ_idx</span><span class="p">,</span> <span class="n">blockRS_idx</span><span class="p">);</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">*</span> <span class="n">block_start</span> <span class="o">=</span> <span class="n">buffers</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+        <span class="c1">// Loop over all of the P,Q,R,S shells within the blocks.  We have P&gt;=Q, R&gt;=S and PQ&lt;=RS.</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">pairPQ</span> <span class="p">:</span> <span class="n">blockPQ</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="n">P</span> <span class="o">=</span> <span class="n">pairPQ</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="n">Q</span> <span class="o">=</span> <span class="n">pairPQ</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">Pshell</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">shell</span><span class="p">(</span><span class="n">P</span><span class="p">);</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">Qshell</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">shell</span><span class="p">(</span><span class="n">Q</span><span class="p">);</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">Pam</span> <span class="o">=</span> <span class="n">Pshell</span><span class="p">.</span><span class="n">am</span><span class="p">();</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">Qam</span> <span class="o">=</span> <span class="n">Qshell</span><span class="p">.</span><span class="n">am</span><span class="p">();</span>
+            <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">pairRS</span> <span class="p">:</span> <span class="n">blockRS</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="n">R</span> <span class="o">=</span> <span class="n">pairRS</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="n">S</span> <span class="o">=</span> <span class="n">pairRS</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">Rshell</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">shell</span><span class="p">(</span><span class="n">R</span><span class="p">);</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">Sshell</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">-&gt;</span><span class="n">shell</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">Ram</span> <span class="o">=</span> <span class="n">Rshell</span><span class="p">.</span><span class="n">am</span><span class="p">();</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">Sam</span> <span class="o">=</span> <span class="n">Sshell</span><span class="p">.</span><span class="n">am</span><span class="p">();</span>
+
+                <span class="kt">size_t</span> <span class="n">block_size</span> <span class="o">=</span> <span class="n">Psize</span> <span class="o">*</span> <span class="n">Qsize</span> <span class="o">*</span> <span class="n">Rsize</span> <span class="o">*</span> <span class="n">Ssize</span><span class="p">;</span>
+                <span class="c1">// When there are chunks of shellpairs in RS, we need to make sure</span>
+                <span class="c1">// we filter out redundant combinations.</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">use_batching</span> <span class="o">&amp;&amp;</span> <span class="n">Pam</span> <span class="o">==</span> <span class="n">Ram</span> <span class="o">&amp;&amp;</span> <span class="n">Qam</span> <span class="o">==</span> <span class="n">Sam</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">P</span> <span class="o">&gt;</span> <span class="n">R</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">P</span> <span class="o">==</span> <span class="n">R</span> <span class="o">&amp;&amp;</span> <span class="n">Q</span> <span class="o">&gt;</span> <span class="n">S</span><span class="p">)))</span> <span class="p">{</span>
+                    <span class="n">block_start</span> <span class="o">+=</span> <span class="n">block_size</span><span class="p">;</span>
+                    <span class="k">continue</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">const</span> <span class="kt">double</span><span class="o">*</span> <span class="n">int_ptr</span> <span class="o">=</span> <span class="n">block_start</span><span class="p">;</span>
+                <span class="c1">// Query P,Q,R,S shells for metadata and loop over that quartet</span>
+                <span class="c1">// as usual, getting the integrals from the int_ptr buffer.</span>
+                <span class="n">block_start</span> <span class="o">+=</span> <span class="n">block_size</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Although this looks more complex, it’s essentially doing the same thing.  There
+are a number of differences that we’ll highlight now.</p>
+<section id="sieving">
+<h3>Sieving<a class="headerlink" href="#sieving" title="Permalink to this headline">¶</a></h3>
+<p>This is one of two breaking changes to the old style syntax.  Instead of
+constructing a sieve object, the integral object should be queried directly
+using the exact same syntax.  Requests for whether a shell is significant or a
+shell block is significant are both supported.  A sieve object is created if
+matching basis sets are found in either the bra or the ket.  For a density
+fitting integral (PQ|0A) where 0 is the null basis set and A is an auxiliary
+basis set the (PQ| pair will be used to construct all of the sieving data.</p>
+</section>
+<section id="buffer-address">
+<h3>Buffer address<a class="headerlink" href="#buffer-address" title="Permalink to this headline">¶</a></h3>
+<p>The old code copied integrals into a buffer owned by the integral object, whose
+address remained constant and could be retrieved by the <code class="docutils literal notranslate"><span class="pre">buffer()</span></code> member
+function.  To avoid unnecessary copies, the new code instead uses the integrals
+directly from the underlying integral engine’s memory, which may change with
+each call to compute integrals.  The integral engine provides a
+<code class="docutils literal notranslate"><span class="pre">std::vector&lt;const</span> <span class="pre">double*&gt;</span></code> containing the pointers to the start of each
+“chunk” of integrals.  For first derivatives there are 12 such “chunks”, which
+are ordered Px,Py,Pz,Qx,Qy,Qz,Rx,Ry,Rz,Sx,Sy,Sz, where the Px refers to the x
+derivative with respect to the basis functions in shell P.  Note that all
+integral derivatives are provided by the new integral code, unlike the previous
+version where only 9 of 12 were provided and the user was responsible for using
+translation invariance relationships to fill in the rest.  The addresses for
+each chunk are updated in the vector after each call to compute integrals, so
+the user should keep a const reference to that object, and query that for the
+address of interest.</p>
+</section>
+<section id="density-screening">
+<h3>Density Screening<a class="headerlink" href="#density-screening" title="Permalink to this headline">¶</a></h3>
+<p>The old code looked only at the integral to determine whether terms can be
+avoided <em>a priori</em>.  However, if the integral is to be contracted with a
+density or a density-like quantity, the screening can be performed on the
+product, which yields more sparsity.  To enable this, simply call the integral
+object’s <code class="docutils literal notranslate"><span class="pre">update_density</span></code> member, passing it a SharedMatrix holding the
+current density (remember that it changes during each iteration of the SCF) and
+the product will be considered during screening.  If only coulomb-like terms
+are to be computed, the <code class="docutils literal notranslate"><span class="pre">needs_exchange</span></code> argument to the integral object
+constructor should be set to false, otherwise it should be true to correcly
+account for products of the density and integrals that contribute to
+exchange-like terms.</p>
+</section>
+<section id="shell-blocking">
+<h3>Shell blocking<a class="headerlink" href="#shell-blocking" title="Permalink to this headline">¶</a></h3>
+<p>Each underlying integral engine knows whether it will use blocks, and will set up
+the metadata automatically.  Instead of looping over individual shells, the
+user should loop over blocks supplied by the integral object; these blocks will
+be just a single shell quartet combination for the case where blocking is not
+used. It is simple to loop over pairs within each block using C++11 syntax, as
+demonstrated in the code snippet above.  Only shell pairs with significant
+overlap are included in the shell block information, making this an efficient
+way to loop over non-negligible terms.</p>
+</section>
+<section id="permutational-symmetry">
+<h3>Permutational symmetry<a class="headerlink" href="#permutational-symmetry" title="Permalink to this headline">¶</a></h3>
+<p>The pairs within each block are optimized for efficiency.  First, they are
+screened during the integral object’s creation to ensure that only terms with
+appreciable overlap are stored.  Second, only P,Q combinations that are
+permutationally unique are stored, ordered with the higher angular momentum
+first.  Therefore care must be taken to ensure that the missing permutations
+are correctly accounted for when processing the integrals within the loop.  See
+the DirectJK code in libfock for an example of using this scheme for a Fock
+matrix build.</p>
+</section>
+<section id="using-bra-ket-symmetry">
+<h3>Using bra-ket symmetry<a class="headerlink" href="#using-bra-ket-symmetry" title="Permalink to this headline">¶</a></h3>
+<p>In cases where there is no batching performed, bra-ket symmetry can be
+trivially enforced by ensuring that one of the block indices is greater than or
+equal to the other.  When batching is used, the situation is trickier; some ket
+batches may contain a mixture of integrals that are bra-ket unique and those
+that are not.  To handle this we must do a coarse check at the top of the loop
+to see if <em>any</em> integrals in the batch are needed, which is implemented by
+asking the integral engine where to start looping in the ket via the call to
+<code class="docutils literal notranslate"><span class="pre">eri-&gt;first_RS_shell_block(PQpair_idx)</span></code>.  This is followed by a more fine
+grained check within the loops to filter individual integrals in the case where
+bra and ket have the same angular momentum and there’s a possibility of a
+handful of integrals coming from the ket that are redundant.  Note that the bra
+is not batched in any of our engines currently: only the ket is.  For this
+reason, density fitting integrals should be written as (A0|PQ) rather than
+(PQ|A0) where possible, because we want the ket to contain more functions than
+the bra for efficient blocking.</p>
+</section>
+<section id="instantiating-integral-objects">
+<h3>Instantiating integral objects<a class="headerlink" href="#instantiating-integral-objects" title="Permalink to this headline">¶</a></h3>
+<p>With sieving being introduced in the new integral objects, the cost of their
+construction has increased.  Although significantly cheaper than computing
+integrals themselves, construction of integral objects can be non-negligible,
+especially if many threads are used.  For example, this pattern can be found in
+old versions of the code:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TwoBodyAOInt</span><span class="o">&gt;&gt;</span> <span class="n">ints</span><span class="p">;</span>
+<span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TwoBodyAOInt</span><span class="o">&gt;</span><span class="p">(</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">eri</span><span class="p">()));</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="kr">thread</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="kr">thread</span> <span class="o">&lt;</span> <span class="n">num_threads</span><span class="p">;</span> <span class="kr">thread</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TwoBodyAOInt</span><span class="o">&gt;</span><span class="p">(</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">eri</span><span class="p">()));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This builds many objects and the cost can add up.  With the new scheme,
+integral objects are forced to implement a <cite>clone()</cite> member that can be used as
+follows:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TwoBodyAOInt</span><span class="o">&gt;&gt;</span> <span class="n">ints</span><span class="p">;</span>
+<span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TwoBodyAOInt</span><span class="o">&gt;</span><span class="p">(</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">eri</span><span class="p">()));</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="kr">thread</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="kr">thread</span> <span class="o">&lt;</span> <span class="n">num_threads</span><span class="p">;</span> <span class="kr">thread</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TwoBodyAOInt</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">()));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This method only incurs the cost of creating a single integral object, and
+performs much cheaper cloning operations to create the other objects for each
+thread.  Moreover, if integral objects are created only in the initialization
+of each code that uses them, and stored persistently, the cost of integral
+object creation is further reduced.</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Integrals in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#the-older-style">The older style</a></li>
+<li><a class="reference internal" href="#the-new-syntax">The new syntax</a><ul>
+<li><a class="reference internal" href="#sieving">Sieving</a></li>
+<li><a class="reference internal" href="#buffer-address">Buffer address</a></li>
+<li><a class="reference internal" href="#density-screening">Density Screening</a></li>
+<li><a class="reference internal" href="#shell-blocking">Shell blocking</a></li>
+<li><a class="reference internal" href="#permutational-symmetry">Permutational symmetry</a></li>
+<li><a class="reference internal" href="#using-bra-ket-symmetry">Using bra-ket symmetry</a></li>
+<li><a class="reference internal" href="#instantiating-integral-objects">Instantiating integral objects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="add_tests.html" title="Adding PSIthon Test Cases"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prog_blas.html" title="Linear Algebra in PSI4"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/prog_integrals.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+        <li class="nav-item nav-item-this"><a href="">Integrals in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
