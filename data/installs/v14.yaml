@@ -1,0 +1,145 @@
+enable : true
+menu:
+    - datakey: os
+      cells:
+      - title: Linux
+        icon: icon fa-linux
+        selected: true
+        jscode: linux
+        psi4conda: Linux
+        psi4condaext: sh
+        condacompiler: gcc
+        bashrc: bashrc
+        channel: ''
+
+      - title: MacOS
+        icon: icon fa-apple
+        selected: false
+        jscode: macos
+        psi4conda: MacOSX
+        psi4condaext: sh
+        condacompiler: clang
+        bashrc: bash_profile
+        channel: ''
+
+      - title: "Windows WSL"
+        icon: bicon fa-windows
+        selected: false
+        jscode: "windows wsl"
+        psi4conda: WindowsWSL
+        psi4condaext: sh
+        condacompiler: gcc
+        bashrc: bashrc
+        channel: ''
+
+      - title: "Windows"
+        icon: bicon fa-windows
+        selected: false
+        jscode: "windows native"
+        psi4conda: Windows
+        psi4condaext: exe
+        condacompiler: null
+        bashrc: null
+        channel: '-c conda-forge'
+
+    - datakey: pm
+      cells:
+      - title: installer
+        icon: icon fa-download
+        selected: true
+        jscode: installer
+
+      - title: conda
+        icon: icon fa-circle
+        selected: false
+        jscode: conda
+
+        #icon: bicon fa-docker
+
+      - title: source
+        icon: icon fa-code
+        selected: false
+        jscode: source
+
+    - datakey: python
+      cells:
+      - title: 3.6
+        icon: bicon fa-python
+        selected: false
+        jscode: "py3.6"
+
+      - title: 3.7
+        icon: bicon fa-python
+        selected: false
+        jscode: "py3.7"
+
+      - title: 3.8
+        icon: bicon fa-python
+        selected: true
+        jscode: "py3.8"
+
+      - title: 3.9
+        icon: bicon fa-python
+        selected: false
+        jscode: "py3.9"
+
+    # must not change first letters of title: p, s, n
+    - datakey: branch
+      cells:
+      - title: 'prev release, <span style="text-transform: lowercase;">v1.3.2</span>'
+        icon: icon fa-cube
+        selected: false
+        jscode: brp
+        channel: '-c psi4'
+        tag: '1.3.2'
+        hash: 'ecbda83'
+
+      - title: 'stable release, <span style="text-transform: lowercase;">v1.4.0</span>'
+        icon: icon fa-cube
+        selected: true 
+        jscode: brs
+        channel: '-c psi4'  # remember this one switches btwn rc and final
+        tag: '1.4'
+        hash: '9485035'
+
+      - title: nightly build
+        icon: icon fa-code-branch
+        selected: false
+        jscode: brn
+        channel: '-c psi4/label/dev'
+        #tag: false
+        tag: '1.5dev'
+        hash: master
+
+notes:
+    - icon: fab fa-linux
+      title: 64-bit; glibc 2.17 or higher.
+    - icon: fab fa-apple
+      title: 64-bit; OS X 10.10 or higher.
+    - icon: fab fa-windows
+      title: 64-bit; select between [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about) and native Windows (new with v1.4!).
+    - icon: fa fa-download
+      title: Download standalone command-line installer.
+    - icon: fa fa-circle
+      title: Use conda package manager.
+    - icon: fa fa-code
+      title: Build from source using tools and dependencies from conda.
+    - icon: fab fa-python
+      title: Python included, so choose the version you _want_, regardless of any you _have_.
+
+# make sure the below gets changed if the default selections get updated
+optsHandler: |
+        var opts = {
+                    os: 'linux',
+                    pm: 'installer',
+                    python: '3.8',
+                    branch: 's'
+                };
+
+                function buildMatcher() {
+                    return opts.pm.toLowerCase() + ',' + 
+                           opts.os.toLowerCase() + ',' +
+                           'py' + opts.python.toLowerCase() + ',' +
+                           'br' + opts.branch.charAt(0);
+                }
+
