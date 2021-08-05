@@ -1,0 +1,389 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Interfaces: Enhancing PSI4 Capabilities</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interface to NumPy" href="numpy.html" />
+    <link rel="prev" title="TDSCF: Time-dependent Hartree–Fock and density-functional theory" href="tdscf.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="numpy.html" title="Interface to NumPy"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="tdscf.html" title="TDSCF: Time-dependent Hartree–Fock and density-functional theory"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/interfacing.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+        <li class="nav-item nav-item-this"><a href="">Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="interfaces-enhancing-psifour-capabilities">
+<span id="sec-interfacing"></span><h1>Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities<a class="headerlink" href="#interfaces-enhancing-psifour-capabilities" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>‘s capabilities have been expanded by interfacing with other
+software packages. These programs aren’t necessary
+for <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> to operate and may require additional licences, special
+platform capabilities, <em>etc</em>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="numpy.html">Interface to NumPy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="numpy.html#basics">Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numpy.html#numpy-views">NumPy Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numpy.html#psifour-data-objects-with-irreps"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Data Objects with Irreps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numpy.html#array-to-matrix">Array to Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numpy.html#matrix-to-array">Matrix to Array</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="adcc.html">Interface to adcc by M. F. Herbst and M. Scheurer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="adcc.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adcc.html#keywords-for-adcc">Keywords for adcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adcc.html#how-to-configure-adcc-for-building-psi4">How to configure adcc for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="brianqc.html">Interface to the BrianQC GPU module by the BrianQC team</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brianqc.html#installing-brianqc">Installing BrianQC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brianqc.html#building-brianqc-s-user-built-components">Building BrianQC’s user-built components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brianqc.html#building-psifour-with-brianqc">Building <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> with BrianQC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brianqc.html#using-brianqc-from-psifour">Using BrianQC from <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="brianqc.html#keywords">Keywords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brianqc.html#environment-variables">Environment Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cfour.html">Interface to CFOUR by J. Stanton &amp; J. Gauss</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cfour.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfour.html#cfour-for-psifour-users">Cfour for <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfour.html#psifour-for-cfour-users"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> for Cfour Users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfour.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfour.html#functionality">Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfour.html#specification-details">Specification Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cfour.html#misc-running">Misc. Running</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chemps2.html">Interface to CheMPS2 by S. Wouters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chemps2.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chemps2.html#methods">Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chemps2.html#dmrg-keywords">DMRG Keywords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chemps2.html#how-to-configure-chemps2-for-building-psi4">How to configure CheMPS2 for building Psi4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chemps2.html#how-to-fix-plugin-needed-to-handle-lto-object-when-building-chemps2">How to fix “<code class="docutils literal notranslate"><span class="pre">plugin</span> <span class="pre">needed</span> <span class="pre">to</span> <span class="pre">handle</span> <span class="pre">lto</span> <span class="pre">object</span></code>” when building CheMPS2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cppe.html">Interface to CPPE by M. Scheurer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cppe.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cppe.html#using-the-polarizable-embedding-model">Using the polarizable embedding model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cppe.html#keywords-for-cppe">Keywords for CPPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cppe.html#how-to-configure-cppe-for-building-psi4">How to configure CPPE for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dftd3.html">Interface to DFTD3 by S. Grimme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dftd3.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dftd3.html#theory">Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dftd3.html#running-dftd3">Running DFTD3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dftd3.html#three-body-dispersion-corrections">Three-Body Dispersion Corrections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dkh.html">Interface to DKH by A. Wolf, M. Reiher, and B. A. Hess</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dkh.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dkh.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dkh.html#keywords">Keywords</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dkh.html#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dkh.html#how-to-configure-dkh-for-building-psi4">How to configure dkh for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="libefp.html">Interface to LIBEFP by I. Kaliman</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="libefp.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libefp.html#efp-fragments">EFP Fragments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libefp.html#molecule-specification">Molecule Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libefp.html#running-efp">Running EFP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libefp.html#fragment-library">Fragment Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libefp.html#how-to-configure-libefp-for-building-psi4">How to configure libefp for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="erd.html">Interface to ERD by N. Flocke and V. Lotrich</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="erd.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="erd.html#how-to-configure-erd-for-building-psi4">How to configure erd for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fchk.html">Interface to programs through FCHK files — <code class="xref py py-func docutils literal notranslate"><span class="pre">fchk()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugin_psi4fockci.html">Psi4FockCI: A General Fock-Space CI For Spin-Flip And IP/EA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugin_psi4fockci.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugin_psi4fockci.html#sample-input">Sample Input</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gau2grid.html">Interface to gau2grid by D. G. A. Smith</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gau2grid.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gau2grid.html#how-to-configure-gau2gridfor-building-psi4">How to configure gau2gridfor building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gcp.html">Interface to gCP by S. Grimme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gcp.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gcp.html#running-gcp">Running gCP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gdma.html">Interface to GDMA Distributed Multipole Analysis by A. J. Stone — <code class="xref py py-func docutils literal notranslate"><span class="pre">gdma()</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gdma.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gdma.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gdma.html#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gdma.html#how-to-configure-gdma-for-building-psi4">How to configure gdma for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="libint.html">Interface to Libint by E. Valeev</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="libint.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libint.html#how-to-configure-libint-for-building-psi4">How to configure Libint for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="molden.html">Interface to Molden — <code class="xref py py-func docutils literal notranslate"><span class="pre">molden()</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molden.html#options">Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mrcc.html">Interface to MRCC by M. Kállay</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mrcc.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrcc.html#running-mrcc">Running MRCC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mrcc.html#interface-details">Interface Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pcmsolver.html">Interface to PCMSolver by R. Di Remigio</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pcmsolver.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcmsolver.html#using-the-polarizable-continuum-model">Using the polarizable continuum model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcmsolver.html#keywords-for-pcmsolver">Keywords for PCMSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcmsolver.html#how-to-configure-pcmsolver-for-building-psi4">How to configure PCMSolver for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simint.html">Interface to SIMINT by B. Pritchard</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simint.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simint.html#how-to-configure-simint-for-building-psi4">How to configure simint for building Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugin_snsmp2.html">Spin-Network-Scaled MP2 (SNS-MP2) by D. E. Shaw</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugin_snsmp2.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugin_snsmp2.html#sample-input">Sample Input</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugin_v2rdm_casscf.html">Plugin v2rdm_casscf by A. E. DePrince</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugin_v2rdm_casscf.html#installation">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="libxc.html">Interface to Libxc by M. A. L. Marques</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="libxc.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libxc.html#how-to-configure-libxc-for-building-psi4">How to configure Libxc for building Psi4</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="numpy.html" title="Interface to NumPy"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="tdscf.html" title="TDSCF: Time-dependent Hartree–Fock and density-functional theory"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/interfacing.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+        <li class="nav-item nav-item-this"><a href="">Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

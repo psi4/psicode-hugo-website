@@ -1,0 +1,1917 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>SCF</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BASIS" href="scf__basis.html" />
+    <link rel="prev" title="SCREENING" href="sapt__screening.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="scf__basis.html" title="BASIS"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt__screening.html" title="SCREENING"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/autodir_options_c/module__scf.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../appendices.html" >Appendices</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+          <li class="nav-item nav-item-2"><a href="../autodoc_options_c_bymodule.html" accesskey="U">Keywords by Module</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">SCF</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="scf">
+<span id="apdx-scf"></span><h1>SCF<a class="headerlink" href="#scf" title="Permalink to this headline">¶</a></h1>
+<p>Performs self consistent field (Hartree-Fock and Density Functional Theory) computations. These are the starting points for most computations, so this code is called in most cases.</p>
+<div class="toctree-wrapper compound">
+</div>
+<section id="general-wavefunction-info">
+<span id="apdx-scfgeneralwavefunctioninfo"></span><h2>General Wavefunction Info<a class="headerlink" href="#general-wavefunction-info" title="Permalink to this headline">¶</a></h2>
+<section id="basis">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-BASIS-SCF"><span class="xref std std-term">BASIS</span></a><a class="headerlink" href="#basis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Primary basis set</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: <a class="reference internal" href="../basissets_byelement.html#apdx-basiselement"><span class="std std-ref">basis string</span></a></p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cholesky-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CHOLESKY_TOLERANCE-SCF"><span class="xref std std-term">CHOLESKY_TOLERANCE</span></a><a class="headerlink" href="#cholesky-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Tolerance for Cholesky decomposition of the ERI tensor</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-4</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-basis-scf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_BASIS_SCF-SCF"><span class="xref std std-term">DF_BASIS_SCF</span></a><a class="headerlink" href="#df-basis-scf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Auxiliary basis set for SCF density fitting computations. <a class="reference internal" href="../basissets_byfamily.html#apdx-basisfamily"><span class="std std-ref">Defaults</span></a> to a JKFIT basis.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: <a class="reference internal" href="../basissets_byelement.html#apdx-basiselement"><span class="std std-ref">basis string</span></a></p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-scf-guess">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_SCF_GUESS-SCF"><span class="xref std std-term">DF_SCF_GUESS</span></a><a class="headerlink" href="#df-scf-guess" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do a density fitting SCF calculation to converge the orbitals before switching to the use of exact integrals in a <a class="reference internal" href="../autodoc_glossary_options_c.html#term-SCF_TYPE-GLOBALS"><span class="xref std std-term">SCF_TYPE</span></a> <code class="docutils literal notranslate"><span class="pre">DIRECT</span></code> calculation</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="guess">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-GUESS-SCF"><span class="xref std std-term">GUESS</span></a><a class="headerlink" href="#guess" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The type of guess orbitals. Defaults to <code class="docutils literal notranslate"><span class="pre">READ</span></code> for geometry optimizations after the first step, to <code class="docutils literal notranslate"><span class="pre">CORE</span></code> for single atoms, and to <code class="docutils literal notranslate"><span class="pre">SAD</span></code> otherwise. The <code class="docutils literal notranslate"><span class="pre">HUCKEL</span></code> guess employs on-the-fly calculations like SAD, as described in doi:10.1021/acs.jctc.8b01089 which also describes the SAP guess.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: AUTO, CORE, GWH, SAD, SADNO, SAP, HUCKEL, READ</p></li>
+<li><p><strong>Default</strong>: AUTO</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="guess-mix">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-GUESS_MIX-SCF"><span class="xref std std-term">GUESS_MIX</span></a><a class="headerlink" href="#guess-mix" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Mix the HOMO/LUMO in UHF or UKS to break alpha/beta spatial symmetry. Useful to produce broken-symmetry unrestricted solutions. Notice that this procedure is defined only for calculations in C1 symmetry.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="guess-persist">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-GUESS_PERSIST-SCF"><span class="xref std std-term">GUESS_PERSIST</span></a><a class="headerlink" href="#guess-persist" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>If true, then repeat the specified guess procedure for the orbitals every time - even during a geometry optimization.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="ints-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-INTS_TOLERANCE-SCF"><span class="xref std std-term">INTS_TOLERANCE</span></a><a class="headerlink" href="#ints-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Schwarz screening threshold. Mininum absolute value below which TEI are neglected.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-12</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="max-mem-buf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MAX_MEM_BUF-SCF"><span class="xref std std-term">MAX_MEM_BUF</span></a><a class="headerlink" href="#max-mem-buf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Max memory per buf for PK algo REORDER, for debug and tuning</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="molden-write">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MOLDEN_WRITE-SCF"><span class="xref std std-term">MOLDEN_WRITE</span></a><a class="headerlink" href="#molden-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do write a MOLDEN output file? If so, the filename will end in .molden, and the prefix is determined by <a class="reference internal" href="../autodoc_glossary_options_c.html#term-WRITER_FILE_LABEL-GLOBALS"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> (if set), or else by the name of the output file plus the name of the current molecule.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="orbitals-write">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-ORBITALS_WRITE-SCF"><span class="xref std std-term">ORBITALS_WRITE</span></a><a class="headerlink" href="#orbitals-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>File name (case sensitive) to which to serialize Wavefunction orbital data.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="print-basis">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PRINT_BASIS-SCF"><span class="xref std std-term">PRINT_BASIS</span></a><a class="headerlink" href="#print-basis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do print the basis set?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="print-mos">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PRINT_MOS-SCF"><span class="xref std std-term">PRINT_MOS</span></a><a class="headerlink" href="#print-mos" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do print the molecular orbitals?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="qchf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-QCHF-SCF"><span class="xref std std-term">QCHF</span></a><a class="headerlink" href="#qchf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do perform a QCHF computation?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="reference">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-REFERENCE-SCF"><span class="xref std std-term">REFERENCE</span></a><a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Reference wavefunction type. <strong>Cfour Interface:</strong> Keyword translates into <a class="reference internal" href="../autodoc_glossary_options_c.html#term-CFOUR_REFERENCE-CFOUR"><span class="xref std std-term">CFOUR_REFERENCE</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: RHF, ROHF, UHF, CUHF, RKS, UKS</p></li>
+<li><p><strong>Default</strong>: RHF</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="save-jk">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAVE_JK-SCF"><span class="xref std std-term">SAVE_JK</span></a><a class="headerlink" href="#save-jk" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Keep JK object for later use?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="scf-mem-safety-factor">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SCF_MEM_SAFETY_FACTOR-SCF"><span class="xref std std-term">SCF_MEM_SAFETY_FACTOR</span></a><a class="headerlink" href="#scf-mem-safety-factor" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Memory safety factor for allocating JK</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.75</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="scf-properties">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SCF_PROPERTIES-SCF"><span class="xref std std-term">SCF_PROPERTIES</span></a><a class="headerlink" href="#scf-properties" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>SCF Properties to calculate after an energy evaluation. Note, this keyword is not used for property evaluations.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="s-cholesky-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-S_CHOLESKY_TOLERANCE-SCF"><span class="xref std std-term">S_CHOLESKY_TOLERANCE</span></a><a class="headerlink" href="#s-cholesky-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Tolerance for partial Cholesky decomposition of overlap matrix.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-8</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="s-orthogonalization">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-S_ORTHOGONALIZATION-SCF"><span class="xref std std-term">S_ORTHOGONALIZATION</span></a><a class="headerlink" href="#s-orthogonalization" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>SO orthogonalization: automatic, symmetric, or canonical?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: AUTO, SYMMETRIC, CANONICAL, PARTIALCHOLESKY</p></li>
+<li><p><strong>Default</strong>: AUTO</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="s-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-S_TOLERANCE-SCF"><span class="xref std std-term">S_TOLERANCE</span></a><a class="headerlink" href="#s-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum S matrix eigenvalue to allow before linear dependencies are removed.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-7</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="convergence-control-stabilization">
+<span id="apdx-scfconvergencecontrolstabilization"></span><h2>Convergence Control/Stabilization<a class="headerlink" href="#convergence-control-stabilization" title="Permalink to this headline">¶</a></h2>
+<section id="basis-guess">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-BASIS_GUESS-SCF"><span class="xref std std-term">BASIS_GUESS</span></a><a class="headerlink" href="#basis-guess" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Accelerate convergence by performing a preliminary SCF with this small basis set followed by projection into the full target basis. A value of <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> turns on projection using the <a class="reference internal" href="../basissets_byfamily.html#apdx-basisfamily"><span class="std std-ref">Defaults</span></a> small basis set 3-21G, pcseg-0, or def2-SV(P).</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: FALSE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="damping-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DAMPING_CONVERGENCE-SCF"><span class="xref std std-term">DAMPING_CONVERGENCE</span></a><a class="headerlink" href="#damping-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The density convergence threshold after which damping is no longer performed, if it is enabled. It is recommended to leave damping on until convergence, which is the default. <strong>Cfour Interface:</strong> Keyword translates into <a class="reference internal" href="../autodoc_glossary_options_c.html#term-CFOUR_SCF_DAMPING-CFOUR"><span class="xref std std-term">CFOUR_SCF_DAMPING</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1.0e-18</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="damping-percentage">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DAMPING_PERCENTAGE-SCF"><span class="xref std std-term">DAMPING_PERCENTAGE</span></a><a class="headerlink" href="#damping-percentage" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The amount (percentage) of damping to apply to the early density updates. 0 will result in a full update, 100 will completely stall the update. A value around 20 (which corresponds to 20% of the previous iteration’s density being mixed into the current density) could help to solve problems with oscillatory convergence.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-basis-guess">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_BASIS_GUESS-SCF"><span class="xref std std-term">DF_BASIS_GUESS</span></a><a class="headerlink" href="#df-basis-guess" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>When <a class="reference internal" href="../autodoc_glossary_options_c.html#term-BASIS_GUESS-SCF"><span class="xref std std-term">BASIS_GUESS</span></a> is active, run the preliminary scf in density-fitted mode with this as fitting basis for the small basis set. A value of <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> turns on density fitting with the default basis, otherwise the specified basis is used.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: <a class="reference internal" href="../basissets_byelement.html#apdx-basiselement"><span class="std std-ref">basis string</span></a></p></li>
+<li><p><strong>Default</strong>: FALSE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="diis">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DIIS-SCF"><span class="xref std std-term">DIIS</span></a><a class="headerlink" href="#diis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use DIIS extrapolation to accelerate convergence?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="diis-max-vecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DIIS_MAX_VECS-SCF"><span class="xref std std-term">DIIS_MAX_VECS</span></a><a class="headerlink" href="#diis-max-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of error vectors stored for DIIS extrapolation</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 10</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="diis-min-vecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DIIS_MIN_VECS-SCF"><span class="xref std std-term">DIIS_MIN_VECS</span></a><a class="headerlink" href="#diis-min-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum number of error vectors stored for DIIS extrapolation</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 2</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="diis-rms-error">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DIIS_RMS_ERROR-SCF"><span class="xref std std-term">DIIS_RMS_ERROR</span></a><a class="headerlink" href="#diis-rms-error" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Use RMS error instead of the more robust absolute error?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="diis-start">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DIIS_START-SCF"><span class="xref std std-term">DIIS_START</span></a><a class="headerlink" href="#diis-start" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The minimum iteration to start storing DIIS vectors</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 1</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="d-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-D_CONVERGENCE-SCF"><span class="xref std std-term">D_CONVERGENCE</span></a><a class="headerlink" href="#d-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for SCF density, defined as the RMS or maximum absolute value of the orbital gradient. See Table <a class="reference internal" href="../scf.html#table-conv-scf"><span class="std std-ref">SCF Convergence &amp; Algorithm</span></a> for default convergence criteria for different calculation types. <strong>Cfour Interface:</strong> Keyword translates into <a class="reference internal" href="../autodoc_glossary_options_c.html#term-CFOUR_SCF_CONV-CFOUR"><span class="xref std std-term">CFOUR_SCF_CONV</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="e-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-E_CONVERGENCE-SCF"><span class="xref std std-term">E_CONVERGENCE</span></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for SCF energy. See Table <a class="reference internal" href="../scf.html#table-conv-scf"><span class="std std-ref">SCF Convergence &amp; Algorithm</span></a> for default convergence criteria for different calculation types.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="fail-on-maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FAIL_ON_MAXITER-SCF"><span class="xref std std-term">FAIL_ON_MAXITER</span></a><a class="headerlink" href="#fail-on-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Fail if we reach maxiter without converging?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="level-shift">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-LEVEL_SHIFT-SCF"><span class="xref std std-term">LEVEL_SHIFT</span></a><a class="headerlink" href="#level-shift" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use a level shift?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="level-shift-cutoff">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-LEVEL_SHIFT_CUTOFF-SCF"><span class="xref std std-term">LEVEL_SHIFT_CUTOFF</span></a><a class="headerlink" href="#level-shift-cutoff" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>DIIS error at which to stop applying the level shift</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1e-2</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MAXITER-SCF"><span class="xref std std-term">MAXITER</span></a><a class="headerlink" href="#maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of iterations. <strong>Cfour Interface:</strong> Keyword translates into <a class="reference internal" href="../autodoc_glossary_options_c.html#term-CFOUR_SCF_MAXCYC-CFOUR"><span class="xref std std-term">CFOUR_SCF_MAXCYC</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 100</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mom-occ">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MOM_OCC-SCF"><span class="xref std std-term">MOM_OCC</span></a><a class="headerlink" href="#mom-occ" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The absolute indices of orbitals to excite from in MOM (+/- for alpha/beta)</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mom-start">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MOM_START-SCF"><span class="xref std std-term">MOM_START</span></a><a class="headerlink" href="#mom-start" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The iteration to start MOM on (or 0 for no MOM)</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mom-vir">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MOM_VIR-SCF"><span class="xref std std-term">MOM_VIR</span></a><a class="headerlink" href="#mom-vir" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The absolute indices of orbitals to excite to in MOM (+/- for alpha/beta)</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="soscf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SOSCF-SCF"><span class="xref std std-term">SOSCF</span></a><a class="headerlink" href="#soscf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use second-order SCF convergence methods?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="soscf-conv">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SOSCF_CONV-SCF"><span class="xref std std-term">SOSCF_CONV</span></a><a class="headerlink" href="#soscf-conv" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Second order convergence threshold. Cease microiterating at this value.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 5.0e-3</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="soscf-max-iter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SOSCF_MAX_ITER-SCF"><span class="xref std std-term">SOSCF_MAX_ITER</span></a><a class="headerlink" href="#soscf-max-iter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of second-order microiterations to perform.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 5</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="soscf-min-iter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SOSCF_MIN_ITER-SCF"><span class="xref std std-term">SOSCF_MIN_ITER</span></a><a class="headerlink" href="#soscf-min-iter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum number of second-order microiterations to perform.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 1</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="soscf-print">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SOSCF_PRINT-SCF"><span class="xref std std-term">SOSCF_PRINT</span></a><a class="headerlink" href="#soscf-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do we print the SOSCF microiterations?.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="soscf-start-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SOSCF_START_CONVERGENCE-SCF"><span class="xref std std-term">SOSCF_START_CONVERGENCE</span></a><a class="headerlink" href="#soscf-start-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>When to start second-order SCF iterations based on gradient RMS.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1.0e-2</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="stability-analysis">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-STABILITY_ANALYSIS-SCF"><span class="xref std std-term">STABILITY_ANALYSIS</span></a><a class="headerlink" href="#stability-analysis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether to perform stability analysis after convergence. NONE prevents analysis being performed. CHECK will print out the analysis of the wavefunction stability at the end of the computation. FOLLOW will perform the analysis and, if a totally symmetric instability is found, will attempt to follow the eigenvector and re-run the computations to find a stable solution.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: NONE, CHECK, FOLLOW</p></li>
+<li><p><strong>Default</strong>: NONE</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="fractional-occupation-uhf-uks">
+<span id="apdx-scffractionaloccupationuhfuks"></span><h2>Fractional Occupation UHF/UKS<a class="headerlink" href="#fractional-occupation-uhf-uks" title="Permalink to this headline">¶</a></h2>
+<section id="frac-diis">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FRAC_DIIS-SCF"><span class="xref std std-term">FRAC_DIIS</span></a><a class="headerlink" href="#frac-diis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use DIIS extrapolation to accelerate convergence in frac?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="frac-load">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FRAC_LOAD-SCF"><span class="xref std std-term">FRAC_LOAD</span></a><a class="headerlink" href="#frac-load" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do recompute guess from stored orbitals?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="frac-occ">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FRAC_OCC-SCF"><span class="xref std std-term">FRAC_OCC</span></a><a class="headerlink" href="#frac-occ" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The absolute indices of occupied orbitals to fractionally occupy (+/- for alpha/beta)</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="frac-renormalize">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FRAC_RENORMALIZE-SCF"><span class="xref std std-term">FRAC_RENORMALIZE</span></a><a class="headerlink" href="#frac-renormalize" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do renormalize C matrices prior to writing to checkpoint?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="frac-start">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FRAC_START-SCF"><span class="xref std std-term">FRAC_START</span></a><a class="headerlink" href="#frac-start" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The iteration to start fractionally occupying orbitals (or 0 for no fractional occupation)</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="frac-val">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FRAC_VAL-SCF"><span class="xref std std-term">FRAC_VAL</span></a><a class="headerlink" href="#frac-val" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The occupations of the orbital indices specified above (<span class="math notranslate nohighlight">\(0.0\le {\rm occ} \le 1.0\)</span>)</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="environmental-effects">
+<span id="apdx-scfenvironmentaleffects"></span><h2>Environmental Effects<a class="headerlink" href="#environmental-effects" title="Permalink to this headline">¶</a></h2>
+<section id="extern">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-EXTERN-SCF"><span class="xref std std-term">EXTERN</span></a><a class="headerlink" href="#extern" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>An ExternalPotential (built by Python or nullptr/None)</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="onepot-grid-read">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-ONEPOT_GRID_READ-SCF"><span class="xref std std-term">ONEPOT_GRID_READ</span></a><a class="headerlink" href="#onepot-grid-read" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Read an external potential from the .dx file?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="perturb-dipole">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PERTURB_DIPOLE-SCF"><span class="xref std std-term">PERTURB_DIPOLE</span></a><a class="headerlink" href="#perturb-dipole" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>An array of length three describing the magnitude (atomic units) of the dipole field in the {x,y,z} directions</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="perturb-h">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PERTURB_H-SCF"><span class="xref std std-term">PERTURB_H</span></a><a class="headerlink" href="#perturb-h" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do perturb the Hamiltonian?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="perturb-magnitude">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PERTURB_MAGNITUDE-SCF"><span class="xref std std-term">PERTURB_MAGNITUDE</span></a><a class="headerlink" href="#perturb-magnitude" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Size of the perturbation (applies only to dipole perturbations). Deprecated - use PERTURB_DIPOLE instead</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="perturb-with">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PERTURB_WITH-SCF"><span class="xref std std-term">PERTURB_WITH</span></a><a class="headerlink" href="#perturb-with" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The operator used to perturb the Hamiltonian, if requested. DIPOLE_X, DIPOLE_Y and DIPOLE_Z will be removed in favor of the DIPOLE option in the future</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: DIPOLE, DIPOLE_X, DIPOLE_Y, DIPOLE_Z, EMBPOT, SPHERE, DX</p></li>
+<li><p><strong>Default</strong>: DIPOLE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="phi-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PHI_POINTS-SCF"><span class="xref std std-term">PHI_POINTS</span></a><a class="headerlink" href="#phi-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of azimuthal grid points for spherical potential integration</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 360</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="radius">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-RADIUS-SCF"><span class="xref std std-term">RADIUS</span></a><a class="headerlink" href="#radius" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Radius (bohr) of a hard-sphere external potential</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 10.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="r-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-R_POINTS-SCF"><span class="xref std std-term">R_POINTS</span></a><a class="headerlink" href="#r-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of radial grid points for spherical potential integration</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 100</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="theta-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-THETA_POINTS-SCF"><span class="xref std std-term">THETA_POINTS</span></a><a class="headerlink" href="#theta-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of colatitude grid points for spherical potential integration</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 360</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="thickness">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-THICKNESS-SCF"><span class="xref std std-term">THICKNESS</span></a><a class="headerlink" href="#thickness" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Thickness (bohr) of a hard-sphere external potential</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 20.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="dfscf-algorithm">
+<span id="apdx-scfdfscfalgorithm"></span><h2>DFSCF Algorithm<a class="headerlink" href="#dfscf-algorithm" title="Permalink to this headline">¶</a></h2>
+<section id="df-bump-r0">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_BUMP_R0-SCF"><span class="xref std std-term">DF_BUMP_R0</span></a><a class="headerlink" href="#df-bump-r0" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Bump function min radius</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-bump-r1">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_BUMP_R1-SCF"><span class="xref std std-term">DF_BUMP_R1</span></a><a class="headerlink" href="#df-bump-r1" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Bump function max radius</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-domains">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_DOMAINS-SCF"><span class="xref std std-term">DF_DOMAINS</span></a><a class="headerlink" href="#df-domains" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>FastDF geometric fitting domain selection algorithm</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: DIATOMIC, SPHERES</p></li>
+<li><p><strong>Default</strong>: DIATOMIC</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-ints-num-threads">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_INTS_NUM_THREADS-SCF"><span class="xref std std-term">DF_INTS_NUM_THREADS</span></a><a class="headerlink" href="#df-ints-num-threads" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of threads for integrals (may be turned down if memory is an issue). 0 is blank</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-metric">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_METRIC-SCF"><span class="xref std std-term">DF_METRIC</span></a><a class="headerlink" href="#df-metric" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>FastDF Fitting Metric</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: COULOMB, EWALD, OVERLAP</p></li>
+<li><p><strong>Default</strong>: COULOMB</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-theta">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_THETA-SCF"><span class="xref std std-term">DF_THETA</span></a><a class="headerlink" href="#df-theta" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>FastDF SR Ewald metric range separation parameter</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="sad-guess-algorithm">
+<span id="apdx-scfsadguessalgorithm"></span><h2>SAD Guess Algorithm<a class="headerlink" href="#sad-guess-algorithm" title="Permalink to this headline">¶</a></h2>
+<section id="sad-d-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAD_D_CONVERGENCE-SCF"><span class="xref std std-term">SAD_D_CONVERGENCE</span></a><a class="headerlink" href="#sad-d-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for SCF density in the SAD guess, analogous to <a class="reference internal" href="../autodoc_glossary_options_c.html#term-D_CONVERGENCE-SCF"><span class="xref std std-term">D_CONVERGENCE</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-5</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sad-e-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAD_E_CONVERGENCE-SCF"><span class="xref std std-term">SAD_E_CONVERGENCE</span></a><a class="headerlink" href="#sad-e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for SCF energy in the SAD guess, analogous to <a class="reference internal" href="../autodoc_glossary_options_c.html#term-E_CONVERGENCE-SCF"><span class="xref std std-term">E_CONVERGENCE</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-5</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="dft">
+<span id="apdx-scfdft"></span><h2>DFT<a class="headerlink" href="#dft" title="Permalink to this headline">¶</a></h2>
+<section id="dft-alpha">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_ALPHA-SCF"><span class="xref std std-term">DFT_ALPHA</span></a><a class="headerlink" href="#dft-alpha" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The DFT Exact-exchange parameter</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-alpha-c">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_ALPHA_C-SCF"><span class="xref std std-term">DFT_ALPHA_C</span></a><a class="headerlink" href="#dft-alpha-c" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The DFT Correlation hybrid parameter</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-basis-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_BASIS_TOLERANCE-SCF"><span class="xref std std-term">DFT_BASIS_TOLERANCE</span></a><a class="headerlink" href="#dft-basis-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>DFT basis cutoff.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1.0e-12</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-bs-radius-alpha">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_BS_RADIUS_ALPHA-SCF"><span class="xref std std-term">DFT_BS_RADIUS_ALPHA</span></a><a class="headerlink" href="#dft-bs-radius-alpha" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Factor for effective BS radius in radial grid.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-dispersion-parameters">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_DISPERSION_PARAMETERS-SCF"><span class="xref std std-term">DFT_DISPERSION_PARAMETERS</span></a><a class="headerlink" href="#dft-dispersion-parameters" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Parameters defining the dispersion correction. See Table <a class="reference internal" href="../dft_byfunctional.html#table-dft-disp"><span class="std std-ref">-D Functionals</span></a> for default values and Table <a class="reference internal" href="../dftd3.html#table-dashd"><span class="std std-ref">Dispersion Corrections</span></a> for the order in which parameters are to be specified in this array option. Unused for functionals constructed by user.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-grac-alpha">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_GRAC_ALPHA-SCF"><span class="xref std std-term">DFT_GRAC_ALPHA</span></a><a class="headerlink" href="#dft-grac-alpha" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The gradient regularized asymptotic correction alpha value</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.5</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-grac-beta">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_GRAC_BETA-SCF"><span class="xref std std-term">DFT_GRAC_BETA</span></a><a class="headerlink" href="#dft-grac-beta" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The gradient regularized asymptotic correction beta value</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 40.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-grac-shift">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_GRAC_SHIFT-SCF"><span class="xref std std-term">DFT_GRAC_SHIFT</span></a><a class="headerlink" href="#dft-grac-shift" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The gradient regularized asymptotic correction shift value</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-nuclear-scheme">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_NUCLEAR_SCHEME-SCF"><span class="xref std std-term">DFT_NUCLEAR_SCHEME</span></a><a class="headerlink" href="#dft-nuclear-scheme" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Nuclear Scheme.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: TREUTLER, BECKE, NAIVE, STRATMANN, SBECKE</p></li>
+<li><p><strong>Default</strong>: TREUTLER</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-omega">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_OMEGA-SCF"><span class="xref std std-term">DFT_OMEGA</span></a><a class="headerlink" href="#dft-omega" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The DFT Range-separation parameter</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-omega-c">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_OMEGA_C-SCF"><span class="xref std std-term">DFT_OMEGA_C</span></a><a class="headerlink" href="#dft-omega-c" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The DFT Correlation Range-separation parameter</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-pruning-scheme">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_PRUNING_SCHEME-SCF"><span class="xref std std-term">DFT_PRUNING_SCHEME</span></a><a class="headerlink" href="#dft-pruning-scheme" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Select approach for pruning. Options <code class="docutils literal notranslate"><span class="pre">ROBUST</span></code> and <code class="docutils literal notranslate"><span class="pre">TREUTLER</span></code> prune based on regions (proximity to nucleus) while <code class="docutils literal notranslate"><span class="pre">FLAT</span></code> <code class="docutils literal notranslate"><span class="pre">P_GAUSSIAN</span></code> <code class="docutils literal notranslate"><span class="pre">D_GAUSSIAN</span></code> <code class="docutils literal notranslate"><span class="pre">P_SLATER</span></code> <code class="docutils literal notranslate"><span class="pre">D_SLATER</span></code> <code class="docutils literal notranslate"><span class="pre">LOG_GAUSSIAN</span></code> <code class="docutils literal notranslate"><span class="pre">LOG_SLATER</span></code> prune based on decaying functions (experts only!). The recommended scheme is <code class="docutils literal notranslate"><span class="pre">ROBUST</span></code>.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: NONE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-radial-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_RADIAL_POINTS-SCF"><span class="xref std std-term">DFT_RADIAL_POINTS</span></a><a class="headerlink" href="#dft-radial-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of radial points.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 75</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-radial-scheme">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_RADIAL_SCHEME-SCF"><span class="xref std std-term">DFT_RADIAL_SCHEME</span></a><a class="headerlink" href="#dft-radial-scheme" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Radial Scheme.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: TREUTLER, BECKE, MULTIEXP, EM, MURA</p></li>
+<li><p><strong>Default</strong>: TREUTLER</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-spherical-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_SPHERICAL_POINTS-SCF"><span class="xref std std-term">DFT_SPHERICAL_POINTS</span></a><a class="headerlink" href="#dft-spherical-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of spherical points (A <a class="reference internal" href="../dft.html#table-lebedevorder"><span class="std std-ref">Lebedev Points</span></a> number).</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 302</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-spherical-scheme">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_SPHERICAL_SCHEME-SCF"><span class="xref std std-term">DFT_SPHERICAL_SCHEME</span></a><a class="headerlink" href="#dft-spherical-scheme" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Spherical Scheme.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: LEBEDEV</p></li>
+<li><p><strong>Default</strong>: LEBEDEV</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-v2-rho-cutoff">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_V2_RHO_CUTOFF-SCF"><span class="xref std std-term">DFT_V2_RHO_CUTOFF</span></a><a class="headerlink" href="#dft-v2-rho-cutoff" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minima rho cutoff for the second derivative</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.e-6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-vv10-b">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_VV10_B-SCF"><span class="xref std std-term">DFT_VV10_B</span></a><a class="headerlink" href="#dft-vv10-b" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Define VV10 parameter b</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-vv10-c">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_VV10_C-SCF"><span class="xref std std-term">DFT_VV10_C</span></a><a class="headerlink" href="#dft-vv10-c" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Define VV10 parameter C</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-vv10-postscf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_VV10_POSTSCF-SCF"><span class="xref std std-term">DFT_VV10_POSTSCF</span></a><a class="headerlink" href="#dft-vv10-postscf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>post-scf VV10 correction</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-vv10-radial-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_VV10_RADIAL_POINTS-SCF"><span class="xref std std-term">DFT_VV10_RADIAL_POINTS</span></a><a class="headerlink" href="#dft-vv10-radial-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of radial points for VV10 NL integration.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 50</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-vv10-spherical-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_VV10_SPHERICAL_POINTS-SCF"><span class="xref std std-term">DFT_VV10_SPHERICAL_POINTS</span></a><a class="headerlink" href="#dft-vv10-spherical-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of spherical points (A <a class="reference internal" href="../dft.html#table-lebedevorder"><span class="std std-ref">Lebedev Points</span></a> number) for VV10 NL integration.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 146</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="local-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-LOCAL_CONVERGENCE-SCF"><span class="xref std std-term">LOCAL_CONVERGENCE</span></a><a class="headerlink" href="#local-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The convergence on the orbital localization procedure</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-12</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="local-maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-LOCAL_MAXITER-SCF"><span class="xref std std-term">LOCAL_MAXITER</span></a><a class="headerlink" href="#local-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The maxiter on the orbital localization procedure</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 200</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="nl-dispersion-parameters">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-NL_DISPERSION_PARAMETERS-SCF"><span class="xref std std-term">NL_DISPERSION_PARAMETERS</span></a><a class="headerlink" href="#nl-dispersion-parameters" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Parameters defining the -NL/-V dispersion correction. First b, then C</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="save-uhf-nos">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAVE_UHF_NOS-SCF"><span class="xref std std-term">SAVE_UHF_NOS</span></a><a class="headerlink" href="#save-uhf-nos" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Save the UHF NOs</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="uhf-noons">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-UHF_NOONS-SCF"><span class="xref std std-term">UHF_NOONS</span></a><a class="headerlink" href="#uhf-noons" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The number of NOONs to print in a UHF calc</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: 3</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="tdscf">
+<span id="apdx-scftdscf"></span><h2>TDSCF<a class="headerlink" href="#tdscf" title="Permalink to this headline">¶</a></h2>
+<section id="tdscf-coeff-cutoff">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_COEFF_CUTOFF-SCF"><span class="xref std std-term">TDSCF_COEFF_CUTOFF</span></a><a class="headerlink" href="#tdscf-coeff-cutoff" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Cutoff for printing excitations and de-excitations icontributing to each excited state</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.1</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tdscf-guess">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_GUESS-SCF"><span class="xref std std-term">TDSCF_GUESS</span></a><a class="headerlink" href="#tdscf-guess" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Guess type, only ‘denominators’ currently supported</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: DENOMINATORS</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tdscf-maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_MAXITER-SCF"><span class="xref std std-term">TDSCF_MAXITER</span></a><a class="headerlink" href="#tdscf-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of TDSCF solver iterations</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 60</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tdscf-print">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_PRINT-SCF"><span class="xref std std-term">TDSCF_PRINT</span></a><a class="headerlink" href="#tdscf-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Verbosity level in TDSCF</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 1</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tdscf-r-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_R_CONVERGENCE-SCF"><span class="xref std std-term">TDSCF_R_CONVERGENCE</span></a><a class="headerlink" href="#tdscf-r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence threshold for the norm of the residual vector. If unset, default based on <a class="reference internal" href="../autodoc_glossary_options_c.html#term-D_CONVERGENCE-SCF"><span class="xref std std-term">D_CONVERGENCE</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-4</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tdscf-states">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_STATES-SCF"><span class="xref std std-term">TDSCF_STATES</span></a><a class="headerlink" href="#tdscf-states" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of roots (excited states) we should seek to converge. This can be either an integer (total number of states to seek) or a list (number of states per irrep). The latter is only valid if the system has symmetry. Furthermore, the total number of states will be redistributed among irreps when symmetry is used.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tdscf-tda">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_TDA-SCF"><span class="xref std std-term">TDSCF_TDA</span></a><a class="headerlink" href="#tdscf-tda" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Run with Tamm-Dancoff approximation (TDA), uses random-phase approximation (RPA) when false</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tdscf-tdm-print">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_TDM_PRINT-SCF"><span class="xref std std-term">TDSCF_TDM_PRINT</span></a><a class="headerlink" href="#tdscf-tdm-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Which transition dipole moments to print out: - E_TDM_LEN : electric transition dipole moments, length representation - E_TDM_VEL : electric transition dipole moments, velocity representation - M_TDM : magnetic transition dipole moments</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tdscf-triplets">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TDSCF_TRIPLETS-SCF"><span class="xref std std-term">TDSCF_TRIPLETS</span></a><a class="headerlink" href="#tdscf-triplets" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Controls inclusion of triplet states, which is only valid for restricted references. Valid options: - none : No triplets computed (default) - also : lowest-energy triplets and singlets included, in 50-50 ratio. Note that singlets are privileged, i.e. if seeking to converge 5 states in total, 3 will be singlets and 2 will be triplets. - only : Only triplet states computed</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: NONE, ALSO, ONLY</p></li>
+<li><p><strong>Default</strong>: NONE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="wcombine">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-WCOMBINE-SCF"><span class="xref std std-term">WCOMBINE</span></a><a class="headerlink" href="#wcombine" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>combine omega exchange and Hartree–Fock exchange into one matrix for efficiency? Default is True for MemDFJK (itself the default for <a class="reference internal" href="../autodoc_glossary_options_c.html#term-SCF_TYPE-GLOBALS"><span class="xref std std-term">SCF_TYPE</span></a> DF), False otherwise as not yet implemented.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-general-wavefunction-info">
+<span id="apdx-scfegeneralwavefunctioninfo"></span><h2><em>Expert</em> General Wavefunction Info<a class="headerlink" href="#expert-general-wavefunction-info" title="Permalink to this headline">¶</a></h2>
+<section id="pk-algo">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PK_ALGO-SCF"><span class="xref std std-term">PK_ALGO</span></a><a class="headerlink" href="#pk-algo" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Select the PK algorithm to use. For debug purposes, selection will be automated later.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: REORDER, YOSHIMINE</p></li>
+<li><p><strong>Default</strong>: REORDER</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="pk-all-nonsym">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PK_ALL_NONSYM-SCF"><span class="xref std std-term">PK_ALL_NONSYM</span></a><a class="headerlink" href="#pk-all-nonsym" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>All densities are considered non symmetric, debug only.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="pk-max-buckets">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PK_MAX_BUCKETS-SCF"><span class="xref std std-term">PK_MAX_BUCKETS</span></a><a class="headerlink" href="#pk-max-buckets" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum numbers of batches to read PK supermatrix.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 500</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="pk-no-incore">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PK_NO_INCORE-SCF"><span class="xref std std-term">PK_NO_INCORE</span></a><a class="headerlink" href="#pk-no-incore" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Deactivate in core algorithm. For debug purposes.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="wfn">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-WFN-SCF"><span class="xref std std-term">WFN</span></a><a class="headerlink" href="#wfn" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Wavefunction type</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: SCF</p></li>
+<li><p><strong>Default</strong>: SCF</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-convergence-control-stabilization">
+<span id="apdx-scfeconvergencecontrolstabilization"></span><h2><em>Expert</em> Convergence Control/Stabilization<a class="headerlink" href="#expert-convergence-control-stabilization" title="Permalink to this headline">¶</a></h2>
+<section id="follow-step-increment">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FOLLOW_STEP_INCREMENT-SCF"><span class="xref std std-term">FOLLOW_STEP_INCREMENT</span></a><a class="headerlink" href="#follow-step-increment" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>When using STABILITY_ANALYSIS = FOLLOW, the increment to modify <a class="reference internal" href="../autodoc_glossary_options_c.html#term-FOLLOW_STEP_SCALE-SCF"><span class="xref std std-term">FOLLOW_STEP_SCALE</span></a> value if we end up in the same SCF solution.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.2</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="follow-step-scale">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FOLLOW_STEP_SCALE-SCF"><span class="xref std std-term">FOLLOW_STEP_SCALE</span></a><a class="headerlink" href="#follow-step-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>When using <a class="reference internal" href="../autodoc_glossary_options_c.html#term-STABILITY_ANALYSIS-SCF"><span class="xref std std-term">STABILITY_ANALYSIS</span></a> <code class="docutils literal notranslate"><span class="pre">FOLLOW</span></code>, how much to scale the step along the eigenvector by. A full step of <span class="math notranslate nohighlight">\(pi/2\)</span> corresponds to a value of 1.0.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.5</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="max-attempts">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MAX_ATTEMPTS-SCF"><span class="xref std std-term">MAX_ATTEMPTS</span></a><a class="headerlink" href="#max-attempts" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>When using <a class="reference internal" href="../autodoc_glossary_options_c.html#term-STABILITY_ANALYSIS-SCF"><span class="xref std std-term">STABILITY_ANALYSIS</span></a> <code class="docutils literal notranslate"><span class="pre">FOLLOW</span></code>, maximum number of orbital optimization attempts to make the wavefunction stable.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 1</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-parallel-runtime">
+<span id="apdx-scfeparallelruntime"></span><h2><em>Expert</em> Parallel Runtime<a class="headerlink" href="#expert-parallel-runtime" title="Permalink to this headline">¶</a></h2>
+<section id="distributed-matrix">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DISTRIBUTED_MATRIX-SCF"><span class="xref std std-term">DISTRIBUTED_MATRIX</span></a><a class="headerlink" href="#distributed-matrix" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The dimension sizes of the distributed matrix</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="parallel">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PARALLEL-SCF"><span class="xref std std-term">PARALLEL</span></a><a class="headerlink" href="#parallel" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do run in parallel?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="process-grid">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PROCESS_GRID-SCF"><span class="xref std std-term">PROCESS_GRID</span></a><a class="headerlink" href="#process-grid" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The dimension sizes of the processor grid</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="tile-sz">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TILE_SZ-SCF"><span class="xref std std-term">TILE_SZ</span></a><a class="headerlink" href="#tile-sz" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The tile size for the distributed matrices</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 512</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-misc">
+<span id="apdx-scfemisc"></span><h2><em>Expert</em> Misc.<a class="headerlink" href="#expert-misc" title="Permalink to this headline">¶</a></h2>
+<section id="sapt">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT-SCF"><span class="xref std std-term">SAPT</span></a><a class="headerlink" href="#sapt" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Are going to do SAPT? If so, what part?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: FALSE</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-dfscf-algorithm">
+<span id="apdx-scfedfscfalgorithm"></span><h2><em>Expert</em> DFSCF Algorithm<a class="headerlink" href="#expert-dfscf-algorithm" title="Permalink to this headline">¶</a></h2>
+<section id="df-fitting-condition">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_FITTING_CONDITION-SCF"><span class="xref std std-term">DF_FITTING_CONDITION</span></a><a class="headerlink" href="#df-fitting-condition" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Fitting Condition, i.e. eigenvalue threshold for RI basis. Analogous to S_TOLERANCE</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.0e-10</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-ints-io">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_INTS_IO-SCF"><span class="xref std std-term">DF_INTS_IO</span></a><a class="headerlink" href="#df-ints-io" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>IO caching for CP corrections, etc</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: NONE, SAVE, LOAD</p></li>
+<li><p><strong>Default</strong>: NONE</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-sad-guess-algorithm">
+<span id="apdx-scfesadguessalgorithm"></span><h2><em>Expert</em> SAD Guess Algorithm<a class="headerlink" href="#expert-sad-guess-algorithm" title="Permalink to this headline">¶</a></h2>
+<section id="df-basis-sad">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_BASIS_SAD-SCF"><span class="xref std std-term">DF_BASIS_SAD</span></a><a class="headerlink" href="#df-basis-sad" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Density fitting basis used in SAD</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: <a class="reference internal" href="../basissets_byelement.html#apdx-basiselement"><span class="std std-ref">basis string</span></a></p></li>
+<li><p><strong>Default</strong>: SAD-FIT</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sad-chol-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAD_CHOL_TOLERANCE-SCF"><span class="xref std std-term">SAD_CHOL_TOLERANCE</span></a><a class="headerlink" href="#sad-chol-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>SAD guess density decomposition threshold</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-7</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sad-frac-occ">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAD_FRAC_OCC-SCF"><span class="xref std std-term">SAD_FRAC_OCC</span></a><a class="headerlink" href="#sad-frac-occ" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do force an even distribution of occupations across the last partially occupied orbital shell?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sad-maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAD_MAXITER-SCF"><span class="xref std std-term">SAD_MAXITER</span></a><a class="headerlink" href="#sad-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of atomic SCF iterations within SAD</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 50</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sad-print">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAD_PRINT-SCF"><span class="xref std std-term">SAD_PRINT</span></a><a class="headerlink" href="#sad-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The amount of SAD information to print to the output</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sad-scf-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAD_SCF_TYPE-SCF"><span class="xref std std-term">SAD_SCF_TYPE</span></a><a class="headerlink" href="#sad-scf-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>SCF type used for atomic calculations in SAD guess</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: DIRECT, DF, MEM_DF, DISK_DF, PK, OUT_OF_CORE, CD, GTFOCK</p></li>
+<li><p><strong>Default</strong>: DF</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sad-spin-average">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAD_SPIN_AVERAGE-SCF"><span class="xref std std-term">SAD_SPIN_AVERAGE</span></a><a class="headerlink" href="#sad-spin-average" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use spin-averaged occupations instead of atomic ground spin state in fractional SAD?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-dft">
+<span id="apdx-scfedft"></span><h2><em>Expert</em> DFT<a class="headerlink" href="#expert-dft" title="Permalink to this headline">¶</a></h2>
+<section id="dft-block-max-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_BLOCK_MAX_POINTS-SCF"><span class="xref std std-term">DFT_BLOCK_MAX_POINTS</span></a><a class="headerlink" href="#dft-block-max-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The maximum number of grid points per evaluation block.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 256</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-block-max-radius">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_BLOCK_MAX_RADIUS-SCF"><span class="xref std std-term">DFT_BLOCK_MAX_RADIUS</span></a><a class="headerlink" href="#dft-block-max-radius" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The maximum radius to terminate subdivision of an octree block [au].</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 3.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-block-min-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_BLOCK_MIN_POINTS-SCF"><span class="xref std std-term">DFT_BLOCK_MIN_POINTS</span></a><a class="headerlink" href="#dft-block-min-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The minimum number of grid points per evaluation block.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 100</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-block-scheme">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_BLOCK_SCHEME-SCF"><span class="xref std std-term">DFT_BLOCK_SCHEME</span></a><a class="headerlink" href="#dft-block-scheme" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The blocking scheme for DFT.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: NAIVE, OCTREE</p></li>
+<li><p><strong>Default</strong>: OCTREE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-density-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_DENSITY_TOLERANCE-SCF"><span class="xref std std-term">DFT_DENSITY_TOLERANCE</span></a><a class="headerlink" href="#dft-density-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>density cutoff for LibXC. A negative value turns the feature off and LibXC defaults are used.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: -1.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-grac-c-func">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_GRAC_C_FUNC-SCF"><span class="xref std std-term">DFT_GRAC_C_FUNC</span></a><a class="headerlink" href="#dft-grac-c-func" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The gradient regularized asymptotic correction functional corr form.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: XC_LDA_C_VWN</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-grac-x-func">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_GRAC_X_FUNC-SCF"><span class="xref std std-term">DFT_GRAC_X_FUNC</span></a><a class="headerlink" href="#dft-grac-x-func" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The gradient regularized asymptotic correction functional exch form.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: XC_GGA_X_LB</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-grid-name">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_GRID_NAME-SCF"><span class="xref std std-term">DFT_GRID_NAME</span></a><a class="headerlink" href="#dft-grid-name" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The DFT grid specification, such as SG1.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: SG0, SG1</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-pruning-alpha">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_PRUNING_ALPHA-SCF"><span class="xref std std-term">DFT_PRUNING_ALPHA</span></a><a class="headerlink" href="#dft-pruning-alpha" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Spread alpha for logarithmic pruning.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-vv10-rho-cutoff">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_VV10_RHO_CUTOFF-SCF"><span class="xref std std-term">DFT_VV10_RHO_CUTOFF</span></a><a class="headerlink" href="#dft-vv10-rho-cutoff" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Rho cutoff for VV10 NL integration.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.e-8</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="dft-weights-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DFT_WEIGHTS_TOLERANCE-SCF"><span class="xref std std-term">DFT_WEIGHTS_TOLERANCE</span></a><a class="headerlink" href="#dft-weights-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>grid weight cutoff. Disable with -1.0.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1.0e-15</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">SCF</a><ul>
+<li><a class="reference internal" href="#general-wavefunction-info">General Wavefunction Info</a><ul>
+<li><a class="reference internal" href="#basis"><span class="xref std std-term">BASIS</span></a></li>
+<li><a class="reference internal" href="#cholesky-tolerance"><span class="xref std std-term">CHOLESKY_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#df-basis-scf"><span class="xref std std-term">DF_BASIS_SCF</span></a></li>
+<li><a class="reference internal" href="#df-scf-guess"><span class="xref std std-term">DF_SCF_GUESS</span></a></li>
+<li><a class="reference internal" href="#guess"><span class="xref std std-term">GUESS</span></a></li>
+<li><a class="reference internal" href="#guess-mix"><span class="xref std std-term">GUESS_MIX</span></a></li>
+<li><a class="reference internal" href="#guess-persist"><span class="xref std std-term">GUESS_PERSIST</span></a></li>
+<li><a class="reference internal" href="#ints-tolerance"><span class="xref std std-term">INTS_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#max-mem-buf"><span class="xref std std-term">MAX_MEM_BUF</span></a></li>
+<li><a class="reference internal" href="#molden-write"><span class="xref std std-term">MOLDEN_WRITE</span></a></li>
+<li><a class="reference internal" href="#orbitals-write"><span class="xref std std-term">ORBITALS_WRITE</span></a></li>
+<li><a class="reference internal" href="#print-basis"><span class="xref std std-term">PRINT_BASIS</span></a></li>
+<li><a class="reference internal" href="#print-mos"><span class="xref std std-term">PRINT_MOS</span></a></li>
+<li><a class="reference internal" href="#qchf"><span class="xref std std-term">QCHF</span></a></li>
+<li><a class="reference internal" href="#reference"><span class="xref std std-term">REFERENCE</span></a></li>
+<li><a class="reference internal" href="#save-jk"><span class="xref std std-term">SAVE_JK</span></a></li>
+<li><a class="reference internal" href="#scf-mem-safety-factor"><span class="xref std std-term">SCF_MEM_SAFETY_FACTOR</span></a></li>
+<li><a class="reference internal" href="#scf-properties"><span class="xref std std-term">SCF_PROPERTIES</span></a></li>
+<li><a class="reference internal" href="#s-cholesky-tolerance"><span class="xref std std-term">S_CHOLESKY_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#s-orthogonalization"><span class="xref std std-term">S_ORTHOGONALIZATION</span></a></li>
+<li><a class="reference internal" href="#s-tolerance"><span class="xref std std-term">S_TOLERANCE</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#convergence-control-stabilization">Convergence Control/Stabilization</a><ul>
+<li><a class="reference internal" href="#basis-guess"><span class="xref std std-term">BASIS_GUESS</span></a></li>
+<li><a class="reference internal" href="#damping-convergence"><span class="xref std std-term">DAMPING_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#damping-percentage"><span class="xref std std-term">DAMPING_PERCENTAGE</span></a></li>
+<li><a class="reference internal" href="#df-basis-guess"><span class="xref std std-term">DF_BASIS_GUESS</span></a></li>
+<li><a class="reference internal" href="#diis"><span class="xref std std-term">DIIS</span></a></li>
+<li><a class="reference internal" href="#diis-max-vecs"><span class="xref std std-term">DIIS_MAX_VECS</span></a></li>
+<li><a class="reference internal" href="#diis-min-vecs"><span class="xref std std-term">DIIS_MIN_VECS</span></a></li>
+<li><a class="reference internal" href="#diis-rms-error"><span class="xref std std-term">DIIS_RMS_ERROR</span></a></li>
+<li><a class="reference internal" href="#diis-start"><span class="xref std std-term">DIIS_START</span></a></li>
+<li><a class="reference internal" href="#d-convergence"><span class="xref std std-term">D_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#e-convergence"><span class="xref std std-term">E_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#fail-on-maxiter"><span class="xref std std-term">FAIL_ON_MAXITER</span></a></li>
+<li><a class="reference internal" href="#level-shift"><span class="xref std std-term">LEVEL_SHIFT</span></a></li>
+<li><a class="reference internal" href="#level-shift-cutoff"><span class="xref std std-term">LEVEL_SHIFT_CUTOFF</span></a></li>
+<li><a class="reference internal" href="#maxiter"><span class="xref std std-term">MAXITER</span></a></li>
+<li><a class="reference internal" href="#mom-occ"><span class="xref std std-term">MOM_OCC</span></a></li>
+<li><a class="reference internal" href="#mom-start"><span class="xref std std-term">MOM_START</span></a></li>
+<li><a class="reference internal" href="#mom-vir"><span class="xref std std-term">MOM_VIR</span></a></li>
+<li><a class="reference internal" href="#soscf"><span class="xref std std-term">SOSCF</span></a></li>
+<li><a class="reference internal" href="#soscf-conv"><span class="xref std std-term">SOSCF_CONV</span></a></li>
+<li><a class="reference internal" href="#soscf-max-iter"><span class="xref std std-term">SOSCF_MAX_ITER</span></a></li>
+<li><a class="reference internal" href="#soscf-min-iter"><span class="xref std std-term">SOSCF_MIN_ITER</span></a></li>
+<li><a class="reference internal" href="#soscf-print"><span class="xref std std-term">SOSCF_PRINT</span></a></li>
+<li><a class="reference internal" href="#soscf-start-convergence"><span class="xref std std-term">SOSCF_START_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#stability-analysis"><span class="xref std std-term">STABILITY_ANALYSIS</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fractional-occupation-uhf-uks">Fractional Occupation UHF/UKS</a><ul>
+<li><a class="reference internal" href="#frac-diis"><span class="xref std std-term">FRAC_DIIS</span></a></li>
+<li><a class="reference internal" href="#frac-load"><span class="xref std std-term">FRAC_LOAD</span></a></li>
+<li><a class="reference internal" href="#frac-occ"><span class="xref std std-term">FRAC_OCC</span></a></li>
+<li><a class="reference internal" href="#frac-renormalize"><span class="xref std std-term">FRAC_RENORMALIZE</span></a></li>
+<li><a class="reference internal" href="#frac-start"><span class="xref std std-term">FRAC_START</span></a></li>
+<li><a class="reference internal" href="#frac-val"><span class="xref std std-term">FRAC_VAL</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#environmental-effects">Environmental Effects</a><ul>
+<li><a class="reference internal" href="#extern"><span class="xref std std-term">EXTERN</span></a></li>
+<li><a class="reference internal" href="#onepot-grid-read"><span class="xref std std-term">ONEPOT_GRID_READ</span></a></li>
+<li><a class="reference internal" href="#perturb-dipole"><span class="xref std std-term">PERTURB_DIPOLE</span></a></li>
+<li><a class="reference internal" href="#perturb-h"><span class="xref std std-term">PERTURB_H</span></a></li>
+<li><a class="reference internal" href="#perturb-magnitude"><span class="xref std std-term">PERTURB_MAGNITUDE</span></a></li>
+<li><a class="reference internal" href="#perturb-with"><span class="xref std std-term">PERTURB_WITH</span></a></li>
+<li><a class="reference internal" href="#phi-points"><span class="xref std std-term">PHI_POINTS</span></a></li>
+<li><a class="reference internal" href="#radius"><span class="xref std std-term">RADIUS</span></a></li>
+<li><a class="reference internal" href="#r-points"><span class="xref std std-term">R_POINTS</span></a></li>
+<li><a class="reference internal" href="#theta-points"><span class="xref std std-term">THETA_POINTS</span></a></li>
+<li><a class="reference internal" href="#thickness"><span class="xref std std-term">THICKNESS</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dfscf-algorithm">DFSCF Algorithm</a><ul>
+<li><a class="reference internal" href="#df-bump-r0"><span class="xref std std-term">DF_BUMP_R0</span></a></li>
+<li><a class="reference internal" href="#df-bump-r1"><span class="xref std std-term">DF_BUMP_R1</span></a></li>
+<li><a class="reference internal" href="#df-domains"><span class="xref std std-term">DF_DOMAINS</span></a></li>
+<li><a class="reference internal" href="#df-ints-num-threads"><span class="xref std std-term">DF_INTS_NUM_THREADS</span></a></li>
+<li><a class="reference internal" href="#df-metric"><span class="xref std std-term">DF_METRIC</span></a></li>
+<li><a class="reference internal" href="#df-theta"><span class="xref std std-term">DF_THETA</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sad-guess-algorithm">SAD Guess Algorithm</a><ul>
+<li><a class="reference internal" href="#sad-d-convergence"><span class="xref std std-term">SAD_D_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#sad-e-convergence"><span class="xref std std-term">SAD_E_CONVERGENCE</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dft">DFT</a><ul>
+<li><a class="reference internal" href="#dft-alpha"><span class="xref std std-term">DFT_ALPHA</span></a></li>
+<li><a class="reference internal" href="#dft-alpha-c"><span class="xref std std-term">DFT_ALPHA_C</span></a></li>
+<li><a class="reference internal" href="#dft-basis-tolerance"><span class="xref std std-term">DFT_BASIS_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#dft-bs-radius-alpha"><span class="xref std std-term">DFT_BS_RADIUS_ALPHA</span></a></li>
+<li><a class="reference internal" href="#dft-dispersion-parameters"><span class="xref std std-term">DFT_DISPERSION_PARAMETERS</span></a></li>
+<li><a class="reference internal" href="#dft-grac-alpha"><span class="xref std std-term">DFT_GRAC_ALPHA</span></a></li>
+<li><a class="reference internal" href="#dft-grac-beta"><span class="xref std std-term">DFT_GRAC_BETA</span></a></li>
+<li><a class="reference internal" href="#dft-grac-shift"><span class="xref std std-term">DFT_GRAC_SHIFT</span></a></li>
+<li><a class="reference internal" href="#dft-nuclear-scheme"><span class="xref std std-term">DFT_NUCLEAR_SCHEME</span></a></li>
+<li><a class="reference internal" href="#dft-omega"><span class="xref std std-term">DFT_OMEGA</span></a></li>
+<li><a class="reference internal" href="#dft-omega-c"><span class="xref std std-term">DFT_OMEGA_C</span></a></li>
+<li><a class="reference internal" href="#dft-pruning-scheme"><span class="xref std std-term">DFT_PRUNING_SCHEME</span></a></li>
+<li><a class="reference internal" href="#dft-radial-points"><span class="xref std std-term">DFT_RADIAL_POINTS</span></a></li>
+<li><a class="reference internal" href="#dft-radial-scheme"><span class="xref std std-term">DFT_RADIAL_SCHEME</span></a></li>
+<li><a class="reference internal" href="#dft-spherical-points"><span class="xref std std-term">DFT_SPHERICAL_POINTS</span></a></li>
+<li><a class="reference internal" href="#dft-spherical-scheme"><span class="xref std std-term">DFT_SPHERICAL_SCHEME</span></a></li>
+<li><a class="reference internal" href="#dft-v2-rho-cutoff"><span class="xref std std-term">DFT_V2_RHO_CUTOFF</span></a></li>
+<li><a class="reference internal" href="#dft-vv10-b"><span class="xref std std-term">DFT_VV10_B</span></a></li>
+<li><a class="reference internal" href="#dft-vv10-c"><span class="xref std std-term">DFT_VV10_C</span></a></li>
+<li><a class="reference internal" href="#dft-vv10-postscf"><span class="xref std std-term">DFT_VV10_POSTSCF</span></a></li>
+<li><a class="reference internal" href="#dft-vv10-radial-points"><span class="xref std std-term">DFT_VV10_RADIAL_POINTS</span></a></li>
+<li><a class="reference internal" href="#dft-vv10-spherical-points"><span class="xref std std-term">DFT_VV10_SPHERICAL_POINTS</span></a></li>
+<li><a class="reference internal" href="#local-convergence"><span class="xref std std-term">LOCAL_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#local-maxiter"><span class="xref std std-term">LOCAL_MAXITER</span></a></li>
+<li><a class="reference internal" href="#nl-dispersion-parameters"><span class="xref std std-term">NL_DISPERSION_PARAMETERS</span></a></li>
+<li><a class="reference internal" href="#save-uhf-nos"><span class="xref std std-term">SAVE_UHF_NOS</span></a></li>
+<li><a class="reference internal" href="#uhf-noons"><span class="xref std std-term">UHF_NOONS</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tdscf">TDSCF</a><ul>
+<li><a class="reference internal" href="#tdscf-coeff-cutoff"><span class="xref std std-term">TDSCF_COEFF_CUTOFF</span></a></li>
+<li><a class="reference internal" href="#tdscf-guess"><span class="xref std std-term">TDSCF_GUESS</span></a></li>
+<li><a class="reference internal" href="#tdscf-maxiter"><span class="xref std std-term">TDSCF_MAXITER</span></a></li>
+<li><a class="reference internal" href="#tdscf-print"><span class="xref std std-term">TDSCF_PRINT</span></a></li>
+<li><a class="reference internal" href="#tdscf-r-convergence"><span class="xref std std-term">TDSCF_R_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#tdscf-states"><span class="xref std std-term">TDSCF_STATES</span></a></li>
+<li><a class="reference internal" href="#tdscf-tda"><span class="xref std std-term">TDSCF_TDA</span></a></li>
+<li><a class="reference internal" href="#tdscf-tdm-print"><span class="xref std std-term">TDSCF_TDM_PRINT</span></a></li>
+<li><a class="reference internal" href="#tdscf-triplets"><span class="xref std std-term">TDSCF_TRIPLETS</span></a></li>
+<li><a class="reference internal" href="#wcombine"><span class="xref std std-term">WCOMBINE</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-general-wavefunction-info"><em>Expert</em> General Wavefunction Info</a><ul>
+<li><a class="reference internal" href="#pk-algo"><span class="xref std std-term">PK_ALGO</span></a></li>
+<li><a class="reference internal" href="#pk-all-nonsym"><span class="xref std std-term">PK_ALL_NONSYM</span></a></li>
+<li><a class="reference internal" href="#pk-max-buckets"><span class="xref std std-term">PK_MAX_BUCKETS</span></a></li>
+<li><a class="reference internal" href="#pk-no-incore"><span class="xref std std-term">PK_NO_INCORE</span></a></li>
+<li><a class="reference internal" href="#wfn"><span class="xref std std-term">WFN</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-convergence-control-stabilization"><em>Expert</em> Convergence Control/Stabilization</a><ul>
+<li><a class="reference internal" href="#follow-step-increment"><span class="xref std std-term">FOLLOW_STEP_INCREMENT</span></a></li>
+<li><a class="reference internal" href="#follow-step-scale"><span class="xref std std-term">FOLLOW_STEP_SCALE</span></a></li>
+<li><a class="reference internal" href="#max-attempts"><span class="xref std std-term">MAX_ATTEMPTS</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-parallel-runtime"><em>Expert</em> Parallel Runtime</a><ul>
+<li><a class="reference internal" href="#distributed-matrix"><span class="xref std std-term">DISTRIBUTED_MATRIX</span></a></li>
+<li><a class="reference internal" href="#parallel"><span class="xref std std-term">PARALLEL</span></a></li>
+<li><a class="reference internal" href="#process-grid"><span class="xref std std-term">PROCESS_GRID</span></a></li>
+<li><a class="reference internal" href="#tile-sz"><span class="xref std std-term">TILE_SZ</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-misc"><em>Expert</em> Misc.</a><ul>
+<li><a class="reference internal" href="#sapt"><span class="xref std std-term">SAPT</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-dfscf-algorithm"><em>Expert</em> DFSCF Algorithm</a><ul>
+<li><a class="reference internal" href="#df-fitting-condition"><span class="xref std std-term">DF_FITTING_CONDITION</span></a></li>
+<li><a class="reference internal" href="#df-ints-io"><span class="xref std std-term">DF_INTS_IO</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-sad-guess-algorithm"><em>Expert</em> SAD Guess Algorithm</a><ul>
+<li><a class="reference internal" href="#df-basis-sad"><span class="xref std std-term">DF_BASIS_SAD</span></a></li>
+<li><a class="reference internal" href="#sad-chol-tolerance"><span class="xref std std-term">SAD_CHOL_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#sad-frac-occ"><span class="xref std std-term">SAD_FRAC_OCC</span></a></li>
+<li><a class="reference internal" href="#sad-maxiter"><span class="xref std std-term">SAD_MAXITER</span></a></li>
+<li><a class="reference internal" href="#sad-print"><span class="xref std std-term">SAD_PRINT</span></a></li>
+<li><a class="reference internal" href="#sad-scf-type"><span class="xref std std-term">SAD_SCF_TYPE</span></a></li>
+<li><a class="reference internal" href="#sad-spin-average"><span class="xref std std-term">SAD_SPIN_AVERAGE</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-dft"><em>Expert</em> DFT</a><ul>
+<li><a class="reference internal" href="#dft-block-max-points"><span class="xref std std-term">DFT_BLOCK_MAX_POINTS</span></a></li>
+<li><a class="reference internal" href="#dft-block-max-radius"><span class="xref std std-term">DFT_BLOCK_MAX_RADIUS</span></a></li>
+<li><a class="reference internal" href="#dft-block-min-points"><span class="xref std std-term">DFT_BLOCK_MIN_POINTS</span></a></li>
+<li><a class="reference internal" href="#dft-block-scheme"><span class="xref std std-term">DFT_BLOCK_SCHEME</span></a></li>
+<li><a class="reference internal" href="#dft-density-tolerance"><span class="xref std std-term">DFT_DENSITY_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#dft-grac-c-func"><span class="xref std std-term">DFT_GRAC_C_FUNC</span></a></li>
+<li><a class="reference internal" href="#dft-grac-x-func"><span class="xref std std-term">DFT_GRAC_X_FUNC</span></a></li>
+<li><a class="reference internal" href="#dft-grid-name"><span class="xref std std-term">DFT_GRID_NAME</span></a></li>
+<li><a class="reference internal" href="#dft-pruning-alpha"><span class="xref std std-term">DFT_PRUNING_ALPHA</span></a></li>
+<li><a class="reference internal" href="#dft-vv10-rho-cutoff"><span class="xref std std-term">DFT_VV10_RHO_CUTOFF</span></a></li>
+<li><a class="reference internal" href="#dft-weights-tolerance"><span class="xref std std-term">DFT_WEIGHTS_TOLERANCE</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="scf__basis.html" title="BASIS"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt__screening.html" title="SCREENING"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/autodir_options_c/module__scf.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../appendices.html" >Appendices</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+          <li class="nav-item nav-item-2"><a href="../autodoc_options_c_bymodule.html" >Keywords by Module</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">SCF</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

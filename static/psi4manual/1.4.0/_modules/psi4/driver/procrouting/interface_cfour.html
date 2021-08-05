@@ -1,0 +1,725 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>psi4.driver.procrouting.interface_cfour</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+    
+    
+     
+        <script src="../../../../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../../../../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../../../../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/procrouting/interface_cfour.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">psi4.driver.procrouting.interface_cfour</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.procrouting.interface_cfour</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2021 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+
+<span class="sd">&quot;&quot;&quot;Module with functions for Psi4/Cfour interface. Portions that require</span>
+<span class="sd">calls to Boost Python psi4 module are here, otherwise in qcdb module.</span>
+<span class="sd">Also calls to qcdb module are here and not elsewhere in driver.</span>
+<span class="sd">Organizationally, this module isolates qcdb code from psi4 code.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">psi4.driver</span> <span class="kn">import</span> <span class="n">qcdb</span>
+<span class="kn">from</span> <span class="nn">psi4.driver</span> <span class="kn">import</span> <span class="n">p4util</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.molutil</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.p4util.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># never import driver, wrappers, or aliases into this file</span>
+
+<span class="n">P4C4_INFO</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="run_cfour"><a class="viewcode-back" href="../../../../cfour.html#psi4.driver.procrouting.interface_cfour.run_cfour">[docs]</a><span class="k">def</span> <span class="nf">run_cfour</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function that prepares environment and input files</span>
+<span class="sd">    for a calculation calling Stanton and Gauss&#39;s CFOUR code.</span>
+<span class="sd">    Also processes results back into Psi4 format.</span>
+
+<span class="sd">    This function is not called directly but is instead called by</span>
+<span class="sd">    :py:func:`~psi4.energy` or :py:func:`~psi4.optimize` when a Cfour</span>
+<span class="sd">    method is requested (through *name* argument). In order to function</span>
+<span class="sd">    correctly, the Cfour executable ``xcfour`` must be present in</span>
+<span class="sd">    :envvar:`PATH` or :envvar:`PSIPATH`.</span>
+
+<span class="sd">    .. hlist::</span>
+<span class="sd">       :columns: 1</span>
+
+<span class="sd">       * Many :ref:`PSI Variables &lt;apdx:cfour_psivar&gt;` extracted from the Cfour output</span>
+<span class="sd">       * Python dictionary of associated file constants accessible as ``P4C4_INFO[&#39;zmat&#39;]``, ``P4C4_INFO[&#39;output&#39;]``, ``P4C4_INFO[&#39;grd&#39;]``, *etc.*</span>
+
+
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param name: ``&#39;c4-scf&#39;`` || ``&#39;c4-ccsd(t)&#39;`` || ``&#39;cfour&#39;`` || etc.</span>
+
+<span class="sd">        First argument, usually unlabeled. Indicates the computational</span>
+<span class="sd">        method to be applied to the system.</span>
+
+<span class="sd">    :type keep: :ref:`boolean &lt;op_py_boolean&gt;`</span>
+<span class="sd">    :param keep: ``&#39;on&#39;`` || |dl| ``&#39;off&#39;`` |dr|</span>
+
+<span class="sd">        Indicates whether to delete the Cfour scratch directory upon</span>
+<span class="sd">        completion of the Cfour job.</span>
+
+<span class="sd">    :type path: str</span>
+<span class="sd">    :param path:</span>
+
+<span class="sd">        Indicates path to Cfour scratch directory (with respect to Psi4</span>
+<span class="sd">        scratch directory). Otherwise, the default is a subdirectory</span>
+<span class="sd">        within the Psi4 scratch directory.</span>
+
+<span class="sd">        If specified, GENBAS and/or ZMAT within will be used.</span>
+
+<span class="sd">    :type genbas: str</span>
+<span class="sd">    :param genbas:</span>
+
+<span class="sd">        Indicates that contents should be used for GENBAS file.</span>
+
+<span class="sd">    GENBAS is a complicated topic. It is quite unnecessary if the</span>
+<span class="sd">    molecule is from a molecule {...} block and basis is set through</span>
+<span class="sd">    |Psifours| BASIS keyword. In that case, a GENBAS is written from</span>
+<span class="sd">    LibMints and all is well. Otherwise, a GENBAS is looked for in</span>
+<span class="sd">    the usual places: PSIPATH, PATH, PSIDATADIR/basis. If path kwarg is</span>
+<span class="sd">    specified, also looks there preferentially for a GENBAS. Can</span>
+<span class="sd">    also specify GENBAS within an input file through a string and</span>
+<span class="sd">    setting the genbas kwarg. Note that due to the input parser&#39;s</span>
+<span class="sd">    aggression, blank lines need to be replaced by the text blankline.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lowername</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">internal_p4c4_info</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">return_wfn</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;return_wfn&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Make sure the molecule the user provided is the active one</span>
+    <span class="n">molecule</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;molecule&#39;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">get_active_molecule</span><span class="p">())</span>
+    <span class="n">molecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+
+    <span class="n">optstash</span> <span class="o">=</span> <span class="n">p4util</span><span class="o">.</span><span class="n">OptionsState</span><span class="p">(</span>
+            <span class="p">[</span><span class="s1">&#39;CFOUR&#39;</span><span class="p">,</span> <span class="s1">&#39;TRANSLATE_PSI4&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Determine calling function and hence dertype</span>
+    <span class="n">calledby</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">dertype</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="s1">&#39;gradient&#39;</span><span class="p">,</span> <span class="s1">&#39;hessian&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">calledby</span><span class="p">)</span>
+    <span class="c1">#print(&#39;I am %s called by %s called by %s.\n&#39; %</span>
+    <span class="c1">#    (inspect.stack()[0][3], inspect.stack()[1][3], inspect.stack()[2][3]))</span>
+
+    <span class="c1"># Save submission directory</span>
+    <span class="n">current_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+
+    <span class="c1"># Move into job scratch directory</span>
+    <span class="n">psioh</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IOManager</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span>
+    <span class="n">psio</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">IO</span><span class="o">.</span><span class="n">shared_object</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">psioh</span><span class="o">.</span><span class="n">get_default_path</span><span class="p">())</span>
+
+    <span class="c1"># Construct and move into cfour subdirectory of job scratch directory</span>
+    <span class="n">cfour_tmpdir</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> \
+        <span class="s1">&#39;psi.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">psio</span><span class="o">.</span><span class="n">get_default_namespace</span><span class="p">()</span> <span class="o">+</span> \
+        <span class="s1">&#39;.cfour.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cfour_tmpdir</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">cfour_tmpdir</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">cfour_tmpdir</span><span class="p">)</span>
+
+    <span class="c1"># Find environment by merging PSIPATH and PATH environment variables</span>
+    <span class="n">lenv</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;PATH&#39;</span><span class="p">:</span> <span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PSIPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">])</span> <span class="o">+</span> \
+                <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">)</span> <span class="o">+</span> \
+                <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">core</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/basis&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;GENBAS_PATH&#39;</span><span class="p">:</span> <span class="n">core</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/basis&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;CFOUR_NUM_CORES&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;CFOUR_NUM_CORES&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;MKL_NUM_THREADS&#39;</span><span class="p">:</span>  <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MKL_NUM_THREADS&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;OMP_NUM_THREADS&#39;</span><span class="p">:</span>  <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OMP_NUM_THREADS&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;LD_LIBRARY_PATH&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;LD_LIBRARY_PATH&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+    <span class="k">if</span> <span class="s1">&#39;path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">lenv</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">lenv</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span>
+    <span class="c1">#   Filter out None values as subprocess will fault on them</span>
+    <span class="n">lenv</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lenv</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="c1"># Load the GENBAS file</span>
+    <span class="n">genbas_path</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">search_file</span><span class="p">(</span><span class="s1">&#39;GENBAS&#39;</span><span class="p">,</span> <span class="n">lenv</span><span class="p">[</span><span class="s1">&#39;GENBAS_PATH&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">genbas_path</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">genbas_path</span><span class="p">,</span> <span class="n">psioh</span><span class="o">.</span><span class="n">get_default_path</span><span class="p">()</span> <span class="o">+</span> <span class="n">cfour_tmpdir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">shutil</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>  <span class="c1"># should only fail if src and dest equivalent</span>
+            <span class="k">pass</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  GENBAS loaded from </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">genbas_path</span><span class="p">))</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  CFOUR to be run from </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">psioh</span><span class="o">.</span><span class="n">get_default_path</span><span class="p">()</span> <span class="o">+</span> <span class="n">cfour_tmpdir</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  GENBAS file for CFOUR interface not found. Either:</span>
+<span class="s2">  [1] Supply a GENBAS by placing it in PATH or PSIPATH</span>
+<span class="s2">      [1a] Use cfour </span><span class="si">{}</span><span class="s2"> block with molecule and basis directives.</span>
+<span class="s2">      [1b] Use molecule </span><span class="si">{}</span><span class="s2"> block and CFOUR_BASIS keyword.</span>
+<span class="s2">  [2] Allow Psi4&#39;s internal basis sets to convert to GENBAS</span>
+<span class="s2">      [2a] Use molecule </span><span class="si">{}</span><span class="s2"> block and BASIS keyword.</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;  Search path that was tried:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">lenv</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="p">))</span>
+
+    <span class="c1"># Generate the ZMAT input file in scratch</span>
+    <span class="k">if</span> <span class="s1">&#39;path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;ZMAT&#39;</span><span class="p">):</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;  ZMAT loaded from </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">psioh</span><span class="o">.</span><span class="n">get_default_path</span><span class="p">()</span> <span class="o">+</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/ZMAT&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;ZMAT&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfour_infile</span><span class="p">:</span>
+            <span class="n">cfour_infile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">write_zmat</span><span class="p">(</span><span class="n">lowername</span><span class="p">,</span> <span class="n">dertype</span><span class="p">,</span> <span class="n">molecule</span><span class="p">))</span>
+
+    <span class="n">internal_p4c4_info</span><span class="p">[</span><span class="s1">&#39;zmat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;ZMAT&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="c1">#core.print_out(&#39;\n====== Begin ZMAT input for CFOUR ======\n&#39;)</span>
+    <span class="c1">#core.print_out(open(&#39;ZMAT&#39;, &#39;r&#39;).read())</span>
+    <span class="c1">#core.print_out(&#39;======= End ZMAT input for CFOUR =======\n\n&#39;)</span>
+    <span class="c1">#print(&#39;\n====== Begin ZMAT input for CFOUR ======&#39;)</span>
+    <span class="c1">#print(open(&#39;ZMAT&#39;, &#39;r&#39;).read())</span>
+    <span class="c1">#print(&#39;======= End ZMAT input for CFOUR =======\n&#39;)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;genbas&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;GENBAS&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfour_basfile</span><span class="p">:</span>
+            <span class="n">cfour_basfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;genbas&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">blankline</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">))</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;  GENBAS loaded from kwargs string</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Close psi4 output file and reopen with filehandle</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;output in&#39;</span><span class="p">,</span> <span class="n">current_directory</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">core</span><span class="o">.</span><span class="n">outfile_name</span><span class="p">())</span>
+    <span class="n">pathfill</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">outfile_name</span><span class="p">())</span> <span class="k">else</span> <span class="n">current_directory</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+
+    <span class="c1"># Handle threading</span>
+    <span class="c1">#   OMP_NUM_THREADS from env is in lenv from above</span>
+    <span class="c1">#   threads from psi4 -n (core.get_num_threads()) is ignored</span>
+    <span class="c1">#   CFOUR_OMP_NUM_THREADS psi4 option takes precedence, handled below</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">has_option_changed</span><span class="p">(</span><span class="s1">&#39;CFOUR&#39;</span><span class="p">,</span> <span class="s1">&#39;CFOUR_OMP_NUM_THREADS&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">lenv</span><span class="p">[</span><span class="s1">&#39;OMP_NUM_THREADS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;CFOUR&#39;</span><span class="p">,</span> <span class="s1">&#39;CFOUR_OMP_NUM_THREADS&#39;</span><span class="p">))</span>
+
+    <span class="c1">#print(&quot;&quot;&quot;\n\n&lt;&lt;&lt;&lt;&lt;  RUNNING CFOUR ...  &gt;&gt;&gt;&gt;&gt;\n\n&quot;&quot;&quot;)</span>
+    <span class="c1"># Call executable xcfour, directing cfour output to the psi4 output file</span>
+    <span class="n">cfour_executable</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;c4exec&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;c4exec&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="s1">&#39;xcfour&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">retcode</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">cfour_executable</span><span class="p">],</span> <span class="n">bufsize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">lenv</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Program </span><span class="si">%s</span><span class="s1"> not found in path or execution failed: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cfour_executable</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">))</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Program </span><span class="si">%s</span><span class="s1"> not found in path or execution failed: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cfour_executable</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="n">c4out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">retcode</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">c4out</span> <span class="o">+=</span> <span class="n">data</span>
+    <span class="n">internal_p4c4_info</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c4out</span>
+
+    <span class="n">c4files</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;GRD&#39;</span><span class="p">,</span> <span class="s1">&#39;FCMFINAL&#39;</span><span class="p">,</span> <span class="s1">&#39;DIPOL&#39;</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">psioh</span><span class="o">.</span><span class="n">get_default_path</span><span class="p">()</span> <span class="o">+</span> <span class="n">cfour_tmpdir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+                <span class="n">c4files</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;  CFOUR scratch file </span><span class="si">%s</span><span class="s1"> has been read</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">))</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">c4files</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
+                <span class="n">internal_p4c4_info</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">c4files</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">molecule</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;blank_molecule_psi4_yo&#39;</span><span class="p">:</span>
+        <span class="n">qcdbmolecule</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+        <span class="n">qcdbmolecule</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">create_psi4_string_from_molecule</span><span class="p">())</span>
+        <span class="n">qcdbmolecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+
+    <span class="c1"># c4mol, if it exists, is dinky, just a clue to geometry of cfour results</span>
+    <span class="n">psivar</span><span class="p">,</span> <span class="n">c4grad</span><span class="p">,</span> <span class="n">c4mol</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">cfour</span><span class="o">.</span><span class="n">harvest</span><span class="p">(</span><span class="n">qcdbmolecule</span><span class="p">,</span> <span class="n">c4out</span><span class="p">,</span> <span class="o">**</span><span class="n">c4files</span><span class="p">)</span>
+
+    <span class="c1"># Absorb results into psi4 data structures</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">psivar</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="nb">float</span><span class="p">(</span><span class="n">psivar</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">qcdbmolecule</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">c4mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">molecule</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">(</span><span class="n">c4mol</span><span class="o">.</span><span class="n">create_psi4_string_from_molecule</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;blank_molecule_psi4_yo&#39;</span><span class="p">)</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+        <span class="c1"># This case arises when no Molecule going into calc (cfour {} block) but want</span>
+        <span class="c1">#   to know the orientation at which grad, properties, etc. are returned (c4mol).</span>
+        <span class="c1">#   c4mol is dinky, w/o chg, mult, dummies and retains name</span>
+        <span class="c1">#   blank_molecule_psi4_yo so as to not interfere with future cfour {} blocks</span>
+
+    <span class="k">if</span> <span class="n">c4grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">c4grad</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_gradient</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+
+        <span class="c1">#print &#39;    &lt;&lt;&lt;   [3] C4-GRD-GRAD   &gt;&gt;&gt;&#39;</span>
+        <span class="c1">#mat.print()</span>
+
+<span class="c1">#    exit(1)</span>
+
+    <span class="c1"># # Things needed core.so module to do</span>
+    <span class="c1"># collect c4out string</span>
+    <span class="c1"># read GRD</span>
+    <span class="c1"># read FCMFINAL</span>
+    <span class="c1"># see if theres an active molecule</span>
+
+    <span class="c1"># # Things delegatable to qcdb</span>
+    <span class="c1"># parsing c4out</span>
+    <span class="c1"># reading GRD and FCMFINAL strings</span>
+    <span class="c1"># reconciling p4 and c4 molecules (orient)</span>
+<span class="c1"># reconciling c4out and GRD and FCMFINAL results</span>
+<span class="c1"># transforming frame of results back to p4</span>
+
+    <span class="c1"># # Things run_cfour needs to have back</span>
+    <span class="c1"># psivar</span>
+<span class="c1"># qcdb.Molecule of c4?</span>
+<span class="c1"># coordinates?</span>
+<span class="c1"># gradient in p4 frame</span>
+
+
+
+
+
+<span class="c1">#    # Process the cfour output</span>
+<span class="c1">#    psivar, c4coord, c4grad = qcdb.cfour.cfour_harvest(c4out)</span>
+<span class="c1">#    for key in psivar.keys():</span>
+<span class="c1">#        core.set_variable(key.upper(), float(psivar[key]))</span>
+<span class="c1">#</span>
+<span class="c1">#    # Awful Hack - Go Away TODO</span>
+<span class="c1">#    if c4grad:</span>
+<span class="c1">#        molecule = core.get_active_molecule()</span>
+<span class="c1">#        molecule.update_geometry()</span>
+<span class="c1">#</span>
+<span class="c1">#        if molecule.name() == &#39;blank_molecule_psi4_yo&#39;:</span>
+<span class="c1">#            p4grad = c4grad</span>
+<span class="c1">#            p4coord = c4coord</span>
+<span class="c1">#        else:</span>
+<span class="c1">#            qcdbmolecule = qcdb.Molecule(molecule.create_psi4_string_from_molecule())</span>
+<span class="c1">#            #p4grad = qcdbmolecule.deorient_array_from_cfour(c4coord, c4grad)</span>
+<span class="c1">#            #p4coord = qcdbmolecule.deorient_array_from_cfour(c4coord, c4coord)</span>
+<span class="c1">#</span>
+<span class="c1">#            with open(psioh.get_default_path() + cfour_tmpdir + &#39;/GRD&#39;, &#39;r&#39;) as cfour_grdfile:</span>
+<span class="c1">#                c4outgrd = cfour_grdfile.read()</span>
+<span class="c1">#            print(&#39;GRD\n&#39;,c4outgrd)</span>
+<span class="c1">#            c4coordGRD, c4gradGRD = qcdb.cfour.cfour_harvest_files(qcdbmolecule, grd=c4outgrd)</span>
+<span class="c1">#</span>
+<span class="c1">#        p4mat = core.Matrix.from_list(p4grad)</span>
+<span class="c1">#        core.set_gradient(p4mat)</span>
+
+<span class="c1">#    print(&#39;    &lt;&lt;&lt;  P4 PSIVAR  &gt;&gt;&gt;&#39;)</span>
+<span class="c1">#    for item in psivar:</span>
+<span class="c1">#        print(&#39;       %30s %16.8f&#39; % (item, psivar[item]))</span>
+    <span class="c1">#print(&#39;    &lt;&lt;&lt;  P4 COORD   &gt;&gt;&gt;&#39;)</span>
+    <span class="c1">#for item in p4coord:</span>
+    <span class="c1">#    print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+<span class="c1">#    print(&#39;    &lt;&lt;&lt;   P4 GRAD   &gt;&gt;&gt;&#39;)</span>
+<span class="c1">#    for item in c4grad:</span>
+<span class="c1">#        print(&#39;       %16.8f %16.8f %16.8f&#39; % (item[0], item[1], item[2]))</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="c1"># Clean up cfour scratch directory unless user instructs otherwise</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">yes</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;keep&#39;</span><span class="p">]))</span> <span class="k">if</span> <span class="s1">&#39;keep&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">keep</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  CFOUR scratch files have been kept in </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">psioh</span><span class="o">.</span><span class="n">get_default_path</span><span class="p">()</span> <span class="o">+</span> <span class="n">cfour_tmpdir</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">cfour_tmpdir</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unable to remove CFOUR temporary directory </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">e</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Return to submission directory and reopen output file</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_directory</span><span class="p">)</span>
+
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">p4util</span><span class="o">.</span><span class="n">banner</span><span class="p">(</span><span class="s1">&#39; Cfour </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> Results &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">calledby</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()))</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_variables</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">c4grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">get_gradient</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+    <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">p4util</span><span class="o">.</span><span class="n">banner</span><span class="p">(</span><span class="s1">&#39; Cfour </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> Results &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">calledby</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()))</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">print_variables</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">c4grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">get_gradient</span><span class="p">()</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+    <span class="c1"># Quit if Cfour threw error</span>
+    <span class="k">if</span> <span class="s1">&#39;CFOUR ERROR CODE&#39;</span> <span class="ow">in</span> <span class="n">core</span><span class="o">.</span><span class="n">variables</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Cfour exited abnormally.&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">P4C4_INFO</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">P4C4_INFO</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">internal_p4c4_info</span><span class="p">)</span>
+
+    <span class="n">optstash</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
+
+    <span class="c1"># new skeleton wavefunction w/mol, highest-SCF basis (just to choose one), &amp; not energy</span>
+    <span class="c1">#   Feb 2017 hack. Could get proper basis in skel wfn even if not through p4 basis kw</span>
+    <span class="n">gobas</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;sto-3g&#39;</span>
+    <span class="n">basis</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="s2">&quot;ORBITAL&quot;</span><span class="p">,</span> <span class="n">gobas</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">basis</span><span class="o">.</span><span class="n">has_ECP</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;ECPs not hooked up for Cfour&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">wfn</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">basis</span><span class="p">)</span>
+
+    <span class="n">optstash</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">dertype</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">finalquantity</span> <span class="o">=</span> <span class="n">psivar</span><span class="p">[</span><span class="s1">&#39;CURRENT ENERGY&#39;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">dertype</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">finalquantity</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_gradient</span><span class="p">()</span>
+        <span class="n">wfn</span><span class="o">.</span><span class="n">set_gradient</span><span class="p">(</span><span class="n">finalquantity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">finalquantity</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;CURRENT GRADIENT&#39;</span><span class="p">)</span>
+            <span class="n">finalquantity</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">dertype</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">pass</span>
+        <span class="c1">#finalquantity = finalhessian</span>
+        <span class="c1">#wfn.set_hessian(finalquantity)</span>
+        <span class="c1">#if finalquantity.rows(0) &lt; 20:</span>
+        <span class="c1">#    core.print_out(&#39;CURRENT HESSIAN&#39;)</span>
+        <span class="c1">#    finalquantity.print_out()</span>
+
+    <span class="k">return</span> <span class="n">wfn</span></div>
+
+
+<span class="k">def</span> <span class="nf">cfour_list</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Form list of Cfour :py:func:`~driver.energy` arguments.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">cfour</span><span class="o">.</span><span class="n">cfour_list</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">cfour_gradient_list</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Form list of Cfour analytic :py:func:`~driver.gradient` arguments.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">cfour</span><span class="o">.</span><span class="n">cfour_gradient_list</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">cfour_psivar_list</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Form dictionary of :ref:`PSI Variables &lt;apdx:cfour_psivar&gt;` set by Cfour methods.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">cfour</span><span class="o">.</span><span class="n">cfour_psivar_list</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">write_zmat</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dertype</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns string with contents of Cfour ZMAT file as gathered from</span>
+<span class="sd">    active molecule, current keyword settings, and cfour {...} block.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Handle memory</span>
+    <span class="n">mem</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.000001</span> <span class="o">*</span> <span class="n">core</span><span class="o">.</span><span class="n">get_memory</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">mem</span> <span class="o">==</span> <span class="mi">524</span><span class="p">:</span>
+        <span class="n">memcmd</span><span class="p">,</span> <span class="n">memkw</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">memcmd</span><span class="p">,</span> <span class="n">memkw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">cfour</span><span class="o">.</span><span class="n">muster_memory</span><span class="p">(</span><span class="n">mem</span><span class="p">)</span>
+
+    <span class="c1"># Handle molecule and basis set</span>
+    <span class="k">if</span> <span class="n">molecule</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;blank_molecule_psi4_yo&#39;</span><span class="p">:</span>
+        <span class="n">molcmd</span><span class="p">,</span> <span class="n">molkw</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{}</span>
+        <span class="n">bascmd</span><span class="p">,</span> <span class="n">baskw</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{}</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">set_local_option</span><span class="p">(</span><span class="s1">&#39;CFOUR&#39;</span><span class="p">,</span> <span class="s1">&#39;TRANSLATE_PSI4&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+        <span class="c1">#print(molecule.create_psi4_string_from_molecule())</span>
+        <span class="n">qcdbmolecule</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">create_psi4_string_from_molecule</span><span class="p">())</span>
+        <span class="n">qcdbmolecule</span><span class="o">.</span><span class="n">tagline</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+        <span class="n">molcmd</span><span class="p">,</span> <span class="n">molkw</span> <span class="o">=</span> <span class="n">qcdbmolecule</span><span class="o">.</span><span class="n">format_molecule_for_cfour</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">bascmd</span><span class="p">,</span> <span class="n">baskw</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">user_pg</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">schoenflies_symbol</span><span class="p">()</span>
+            <span class="n">molecule</span><span class="o">.</span><span class="n">reset_point_group</span><span class="p">(</span><span class="s1">&#39;c1&#39;</span><span class="p">)</span>  <span class="c1"># need basis printed for *every* atom</span>
+            <span class="n">qbs</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="s2">&quot;BASIS&quot;</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">qbs</span><span class="o">.</span><span class="n">has_ECP</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;ECPs not hooked up for Cfour&quot;&quot;&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;GENBAS&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfour_basfile</span><span class="p">:</span>
+                <span class="n">cfour_basfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">qbs</span><span class="o">.</span><span class="n">genbas</span><span class="p">())</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;  GENBAS loaded from Psi4 LibMints for basis </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;BASIS&#39;</span><span class="p">)))</span>
+            <span class="n">molecule</span><span class="o">.</span><span class="n">reset_point_group</span><span class="p">(</span><span class="n">user_pg</span><span class="p">)</span>
+            <span class="n">molecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+            <span class="n">bascmd</span><span class="p">,</span> <span class="n">baskw</span> <span class="o">=</span> <span class="n">qcdbmolecule</span><span class="o">.</span><span class="n">format_basis_for_cfour</span><span class="p">(</span><span class="n">qbs</span><span class="o">.</span><span class="n">has_puream</span><span class="p">())</span>
+
+    <span class="c1"># Handle psi4 keywords implying cfour keyword values</span>
+    <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;CFOUR&#39;</span><span class="p">,</span> <span class="s1">&#39;TRANSLATE_PSI4&#39;</span><span class="p">):</span>
+        <span class="n">psicmd</span><span class="p">,</span> <span class="n">psikw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">cfour</span><span class="o">.</span><span class="n">muster_psi4options</span><span class="p">(</span><span class="n">p4util</span><span class="o">.</span><span class="n">prepare_options_for_modules</span><span class="p">(</span><span class="n">changedOnly</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">psicmd</span><span class="p">,</span> <span class="n">psikw</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">{}</span>
+
+    <span class="c1"># Handle calc type and quantum chemical method</span>
+    <span class="n">mdccmd</span><span class="p">,</span> <span class="n">mdckw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">cfour</span><span class="o">.</span><span class="n">muster_modelchem</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dertype</span><span class="p">)</span>
+
+    <span class="c1"># Handle calc type and quantum chemical method</span>
+    <span class="n">mdccmd</span><span class="p">,</span> <span class="n">mdckw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">cfour</span><span class="o">.</span><span class="n">muster_modelchem</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dertype</span><span class="p">)</span>
+
+    <span class="c1"># Handle driver vs input/default keyword reconciliation</span>
+    <span class="n">userkw</span> <span class="o">=</span> <span class="n">p4util</span><span class="o">.</span><span class="n">prepare_options_for_modules</span><span class="p">()</span>
+    <span class="n">userkw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">reconcile_options</span><span class="p">(</span><span class="n">userkw</span><span class="p">,</span> <span class="n">memkw</span><span class="p">)</span>
+    <span class="n">userkw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">reconcile_options</span><span class="p">(</span><span class="n">userkw</span><span class="p">,</span> <span class="n">molkw</span><span class="p">)</span>
+    <span class="n">userkw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">reconcile_options</span><span class="p">(</span><span class="n">userkw</span><span class="p">,</span> <span class="n">baskw</span><span class="p">)</span>
+    <span class="n">userkw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">reconcile_options</span><span class="p">(</span><span class="n">userkw</span><span class="p">,</span> <span class="n">psikw</span><span class="p">)</span>
+    <span class="n">userkw</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">reconcile_options</span><span class="p">(</span><span class="n">userkw</span><span class="p">,</span> <span class="n">mdckw</span><span class="p">)</span>
+
+    <span class="c1"># Handle conversion of psi4 keyword structure into cfour format</span>
+    <span class="n">optcmd</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">prepare_options_for_cfour</span><span class="p">(</span><span class="n">userkw</span><span class="p">)</span>
+
+    <span class="c1"># Handle text to be passed untouched to cfour</span>
+    <span class="n">litcmd</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s1">&#39;LITERAL_CFOUR&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Assemble ZMAT pieces</span>
+    <span class="n">zmat</span> <span class="o">=</span> <span class="n">memcmd</span> <span class="o">+</span> <span class="n">molcmd</span> <span class="o">+</span> <span class="n">optcmd</span> <span class="o">+</span> <span class="n">mdccmd</span> <span class="o">+</span> <span class="n">psicmd</span> <span class="o">+</span> <span class="n">bascmd</span> <span class="o">+</span> <span class="n">litcmd</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\*(ACES2|CFOUR|CRAPS)\(&#39;</span><span class="p">,</span> <span class="n">zmat</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  Faulty ZMAT constructed:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">zmat</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Multiple *CFOUR(...) blocks in input. This usually arises</span>
+<span class="s2">because molecule or options are specified both the psi4 way through</span>
+<span class="s2">molecule {...} and set ... and the cfour way through cfour {...}.&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">zmat</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../../index.html" title="index">
+          <img class="logo" src="../../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/procrouting/interface_cfour.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">psi4.driver.procrouting.interface_cfour</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

@@ -1,0 +1,568 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>MemDFJK</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MintsHelper" href="psi4.core.MintsHelper.html" />
+    <link rel="prev" title="MatrixFactory" href="psi4.core.MatrixFactory.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.MintsHelper.html" title="MintsHelper"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.MatrixFactory.html" title="MatrixFactory"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.MemDFJK.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" accesskey="U"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">MemDFJK</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="memdfjk">
+<h1>MemDFJK<a class="headerlink" href="#memdfjk" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">psi4.core.</span></span><span class="sig-name descname"><span class="pre">MemDFJK</span></span><a class="headerlink" href="#psi4.core.MemDFJK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><code class="xref py py-class docutils literal notranslate"><span class="pre">psi4.core.JK</span></code></a></p>
+<p>docstring</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.C_add" title="psi4.core.MemDFJK.C_add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">C_add</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.C_clear" title="psi4.core.MemDFJK.C_clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">C_clear</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.C_left_add" title="psi4.core.MemDFJK.C_left_add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">C_left_add</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.C_right_add" title="psi4.core.MemDFJK.C_right_add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">C_right_add</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.D" title="psi4.core.MemDFJK.D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">D</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.J" title="psi4.core.MemDFJK.J"><code class="xref py py-obj docutils literal notranslate"><span class="pre">J</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.K" title="psi4.core.MemDFJK.K"><code class="xref py py-obj docutils literal notranslate"><span class="pre">K</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.basisset" title="psi4.core.MemDFJK.basisset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basisset</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.build" title="psi4.core.MemDFJK.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(orbital_basis[, aux, jk_type, do_wK, …])</p></td>
+<td><p>Constructs a Psi4 JK object from an input basis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.build_JK" title="psi4.core.MemDFJK.build_JK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_JK</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.compute" title="psi4.core.MemDFJK.compute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.dfh" title="psi4.core.MemDFJK.dfh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfh</span></code></a>(self)</p></td>
+<td><p>Return the DFHelper object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.finalize" title="psi4.core.MemDFJK.finalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finalize</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.get_omega" title="psi4.core.MemDFJK.get_omega"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_omega</span></code></a>(self)</p></td>
+<td><p>Dampening term for range separated DFT</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.get_omega_alpha" title="psi4.core.MemDFJK.get_omega_alpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_omega_alpha</span></code></a>(self)</p></td>
+<td><p>Weight for HF exchange term in range-separated DFT</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.get_omega_beta" title="psi4.core.MemDFJK.get_omega_beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_omega_beta</span></code></a>(self)</p></td>
+<td><p>Weight for dampened exchange term in range-separated DFT</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.get_wcombine" title="psi4.core.MemDFJK.get_wcombine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wcombine</span></code></a>(self)</p></td>
+<td><p>wcombine</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.initialize" title="psi4.core.MemDFJK.initialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.memory_estimate" title="psi4.core.MemDFJK.memory_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memory_estimate</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.name" title="psi4.core.MemDFJK.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.print_header" title="psi4.core.MemDFJK.print_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_header</span></code></a>(self)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_cutoff" title="psi4.core.MemDFJK.set_cutoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_cutoff</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_do_J" title="psi4.core.MemDFJK.set_do_J"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_do_J</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_do_K" title="psi4.core.MemDFJK.set_do_K"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_do_K</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_do_wK" title="psi4.core.MemDFJK.set_do_wK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_do_wK</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_memory" title="psi4.core.MemDFJK.set_memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_memory</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_omega" title="psi4.core.MemDFJK.set_omega"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_omega</span></code></a>(self, omega)</p></td>
+<td><p>Dampening term for range separated DFT</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_omega_alpha" title="psi4.core.MemDFJK.set_omega_alpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_omega_alpha</span></code></a>(self, alpha)</p></td>
+<td><p>Weight for HF exchange term in range-separated DFT</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_omega_beta" title="psi4.core.MemDFJK.set_omega_beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_omega_beta</span></code></a>(self, beta)</p></td>
+<td><p>Weight for dampened exchange term in range-separated DFT</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_omp_nthread" title="psi4.core.MemDFJK.set_omp_nthread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_omp_nthread</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_print" title="psi4.core.MemDFJK.set_print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_print</span></code></a>(self, arg0)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.set_wcombine" title="psi4.core.MemDFJK.set_wcombine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wcombine</span></code></a>(self, wcombine)</p></td>
+<td><p>Are Exchange terms in one Matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.MemDFJK.wK" title="psi4.core.MemDFJK.wK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wK</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.C_add">
+<span class="sig-name descname"><span class="pre">C_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.C_add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.C_clear">
+<span class="sig-name descname"><span class="pre">C_clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.C_clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.C_left_add">
+<span class="sig-name descname"><span class="pre">C_left_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.C_left_add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.C_right_add">
+<span class="sig-name descname"><span class="pre">C_right_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.C_right_add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.D">
+<span class="sig-name descname"><span class="pre">D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#psi4.core.MemDFJK.D" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.J">
+<span class="sig-name descname"><span class="pre">J</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#psi4.core.MemDFJK.J" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.K">
+<span class="sig-name descname"><span class="pre">K</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#psi4.core.MemDFJK.K" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.basisset">
+<span class="sig-name descname"><span class="pre">basisset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.BasisSet.html#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.basisset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.build">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbital_basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jk_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_wK</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.MemDFJK.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a Psi4 JK object from an input basis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orbital_basis</strong> (<a class="reference internal" href="psi4.core.BasisSet.html#psi4.core.BasisSet" title="psi4.core.BasisSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasisSet</span></code></a>) – Orbital basis to use in the JK object.</p></li>
+<li><p><strong>aux</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="psi4.core.BasisSet.html#psi4.core.BasisSet" title="psi4.core.BasisSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasisSet</span></code></a>]) – Optional auxiliary basis set for density-fitted tensors. Defaults
+to the DF_BASIS_SCF if set, otherwise the correspond JKFIT basis
+to the passed in <cite>orbital_basis</cite>.</p></li>
+<li><p><strong>jk_type</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Type of JK object to build (DF, Direct, PK, etc). Defaults to the
+current global SCF_TYPE option.</p></li>
+<li><p><strong>do_wK</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>]</em>) – </p></li>
+<li><p><strong>memory</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Uninitialized JK object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK">JK</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>jk = psi4.core.JK.build(bas)
+jk.set_memory(int(5e8)) # 4GB of memory
+jk.initialize()</p>
+<p>…</p>
+<p>jk.C_left_add(matirx)
+jk.compute()
+jk.C_clear()</p>
+<p>…</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.build_JK">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">build_JK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.MemDFJK.build_JK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>build_JK(arg0: psi4.core.BasisSet, arg1: psi4.core.BasisSet) -&gt; psi4.core.JK</p></li>
+<li><p>build_JK(arg0: psi4.core.BasisSet, arg1: psi4.core.BasisSet, arg2: bool, arg3: int) -&gt; psi4.core.JK</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.compute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.dfh">
+<span class="sig-name descname"><span class="pre">dfh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#psi4.core.MemDFJK" title="psi4.core.MemDFJK"><span class="pre">psi4.core.MemDFJK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.DFHelper.html#psi4.core.DFHelper" title="psi4.core.DFHelper"><span class="pre">psi4.core.DFHelper</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.dfh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the DFHelper object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.finalize">
+<span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.finalize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.get_omega">
+<span class="sig-name descname"><span class="pre">get_omega</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.get_omega" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dampening term for range separated DFT</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.get_omega_alpha">
+<span class="sig-name descname"><span class="pre">get_omega_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.get_omega_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weight for HF exchange term in range-separated DFT</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.get_omega_beta">
+<span class="sig-name descname"><span class="pre">get_omega_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.get_omega_beta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weight for dampened exchange term in range-separated DFT</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.get_wcombine">
+<span class="sig-name descname"><span class="pre">get_wcombine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.get_wcombine" title="Permalink to this definition">¶</a></dt>
+<dd><p>wcombine</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.memory_estimate">
+<span class="sig-name descname"><span class="pre">memory_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.memory_estimate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.print_header">
+<span class="sig-name descname"><span class="pre">print_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.print_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_cutoff">
+<span class="sig-name descname"><span class="pre">set_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_cutoff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_do_J">
+<span class="sig-name descname"><span class="pre">set_do_J</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_do_J" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_do_K">
+<span class="sig-name descname"><span class="pre">set_do_K</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_do_K" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_do_wK">
+<span class="sig-name descname"><span class="pre">set_do_wK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_do_wK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_memory">
+<span class="sig-name descname"><span class="pre">set_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_memory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_omega">
+<span class="sig-name descname"><span class="pre">set_omega</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_omega" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dampening term for range separated DFT</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_omega_alpha">
+<span class="sig-name descname"><span class="pre">set_omega_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_omega_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weight for HF exchange term in range-separated DFT</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_omega_beta">
+<span class="sig-name descname"><span class="pre">set_omega_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_omega_beta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weight for dampened exchange term in range-separated DFT</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_omp_nthread">
+<span class="sig-name descname"><span class="pre">set_omp_nthread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_omp_nthread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_print">
+<span class="sig-name descname"><span class="pre">set_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_print" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.set_wcombine">
+<span class="sig-name descname"><span class="pre">set_wcombine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wcombine</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.MemDFJK.set_wcombine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Are Exchange terms in one Matrix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.MemDFJK.wK">
+<span class="sig-name descname"><span class="pre">wK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="psi4.core.JK.html#psi4.core.JK" title="psi4.core.JK"><span class="pre">psi4.core.JK</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><span class="pre">psi4.core.Matrix</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#psi4.core.MemDFJK.wK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.MintsHelper.html" title="MintsHelper"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.MatrixFactory.html" title="MatrixFactory"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.MemDFJK.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" ><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">MemDFJK</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

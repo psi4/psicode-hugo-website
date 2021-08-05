@@ -1,0 +1,443 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Creating New Plugins</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Integrating New Features into PSI4" href="prog_full_integration.html" />
+    <link rel="prev" title="Ways to Add Code: Psi4NumPy, Plugins, Full Integration" href="prog_ways_to_add.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prog_full_integration.html" title="Integrating New Features into PSI4"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prog_ways_to_add.html" title="Ways to Add Code: Psi4NumPy, Plugins, Full Integration"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/plugins.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="prog_newcode.html" accesskey="U">Adding New Code to <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Creating New Plugins</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="creating-new-plugins">
+<span id="sec-plugins"></span><h1>Creating New Plugins<a class="headerlink" href="#creating-new-plugins" title="Permalink to this headline">¶</a></h1>
+<section id="modular-approach-to-development">
+<h2>Modular Approach to Development<a class="headerlink" href="#modular-approach-to-development" title="Permalink to this headline">¶</a></h2>
+<p>It is slightly cumbersome to the development cycle to recompile <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+every time a change is made to the C++ code.
+It’s also daunting to new developers if they’re required to
+learn the structure of the source tree, executable initialization code,
+and makefile systems in the existing code in order to add new features,
+which was never a problem with Psi3 due to the independent
+nature of the modules. To overcome these problems, <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> now has a
+useful plugin feature. This allows codes to be developed as standalone
+entities, which are compiled independently of the Psi source, but can
+still link against Psi’s vast library. The plugins can be loaded at
+run-time from any location.</p>
+</section>
+<section id="creating-a-new-plugin">
+<span id="sec-newplugins"></span><h2>Creating a New Plugin<a class="headerlink" href="#creating-a-new-plugin" title="Permalink to this headline">¶</a></h2>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> can create basic plugins for you and automatically tailor them
+to your compilation environment. To create a basic plugin, run the
+following while replacing <code class="docutils literal notranslate"><span class="pre">myplugin</span></code> with the name of your great code.
+If the name you provide is not valid, <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> will complain.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">name</span> <span class="n">myplugin</span>
+</pre></div>
+</div>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> will create a new directory with the name you specify for the
+plugin. In this example, a directory named myplugin will be created.
+All you need to do is <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the directory, use <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> to generate
+a Makefile, and type make. Then execute <code class="docutils literal notranslate"><span class="pre">psi4</span></code> in the directory on the
+default input file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nb">cd</span> myplugin
+&gt;&gt;&gt; <span class="sb">`</span>psi4 --plugin-compile<span class="sb">`</span>
+&gt;&gt;&gt; make
+&gt;&gt;&gt; psi4
+</pre></div>
+</div>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> comes with a few templates that provide an excellent starting
+point. These include code that demonstrates AO, MO, and SO integrals. Use
+one of the following commands that meets your needs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">name</span> <span class="n">myplugin</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">template</span> <span class="n">aointegrals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">name</span> <span class="n">myplugin</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">template</span> <span class="n">mointegrals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">name</span> <span class="n">myplugin</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">template</span> <span class="n">sointegrals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">name</span> <span class="n">myplugin</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">template</span> <span class="n">wavefunction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">name</span> <span class="n">myplugin</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">template</span> <span class="n">scf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psi4</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">name</span> <span class="n">myplugin</span> <span class="o">--</span><span class="n">plugin</span><span class="o">-</span><span class="n">template</span> <span class="n">dfmp2</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-new-plugin-using-a-conda-pre-compiled-binary">
+<span id="sec-condaplugins"></span><h2>Creating a New Plugin Using a Conda Pre-compiled Binary<a class="headerlink" href="#creating-a-new-plugin-using-a-conda-pre-compiled-binary" title="Permalink to this headline">¶</a></h2>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> plugins can also be created using Conda for both <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+binary and development environment. On Linux (or Ubuntu shell on Windows), one can use the <code class="docutils literal notranslate"><span class="pre">gcc</span></code>
+compiler installed alongside <code class="docutils literal notranslate"><span class="pre">psi4</span></code> itself in the Conda distribution
+or environment (below, <code class="docutils literal notranslate"><span class="pre">$PSI4CONDA</span></code>). On Mac, one must use
+<code class="docutils literal notranslate"><span class="pre">libc++.so</span></code> (<em>not</em> <code class="docutils literal notranslate"><span class="pre">libstdc++.so</span></code>), and this can be accomplished by
+installing XCode from the App Store that provides <code class="docutils literal notranslate"><span class="pre">clang</span></code> and
+<code class="docutils literal notranslate"><span class="pre">clang++</span></code> compilers.</p>
+<ul class="simple">
+<li><p>Check environment:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># yes, the following returns a blank line. yes, LD_LIBRARY_PATH irrelevant</span>
+&gt;&gt;&gt; <span class="nb">echo</span> <span class="nv">$PYTHONHOME</span> <span class="nv">$PYTHONPATH</span> <span class="nv">$DYLD_LIBRARY_PATH</span> <span class="nv">$PSIDATADIR</span>
+
+&gt;&gt;&gt; which python psi4 g++ gfortran  <span class="c1"># Linux</span>
+<span class="nv">$PSI4CONDA</span>/bin/python
+<span class="nv">$PSI4CONDA</span>/bin/psi4
+<span class="nv">$PSI4CONDA</span>/bin/gcc++
+<span class="nv">$PSI4CONDA</span>/bin/gfortran
+&gt;&gt;&gt; which python psi4 g++ gfortran clang++  <span class="c1"># Mac</span>
+<span class="nv">$PSI4CONDA</span>/bin/python
+<span class="nv">$PSI4CONDA</span>/bin/psi4
+<span class="nv">$PSI4CONDA</span>/bin/g++
+<span class="nv">$PSI4CONDA</span>/bin/gfortran
+/usr/bin/clang++
+
+&gt;&gt;&gt; which cmake
+<span class="nv">$PSI4CONDA</span>/bin/cmake
+<span class="c1"># if above empty, ``conda install cmake``</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Create and compile plugin:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; psi4 --plugin-name testplugin
+-- Creating <span class="s2">&quot;testplugin&quot;</span> with <span class="s2">&quot;basic&quot;</span> template. -----------------
+<span class="o">==</span>&gt; Created plugin files <span class="o">(</span><span class="k">in</span> testplugin as basic<span class="o">)</span>:
+  __init__.py, CMakeLists.txt, doc.rst, input.dat, plugin.cc, pymodule.py
+
+<span class="c1"># move into plugin directory</span>
+&gt;&gt;&gt; <span class="nb">cd</span> testplugin
+
+<span class="c1"># configure using build info from parent psi4</span>
+&gt;&gt;&gt; <span class="sb">`</span>psi4 --plugin-compile<span class="sb">`</span>  <span class="c1"># Linux</span>
+loading initial cache file <span class="nv">$PSI4CONDA</span>/share/cmake/psi4/psi4PluginCache.cmake
+-- The CXX compiler identification is GNU <span class="m">5</span>.2.0
+-- Check <span class="k">for</span> working CXX compiler: <span class="nv">$PSI4CONDA</span>/bin/g++
+-- Check <span class="k">for</span> working CXX compiler: <span class="nv">$PSI4CONDA</span>/bin/g++ -- works
+...
+-- Generating <span class="k">done</span>
+-- Build files have been written to: testplugin
+&gt;&gt;&gt; <span class="sb">`</span>psi4 --plugin-compile<span class="sb">`</span>  <span class="c1"># Mac</span>
+loading initial cache file <span class="nv">$PSI4CONDA</span>/share/cmake/psi4/psi4PluginCache.cmake
+-- The CXX compiler identification is AppleClang <span class="m">7</span>.0.0.7000176
+-- Check <span class="k">for</span> working CXX compiler: /usr/bin/clang++
+-- Check <span class="k">for</span> working CXX compiler: /usr/bin/clang++ -- works
+...
+-- Generating <span class="k">done</span>
+-- Build files have been written to: testplugin
+
+<span class="c1"># compile the plugin to produce testplugin.so</span>
+&gt;&gt;&gt; make
+Scanning dependencies of target testplugin
+<span class="o">[</span> <span class="m">50</span>%<span class="o">]</span> Building CXX object CMakeFiles/testplugin.dir/plugin.cc.o
+<span class="o">[</span><span class="m">100</span>%<span class="o">]</span> Linking CXX shared module testplugin.so
+<span class="o">[</span><span class="m">100</span>%<span class="o">]</span> Built target testplugin
+
+<span class="c1"># run sample input.dat</span>
+&gt;&gt;&gt; psi4
+Attention! This SCF may be density-fitted.
+</pre></div>
+</div>
+<p>Please note that the conda distribution must be in <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> or the
+conda enviroment must be activated before compilation and execution of
+plugins created using this procedure.</p>
+</section>
+<section id="files-in-a-plugin-directory">
+<h2>Files in a Plugin Directory<a class="headerlink" href="#files-in-a-plugin-directory" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the main <code class="docutils literal notranslate"><span class="pre">myplugin.cc</span></code> file, a fresh plugin directory contains the following files</p>
+<ul class="simple">
+<li><p><strong>CMakeLists.txt</strong> — CMake file governing project <em>plugin</em>.
+The plugin source and CMakeLists.txt is independent of platform
+and <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> installation. You use CMake (version 3.1 or later)
+to generate a Makefile for the plugin by pointing it to a specific
+<span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> installation. Run <code class="docutils literal notranslate"><span class="pre">psi4</span> <span class="pre">--plugin-compile</span></code> to get a command
+to execute to generate the Makefile. What that command is doing is
+loading the compilers and options used to build the parent <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+(the <code class="docutils literal notranslate"><span class="pre">-C</span> <span class="pre">psi4PluginCache</span></code> part) which in turn can be overridden
+by passing <code class="docutils literal notranslate"><span class="pre">-Doption=value</span></code> commands to <code class="docutils literal notranslate"><span class="pre">cmake</span></code> <em>and</em> pointing
+toward a particular <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> (and probably pybind11) library to
+link against (the <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> part) <em>and</em> telling it to
+do an in-source build (the <code class="docutils literal notranslate"><span class="pre">.</span></code> part). Then just run <code class="docutils literal notranslate"><span class="pre">make</span></code> in
+your plugin directory. After any change to the plugin C++ code,
+<code class="docutils literal notranslate"><span class="pre">make</span></code> must be run in the plugin directory to recompile the
+<code class="docutils literal notranslate"><span class="pre">myplugin.so</span></code> executable, but recompiling the main <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> code
+is not necessary. Should you add additional (non-header) files to
+the plugin or need to link to additional external libraries, add that
+information here.</p></li>
+<li><p><strong>input.dat</strong> — Sample input file for the plugin.
+Since the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file makes the plugin directory look like a
+Python module, the plugin can be treated as such in an input file. The
+location of the plugin directory must be included in <span class="target" id="index-0"></span><a class="reference internal" href="external.html#envvar-PYTHONPATH"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PYTHONPATH</span></code></a>,
+either externally in the calling shell or defined in the input file.
+This is usually done by manipulating <span class="target" id="index-1"></span><a class="reference internal" href="external.html#envvar-PSIPATH"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PSIPATH</span></code></a>. Then,
+the plugin can be loaded as <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">myplugin</span></code> and executed as
+<code class="docutils literal notranslate"><span class="pre">energy('myplugin')</span></code>. Any other Python functions are also available from
+the input file, <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">myplugin.testfunction()</span></code>, note the namespace
+protection.</p></li>
+<li><p><strong>pymodule.py</strong> — Python component of the plugin.
+By encoding the sequence of <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> module
+calls needed to run the plugin in the <code class="docutils literal notranslate"><span class="pre">run_myplugin()</span></code> function in this
+file, the plugin is hooked into the main <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> driver function
+<code class="xref py py-func docutils literal notranslate"><span class="pre">energy()</span></code> and so can be accessed through
+<code class="docutils literal notranslate"><span class="pre">energy('myplugin')</span></code> in an input file. Any other Python functions can
+also be placed in this file.</p></li>
+<li><p><strong>__init__.py</strong> — Init script for the plugin (in the sense that
+the whole plugin directory is a Python module). This file generally won’t
+need editing unless additional Python files are added to the plugin
+directory (add additional lines to the <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Load</span> <span class="pre">Python</span> <span class="pre">modules</span></code> section)
+or the plugin depends on .so codes in other plugin directories (add
+additional plugin_load lines relative to the current plugin directory to
+the <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Load</span> <span class="pre">C++</span> <span class="pre">plugin</span></code> section).</p></li>
+</ul>
+<ul class="simple">
+<li><p><strong>doc.rst</strong> — Documentation file. Place in this file any notes,
+equations, warnings to users, todo lists, <em>etc.</em>. Plain text is fine,
+though reStructuredText is the ultimate goal. Remove the <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">comment</span></code>
+text and build Sphinx documentation for samples of linking keywords,
+sections, and math. This file is absorbed into the <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>
+documentation, along with any docstrings to Python functions, and the C++
+keywords block in the <code class="docutils literal notranslate"><span class="pre">myplugin.cc</span></code> file. See <a class="reference internal" href="documentation.html#sec-documentation"><span class="std std-ref">Updating the  Users’ and Programmers’ Manual</span></a>
+for building documentation.</p></li>
+</ul>
+<p>Please note that pure virtual functions in a plugin may cause undefined symbols errors when
+the plugin is loaded.</p>
+<p>To create a purely Python plugin, create a new plugin directory, then
+remove the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and <code class="docutils literal notranslate"><span class="pre">myplugin.cc</span></code> files and
+erase the shared object loading portion of <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>. Create as many .py
+files as necessary (registering each one in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>), use
+<code class="docutils literal notranslate"><span class="pre">input.dat</span></code> as a model for loading the plugin, no recompile ever
+necessary.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Creating New Plugins</a><ul>
+<li><a class="reference internal" href="#modular-approach-to-development">Modular Approach to Development</a></li>
+<li><a class="reference internal" href="#creating-a-new-plugin">Creating a New Plugin</a></li>
+<li><a class="reference internal" href="#creating-a-new-plugin-using-a-conda-pre-compiled-binary">Creating a New Plugin Using a Conda Pre-compiled Binary</a></li>
+<li><a class="reference internal" href="#files-in-a-plugin-directory">Files in a Plugin Directory</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prog_full_integration.html" title="Integrating New Features into PSI4"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="prog_ways_to_add.html" title="Ways to Add Code: Psi4NumPy, Plugins, Full Integration"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/plugins.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/9485035">1.4</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="prog_newcode.html" >Adding New Code to <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span></a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Creating New Plugins</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Thursday, 05 August 2021 02:16PM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
