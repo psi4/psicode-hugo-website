@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v141"
+edition = "v14"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -67,7 +67,6 @@ installers_built = {
     "1.4rc2": cycle_14,
     "1.4rc3": cycle_14,
     "1.4": cycle_14,
-    "1.4.1": cycle_14,
     False: [],
     "1.5dev": cycle_15,
 }
@@ -81,7 +80,6 @@ psi4rt = {
     "1.4rc2": "1.4.dev33",
     "1.4rc3": "1.4.dev35",
     "1.4": "1.4",
-    "1.4.1": "1.4.1",
 }
 
 ## Outputs
@@ -120,7 +118,6 @@ pms = [i["jscode"] for i in managers]
 
 
 def psi4conda_filename(os, py, pm, br):
-    # http: (works for LAB) or https: (works for Kirk Pearce)
     vergil = "http://vergil.chemistry.gatech.edu/psicode-download/"
     psi4conda = f"Psi4conda-{brvvs[br]}-{py.replace('.', '')}-{osp4cs[os]}-x86_64.{osexts[os]}"
     return vergil, psi4conda
