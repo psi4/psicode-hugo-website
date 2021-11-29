@@ -1,0 +1,538 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>IntegralFactory</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="IntegralTransform" href="psi4.core.IntegralTransform.html" />
+    <link rel="prev" title="IntVector" href="psi4.core.IntVector.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.IntegralTransform.html" title="IntegralTransform"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.IntVector.html" title="IntVector"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.IntegralFactory.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" accesskey="U"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">IntegralFactory</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="integralfactory">
+<h1>IntegralFactory<a class="headerlink" href="#integralfactory" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">psi4.core.</span></span><span class="sig-name descname"><span class="pre">IntegralFactory</span></span><a class="headerlink" href="#psi4.core.IntegralFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>Computes integrals</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_angular_momentum" title="psi4.core.IntegralFactory.ao_angular_momentum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_angular_momentum</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the AO angular momentum integral</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_dipole" title="psi4.core.IntegralFactory.ao_dipole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_dipole</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the AO dipole integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_kinetic" title="psi4.core.IntegralFactory.ao_kinetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_kinetic</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the AO kinetic integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_multipoles" title="psi4.core.IntegralFactory.ao_multipoles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_multipoles</span></code></a>(self, order)</p></td>
+<td><p>Returns a OneBodyInt that computes arbitrary-order AO multipole integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_nabla" title="psi4.core.IntegralFactory.ao_nabla"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_nabla</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the AO nabla integral</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_overlap" title="psi4.core.IntegralFactory.ao_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_overlap</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the AO overlap integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_potential" title="psi4.core.IntegralFactory.ao_potential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_potential</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the AO nuclear attraction integral</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_pseudospectral" title="psi4.core.IntegralFactory.ao_pseudospectral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_pseudospectral</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the AO pseudospectral grid integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_quadrupole" title="psi4.core.IntegralFactory.ao_quadrupole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_quadrupole</span></code></a>(self)</p></td>
+<td><p>Returns a OneBodyInt that computes AO the quadrupole integral</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.ao_traceless_quadrupole" title="psi4.core.IntegralFactory.ao_traceless_quadrupole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_traceless_quadrupole</span></code></a>(self)</p></td>
+<td><p>Returns a OneBodyInt that computes the traceless AO quadrupole integral</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.electric_field" title="psi4.core.IntegralFactory.electric_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electric_field</span></code></a>(self, arg0)</p></td>
+<td><p>Returns a OneBodyInt that computes the electric field</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.electrostatic" title="psi4.core.IntegralFactory.electrostatic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electrostatic</span></code></a>(self)</p></td>
+<td><p>Returns a OneBodyInt that computes the point electrostatic potential</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.erf_complement_eri" title="psi4.core.IntegralFactory.erf_complement_eri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">erf_complement_eri</span></code></a>(self, omega[, deriv, ...])</p></td>
+<td><p>Returns an erf complement ERI integral object (omega integral)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.erf_eri" title="psi4.core.IntegralFactory.erf_eri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">erf_eri</span></code></a>(self, omega[, deriv, ...])</p></td>
+<td><p>Returns and erf ERI integral object (omega integral)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.eri" title="psi4.core.IntegralFactory.eri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eri</span></code></a>(self[, deriv, use_shell_pairs, ...])</p></td>
+<td><p>Returns an ERI integral object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.f12" title="psi4.core.IntegralFactory.f12"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f12</span></code></a>(self, cf, deriv, use_shell_pairs)</p></td>
+<td><p>Returns an F12 integral object</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.f12_double_commutator" title="psi4.core.IntegralFactory.f12_double_commutator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f12_double_commutator</span></code></a>(self, cf, deriv, ...)</p></td>
+<td><p>Returns an F12 double commutator integral object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.f12_squared" title="psi4.core.IntegralFactory.f12_squared"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f12_squared</span></code></a>(self, cf, deriv, use_shell_pairs)</p></td>
+<td><p>Returns an F12 squared integral object</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.f12g12" title="psi4.core.IntegralFactory.f12g12"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f12g12</span></code></a>(self, cf, deriv, use_shell_pairs)</p></td>
+<td><p>Returns an F12G12 integral object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.overlap_3c" title="psi4.core.IntegralFactory.overlap_3c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap_3c</span></code></a>(self)</p></td>
+<td><p>Returns a OneBodyInt that computes the 3 center overlap integral</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.shells_iterator" title="psi4.core.IntegralFactory.shells_iterator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shells_iterator</span></code></a>(self)</p></td>
+<td><p>Returns an ERI iterator object, only coded for standard ERIs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_angular_momentum" title="psi4.core.IntegralFactory.so_angular_momentum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_angular_momentum</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the SO angular momentum integral</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_dipole" title="psi4.core.IntegralFactory.so_dipole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_dipole</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the SO dipole integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_kinetic" title="psi4.core.IntegralFactory.so_kinetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_kinetic</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the SO kinetic integrals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_multipoles" title="psi4.core.IntegralFactory.so_multipoles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_multipoles</span></code></a>(self, order)</p></td>
+<td><p>Returns a OneBodyInt that computes arbitrary-order SO multipole integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_nabla" title="psi4.core.IntegralFactory.so_nabla"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_nabla</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the SO nabla integral</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_overlap" title="psi4.core.IntegralFactory.so_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_overlap</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the SO overlap integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_potential" title="psi4.core.IntegralFactory.so_potential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_potential</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the SO nuclear attraction integral</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_pseudospectral" title="psi4.core.IntegralFactory.so_pseudospectral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_pseudospectral</span></code></a>(self[, deriv])</p></td>
+<td><p>Returns a OneBodyInt that computes the SO pseudospectral grid integrals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_quadrupole" title="psi4.core.IntegralFactory.so_quadrupole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_quadrupole</span></code></a>(self)</p></td>
+<td><p>Returns a OneBodyInt that computes SO the quadrupole integral</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.IntegralFactory.so_traceless_quadrupole" title="psi4.core.IntegralFactory.so_traceless_quadrupole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">so_traceless_quadrupole</span></code></a>(self)</p></td>
+<td><p>Returns a OneBodyInt that computes the traceless SO quadrupole integral</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_angular_momentum">
+<span class="sig-name descname"><span class="pre">ao_angular_momentum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_angular_momentum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the AO angular momentum integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_dipole">
+<span class="sig-name descname"><span class="pre">ao_dipole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_dipole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the AO dipole integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_kinetic">
+<span class="sig-name descname"><span class="pre">ao_kinetic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_kinetic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the AO kinetic integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_multipoles">
+<span class="sig-name descname"><span class="pre">ao_multipoles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_multipoles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes arbitrary-order AO multipole integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_nabla">
+<span class="sig-name descname"><span class="pre">ao_nabla</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_nabla" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the AO nabla integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_overlap">
+<span class="sig-name descname"><span class="pre">ao_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the AO overlap integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_potential">
+<span class="sig-name descname"><span class="pre">ao_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_potential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the AO nuclear attraction integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_pseudospectral">
+<span class="sig-name descname"><span class="pre">ao_pseudospectral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_pseudospectral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the AO pseudospectral grid integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_quadrupole">
+<span class="sig-name descname"><span class="pre">ao_quadrupole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_quadrupole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes AO the quadrupole integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.ao_traceless_quadrupole">
+<span class="sig-name descname"><span class="pre">ao_traceless_quadrupole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.ao_traceless_quadrupole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the traceless AO quadrupole integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.electric_field">
+<span class="sig-name descname"><span class="pre">electric_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.electric_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the electric field</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.electrostatic">
+<span class="sig-name descname"><span class="pre">electrostatic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodyAOInt.html#psi4.core.OneBodyAOInt" title="psi4.core.OneBodyAOInt"><span class="pre">psi4.core.OneBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.electrostatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the point electrostatic potential</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.erf_complement_eri">
+<span class="sig-name descname"><span class="pre">erf_complement_eri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_shell_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">needs_exchange</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" title="psi4.core.TwoBodyAOInt"><span class="pre">psi4.core.TwoBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.erf_complement_eri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an erf complement ERI integral object (omega integral)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.erf_eri">
+<span class="sig-name descname"><span class="pre">erf_eri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_shell_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">needs_exchange</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" title="psi4.core.TwoBodyAOInt"><span class="pre">psi4.core.TwoBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.erf_eri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns and erf ERI integral object (omega integral)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.eri">
+<span class="sig-name descname"><span class="pre">eri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_shell_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">needs_exchange</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" title="psi4.core.TwoBodyAOInt"><span class="pre">psi4.core.TwoBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.eri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an ERI integral object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.f12">
+<span class="sig-name descname"><span class="pre">f12</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">psi4.core.IntegralFactory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cf:</span> <span class="pre">psi::CorrelationFactor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_shell_pairs:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" title="psi4.core.TwoBodyAOInt"><span class="pre">psi4.core.TwoBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.f12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an F12 integral object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.f12_double_commutator">
+<span class="sig-name descname"><span class="pre">f12_double_commutator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">psi4.core.IntegralFactory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cf:</span> <span class="pre">psi::CorrelationFactor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_shell_pairs:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" title="psi4.core.TwoBodyAOInt"><span class="pre">psi4.core.TwoBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.f12_double_commutator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an F12 double commutator integral object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.f12_squared">
+<span class="sig-name descname"><span class="pre">f12_squared</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">psi4.core.IntegralFactory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cf:</span> <span class="pre">psi::CorrelationFactor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_shell_pairs:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" title="psi4.core.TwoBodyAOInt"><span class="pre">psi4.core.TwoBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.f12_squared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an F12 squared integral object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.f12g12">
+<span class="sig-name descname"><span class="pre">f12g12</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">psi4.core.IntegralFactory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cf:</span> <span class="pre">psi::CorrelationFactor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_shell_pairs:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.TwoBodyAOInt.html#psi4.core.TwoBodyAOInt" title="psi4.core.TwoBodyAOInt"><span class="pre">psi4.core.TwoBodyAOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.f12g12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an F12G12 integral object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.overlap_3c">
+<span class="sig-name descname"><span class="pre">overlap_3c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.ThreeCenterOverlapInt.html#psi4.core.ThreeCenterOverlapInt" title="psi4.core.ThreeCenterOverlapInt"><span class="pre">psi4.core.ThreeCenterOverlapInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.overlap_3c" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the 3 center overlap integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.shells_iterator">
+<span class="sig-name descname"><span class="pre">shells_iterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.AOShellCombinationsIterator.html#psi4.core.AOShellCombinationsIterator" title="psi4.core.AOShellCombinationsIterator"><span class="pre">psi4.core.AOShellCombinationsIterator</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.shells_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an ERI iterator object, only coded for standard ERIs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_angular_momentum">
+<span class="sig-name descname"><span class="pre">so_angular_momentum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_angular_momentum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the SO angular momentum integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_dipole">
+<span class="sig-name descname"><span class="pre">so_dipole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_dipole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the SO dipole integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_kinetic">
+<span class="sig-name descname"><span class="pre">so_kinetic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_kinetic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the SO kinetic integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_multipoles">
+<span class="sig-name descname"><span class="pre">so_multipoles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_multipoles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes arbitrary-order SO multipole integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_nabla">
+<span class="sig-name descname"><span class="pre">so_nabla</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_nabla" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the SO nabla integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_overlap">
+<span class="sig-name descname"><span class="pre">so_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the SO overlap integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_potential">
+<span class="sig-name descname"><span class="pre">so_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_potential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the SO nuclear attraction integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_pseudospectral">
+<span class="sig-name descname"><span class="pre">so_pseudospectral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_pseudospectral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the SO pseudospectral grid integrals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_quadrupole">
+<span class="sig-name descname"><span class="pre">so_quadrupole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_quadrupole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes SO the quadrupole integral</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.IntegralFactory.so_traceless_quadrupole">
+<span class="sig-name descname"><span class="pre">so_traceless_quadrupole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.IntegralFactory" title="psi4.core.IntegralFactory"><span class="pre">psi4.core.IntegralFactory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.OneBodySOInt.html#psi4.core.OneBodySOInt" title="psi4.core.OneBodySOInt"><span class="pre">psi4.core.OneBodySOInt</span></a></span></span><a class="headerlink" href="#psi4.core.IntegralFactory.so_traceless_quadrupole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a OneBodyInt that computes the traceless SO quadrupole integral</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.IntegralTransform.html" title="IntegralTransform"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.IntVector.html" title="IntVector"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.IntegralFactory.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" ><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">IntegralFactory</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Sunday, 28 November 2021 02:41AM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

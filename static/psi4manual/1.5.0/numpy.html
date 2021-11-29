@@ -1,0 +1,408 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Interface to NumPy</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interface to adcc by M. F. Herbst and M. Scheurer" href="adcc.html" />
+    <link rel="prev" title="Interfaces: Enhancing PSI4 Capabilities" href="interfacing.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adcc.html" title="Interface to adcc by M. F. Herbst and M. Scheurer"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="interfacing.html" title="Interfaces: Enhancing PSI4 Capabilities"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/numpy.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" accesskey="U">Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Interface to NumPy</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="interface-to-numpy">
+<span id="sec-numpy"></span><span id="index-0"></span><h1>Interface to NumPy<a class="headerlink" href="#interface-to-numpy" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Daniel G. A. Smith</em></p>
+<p><em>Section author: Daniel G. A. Smith</em></p>
+<p><em>Module:</em> <a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/driver/p4util/numpy_helper.py">psi4/psi4/driver/p4util/numpy_helper.py</a></p>
+<section id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
+<p>Converting between the <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Data classes and a NumPy array is easy through
+various helper functions as detailed in this section.  A quick overview NumPy
+functionality can be found <a class="reference external" href="https://numpy.org/doc/stable/user/quickstart.html">here</a>.  In addition,
+numerous example of hybrid NumPy and Psi4 can be found at the <a class="reference external" href="https://github.com/psi4/psi4numpy">Psi4Numpy
+project</a>.  Currently only the Matrix
+and Vector objects support NumPy interfacing. Let us begin with a simple
+conversion from these objects to a NumPy array:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">psi4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="go"># Build the Psi4 data objects</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="go"># Convert to a NumPy array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here the data is copied into new NumPy arrays. NumPy arrays can be converted
+back to <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> objects using the <code class="docutils literal notranslate"><span class="pre">from_array</span></code> interface:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_mat</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_vec</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="numpy-views">
+<h2>NumPy Views<a class="headerlink" href="#numpy-views" title="Permalink to this headline">¶</a></h2>
+<p>Copying the data between NumPy and Psi4 objects can lead to excessive data
+movement and convoluted code. Here we introduce the idea of “Views” where the
+same data can be viewed by multiple objects. However, this can lead to very
+subtle errors if used incorrectly and care needs to be taken when using these
+views.  Views can be created in two ways:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">numpy_mat_view</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+
+<span class="go"># Access the NumPy object and set all values to 1 through broadcasting</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy_mat_view</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mat</span><span class="p">))</span>
+<span class="go">[[ 1.  1.  1.]</span>
+<span class="go"> [ 1.  1.  1.]</span>
+<span class="go"> [ 1.  1.  1.]]</span>
+</pre></div>
+</div>
+<p>Secondly, these objects have a <code class="docutils literal notranslate"><span class="pre">.np</span></code> attribute for easy access to the underlying data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span><span class="o">.</span><span class="n">np</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>this operation is identical to the above.</p>
+</section>
+<section id="psifour-data-objects-with-irreps">
+<h2><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Data Objects with Irreps<a class="headerlink" href="#psifour-data-objects-with-irreps" title="Permalink to this headline">¶</a></h2>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> data objects natively support multiple <a class="reference internal" href="psithonmol.html#sec-symmetry"><span class="std std-ref">irreducible representations</span></a>
+which is quite useful for Quantum Chemistry. However, this is not fundamental
+to NumPy and some work around are required to natively support these
+operations. Take the following irreped Matrix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dim</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Dimension</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">irreped_mat</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="s2">&quot;New Matrix&quot;</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+
+<span class="go"># Create a list of Psi4 arrays</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list_of_arrays</span> <span class="o">=</span> <span class="n">irreped_mat</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
+
+<span class="go"># Or, use the .nph irreped accessor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">irreped_mat</span><span class="o">.</span><span class="n">nph</span><span class="p">[</span><span class="mi">0</span><span class="p">][:]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">.nph</span></code> is the irreped accessor form. If <code class="docutils literal notranslate"><span class="pre">.np</span></code> or <code class="docutils literal notranslate"><span class="pre">np.array</span></code> are
+called on irreped Matrices or Vectors an error will be thrown; however, the
+irreped form is always valid for non-irreped matrices.</p>
+</section>
+<section id="array-to-matrix">
+<h2>Array to Matrix<a class="headerlink" href="#array-to-matrix" title="Permalink to this headline">¶</a></h2>
+<p>A general function that converts <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> data objects to NumPy arrays.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="psi4.driver.p4util.numpy_helper.array_to_matrix">
+<span class="sig-prename descclassname"><span class="pre">psi4.driver.p4util.numpy_helper.</span></span><span class="sig-name descname"><span class="pre">array_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'New</span> <span class="pre">Matrix'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/p4util/numpy_helper.html#array_to_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#psi4.driver.p4util.numpy_helper.array_to_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a numpy array or list of numpy arrays into a Psi4 Matrix (irreped if list).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.List" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>]]) – Numpy array or list of arrays to use as the data for a new core.Matrix</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Name to give the new core.Matrix</p></li>
+<li><p><strong>dim1</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.List" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>, <a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Tuple" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>, <a class="reference internal" href="api/psi4.core.Dimension.html#psi4.core.Dimension" title="psi4.core.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>, <a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]) – If a single dense numpy array is given, a dimension can be supplied to
+apply irreps to this array. Note that this discards all extra information
+given in the matrix besides the diagonal blocks determined by the passed
+dimension.</p></li>
+<li><p><strong>dim2</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="api/psi4.core.Dimension.html#psi4.core.Dimension" title="psi4.core.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>]) – Same as dim1 only if using a psi4.core.Dimension object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns the given Psi4 object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="api/psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix">Matrix</a> or <a class="reference internal" href="api/psi4.core.Vector.html#psi4.core.Vector" title="psi4.core.Vector">Vector</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This is a generalized function to convert a NumPy array to a Psi4 object</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vector</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">irrep_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">irrep_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">rowdim</span><span class="p">()</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">())</span>
+<span class="go">(2, 0, 4)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="matrix-to-array">
+<h2>Matrix to Array<a class="headerlink" href="#matrix-to-array" title="Permalink to this headline">¶</a></h2>
+<p>A general function that converts NumPy arrays to <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> data objects.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="psi4.driver.p4util.numpy_helper._to_array">
+<span class="sig-prename descclassname"><span class="pre">psi4.driver.p4util.numpy_helper.</span></span><span class="sig-name descname"><span class="pre">_to_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/p4util/numpy_helper.html#_to_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#psi4.driver.p4util.numpy_helper._to_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a Psi4 Matrix or Vector to a NumPy array. Either copies the data or simply
+constructs a view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrix</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="api/psi4.core.Matrix.html#psi4.core.Matrix" title="psi4.core.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a>, <a class="reference internal" href="api/psi4.core.Vector.html#psi4.core.Vector" title="psi4.core.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>]) – Pointers to which Psi4 core class should be used in the construction.</p></li>
+<li><p><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Copy the data if <cite>True</cite>, return a view otherwise</p></li>
+<li><p><strong>dense</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Converts irreped Psi4 objects to diagonally blocked dense arrays if <cite>True</cite>. Returns a list of arrays otherwise.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns either a list of np.array’s or the base array depending on options.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This is a generalized function to convert a Psi4 object to a NumPy array</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
+<span class="go">[[ 0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Interface to NumPy</a><ul>
+<li><a class="reference internal" href="#basics">Basics</a></li>
+<li><a class="reference internal" href="#numpy-views">NumPy Views</a></li>
+<li><a class="reference internal" href="#psifour-data-objects-with-irreps"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Data Objects with Irreps</a></li>
+<li><a class="reference internal" href="#array-to-matrix">Array to Matrix</a></li>
+<li><a class="reference internal" href="#matrix-to-array">Matrix to Array</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="adcc.html" title="Interface to adcc by M. F. Herbst and M. Scheurer"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="interfacing.html" title="Interfaces: Enhancing PSI4 Capabilities"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/numpy.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="interfacing.html" >Interfaces: Enhancing <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> Capabilities</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Interface to NumPy</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Sunday, 28 November 2021 02:41AM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

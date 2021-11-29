@@ -1,0 +1,827 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>SAPT</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AIO_CPHF" href="sapt__aio_cphf.html" />
+    <link rel="prev" title="ZERO_INTERNAL_AMPS" href="psimrcc__zero_internal_amps.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt__aio_cphf.html" title="AIO_CPHF"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psimrcc__zero_internal_amps.html" title="ZERO_INTERNAL_AMPS"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/autodir_options_c/module__sapt.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../appendices.html" >Appendices</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+          <li class="nav-item nav-item-2"><a href="../autodoc_options_c_bymodule.html" accesskey="U">Keywords by Module</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">SAPT</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sapt">
+<span id="apdx-sapt"></span><h1>SAPT<a class="headerlink" href="#sapt" title="Permalink to this headline">¶</a></h1>
+<p>Performs symmetry adapted perturbation theory (SAPT) analysis to quantitatively analyze non-covalent interactions.</p>
+<div class="toctree-wrapper compound">
+</div>
+<section id="sapt-hf">
+<span id="apdx-saptsapthf"></span><h2>SAPT(HF)<a class="headerlink" href="#sapt-hf" title="Permalink to this headline">¶</a></h2>
+<section id="aio-cphf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-AIO_CPHF-SAPT"><span class="xref std std-term">AIO_CPHF</span></a><a class="headerlink" href="#aio-cphf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use asynchronous disk I/O in the solution of the CPHF equations? Use may speed up the computation slightly at the cost of spawning an additional thread.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="aio-df-ints">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-AIO_DF_INTS-SAPT"><span class="xref std std-term">AIO_DF_INTS</span></a><a class="headerlink" href="#aio-df-ints" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use asynchronous disk I/O in the formation of the DF integrals? Use may speed up the computation slightly at the cost of spawning an additional thread.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="basis">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-BASIS-SAPT"><span class="xref std std-term">BASIS</span></a><a class="headerlink" href="#basis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Primary basis set, describes the monomer molecular orbitals</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: <a class="reference internal" href="../basissets_byelement.html#apdx-basiselement"><span class="std std-ref">basis string</span></a></p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="ccd-e-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CCD_E_CONVERGENCE-SAPT"><span class="xref std std-term">CCD_E_CONVERGENCE</span></a><a class="headerlink" href="#ccd-e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>E converge value for CCD</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-8</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="ccd-maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CCD_MAXITER-SAPT"><span class="xref std std-term">CCD_MAXITER</span></a><a class="headerlink" href="#ccd-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Max CCD iterations</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 50</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="ccd-t-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CCD_T_CONVERGENCE-SAPT"><span class="xref std std-term">CCD_T_CONVERGENCE</span></a><a class="headerlink" href="#ccd-t-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence tolerance for CCD amplitudes</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-8</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="denominator-algorithm">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DENOMINATOR_ALGORITHM-SAPT"><span class="xref std std-term">DENOMINATOR_ALGORITHM</span></a><a class="headerlink" href="#denominator-algorithm" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Denominator algorithm for PT methods. Laplace transformations are slightly more efficient.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: LAPLACE, CHOLESKY</p></li>
+<li><p><strong>Default</strong>: LAPLACE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="denominator-delta">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DENOMINATOR_DELTA-SAPT"><span class="xref std std-term">DENOMINATOR_DELTA</span></a><a class="headerlink" href="#denominator-delta" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum error allowed (Max error norm in Delta tensor) in the approximate energy denominators employed for most of the <span class="math notranslate nohighlight">\(E_{disp}^{(20)}\)</span> and <span class="math notranslate nohighlight">\(E_{exch-disp}^{(20)}\)</span> evaluation.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.0e-6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-basis-elst">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_BASIS_ELST-SAPT"><span class="xref std std-term">DF_BASIS_ELST</span></a><a class="headerlink" href="#df-basis-elst" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Auxiliary basis set for SAPT Elst10 and Exch10 density fitting computations, may be important if heavier elements are involved. Defaults to <a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_BASIS_SAPT-SAPT"><span class="xref std std-term">DF_BASIS_SAPT</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: <a class="reference internal" href="../basissets_byelement.html#apdx-basiselement"><span class="std std-ref">basis string</span></a></p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="df-basis-sapt">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DF_BASIS_SAPT-SAPT"><span class="xref std std-term">DF_BASIS_SAPT</span></a><a class="headerlink" href="#df-basis-sapt" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Auxiliary basis set for SAPT density fitting computations. <a class="reference internal" href="../basissets_byfamily.html#apdx-basisfamily"><span class="std std-ref">Defaults</span></a> to a RI basis.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: <a class="reference internal" href="../basissets_byelement.html#apdx-basiselement"><span class="std std-ref">basis string</span></a></p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="d-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-D_CONVERGENCE-SAPT"><span class="xref std std-term">D_CONVERGENCE</span></a><a class="headerlink" href="#d-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for residual of the CPHF coefficients in the SAPT <span class="math notranslate nohighlight">\(E_{ind,resp}^{(20)}\)</span> term.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-8</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="exch-scale-alpha">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-EXCH_SCALE_ALPHA-SAPT"><span class="xref std std-term">EXCH_SCALE_ALPHA</span></a><a class="headerlink" href="#exch-scale-alpha" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Whether or not to perform exchange scaling for SAPT exchange components. Default is false, i.e. no scaling. If set to true, performs scaling with <span class="math notranslate nohighlight">\(Exch10 / Exch10(S^2)\)</span>. If set to a value <span class="math notranslate nohighlight">\(\alpha\)</span>, performs scaling with <span class="math notranslate nohighlight">\((Exch10 / Exch10(S^2))^{\alpha}\)</span>.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: FALSE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="e-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-E_CONVERGENCE-SAPT"><span class="xref std std-term">E_CONVERGENCE</span></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for energy (change) in the SAPT <span class="math notranslate nohighlight">\(E_{ind,resp}^{(20)}\)</span> term during solution of the CPHF equations.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-10</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="freeze-core">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-FREEZE_CORE-SAPT"><span class="xref std std-term">FREEZE_CORE</span></a><a class="headerlink" href="#freeze-core" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The scope of core orbitals to freeze in evaluation of SAPT <span class="math notranslate nohighlight">\(E_{disp}^{(20)}\)</span> and <span class="math notranslate nohighlight">\(E_{exch-disp}^{(20)}\)</span> terms. Recommended true for all SAPT computations</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: FALSE, TRUE</p></li>
+<li><p><strong>Default</strong>: FALSE</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="ints-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-INTS_TOLERANCE-SAPT"><span class="xref std std-term">INTS_TOLERANCE</span></a><a class="headerlink" href="#ints-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Schwarz screening threshold. Minimum absolute value below which all three-index DF integrals and those contributing to four-index integrals are neglected. The default is conservative, but there isn’t much to be gained from loosening it, especially for higher-order SAPT.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1.0e-12</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MAXITER-SAPT"><span class="xref std std-term">MAXITER</span></a><a class="headerlink" href="#maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of CPHF iterations</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 50</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="max-ccd-diisvecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MAX_CCD_DIISVECS-SAPT"><span class="xref std std-term">MAX_CCD_DIISVECS</span></a><a class="headerlink" href="#max-ccd-diisvecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of vectors used in CCD-DIIS</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 10</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="min-ccd-diisvecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MIN_CCD_DIISVECS-SAPT"><span class="xref std std-term">MIN_CCD_DIISVECS</span></a><a class="headerlink" href="#min-ccd-diisvecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum number of vectors used in CCD-DIIS</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 4</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="nat-orbs-t2">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-NAT_ORBS_T2-SAPT"><span class="xref std std-term">NAT_ORBS_T2</span></a><a class="headerlink" href="#nat-orbs-t2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use MP2 natural orbital approximations for the <span class="math notranslate nohighlight">\(v^4\)</span> block of two-electron integrals in the evaluation of second-order T2 amplitudes? Recommended true for all SAPT computations.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="nat-orbs-t3">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-NAT_ORBS_T3-SAPT"><span class="xref std std-term">NAT_ORBS_T3</span></a><a class="headerlink" href="#nat-orbs-t3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do natural orbitals to speed up evaluation of the triples contribution to dispersion by truncating the virtual orbital space? Recommended true for all SAPT computations.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="nat-orbs-v4">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-NAT_ORBS_V4-SAPT"><span class="xref std std-term">NAT_ORBS_V4</span></a><a class="headerlink" href="#nat-orbs-v4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use MP2 natural orbital approximations for the <span class="math notranslate nohighlight">\(v^4\)</span> block of two-electron integrals in the evaluation of CCD T2 amplitudes? Recommended true for all SAPT computations.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="occ-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-OCC_TOLERANCE-SAPT"><span class="xref std std-term">OCC_TOLERANCE</span></a><a class="headerlink" href="#occ-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum occupation (eigenvalues of the MP2 OPDM) below which virtual natural orbitals are discarded for in each of the above three truncations</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1.0e-6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="print">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PRINT-SAPT"><span class="xref std std-term">PRINT</span></a><a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The amount of information to print to the output file for the sapt module. For 0, only the header and final results are printed. For 1, (recommended for large calculations) some intermediate quantities are also printed.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 1</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-level">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_LEVEL-SAPT"><span class="xref std std-term">SAPT_LEVEL</span></a><a class="headerlink" href="#sapt-level" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The level of theory for SAPT</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: SAPT0, SAPT2, SAPT2+, SAPT2+3</p></li>
+<li><p><strong>Default</strong>: SAPT0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-mem-check">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_MEM_CHECK-SAPT"><span class="xref std std-term">SAPT_MEM_CHECK</span></a><a class="headerlink" href="#sapt-mem-check" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do force SAPT2 and higher to die if it thinks there isn’t enough memory? Turning this off is ill-advised.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-mem-safety">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_MEM_SAFETY-SAPT"><span class="xref std std-term">SAPT_MEM_SAFETY</span></a><a class="headerlink" href="#sapt-mem-safety" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Memory safety</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.9</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="sapt-dft">
+<span id="apdx-saptsaptdft"></span><h2>SAPT(DFT)<a class="headerlink" href="#sapt-dft" title="Permalink to this headline">¶</a></h2>
+<section id="sapt-dft-do-dhf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_DO_DHF-SAPT"><span class="xref std std-term">SAPT_DFT_DO_DHF</span></a><a class="headerlink" href="#sapt-dft-do-dhf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Compute the Delta-HF correction?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-dft-exch-disp-scale-scheme">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_EXCH_DISP_SCALE_SCHEME-SAPT"><span class="xref std std-term">SAPT_DFT_EXCH_DISP_SCALE_SCHEME</span></a><a class="headerlink" href="#sapt-dft-exch-disp-scale-scheme" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Scheme for approximating exchange-dispersion for SAPT-DFT. <code class="docutils literal notranslate"><span class="pre">NONE</span></code> Use unscaled <code class="docutils literal notranslate"><span class="pre">Exch-Disp2,u</span></code> . <code class="docutils literal notranslate"><span class="pre">FIXED</span></code> Use a fixed factor <a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_EXCH_DISP_FIXED_SCALE-SAPT"><span class="xref std std-term">SAPT_DFT_EXCH_DISP_FIXED_SCALE</span></a> to scale <code class="docutils literal notranslate"><span class="pre">Exch-Disp2,u</span></code> . <code class="docutils literal notranslate"><span class="pre">DISP</span></code> Use the ratio of <code class="docutils literal notranslate"><span class="pre">Disp2,r</span></code> and <code class="docutils literal notranslate"><span class="pre">Disp2,u</span></code> to scale <code class="docutils literal notranslate"><span class="pre">Exch-Disp2,u</span></code> .</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: NONE, FIXED, DISP</p></li>
+<li><p><strong>Default</strong>: DISP</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-dft-grac-shift-a">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_GRAC_SHIFT_A-SAPT"><span class="xref std std-term">SAPT_DFT_GRAC_SHIFT_A</span></a><a class="headerlink" href="#sapt-dft-grac-shift-a" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Monomer A GRAC shift in Hartree</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-dft-grac-shift-b">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_GRAC_SHIFT_B-SAPT"><span class="xref std std-term">SAPT_DFT_GRAC_SHIFT_B</span></a><a class="headerlink" href="#sapt-dft-grac-shift-b" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Monomer B GRAC shift in Hartree</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-sapt-hf">
+<span id="apdx-saptesapthf"></span><h2><em>Expert</em> SAPT(HF)<a class="headerlink" href="#expert-sapt-hf" title="Permalink to this headline">¶</a></h2>
+<section id="coupled-induction">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-COUPLED_INDUCTION-SAPT"><span class="xref std std-term">COUPLED_INDUCTION</span></a><a class="headerlink" href="#coupled-induction" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Solve the CPHF equations to compute coupled induction and exchange-induction. These are not available for ROHF, and the option is automatically false in this case. In all other cases, coupled induction is strongly recommended. Only turn it off if the induction energy is not going to be used.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-ccd-disp">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_CCD_DISP-SAPT"><span class="xref std std-term">DO_CCD_DISP</span></a><a class="headerlink" href="#do-ccd-disp" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do CCD dispersion correction in SAPT2+, SAPT2+(3) or SAPT2+3?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-disp-exch-sinf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_DISP_EXCH_SINF-SAPT"><span class="xref std std-term">DO_DISP_EXCH_SINF</span></a><a class="headerlink" href="#do-disp-exch-sinf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>For SAPT(DFT) computes the <span class="math notranslate nohighlight">\(S^{inf}\)</span> Exchange-Dispersion terms.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-ind-exch-sinf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_IND_EXCH_SINF-SAPT"><span class="xref std std-term">DO_IND_EXCH_SINF</span></a><a class="headerlink" href="#do-ind-exch-sinf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>For SAPT(DFT) computes the <span class="math notranslate nohighlight">\(S^{inf}\)</span> Exchange-Induction terms.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-mbpt-disp">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_MBPT_DISP-SAPT"><span class="xref std std-term">DO_MBPT_DISP</span></a><a class="headerlink" href="#do-mbpt-disp" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do MBPT dispersion correction in SAPT2+, SAPT2+(3) or SAPT2+3, if also doing CCD?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-third-order">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_THIRD_ORDER-SAPT"><span class="xref std std-term">DO_THIRD_ORDER</span></a><a class="headerlink" href="#do-third-order" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute third-order corrections?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt0-e10">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT0_E10-SAPT"><span class="xref std std-term">SAPT0_E10</span></a><a class="headerlink" href="#sapt0-e10" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>For SAPT0 only, compute only first-order electrostatics and exchange. The integrals are computed before any terms, so all integrals will be computed even if they are not needed for the requested term</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt0-e20disp">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT0_E20DISP-SAPT"><span class="xref std std-term">SAPT0_E20DISP</span></a><a class="headerlink" href="#sapt0-e20disp" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>For SAPT0 only, compute only second-order induction The integrals are computed before any terms, so all integrals will be computed even if they are not needed for the requested term</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt0-e20ind">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT0_E20IND-SAPT"><span class="xref std std-term">SAPT0_E20IND</span></a><a class="headerlink" href="#sapt0-e20ind" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>For SAPT0 only, compute only second-order induction The integrals are computed before any terms, so all integrals will be computed even if they are not needed for the requested term</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-mem-factor">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_MEM_FACTOR-SAPT"><span class="xref std std-term">SAPT_MEM_FACTOR</span></a><a class="headerlink" href="#sapt-mem-factor" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Proportion of memory available for the DF-MP2 three-index integral buffers used to evaluate dispersion.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.9</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="expert-sapt-dft">
+<span id="apdx-saptesaptdft"></span><h2><em>Expert</em> SAPT(DFT)<a class="headerlink" href="#expert-sapt-dft" title="Permalink to this headline">¶</a></h2>
+<section id="sapt-dft-do-hybrid">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_DO_HYBRID-SAPT"><span class="xref std std-term">SAPT_DFT_DO_HYBRID</span></a><a class="headerlink" href="#sapt-dft-do-hybrid" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Enables the hybrid xc kernel in dispersion?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-dft-exch-disp-fixed-scale">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_EXCH_DISP_FIXED_SCALE-SAPT"><span class="xref std std-term">SAPT_DFT_EXCH_DISP_FIXED_SCALE</span></a><a class="headerlink" href="#sapt-dft-exch-disp-fixed-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Exch-disp scaling factor for FIXED scheme for <a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_EXCH_DISP_SCALE_SCHEME-SAPT"><span class="xref std std-term">SAPT_DFT_EXCH_DISP_SCALE_SCHEME</span></a>  Default value of 0.686 suggested by Hesselmann and Korona, J. Chem. Phys. 141, 094107 (2014).</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.686</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-dft-functional">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_FUNCTIONAL-SAPT"><span class="xref std std-term">SAPT_DFT_FUNCTIONAL</span></a><a class="headerlink" href="#sapt-dft-functional" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Underlying funcitonal to use for SAPT(DFT)</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: PBE0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-dft-grac-determination">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_GRAC_DETERMINATION-SAPT"><span class="xref std std-term">SAPT_DFT_GRAC_DETERMINATION</span></a><a class="headerlink" href="#sapt-dft-grac-determination" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>How is the GRAC correction determined?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: INPUT</p></li>
+<li><p><strong>Default</strong>: INPUT</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-dft-mp2-disp-alg">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_DFT_MP2_DISP_ALG-SAPT"><span class="xref std std-term">SAPT_DFT_MP2_DISP_ALG</span></a><a class="headerlink" href="#sapt-dft-mp2-disp-alg" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Which MP2 Exch-Disp module to use?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: FISAPT, SAPT</p></li>
+<li><p><strong>Default</strong>: SAPT</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-fdds-disp-leg-lambda">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_FDDS_DISP_LEG_LAMBDA-SAPT"><span class="xref std std-term">SAPT_FDDS_DISP_LEG_LAMBDA</span></a><a class="headerlink" href="#sapt-fdds-disp-leg-lambda" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Lambda shift in the space morphing for the FDDS Dispersion time integration</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.3</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-fdds-disp-num-points">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_FDDS_DISP_NUM_POINTS-SAPT"><span class="xref std std-term">SAPT_FDDS_DISP_NUM_POINTS</span></a><a class="headerlink" href="#sapt-fdds-disp-num-points" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of points in the Legendre FDDS Dispersion time integration</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 10</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-fdds-v2-rho-cutoff">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_FDDS_V2_RHO_CUTOFF-SAPT"><span class="xref std std-term">SAPT_FDDS_V2_RHO_CUTOFF</span></a><a class="headerlink" href="#sapt-fdds-v2-rho-cutoff" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum rho cutoff for the in the LDA response for FDDS</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.e-6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sapt-quiet">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SAPT_QUIET-SAPT"><span class="xref std std-term">SAPT_QUIET</span></a><a class="headerlink" href="#sapt-quiet" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Interior option to clean up printing</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">SAPT</a><ul>
+<li><a class="reference internal" href="#sapt-hf">SAPT(HF)</a><ul>
+<li><a class="reference internal" href="#aio-cphf"><span class="xref std std-term">AIO_CPHF</span></a></li>
+<li><a class="reference internal" href="#aio-df-ints"><span class="xref std std-term">AIO_DF_INTS</span></a></li>
+<li><a class="reference internal" href="#basis"><span class="xref std std-term">BASIS</span></a></li>
+<li><a class="reference internal" href="#ccd-e-convergence"><span class="xref std std-term">CCD_E_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#ccd-maxiter"><span class="xref std std-term">CCD_MAXITER</span></a></li>
+<li><a class="reference internal" href="#ccd-t-convergence"><span class="xref std std-term">CCD_T_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#denominator-algorithm"><span class="xref std std-term">DENOMINATOR_ALGORITHM</span></a></li>
+<li><a class="reference internal" href="#denominator-delta"><span class="xref std std-term">DENOMINATOR_DELTA</span></a></li>
+<li><a class="reference internal" href="#df-basis-elst"><span class="xref std std-term">DF_BASIS_ELST</span></a></li>
+<li><a class="reference internal" href="#df-basis-sapt"><span class="xref std std-term">DF_BASIS_SAPT</span></a></li>
+<li><a class="reference internal" href="#d-convergence"><span class="xref std std-term">D_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#exch-scale-alpha"><span class="xref std std-term">EXCH_SCALE_ALPHA</span></a></li>
+<li><a class="reference internal" href="#e-convergence"><span class="xref std std-term">E_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#freeze-core"><span class="xref std std-term">FREEZE_CORE</span></a></li>
+<li><a class="reference internal" href="#ints-tolerance"><span class="xref std std-term">INTS_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#maxiter"><span class="xref std std-term">MAXITER</span></a></li>
+<li><a class="reference internal" href="#max-ccd-diisvecs"><span class="xref std std-term">MAX_CCD_DIISVECS</span></a></li>
+<li><a class="reference internal" href="#min-ccd-diisvecs"><span class="xref std std-term">MIN_CCD_DIISVECS</span></a></li>
+<li><a class="reference internal" href="#nat-orbs-t2"><span class="xref std std-term">NAT_ORBS_T2</span></a></li>
+<li><a class="reference internal" href="#nat-orbs-t3"><span class="xref std std-term">NAT_ORBS_T3</span></a></li>
+<li><a class="reference internal" href="#nat-orbs-v4"><span class="xref std std-term">NAT_ORBS_V4</span></a></li>
+<li><a class="reference internal" href="#occ-tolerance"><span class="xref std std-term">OCC_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#print"><span class="xref std std-term">PRINT</span></a></li>
+<li><a class="reference internal" href="#sapt-level"><span class="xref std std-term">SAPT_LEVEL</span></a></li>
+<li><a class="reference internal" href="#sapt-mem-check"><span class="xref std std-term">SAPT_MEM_CHECK</span></a></li>
+<li><a class="reference internal" href="#sapt-mem-safety"><span class="xref std std-term">SAPT_MEM_SAFETY</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sapt-dft">SAPT(DFT)</a><ul>
+<li><a class="reference internal" href="#sapt-dft-do-dhf"><span class="xref std std-term">SAPT_DFT_DO_DHF</span></a></li>
+<li><a class="reference internal" href="#sapt-dft-exch-disp-scale-scheme"><span class="xref std std-term">SAPT_DFT_EXCH_DISP_SCALE_SCHEME</span></a></li>
+<li><a class="reference internal" href="#sapt-dft-grac-shift-a"><span class="xref std std-term">SAPT_DFT_GRAC_SHIFT_A</span></a></li>
+<li><a class="reference internal" href="#sapt-dft-grac-shift-b"><span class="xref std std-term">SAPT_DFT_GRAC_SHIFT_B</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-sapt-hf"><em>Expert</em> SAPT(HF)</a><ul>
+<li><a class="reference internal" href="#coupled-induction"><span class="xref std std-term">COUPLED_INDUCTION</span></a></li>
+<li><a class="reference internal" href="#do-ccd-disp"><span class="xref std std-term">DO_CCD_DISP</span></a></li>
+<li><a class="reference internal" href="#do-disp-exch-sinf"><span class="xref std std-term">DO_DISP_EXCH_SINF</span></a></li>
+<li><a class="reference internal" href="#do-ind-exch-sinf"><span class="xref std std-term">DO_IND_EXCH_SINF</span></a></li>
+<li><a class="reference internal" href="#do-mbpt-disp"><span class="xref std std-term">DO_MBPT_DISP</span></a></li>
+<li><a class="reference internal" href="#do-third-order"><span class="xref std std-term">DO_THIRD_ORDER</span></a></li>
+<li><a class="reference internal" href="#sapt0-e10"><span class="xref std std-term">SAPT0_E10</span></a></li>
+<li><a class="reference internal" href="#sapt0-e20disp"><span class="xref std std-term">SAPT0_E20DISP</span></a></li>
+<li><a class="reference internal" href="#sapt0-e20ind"><span class="xref std std-term">SAPT0_E20IND</span></a></li>
+<li><a class="reference internal" href="#sapt-mem-factor"><span class="xref std std-term">SAPT_MEM_FACTOR</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expert-sapt-dft"><em>Expert</em> SAPT(DFT)</a><ul>
+<li><a class="reference internal" href="#sapt-dft-do-hybrid"><span class="xref std std-term">SAPT_DFT_DO_HYBRID</span></a></li>
+<li><a class="reference internal" href="#sapt-dft-exch-disp-fixed-scale"><span class="xref std std-term">SAPT_DFT_EXCH_DISP_FIXED_SCALE</span></a></li>
+<li><a class="reference internal" href="#sapt-dft-functional"><span class="xref std std-term">SAPT_DFT_FUNCTIONAL</span></a></li>
+<li><a class="reference internal" href="#sapt-dft-grac-determination"><span class="xref std std-term">SAPT_DFT_GRAC_DETERMINATION</span></a></li>
+<li><a class="reference internal" href="#sapt-dft-mp2-disp-alg"><span class="xref std std-term">SAPT_DFT_MP2_DISP_ALG</span></a></li>
+<li><a class="reference internal" href="#sapt-fdds-disp-leg-lambda"><span class="xref std std-term">SAPT_FDDS_DISP_LEG_LAMBDA</span></a></li>
+<li><a class="reference internal" href="#sapt-fdds-disp-num-points"><span class="xref std std-term">SAPT_FDDS_DISP_NUM_POINTS</span></a></li>
+<li><a class="reference internal" href="#sapt-fdds-v2-rho-cutoff"><span class="xref std std-term">SAPT_FDDS_V2_RHO_CUTOFF</span></a></li>
+<li><a class="reference internal" href="#sapt-quiet"><span class="xref std std-term">SAPT_QUIET</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt__aio_cphf.html" title="AIO_CPHF"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psimrcc__zero_internal_amps.html" title="ZERO_INTERNAL_AMPS"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/autodir_options_c/module__sapt.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../appendices.html" >Appendices</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+          <li class="nav-item nav-item-2"><a href="../autodoc_options_c_bymodule.html" >Keywords by Module</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">SAPT</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Sunday, 28 November 2021 02:41AM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
