@@ -1,0 +1,419 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>MCSCF: Multi-Configurational Self-Consistent-Field</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SAPT: Symmetry-Adapted Perturbation Theory" href="sapt.html" />
+    <link rel="prev" title="CI: Configuration Interaction" href="detci.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt.html" title="SAPT: Symmetry-Adapted Perturbation Theory"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="detci.html" title="CI: Configuration Interaction"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/mcscf.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" accesskey="U">Theoretical Methods: SCF to FCI</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">MCSCF: Multi-Configurational Self-Consistent-Field</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="index-0"></span><span class="target" id="index-1"></span><section id="mcscf-multi-configurational-self-consistent-field">
+<span id="sec-mcscf"></span><span id="index-2"></span><h1>MCSCF: Multi-Configurational Self-Consistent-Field<a class="headerlink" href="#mcscf-multi-configurational-self-consistent-field" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Daniel G. A. Smith, C. David Sherrill, and Matthew L. Leininger</em></p>
+<p><em>Section author: Daniel G. A. Smith and C. David Sherrill</em></p>
+<p><em>Module:</em> <a class="reference internal" href="autodir_options_c/module__detci.html#apdx-detci"><span class="std std-ref">Keywords</span></a>, <a class="reference internal" href="autodir_psivariables/module__detci.html#apdx-detci-psivar"><span class="std std-ref">PSI Variables</span></a>, <a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/src/psi4/detci">DETCI</a></p>
+<p>As the cost of Full CI scales exponentially with respect to the number of
+active orbitals it is often advantageous to neglect orbitals that do not
+exhibit strong correlation. These orbitals are variationally optimized
+simultaneously with the CI coefficients and known as Multi-Configurational
+Self-Consistent Field (MCSCF). The most commonly used MCSCF procedure is the
+complete-active-space self-consistent-field (CASSCF) approach <a class="reference internal" href="bibliography.html#roos-1980" id="id1"><span>[Roos:1980]</span></a>,
+which includes all possible determinants (with the proper symmetry) that can be
+formed by distributing a set of active electrons among a set of active
+orbitals. The MCSCF module performs CASSCF optimization of molecular orbitals
+via a two-step procedure in which the CI coefficients and orbitals are
+optimized in an alternating manner. The program uses a fairly simple
+approximate orbital Hessian <a class="reference internal" href="bibliography.html#chaban-1997-88" id="id2"><span>[Chaban:1997:88]</span></a> and a Newton-Raphson update,
+accelerated by Pulay’s DIIS procedure <a class="reference internal" href="bibliography.html#pulay-1980" id="id3"><span>[Pulay:1980]</span></a>. We have also implemented
+the RASSCF method <a class="reference internal" href="bibliography.html#malmqvist-1990-rasscf" id="id4"><span>[Malmqvist:1990:RASSCF]</span></a>, which is another kind of MCSCF
+which is typically less complete (and less expensive) than CASSCF.</p>
+<p>Inactive orbitals in the MCSCF may be specified by the
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-RESTRICTED_DOCC-GLOBALS"><span class="xref std std-term">RESTRICTED_DOCC</span></a> and <a class="reference internal" href="autodoc_glossary_options_c.html#term-RESTRICTED_UOCC-GLOBALS"><span class="xref std std-term">RESTRICTED_UOCC</span></a> keywords. These
+orbitals will remain doubly-occupied or doubly-unoccupied, respectively, in the
+MCSCF wavefunction.  However, the form of these orbitals will be optimized in
+the MCSCF procedure.  It is also possible to literally freeze inactive orbitals
+in their original (SCF) form using the <a class="reference internal" href="autodoc_glossary_options_c.html#term-FROZEN_DOCC-GLOBALS"><span class="xref std std-term">FROZEN_DOCC</span></a> and
+<a class="reference internal" href="autodoc_glossary_options_c.html#term-FROZEN_UOCC-GLOBALS"><span class="xref std std-term">FROZEN_UOCC</span></a> keywords.  This is not normally what one wishes to do in
+an MCSCF computation (<em>e.g.</em>, it complicates the computation of gradients), but
+it can make the computations faster and is helpful in some circumstances where
+unphysical mixing of inactive and active occupied orbitals might occur.
+Presently, it is not possible to mix the use of restricted and frozen orbitals
+in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span>.</p>
+<p>An illustrative CASSCF example is as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molecule</span> <span class="p">{</span>
+<span class="n">O</span>
+<span class="n">H</span> <span class="mi">1</span> <span class="mf">1.00</span>
+<span class="n">H</span> <span class="mi">1</span> <span class="mf">1.00</span> <span class="mi">2</span> <span class="mf">103.1</span>
+<span class="p">}</span>
+
+<span class="nb">set</span> <span class="p">{</span>
+    <span class="n">basis</span>           <span class="mi">6</span><span class="o">-</span><span class="mi">31</span><span class="n">G</span><span class="o">**</span>
+    <span class="n">restricted_docc</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">active</span>          <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">energy</span><span class="p">(</span><span class="s1">&#39;casscf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This input will compute the CASSCF energy of water where the 1s Oxygen orbital
+and several virtual orbitals are not included in the CI expansion, but are
+still optimized. The following is a full list of spaces within the various MCSCF
+types.</p>
+<span id="table-mcscf-spaces"></span><table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Orbital spaces for MCSCF computations</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>RASSCF</p></th>
+<th class="head"><p>CASSCF</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-FROZEN_UOCC-GLOBALS"><span class="xref std std-term">FROZEN_UOCC</span></a></p></td>
+<td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-FROZEN_UOCC-GLOBALS"><span class="xref std std-term">FROZEN_UOCC</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-RESTRICTED_UOCC-GLOBALS"><span class="xref std std-term">RESTRICTED_UOCC</span></a></p></td>
+<td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-RESTRICTED_UOCC-GLOBALS"><span class="xref std std-term">RESTRICTED_UOCC</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-RAS4-GLOBALS"><span class="xref std std-term">RAS4</span></a></p></td>
+<td rowspan="4"><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-ACTIVE-GLOBALS"><span class="xref std std-term">ACTIVE</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-RAS3-GLOBALS"><span class="xref std std-term">RAS3</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-RAS2-GLOBALS"><span class="xref std std-term">RAS2</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-RAS1-GLOBALS"><span class="xref std std-term">RAS1</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-RESTRICTED_DOCC-GLOBALS"><span class="xref std std-term">RESTRICTED_DOCC</span></a></p></td>
+<td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-RESTRICTED_DOCC-GLOBALS"><span class="xref std std-term">RESTRICTED_DOCC</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-FROZEN_DOCC-GLOBALS"><span class="xref std std-term">FROZEN_DOCC</span></a></p></td>
+<td><p><a class="reference internal" href="autodoc_glossary_options_c.html#term-FROZEN_DOCC-GLOBALS"><span class="xref std std-term">FROZEN_DOCC</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<section id="basic-mcscf-keywords">
+<h2>Basic MCSCF Keywords<a class="headerlink" href="#basic-mcscf-keywords" title="Permalink to this headline">¶</a></h2>
+<section id="mcscf-e-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-MCSCF_E_CONVERGENCE-DETCI"><span class="xref std std-term">MCSCF_E_CONVERGENCE</span></a><a class="headerlink" href="#mcscf-e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for energy. See Table <a class="reference internal" href="scf.html#table-conv-corl"><span class="std std-ref">Post-SCF Convergence</span></a> for default convergence criteria for different calculation types.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-7</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mcscf-r-convergence">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-MCSCF_R_CONVERGENCE-DETCI"><span class="xref std std-term">MCSCF_R_CONVERGENCE</span></a><a class="headerlink" href="#mcscf-r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for the RMS of the orbital gradient</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-5</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mcscf-type">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-MCSCF_TYPE-DETCI"><span class="xref std std-term">MCSCF_TYPE</span></a><a class="headerlink" href="#mcscf-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Method to handle the two-electron integrals</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: DF, CONV, AO</p></li>
+<li><p><strong>Default</strong>: CONV</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mcscf-algorithm">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-MCSCF_ALGORITHM-DETCI"><span class="xref std std-term">MCSCF_ALGORITHM</span></a><a class="headerlink" href="#mcscf-algorithm" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence algorithm to utilize. Two-Step, Augmented Hessian, or One-Step. Defaults to TS for RASSCF.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: TS, AH</p></li>
+<li><p><strong>Default</strong>: TS</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mcscf-maxiter">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-MCSCF_MAXITER-DETCI"><span class="xref std std-term">MCSCF_MAXITER</span></a><a class="headerlink" href="#mcscf-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number MCSCF of iterations</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 30</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mcscf-rotate">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-MCSCF_ROTATE-DETCI"><span class="xref std std-term">MCSCF_ROTATE</span></a><a class="headerlink" href="#mcscf-rotate" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Apply a list of 2x2 rotation matrices to the orbitals in the form of [irrep, orbital1, orbital2, theta] where an angle of 0 would do nothing and an angle of 90 would switch the two orbitals.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mcscf-diis-start">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-MCSCF_DIIS_START-DETCI"><span class="xref std std-term">MCSCF_DIIS_START</span></a><a class="headerlink" href="#mcscf-diis-start" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Iteration to turn on DIIS for TS convergence</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 3</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">MCSCF: Multi-Configurational Self-Consistent-Field</a><ul>
+<li><a class="reference internal" href="#basic-mcscf-keywords">Basic MCSCF Keywords</a><ul>
+<li><a class="reference internal" href="#mcscf-e-convergence"><span class="xref std std-term">MCSCF_E_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#mcscf-r-convergence"><span class="xref std std-term">MCSCF_R_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#mcscf-type"><span class="xref std std-term">MCSCF_TYPE</span></a></li>
+<li><a class="reference internal" href="#mcscf-algorithm"><span class="xref std std-term">MCSCF_ALGORITHM</span></a></li>
+<li><a class="reference internal" href="#mcscf-maxiter"><span class="xref std std-term">MCSCF_MAXITER</span></a></li>
+<li><a class="reference internal" href="#mcscf-rotate"><span class="xref std std-term">MCSCF_ROTATE</span></a></li>
+<li><a class="reference internal" href="#mcscf-diis-start"><span class="xref std std-term">MCSCF_DIIS_START</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sapt.html" title="SAPT: Symmetry-Adapted Perturbation Theory"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="detci.html" title="CI: Configuration Interaction"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/mcscf.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="methods.html" >Theoretical Methods: SCF to FCI</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">MCSCF: Multi-Configurational Self-Consistent-Field</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Sunday, 28 November 2021 02:41AM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

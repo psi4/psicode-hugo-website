@@ -1,0 +1,833 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>DFOCC</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CC_DIIS_MAX_VECS" href="dfocc__cc_diis_max_vecs.html" />
+    <link rel="prev" title="OPDM_RELAX" href="dfmp2__opdm_relax.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfocc__cc_diis_max_vecs.html" title="CC_DIIS_MAX_VECS"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfmp2__opdm_relax.html" title="OPDM_RELAX"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/autodir_options_c/module__dfocc.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../appendices.html" >Appendices</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+          <li class="nav-item nav-item-2"><a href="../autodoc_options_c_bymodule.html" accesskey="U">Keywords by Module</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">DFOCC</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="dfocc">
+<span id="apdx-dfocc"></span><h1>DFOCC<a class="headerlink" href="#dfocc" title="Permalink to this headline">¶</a></h1>
+<p>Performs density-fitted orbital-optimized MPn and CC computations and conventional MPn computations.</p>
+<div class="toctree-wrapper compound">
+</div>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<section id="cc-diis-max-vecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CC_DIIS_MAX_VECS-DFOCC"><span class="xref std std-term">CC_DIIS_MAX_VECS</span></a><a class="headerlink" href="#cc-diis-max-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of vectors used in amplitude DIIS</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cc-diis-min-vecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CC_DIIS_MIN_VECS-DFOCC"><span class="xref std std-term">CC_DIIS_MIN_VECS</span></a><a class="headerlink" href="#cc-diis-min-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Minimum number of vectors used in amplitude DIIS</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 2</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cc-lambda">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CC_LAMBDA-DFOCC"><span class="xref std std-term">CC_LAMBDA</span></a><a class="headerlink" href="#cc-lambda" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do solve lambda amplitude equations?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cc-maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CC_MAXITER-DFOCC"><span class="xref std std-term">CC_MAXITER</span></a><a class="headerlink" href="#cc-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of iterations to determine the amplitudes</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 50</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cholesky">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CHOLESKY-DFOCC"><span class="xref std std-term">CHOLESKY</span></a><a class="headerlink" href="#cholesky" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do Cholesky decomposition of the ERI tensor</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cholesky-tolerance">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CHOLESKY_TOLERANCE-DFOCC"><span class="xref std std-term">CHOLESKY_TOLERANCE</span></a><a class="headerlink" href="#cholesky-tolerance" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>tolerance for Cholesky decomposition of the ERI tensor</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1.0e-4</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="comput-s2">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-COMPUT_S2-DFOCC"><span class="xref std std-term">COMPUT_S2</span></a><a class="headerlink" href="#comput-s2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute <span class="math notranslate nohighlight">\(\langle \hat{S}^2 \rangle\)</span> for DF-OMP2/DF-MP2?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cutoff">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-CUTOFF-DFOCC"><span class="xref std std-term">CUTOFF</span></a><a class="headerlink" href="#cutoff" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Cutoff value for numerical procedures</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 8</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-diis">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_DIIS-DFOCC"><span class="xref std std-term">DO_DIIS</span></a><a class="headerlink" href="#do-diis" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do apply DIIS extrapolation?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-level-shift">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_LEVEL_SHIFT-DFOCC"><span class="xref std std-term">DO_LEVEL_SHIFT</span></a><a class="headerlink" href="#do-level-shift" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do apply level shifting?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-scs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_SCS-DFOCC"><span class="xref std std-term">DO_SCS</span></a><a class="headerlink" href="#do-scs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do perform spin-component-scaled OMP2 (SCS-OMP2)? In all computation, SCS-OMP2 energy is computed automatically. However, in order to perform geometry optimizations and frequency computations with SCS-OMP2, one needs to set ‘DO_SCS’ to true</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="do-sos">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-DO_SOS-DFOCC"><span class="xref std std-term">DO_SOS</span></a><a class="headerlink" href="#do-sos" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do perform spin-opposite-scaled OMP2 (SOS-OMP2)? In all computation, SOS-OMP2 energy is computed automatically. However, in order to perform geometry optimizations and frequency computations with SOS-OMP2, one needs to set ‘DO_SOS’ to true</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="e3-scale">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-E3_SCALE-DFOCC"><span class="xref std std-term">E3_SCALE</span></a><a class="headerlink" href="#e3-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>CEPA opposite-spin scaling value from SCS-CCSD</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.25</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="ekt-ip">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-EKT_IP-DFOCC"><span class="xref std std-term">EKT_IP</span></a><a class="headerlink" href="#ekt-ip" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute ionization potentials based on the extended Koopmans’ theorem?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="e-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-E_CONVERGENCE-DFOCC"><span class="xref std std-term">E_CONVERGENCE</span></a><a class="headerlink" href="#e-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for energy. See Table <a class="reference internal" href="../scf.html#table-conv-corl"><span class="std std-ref">Post-SCF Convergence</span></a> for default convergence criteria for different calculation types.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="hess-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-HESS_TYPE-DFOCC"><span class="xref std std-term">HESS_TYPE</span></a><a class="headerlink" href="#hess-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Type of the MO Hessian matrix</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: APPROX_DIAG, APPROX_DIAG_EKT, APPROX_DIAG_HF, HF</p></li>
+<li><p><strong>Default</strong>: HF</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="integral-cutoff">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-INTEGRAL_CUTOFF-DFOCC"><span class="xref std std-term">INTEGRAL_CUTOFF</span></a><a class="headerlink" href="#integral-cutoff" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Cutoff value for DF integrals</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 9</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="level-shift">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-LEVEL_SHIFT-DFOCC"><span class="xref std std-term">LEVEL_SHIFT</span></a><a class="headerlink" href="#level-shift" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Level shift to aid convergence</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.02</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="lineq-solver">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-LINEQ_SOLVER-DFOCC"><span class="xref std std-term">LINEQ_SOLVER</span></a><a class="headerlink" href="#lineq-solver" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The solver will be used for simultaneous linear equations.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: CDGESV, FLIN, POPLE</p></li>
+<li><p><strong>Default</strong>: CDGESV</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="max-mograd-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MAX_MOGRAD_CONVERGENCE-DFOCC"><span class="xref std std-term">MAX_MOGRAD_CONVERGENCE</span></a><a class="headerlink" href="#max-mograd-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for maximum orbital gradient. If this keyword is not set by the user, DFOCC will estimate and use a value required to achieve the desired <a class="reference internal" href="../autodoc_glossary_options_c.html#term-E_CONVERGENCE-DFOCC"><span class="xref std std-term">E_CONVERGENCE</span></a>  The listed default will be used for the default value of <a class="reference internal" href="../autodoc_glossary_options_c.html#term-E_CONVERGENCE-DFOCC"><span class="xref std std-term">E_CONVERGENCE</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-4</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="molden-write">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MOLDEN_WRITE-DFOCC"><span class="xref std std-term">MOLDEN_WRITE</span></a><a class="headerlink" href="#molden-write" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do write a MOLDEN output file? If so, the filename will end in .molden, and the prefix is determined by <a class="reference internal" href="../autodoc_glossary_options_c.html#term-WRITER_FILE_LABEL-GLOBALS"><span class="xref std std-term">WRITER_FILE_LABEL</span></a> (if set), or else by the name of the output file plus the name of the current molecule.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mo-diis-num-vecs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MO_DIIS_NUM_VECS-DFOCC"><span class="xref std std-term">MO_DIIS_NUM_VECS</span></a><a class="headerlink" href="#mo-diis-num-vecs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Number of vectors used in orbital DIIS</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 6</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mo-maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MO_MAXITER-DFOCC"><span class="xref std std-term">MO_MAXITER</span></a><a class="headerlink" href="#mo-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of iterations to determine the orbitals</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 50</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mo-step-max">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MO_STEP_MAX-DFOCC"><span class="xref std std-term">MO_STEP_MAX</span></a><a class="headerlink" href="#mo-step-max" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum step size in orbital-optimization procedure</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.5</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mp2-amp-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MP2_AMP_TYPE-DFOCC"><span class="xref std std-term">MP2_AMP_TYPE</span></a><a class="headerlink" href="#mp2-amp-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The algorithm that used to handle mp2 amplitudes. The DIRECT option means compute amplitudes on the fly * whenever they are necessary.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: DIRECT, CONV</p></li>
+<li><p><strong>Default</strong>: DIRECT</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mp2-os-scale">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MP2_OS_SCALE-DFOCC"><span class="xref std std-term">MP2_OS_SCALE</span></a><a class="headerlink" href="#mp2-os-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 opposite-spin scaling value</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 6.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mp2-sos-scale">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MP2_SOS_SCALE-DFOCC"><span class="xref std std-term">MP2_SOS_SCALE</span></a><a class="headerlink" href="#mp2-sos-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 Spin-opposite scaling (SOS) value</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.3</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mp2-sos-scale2">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MP2_SOS_SCALE2-DFOCC"><span class="xref std std-term">MP2_SOS_SCALE2</span></a><a class="headerlink" href="#mp2-sos-scale2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Spin-opposite scaling (SOS) value for optimized-MP2 orbitals</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.2</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mp2-ss-scale">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-MP2_SS_SCALE-DFOCC"><span class="xref std std-term">MP2_SS_SCALE</span></a><a class="headerlink" href="#mp2-ss-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>MP2 same-spin scaling value</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 1.0</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="nat-orbs">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-NAT_ORBS-DFOCC"><span class="xref std std-term">NAT_ORBS</span></a><a class="headerlink" href="#nat-orbs" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute natural orbitals?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="occ-orbs-print">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-OCC_ORBS_PRINT-DFOCC"><span class="xref std std-term">OCC_ORBS_PRINT</span></a><a class="headerlink" href="#occ-orbs-print" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do print OCC orbital energies?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="oeprop">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-OEPROP-DFOCC"><span class="xref std std-term">OEPROP</span></a><a class="headerlink" href="#oeprop" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do compute one electron properties?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="oo-scale">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-OO_SCALE-DFOCC"><span class="xref std std-term">OO_SCALE</span></a><a class="headerlink" href="#oo-scale" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>OO scaling factor used in MSD</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.01</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="opt-method">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-OPT_METHOD-DFOCC"><span class="xref std std-term">OPT_METHOD</span></a><a class="headerlink" href="#opt-method" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The orbital optimization algorithm. Presently quasi-Newton-Raphson algorithm available with several Hessian * options.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: QNR</p></li>
+<li><p><strong>Default</strong>: QNR</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="orb-opt">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-ORB_OPT-DFOCC"><span class="xref std std-term">ORB_OPT</span></a><a class="headerlink" href="#orb-opt" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do optimize the orbitals?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="orb-resp-solver">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-ORB_RESP_SOLVER-DFOCC"><span class="xref std std-term">ORB_RESP_SOLVER</span></a><a class="headerlink" href="#orb-resp-solver" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The algorithm will be used for solving the orbital-response equations. The LINEQ option create the MO Hessian and solve the simultaneous linear equations with method choosen by the LINEQ_SOLVER option. The PCG option does not create the MO Hessian explicitly, instead it solves the simultaneous equations iteratively with the preconditioned conjugate gradient method.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: PCG, LINEQ</p></li>
+<li><p><strong>Default</strong>: PCG</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="orth-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-ORTH_TYPE-DFOCC"><span class="xref std std-term">ORTH_TYPE</span></a><a class="headerlink" href="#orth-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The algorithm for orthogonalization of MOs</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: GS, MGS</p></li>
+<li><p><strong>Default</strong>: MGS</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="pcg-beta-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PCG_BETA_TYPE-DFOCC"><span class="xref std std-term">PCG_BETA_TYPE</span></a><a class="headerlink" href="#pcg-beta-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>CEPA type such as CEPA0, CEPA1 etc. currently we have only CEPA0.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: FLETCHER_REEVES, POLAK_RIBIERE</p></li>
+<li><p><strong>Default</strong>: FLETCHER_REEVES</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="pcg-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PCG_CONVERGENCE-DFOCC"><span class="xref std std-term">PCG_CONVERGENCE</span></a><a class="headerlink" href="#pcg-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for residual vector of preconditioned conjugate gradient method. If this keyword is not set by the user, DFOCC will estimate and use a value required to achieve <a class="reference internal" href="../autodoc_glossary_options_c.html#term-R_CONVERGENCE-DFOCC"><span class="xref std std-term">R_CONVERGENCE</span></a> residual convergence. The listed default will be used for the default value of <a class="reference internal" href="../autodoc_glossary_options_c.html#term-R_CONVERGENCE-DFOCC"><span class="xref std std-term">R_CONVERGENCE</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-7</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="pcg-maxiter">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PCG_MAXITER-DFOCC"><span class="xref std std-term">PCG_MAXITER</span></a><a class="headerlink" href="#pcg-maxiter" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Maximum number of preconditioned conjugate gradient iterations.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: integer</p></li>
+<li><p><strong>Default</strong>: 50</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="ppl-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-PPL_TYPE-DFOCC"><span class="xref std std-term">PPL_TYPE</span></a><a class="headerlink" href="#ppl-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Type of the CCSD PPL term.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: LOW_MEM, HIGH_MEM, CD, AUTO</p></li>
+<li><p><strong>Default</strong>: AUTO</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="qchf">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-QCHF-DFOCC"><span class="xref std std-term">QCHF</span></a><a class="headerlink" href="#qchf" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do perform a QCHF computation?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="read-scf-3index">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-READ_SCF_3INDEX-DFOCC"><span class="xref std std-term">READ_SCF_3INDEX</span></a><a class="headerlink" href="#read-scf-3index" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do read 3-index integrals from SCF files?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: true</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="regularization">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-REGULARIZATION-DFOCC"><span class="xref std std-term">REGULARIZATION</span></a><a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Do use regularized denominators?</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-boolean"><span class="std std-ref">boolean</span></a></p></li>
+<li><p><strong>Default</strong>: false</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="reg-param">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-REG_PARAM-DFOCC"><span class="xref std std-term">REG_PARAM</span></a><a class="headerlink" href="#reg-param" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Regularization parameter</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: double</p></li>
+<li><p><strong>Default</strong>: 0.4</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="rms-mograd-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-RMS_MOGRAD_CONVERGENCE-DFOCC"><span class="xref std std-term">RMS_MOGRAD_CONVERGENCE</span></a><a class="headerlink" href="#rms-mograd-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for RMS orbital gradient. If this keyword is not set by the user, DFOCC will estimate and use a value required to achieve the desired <a class="reference internal" href="../autodoc_glossary_options_c.html#term-E_CONVERGENCE-DFOCC"><span class="xref std std-term">E_CONVERGENCE</span></a>  The listed default will be used for the default value of <a class="reference internal" href="../autodoc_glossary_options_c.html#term-E_CONVERGENCE-DFOCC"><span class="xref std std-term">E_CONVERGENCE</span></a></p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-4</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="r-convergence">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-R_CONVERGENCE-DFOCC"><span class="xref std std-term">R_CONVERGENCE</span></a><a class="headerlink" href="#r-convergence" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Convergence criterion for amplitudes (residuals).</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: <a class="reference internal" href="../notes_c.html#op-c-conv"><span class="std std-ref">conv double</span></a></p></li>
+<li><p><strong>Default</strong>: 1e-5</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="scs-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SCS_TYPE-DFOCC"><span class="xref std std-term">SCS_TYPE</span></a><a class="headerlink" href="#scs-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Type of the SCS method</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: SCS, SCSN, SCSVDW, SCSMI</p></li>
+<li><p><strong>Default</strong>: SCS</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="sos-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-SOS_TYPE-DFOCC"><span class="xref std std-term">SOS_TYPE</span></a><a class="headerlink" href="#sos-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Type of the SOS method</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: SOS, SOSPI</p></li>
+<li><p><strong>Default</strong>: SOS</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="triples-iabc-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-TRIPLES_IABC_TYPE-DFOCC"><span class="xref std std-term">TRIPLES_IABC_TYPE</span></a><a class="headerlink" href="#triples-iabc-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The algorithm to handle (ia|bc) type integrals that used for (T) correction.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Possible Values</strong>: INCORE, AUTO, DIRECT, DISK</p></li>
+<li><p><strong>Default</strong>: DISK</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="wfn-type">
+<h3><a class="reference internal" href="../autodoc_glossary_options_c.html#term-WFN_TYPE-DFOCC"><span class="xref std std-term">WFN_TYPE</span></a><a class="headerlink" href="#wfn-type" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Type of the wavefunction.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: DF-OMP2</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">DFOCC</a><ul>
+<li><a class="reference internal" href="#general">General</a><ul>
+<li><a class="reference internal" href="#cc-diis-max-vecs"><span class="xref std std-term">CC_DIIS_MAX_VECS</span></a></li>
+<li><a class="reference internal" href="#cc-diis-min-vecs"><span class="xref std std-term">CC_DIIS_MIN_VECS</span></a></li>
+<li><a class="reference internal" href="#cc-lambda"><span class="xref std std-term">CC_LAMBDA</span></a></li>
+<li><a class="reference internal" href="#cc-maxiter"><span class="xref std std-term">CC_MAXITER</span></a></li>
+<li><a class="reference internal" href="#cholesky"><span class="xref std std-term">CHOLESKY</span></a></li>
+<li><a class="reference internal" href="#cholesky-tolerance"><span class="xref std std-term">CHOLESKY_TOLERANCE</span></a></li>
+<li><a class="reference internal" href="#comput-s2"><span class="xref std std-term">COMPUT_S2</span></a></li>
+<li><a class="reference internal" href="#cutoff"><span class="xref std std-term">CUTOFF</span></a></li>
+<li><a class="reference internal" href="#do-diis"><span class="xref std std-term">DO_DIIS</span></a></li>
+<li><a class="reference internal" href="#do-level-shift"><span class="xref std std-term">DO_LEVEL_SHIFT</span></a></li>
+<li><a class="reference internal" href="#do-scs"><span class="xref std std-term">DO_SCS</span></a></li>
+<li><a class="reference internal" href="#do-sos"><span class="xref std std-term">DO_SOS</span></a></li>
+<li><a class="reference internal" href="#e3-scale"><span class="xref std std-term">E3_SCALE</span></a></li>
+<li><a class="reference internal" href="#ekt-ip"><span class="xref std std-term">EKT_IP</span></a></li>
+<li><a class="reference internal" href="#e-convergence"><span class="xref std std-term">E_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#hess-type"><span class="xref std std-term">HESS_TYPE</span></a></li>
+<li><a class="reference internal" href="#integral-cutoff"><span class="xref std std-term">INTEGRAL_CUTOFF</span></a></li>
+<li><a class="reference internal" href="#level-shift"><span class="xref std std-term">LEVEL_SHIFT</span></a></li>
+<li><a class="reference internal" href="#lineq-solver"><span class="xref std std-term">LINEQ_SOLVER</span></a></li>
+<li><a class="reference internal" href="#max-mograd-convergence"><span class="xref std std-term">MAX_MOGRAD_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#molden-write"><span class="xref std std-term">MOLDEN_WRITE</span></a></li>
+<li><a class="reference internal" href="#mo-diis-num-vecs"><span class="xref std std-term">MO_DIIS_NUM_VECS</span></a></li>
+<li><a class="reference internal" href="#mo-maxiter"><span class="xref std std-term">MO_MAXITER</span></a></li>
+<li><a class="reference internal" href="#mo-step-max"><span class="xref std std-term">MO_STEP_MAX</span></a></li>
+<li><a class="reference internal" href="#mp2-amp-type"><span class="xref std std-term">MP2_AMP_TYPE</span></a></li>
+<li><a class="reference internal" href="#mp2-os-scale"><span class="xref std std-term">MP2_OS_SCALE</span></a></li>
+<li><a class="reference internal" href="#mp2-sos-scale"><span class="xref std std-term">MP2_SOS_SCALE</span></a></li>
+<li><a class="reference internal" href="#mp2-sos-scale2"><span class="xref std std-term">MP2_SOS_SCALE2</span></a></li>
+<li><a class="reference internal" href="#mp2-ss-scale"><span class="xref std std-term">MP2_SS_SCALE</span></a></li>
+<li><a class="reference internal" href="#nat-orbs"><span class="xref std std-term">NAT_ORBS</span></a></li>
+<li><a class="reference internal" href="#occ-orbs-print"><span class="xref std std-term">OCC_ORBS_PRINT</span></a></li>
+<li><a class="reference internal" href="#oeprop"><span class="xref std std-term">OEPROP</span></a></li>
+<li><a class="reference internal" href="#oo-scale"><span class="xref std std-term">OO_SCALE</span></a></li>
+<li><a class="reference internal" href="#opt-method"><span class="xref std std-term">OPT_METHOD</span></a></li>
+<li><a class="reference internal" href="#orb-opt"><span class="xref std std-term">ORB_OPT</span></a></li>
+<li><a class="reference internal" href="#orb-resp-solver"><span class="xref std std-term">ORB_RESP_SOLVER</span></a></li>
+<li><a class="reference internal" href="#orth-type"><span class="xref std std-term">ORTH_TYPE</span></a></li>
+<li><a class="reference internal" href="#pcg-beta-type"><span class="xref std std-term">PCG_BETA_TYPE</span></a></li>
+<li><a class="reference internal" href="#pcg-convergence"><span class="xref std std-term">PCG_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#pcg-maxiter"><span class="xref std std-term">PCG_MAXITER</span></a></li>
+<li><a class="reference internal" href="#ppl-type"><span class="xref std std-term">PPL_TYPE</span></a></li>
+<li><a class="reference internal" href="#qchf"><span class="xref std std-term">QCHF</span></a></li>
+<li><a class="reference internal" href="#read-scf-3index"><span class="xref std std-term">READ_SCF_3INDEX</span></a></li>
+<li><a class="reference internal" href="#regularization"><span class="xref std std-term">REGULARIZATION</span></a></li>
+<li><a class="reference internal" href="#reg-param"><span class="xref std std-term">REG_PARAM</span></a></li>
+<li><a class="reference internal" href="#rms-mograd-convergence"><span class="xref std std-term">RMS_MOGRAD_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#r-convergence"><span class="xref std std-term">R_CONVERGENCE</span></a></li>
+<li><a class="reference internal" href="#scs-type"><span class="xref std std-term">SCS_TYPE</span></a></li>
+<li><a class="reference internal" href="#sos-type"><span class="xref std std-term">SOS_TYPE</span></a></li>
+<li><a class="reference internal" href="#triples-iabc-type"><span class="xref std std-term">TRIPLES_IABC_TYPE</span></a></li>
+<li><a class="reference internal" href="#wfn-type"><span class="xref std std-term">WFN_TYPE</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfocc__cc_diis_max_vecs.html" title="CC_DIIS_MAX_VECS"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="dfmp2__opdm_relax.html" title="OPDM_RELAX"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/autodir_options_c/module__dfocc.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../appendices.html" >Appendices</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+          <li class="nav-item nav-item-2"><a href="../autodoc_options_c_bymodule.html" >Keywords by Module</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">DFOCC</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Sunday, 28 November 2021 02:41AM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

@@ -1,0 +1,521 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>psi4.driver.molutil</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+    
+    
+     
+        <script src="../../../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../../../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../../../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../../../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/molutil.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">psi4.driver.molutil</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for psi4.driver.molutil</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># @BEGIN LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4: an open-source quantum chemistry software package</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2007-2021 The Psi4 Developers.</span>
+<span class="c1">#</span>
+<span class="c1"># The copyrights for code used from other parties are included in</span>
+<span class="c1"># the corresponding files.</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of Psi4.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, version 3.</span>
+<span class="c1">#</span>
+<span class="c1"># Psi4 is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License along</span>
+<span class="c1"># with Psi4; if not, write to the Free Software Foundation, Inc.,</span>
+<span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</span>
+<span class="c1">#</span>
+<span class="c1"># @END LICENSE</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;Module with utility functions that act on molecule objects.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">qcelemental</span> <span class="k">as</span> <span class="nn">qcel</span>
+
+<span class="kn">from</span> <span class="nn">psi4</span> <span class="kn">import</span> <span class="n">core</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.p4util</span> <span class="kn">import</span> <span class="n">temp_circular_import_blocker</span>
+<span class="kn">from</span> <span class="nn">psi4.driver</span> <span class="kn">import</span> <span class="n">qcdb</span>
+<span class="kn">from</span> <span class="nn">psi4.driver.p4util.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="molecule_set_attr"><a class="viewcode-back" href="../../../api/psi4.driver.molecule_set_attr.html#psi4.driver.molecule_set_attr">[docs]</a><span class="k">def</span> <span class="nf">molecule_set_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to redefine __setattr__ method of molecule class.&quot;&quot;&quot;</span>
+    <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_variable&quot;</span><span class="p">)</span>
+    <span class="n">isvar</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">isvar</span><span class="p">:</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;set_variable&quot;</span><span class="p">)</span>
+        <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="molecule_get_attr"><a class="viewcode-back" href="../../../api/psi4.driver.molecule_get_attr.html#psi4.driver.molecule_get_attr">[docs]</a><span class="k">def</span> <span class="nf">molecule_get_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to redefine __getattr__ method of molecule class.&quot;&quot;&quot;</span>
+    <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_variable&quot;</span><span class="p">)</span>
+    <span class="n">isvar</span> <span class="o">=</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">isvar</span><span class="p">:</span>
+        <span class="n">fxn</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;get_variable&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fxn</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+
+<span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">_molecule_from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span>
+                         <span class="n">molstr</span><span class="p">,</span>
+                         <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fix_com</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fix_orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fix_symmetry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">return_dict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                         <span class="n">enable_qm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">enable_efp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">missing_enabled_return_qm</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                         <span class="n">missing_enabled_return_efp</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                         <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">molrec</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">molparse</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
+        <span class="n">molstr</span><span class="o">=</span><span class="n">molstr</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">fix_com</span><span class="o">=</span><span class="n">fix_com</span><span class="p">,</span>
+        <span class="n">fix_orientation</span><span class="o">=</span><span class="n">fix_orientation</span><span class="p">,</span>
+        <span class="n">fix_symmetry</span><span class="o">=</span><span class="n">fix_symmetry</span><span class="p">,</span>
+        <span class="n">return_processed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">enable_qm</span><span class="o">=</span><span class="n">enable_qm</span><span class="p">,</span>
+        <span class="n">enable_efp</span><span class="o">=</span><span class="n">enable_efp</span><span class="p">,</span>
+        <span class="n">missing_enabled_return_qm</span><span class="o">=</span><span class="n">missing_enabled_return_qm</span><span class="p">,</span>
+        <span class="n">missing_enabled_return_efp</span><span class="o">=</span><span class="n">missing_enabled_return_efp</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;qm&#39;</span><span class="p">]),</span> <span class="n">molrec</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;qm&#39;</span><span class="p">])</span>
+
+
+<span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">_molecule_from_arrays</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span>
+                         <span class="n">geom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">elea</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">elez</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">elem</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">mass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">real</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">elbl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">,</span>
+                         <span class="n">input_units_to_au</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fix_com</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fix_orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fix_symmetry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fragment_separators</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fragment_charges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fragment_multiplicities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">molecular_charge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">molecular_multiplicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">provenance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">connectivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">missing_enabled_return</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">,</span>
+                         <span class="n">tooclose</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                         <span class="n">zero_ghost_fragments</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                         <span class="n">nonphysical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                         <span class="n">mtol</span><span class="o">=</span><span class="mf">1.e-3</span><span class="p">,</span>
+                         <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                         <span class="n">return_dict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct Molecule from unvalidated arrays and variables.</span>
+
+<span class="sd">    Light wrapper around :py:func:`~qcelemental.molparse.from_arrays`</span>
+<span class="sd">    that is a full-featured constructor to dictionary representa-</span>
+<span class="sd">    tion of Molecule. This follows one step further to return</span>
+<span class="sd">    Molecule instance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    See :py:func:`~qcelemental.molparse.from_arrays`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :py:class:`psi4.core.Molecule`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">molrec</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">molparse</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span>
+        <span class="n">geom</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
+        <span class="n">elea</span><span class="o">=</span><span class="n">elea</span><span class="p">,</span>
+        <span class="n">elez</span><span class="o">=</span><span class="n">elez</span><span class="p">,</span>
+        <span class="n">elem</span><span class="o">=</span><span class="n">elem</span><span class="p">,</span>
+        <span class="n">mass</span><span class="o">=</span><span class="n">mass</span><span class="p">,</span>
+        <span class="n">real</span><span class="o">=</span><span class="n">real</span><span class="p">,</span>
+        <span class="n">elbl</span><span class="o">=</span><span class="n">elbl</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+        <span class="n">input_units_to_au</span><span class="o">=</span><span class="n">input_units_to_au</span><span class="p">,</span>
+        <span class="n">fix_com</span><span class="o">=</span><span class="n">fix_com</span><span class="p">,</span>
+        <span class="n">fix_orientation</span><span class="o">=</span><span class="n">fix_orientation</span><span class="p">,</span>
+        <span class="n">fix_symmetry</span><span class="o">=</span><span class="n">fix_symmetry</span><span class="p">,</span>
+        <span class="n">fragment_separators</span><span class="o">=</span><span class="n">fragment_separators</span><span class="p">,</span>
+        <span class="n">fragment_charges</span><span class="o">=</span><span class="n">fragment_charges</span><span class="p">,</span>
+        <span class="n">fragment_multiplicities</span><span class="o">=</span><span class="n">fragment_multiplicities</span><span class="p">,</span>
+        <span class="n">molecular_charge</span><span class="o">=</span><span class="n">molecular_charge</span><span class="p">,</span>
+        <span class="n">molecular_multiplicity</span><span class="o">=</span><span class="n">molecular_multiplicity</span><span class="p">,</span>
+        <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">,</span>
+        <span class="n">provenance</span><span class="o">=</span><span class="n">provenance</span><span class="p">,</span>
+        <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">,</span>
+        <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;qm&#39;</span><span class="p">,</span>
+        <span class="n">missing_enabled_return</span><span class="o">=</span><span class="n">missing_enabled_return</span><span class="p">,</span>
+        <span class="n">tooclose</span><span class="o">=</span><span class="n">tooclose</span><span class="p">,</span>
+        <span class="n">zero_ghost_fragments</span><span class="o">=</span><span class="n">zero_ghost_fragments</span><span class="p">,</span>
+        <span class="n">nonphysical</span><span class="o">=</span><span class="n">nonphysical</span><span class="p">,</span>
+        <span class="n">mtol</span><span class="o">=</span><span class="n">mtol</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">molrec</span><span class="p">),</span> <span class="n">molrec</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">molrec</span><span class="p">)</span>
+
+
+<span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">_molecule_from_schema</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">molschema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">return_dict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">nonphysical</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Construct Molecule from non-Psi4 schema.</span>
+
+<span class="sd">    Light wrapper around :py:func:`~psi4.core.Molecule.from_arrays`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    molschema</span>
+<span class="sd">        Dictionary form of Molecule following known schema.</span>
+<span class="sd">    return_dict</span>
+<span class="sd">        Additionally return Molecule dictionary intermediate.</span>
+<span class="sd">    nonphysical</span>
+<span class="sd">        Do allow masses outside an element&#39;s natural range to pass validation?</span>
+<span class="sd">    verbose</span>
+<span class="sd">        Amount of printing.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mol : :py:class:`psi4.core.Molecule`</span>
+<span class="sd">    molrec : dict</span>
+<span class="sd">        Dictionary representation of instance.</span>
+<span class="sd">        Only provided if `return_dict` is True.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">molrec</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">molparse</span><span class="o">.</span><span class="n">from_schema</span><span class="p">(</span><span class="n">molschema</span><span class="p">,</span> <span class="n">nonphysical</span><span class="o">=</span><span class="n">nonphysical</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="n">qmol</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">molrec</span><span class="p">)</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">qmol</span><span class="o">.</span><span class="n">_initial_cartesian</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">qmol</span><span class="p">,</span> <span class="n">molrec</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">qmol</span>
+
+
+<div class="viewcode-block" id="dynamic_variable_bind"><a class="viewcode-back" href="../../../api/psi4.driver.dynamic_variable_bind.html#psi4.driver.dynamic_variable_bind">[docs]</a><span class="k">def</span> <span class="nf">dynamic_variable_bind</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to dynamically add extra members to</span>
+<span class="sd">    the core.Molecule class.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="fm">__setattr__</span> <span class="o">=</span> <span class="n">molecule_set_attr</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="fm">__getattr__</span> <span class="o">=</span> <span class="n">molecule_get_attr</span>
+
+    <span class="bp">cls</span><span class="o">.</span><span class="n">to_arrays</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">to_arrays</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">to_dict</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">to_dict</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">BFS</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">BFS</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">B787</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">B787</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">scramble</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">scramble</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">from_arrays</span> <span class="o">=</span> <span class="n">_molecule_from_arrays</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">from_string</span> <span class="o">=</span> <span class="n">_molecule_from_string</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">to_string</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">to_string</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">from_schema</span> <span class="o">=</span> <span class="n">_molecule_from_schema</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">to_schema</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">to_schema</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">run_dftd3</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">run_dftd3</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">run_dftd4</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">run_dftd4</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">run_gcp</span><span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">run_gcp</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">format_molecule_for_mol</span> <span class="o">=</span> <span class="n">qcdb</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">format_molecule_for_mol</span></div>
+
+
+<span class="n">dynamic_variable_bind</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span>  <span class="c1"># pass class type, not class instance</span>
+
+
+<span class="c1">#</span>
+<span class="c1"># Define geometry to be used by PSI4.</span>
+<span class="c1"># The molecule created by this will be set in options.</span>
+<span class="c1">#</span>
+<span class="c1"># geometry(&quot;</span>
+<span class="c1">#   O  1.0 0.0 0.0</span>
+<span class="c1">#   H  0.0 1.0 0.0</span>
+<span class="c1">#   H  0.0 0.0 0.0</span>
+<span class="c1">#</span>
+<div class="viewcode-block" id="geometry"><a class="viewcode-back" href="../../../api/psi4.driver.geometry.html#psi4.driver.geometry">[docs]</a><span class="k">def</span> <span class="nf">geometry</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to create a molecule object of name *name* from the</span>
+<span class="sd">    geometry in string *geom*. Permitted for user use but deprecated</span>
+<span class="sd">    in driver in favor of explicit molecule-passing. Comments within</span>
+<span class="sd">    the string are filtered.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">molrec</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">molparse</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
+        <span class="n">geom</span><span class="p">,</span> <span class="n">enable_qm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missing_enabled_return_qm</span><span class="o">=</span><span class="s1">&#39;minimal&#39;</span><span class="p">,</span> <span class="n">enable_efp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missing_enabled_return_efp</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+    <span class="n">molecule</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;qm&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">&quot;geom&quot;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;qm&quot;</span><span class="p">]:</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;qm&quot;</span><span class="p">][</span><span class="s2">&quot;geom&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;qm&quot;</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Angstrom&quot;</span><span class="p">:</span>
+            <span class="n">geom</span> <span class="o">=</span> <span class="n">geom</span> <span class="o">/</span> <span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">_initial_cartesian</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">molecule</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;efp&#39;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pylibefp</span>
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># py36 ModuleNotFoundError</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Install pylibefp to use EFP functionality. `conda install pylibefp -c psi4` Or build with `-DENABLE_libefp=ON`&quot;&quot;&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="c1">#print(&#39;Using pylibefp: {} (version {})&#39;.format(pylibefp.__file__, pylibefp.__version__))</span>
+        <span class="n">efpobj</span> <span class="o">=</span> <span class="n">pylibefp</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;efp&#39;</span><span class="p">])</span>
+        <span class="c1"># pylibefp.core.efp rides along on molecule</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">EFP</span> <span class="o">=</span> <span class="n">efpobj</span>
+
+    <span class="c1"># Attempt to go ahead and construct the molecule</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Molecule: geometry: Molecule is not complete, please use &#39;update_geometry&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                       <span class="s2">&quot;                    once all variables are set.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">activate</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">molecule</span></div>
+
+
+<div class="viewcode-block" id="activate"><a class="viewcode-back" href="../../../api/psi4.driver.activate.html#psi4.driver.activate">[docs]</a><span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to set molecule object *mol* as the current active molecule.</span>
+<span class="sd">    Permitted for user use but deprecated in driver in favor of explicit</span>
+<span class="sd">    molecule-passing.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">set_active_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../../../index.html" title="index">
+          <img class="logo" src="../../../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../../../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../../../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/_modules/psi4/driver/molutil.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../../../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">psi4.driver.molutil</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Sunday, 28 November 2021 02:41AM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

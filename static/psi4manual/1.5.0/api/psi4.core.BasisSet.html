@@ -1,0 +1,589 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>BasisSet</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="../_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BlockOPoints" href="psi4.core.BlockOPoints.html" />
+    <link rel="prev" title="BasisFunctions" href="psi4.core.BasisFunctions.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.BlockOPoints.html" title="BlockOPoints"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.BasisFunctions.html" title="BasisFunctions"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.BasisSet.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" accesskey="U"><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">BasisSet</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="basisset">
+<h1>BasisSet<a class="headerlink" href="#basisset" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="psi4.core.BasisSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">psi4.core.</span></span><span class="sig-name descname"><span class="pre">BasisSet</span></span><a class="headerlink" href="#psi4.core.BasisSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_builtins.pybind11_object</span></code></p>
+<p>Contains basis set information</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.ao_to_shell" title="psi4.core.BasisSet.ao_to_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ao_to_shell</span></code></a>(self, i)</p></td>
+<td><p>Given a cartesian function (AO) number what shell does it correspond to</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.blend" title="psi4.core.BasisSet.blend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blend</span></code></a>(self)</p></td>
+<td><p>Plus-separated string of [basisname] values</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.build" title="psi4.core.BasisSet.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(mol[, key, target, fitrole, other, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.compute_phi" title="psi4.core.BasisSet.compute_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phi</span></code></a>(self, arg0, arg1, arg2)</p></td>
+<td><p>Calculate the value of all basis functions at a given point x, y, and z</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.construct_from_pydict" title="psi4.core.BasisSet.construct_from_pydict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_from_pydict</span></code></a>(arg0, arg1, arg2)</p></td>
+<td><p>docstring</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.ecp_shell" title="psi4.core.BasisSet.ecp_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ecp_shell</span></code></a>(self, si)</p></td>
+<td><p>Return the si'th ECP shell</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.ecp_shell_on_center" title="psi4.core.BasisSet.ecp_shell_on_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ecp_shell_on_center</span></code></a>(self, c, i)</p></td>
+<td><p>Return the i'th ECP shell on center.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.function_to_center" title="psi4.core.BasisSet.function_to_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_to_center</span></code></a>(self, i)</p></td>
+<td><p>The atomic center for the i'th function</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.function_to_shell" title="psi4.core.BasisSet.function_to_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_to_shell</span></code></a>(self, i)</p></td>
+<td><p>Given a function number what shell does it correspond to</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.genbas" title="psi4.core.BasisSet.genbas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">genbas</span></code></a>(self)</p></td>
+<td><p>Returns basis set per atom in CFOUR format</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.has_ECP" title="psi4.core.BasisSet.has_ECP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_ECP</span></code></a>(self)</p></td>
+<td><p>Whether this basis set object has an ECP associated with it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.has_puream" title="psi4.core.BasisSet.has_puream"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_puream</span></code></a>(self)</p></td>
+<td><p>Spherical harmonics?</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.make_filename" title="psi4.core.BasisSet.make_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_filename</span></code></a>(arg0)</p></td>
+<td><p>Returns filename for basis name: pluses, stars, parentheses replaced and gbs extension added</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.max_am" title="psi4.core.BasisSet.max_am"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_am</span></code></a>(self)</p></td>
+<td><p>Returns maximum angular momentum used</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.max_function_per_shell" title="psi4.core.BasisSet.max_function_per_shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_function_per_shell</span></code></a>(self)</p></td>
+<td><p>The max number of basis functions in a shell</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.max_nprimitive" title="psi4.core.BasisSet.max_nprimitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_nprimitive</span></code></a>(self)</p></td>
+<td><p>The max number of primitives in a shell</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.molecule" title="psi4.core.BasisSet.molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molecule</span></code></a>(self)</p></td>
+<td><p>Molecule object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.move_atom" title="psi4.core.BasisSet.move_atom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_atom</span></code></a>(self, arg0, arg1)</p></td>
+<td><p>Translate a given atom by a given amount.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.n_ecp_core" title="psi4.core.BasisSet.n_ecp_core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_ecp_core</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.n_ecp_shell_on_center" title="psi4.core.BasisSet.n_ecp_shell_on_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_ecp_shell_on_center</span></code></a>(self, i)</p></td>
+<td><p>Return the number of ECP shells on a given center</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.n_frozen_core" title="psi4.core.BasisSet.n_frozen_core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_frozen_core</span></code></a>(self[, local, molecule])</p></td>
+<td><p>Returns the number of orbital (non-ECP) frozen core electrons.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.name" title="psi4.core.BasisSet.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>(self)</p></td>
+<td><p>Callback handle, may represent string or function</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.nao" title="psi4.core.BasisSet.nao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nao</span></code></a>(self)</p></td>
+<td><p>Returns number of atomic orbitals (Cartesian)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.nbf" title="psi4.core.BasisSet.nbf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbf</span></code></a>(self)</p></td>
+<td><p>Returns number of basis functions (Cartesian or spherical depending on has_puream)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.nprimitive" title="psi4.core.BasisSet.nprimitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nprimitive</span></code></a>(self)</p></td>
+<td><p>Returns total number of primitives in all contractions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.nshell" title="psi4.core.BasisSet.nshell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nshell</span></code></a>(self)</p></td>
+<td><p>Returns number of shells</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.nshell_on_center" title="psi4.core.BasisSet.nshell_on_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nshell_on_center</span></code></a>(self, i)</p></td>
+<td><p>Return the number of shells on a given center</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.print_detail_out" title="psi4.core.BasisSet.print_detail_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_detail_out</span></code></a>(self)</p></td>
+<td><p>Prints detailed basis set info to outfile</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.print_out" title="psi4.core.BasisSet.print_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_out</span></code></a>(self)</p></td>
+<td><p>Prints basis set info to outfile</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.shell" title="psi4.core.BasisSet.shell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shell</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.shell_on_center" title="psi4.core.BasisSet.shell_on_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shell_on_center</span></code></a>(self, c, i)</p></td>
+<td><p>Return the i'th shell on center.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.shell_to_ao_function" title="psi4.core.BasisSet.shell_to_ao_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shell_to_ao_function</span></code></a>(self, i)</p></td>
+<td><p>Return the function number for the first function for the i'th shell</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.shell_to_basis_function" title="psi4.core.BasisSet.shell_to_basis_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shell_to_basis_function</span></code></a>(self, i)</p></td>
+<td><p>Given a shell return its first basis function</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#psi4.core.BasisSet.shell_to_center" title="psi4.core.BasisSet.shell_to_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shell_to_center</span></code></a>(self, i)</p></td>
+<td><p>Return the atomic center for the i'th shell</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#psi4.core.BasisSet.zero_ao_basis_set" title="psi4.core.BasisSet.zero_ao_basis_set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_ao_basis_set</span></code></a>()</p></td>
+<td><p>Returns a BasisSet object that actually has a single s-function at the origin with an exponent of 0.0 and contraction of 1.0.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.ao_to_shell">
+<span class="sig-name descname"><span class="pre">ao_to_shell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.ao_to_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a cartesian function (AO) number what shell does it correspond to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.blend">
+<span class="sig-name descname"><span class="pre">blend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.blend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plus-separated string of [basisname] values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.build">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitrole</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ORBITAL'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_atomlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.BasisSet.build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.compute_phi">
+<span class="sig-name descname"><span class="pre">compute_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.compute_phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the value of all basis functions at a given point x, y, and z</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.construct_from_pydict">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">construct_from_pydict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="psi4.core.Molecule.html#psi4.core.Molecule" title="psi4.core.Molecule"><span class="pre">psi4.core.Molecule</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.construct_from_pydict" title="Permalink to this definition">¶</a></dt>
+<dd><p>docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.ecp_shell">
+<span class="sig-name descname"><span class="pre">ecp_shell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">si</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.GaussianShell.html#psi4.core.GaussianShell" title="psi4.core.GaussianShell"><span class="pre">psi4.core.GaussianShell</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.ecp_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the si’th ECP shell</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.ecp_shell_on_center">
+<span class="sig-name descname"><span class="pre">ecp_shell_on_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.ecp_shell_on_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the i’th ECP shell on center.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.function_to_center">
+<span class="sig-name descname"><span class="pre">function_to_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.function_to_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>The atomic center for the i’th function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.function_to_shell">
+<span class="sig-name descname"><span class="pre">function_to_shell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.function_to_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a function number what shell does it correspond to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.genbas">
+<span class="sig-name descname"><span class="pre">genbas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.genbas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns basis set per atom in CFOUR format</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.has_ECP">
+<span class="sig-name descname"><span class="pre">has_ECP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.has_ECP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this basis set object has an ECP associated with it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.has_puream">
+<span class="sig-name descname"><span class="pre">has_puream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.has_puream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spherical harmonics?</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.make_filename">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.make_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns filename for basis name: pluses, stars, parentheses replaced and gbs extension added</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.max_am">
+<span class="sig-name descname"><span class="pre">max_am</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.max_am" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns maximum angular momentum used</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.max_function_per_shell">
+<span class="sig-name descname"><span class="pre">max_function_per_shell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.max_function_per_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>The max number of basis functions in a shell</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.max_nprimitive">
+<span class="sig-name descname"><span class="pre">max_nprimitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.max_nprimitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>The max number of primitives in a shell</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.molecule">
+<span class="sig-name descname"><span class="pre">molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="psi4.core.Molecule.html#psi4.core.Molecule" title="psi4.core.Molecule"><span class="pre">psi4.core.Molecule</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.molecule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Molecule object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.move_atom">
+<span class="sig-name descname"><span class="pre">move_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="psi4.core.Vector3.html#psi4.core.Vector3" title="psi4.core.Vector3"><span class="pre">psi4.core.Vector3</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.move_atom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate a given atom by a given amount.  Does not affect the underlying molecule object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.n_ecp_core">
+<span class="sig-name descname"><span class="pre">n_ecp_core</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.BasisSet.n_ecp_core" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>n_ecp_core(self: psi4.core.BasisSet) -&gt; int</p></li>
+</ol>
+<p>Returns the total number of core electrons associated with all ECPs in this basis.</p>
+<ol class="arabic simple" start="2">
+<li><p>n_ecp_core(self: psi4.core.BasisSet, arg0: str) -&gt; int</p></li>
+</ol>
+<p>Returns the number of core electrons associated with any ECP on the specified atom type for this basis set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.n_ecp_shell_on_center">
+<span class="sig-name descname"><span class="pre">n_ecp_shell_on_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.n_ecp_shell_on_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of ECP shells on a given center</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.n_frozen_core">
+<span class="sig-name descname"><span class="pre">n_frozen_core</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="psi4.core.Molecule.html#psi4.core.Molecule" title="psi4.core.Molecule"><span class="pre">psi4.core.Molecule</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.n_frozen_core" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of orbital (non-ECP) frozen core electrons. For a given molecule and <a class="reference internal" href="../autodoc_glossary_options_c.html#term-FREEZE_CORE-GLOBALS"><span class="xref std std-term">FREEZE_CORE</span></a>, <cite>(n_ecp_core()/2 + n_frozen_core()) = constant</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback handle, may represent string or function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.nao">
+<span class="sig-name descname"><span class="pre">nao</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.nao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns number of atomic orbitals (Cartesian)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.nbf">
+<span class="sig-name descname"><span class="pre">nbf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.nbf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns number of basis functions (Cartesian or spherical depending on has_puream)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.nprimitive">
+<span class="sig-name descname"><span class="pre">nprimitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.nprimitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns total number of primitives in all contractions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.nshell">
+<span class="sig-name descname"><span class="pre">nshell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.nshell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns number of shells</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.nshell_on_center">
+<span class="sig-name descname"><span class="pre">nshell_on_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.nshell_on_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of shells on a given center</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.print_detail_out">
+<span class="sig-name descname"><span class="pre">print_detail_out</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.print_detail_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints detailed basis set info to outfile</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.print_out">
+<span class="sig-name descname"><span class="pre">print_out</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.print_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints basis set info to outfile</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.shell">
+<span class="sig-name descname"><span class="pre">shell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#psi4.core.BasisSet.shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>shell(self: psi4.core.BasisSet, si: int) -&gt; psi4.core.GaussianShell</p></li>
+</ol>
+<p>Return the si’th Gaussian shell</p>
+<ol class="arabic simple" start="2">
+<li><p>shell(self: psi4.core.BasisSet, center: int, si: int) -&gt; psi4.core.GaussianShell</p></li>
+</ol>
+<p>Return the si’th Gaussian shell on center</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.shell_on_center">
+<span class="sig-name descname"><span class="pre">shell_on_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.shell_on_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the i’th shell on center.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.shell_to_ao_function">
+<span class="sig-name descname"><span class="pre">shell_to_ao_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.shell_to_ao_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the function number for the first function for the i’th shell</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.shell_to_basis_function">
+<span class="sig-name descname"><span class="pre">shell_to_basis_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.shell_to_basis_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a shell return its first basis function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.shell_to_center">
+<span class="sig-name descname"><span class="pre">shell_to_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.shell_to_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the atomic center for the i’th shell</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="psi4.core.BasisSet.zero_ao_basis_set">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zero_ao_basis_set</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#psi4.core.BasisSet" title="psi4.core.BasisSet"><span class="pre">psi4.core.BasisSet</span></a></span></span><a class="headerlink" href="#psi4.core.BasisSet.zero_ao_basis_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a BasisSet object that actually has a single s-function at the origin with an exponent of 0.0 and contraction of 1.0.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="../index.html" title="index">
+          <img class="logo" src="../_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="../search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.BlockOPoints.html" title="BlockOPoints"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="psi4.core.BasisFunctions.html" title="BasisFunctions"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="../index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/api/psi4.core.BasisSet.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="../index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="../psi4api.html" ><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> API: Linking C++ and Python</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">BasisSet</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Sunday, 28 November 2021 02:41AM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

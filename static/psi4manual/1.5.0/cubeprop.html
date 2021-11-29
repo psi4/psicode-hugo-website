@@ -1,0 +1,583 @@
+<!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Generation of Cube Files — cubeprop()</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/psi4.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="shortcut icon" href="_static/favicon-psi4.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Customization: Adding Simple Extensions" href="customizing.html" />
+    <link rel="prev" title="Embarrassing Parallelism" href="sowreap.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="customizing.html" title="Customization: Adding Simple Extensions"
+             accesskey="N"><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sowreap.html" title="Embarrassing Parallelism"
+             accesskey="P"><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             accesskey="C"><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/cubeprop.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" accesskey="U">Psithon Functions: Invoking a Calculation</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Generation of Cube Files — <code class="xref py py-func docutils literal notranslate"><span class="pre">cubeprop()</span></code></a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="generation-of-cube-files-w-w-cubeprop">
+<span id="sec-cubeprop"></span><span id="index-0"></span><h1>Generation of Cube Files — <code class="xref py py-func docutils literal notranslate"><span class="pre">cubeprop()</span></code><a class="headerlink" href="#generation-of-cube-files-w-w-cubeprop" title="Permalink to this headline">¶</a></h1>
+<p><em>Code author: Robert M. Parrish, Francesco A. Evangelista and Peter Kraus</em></p>
+<p><em>Section author: Francesco A. Evangelista and Peter Kraus</em></p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">psi4.</span></span><span class="sig-name descname"><span class="pre">cubeprop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/psi4/driver/p4util/util.html#cubeprop"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Evaluate properties on a grid and generate cube files.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.5: </span><em>wfn</em> parameter passed explicitly</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>wfn</strong> (<a class="reference internal" href="api/psi4.core.Wavefunction.html#psi4.core.Wavefunction" title="psi4.core.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>) – set of molecule, basis, orbitals from which to generate cube files</p>
+</dd>
+<dt class="field-odd">Examples</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1] Cube files for all orbitals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;b3lyp&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cubeprop</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># [2] Cube files for density (alpha, beta, total, spin) and four orbitals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#     (two alpha, two beta)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">cubeprop_tasks</span> <span class="p">[</span><span class="s1">&#39;orbitals&#39;</span><span class="p">,</span> <span class="s1">&#39;density&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">set</span> <span class="n">cubeprop_orbitals</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cubeprop</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> has the ability to export cube files that store information about
+basis functions, molecular orbitals, the electron density, and
+the electrostatic potential (ESP).  Cube files store the value of a scalar
+quantity on a regular Cartesian grid, and can be visualized with several
+visualization programs, some of which are free, like VMD
+(<a class="reference external" href="http://www.ks.uiuc.edu/Research/vmd/">http://www.ks.uiuc.edu/Research/vmd/</a>).</p>
+<p>An example utilization of the code is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">molecule</span> <span class="n">h2o</span> <span class="p">{</span>
+<span class="mi">0</span> <span class="mi">1</span>
+<span class="n">O</span>
+<span class="n">H</span> <span class="mi">1</span> <span class="mf">1.0</span>
+<span class="n">H</span> <span class="mi">1</span> <span class="mf">1.0</span> <span class="mi">2</span> <span class="mf">104.5</span>
+<span class="p">}</span>
+
+<span class="nb">set</span> <span class="n">basis</span> <span class="n">cc</span><span class="o">-</span><span class="n">pvdz</span>
+<span class="nb">set</span> <span class="n">scf_type</span> <span class="n">df</span>
+<span class="nb">set</span> <span class="n">freeze_core</span> <span class="kc">True</span>
+<span class="nb">set</span> <span class="n">cubeprop_tasks</span> <span class="p">[</span><span class="s1">&#39;orbitals&#39;</span><span class="p">]</span>
+<span class="nb">set</span> <span class="n">cubeprop_orbitals</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+
+<span class="n">E</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">energy</span><span class="p">(</span><span class="s1">&#39;scf&#39;</span><span class="p">,</span> <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cubeprop</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, the <code class="xref py py-func docutils literal notranslate"><span class="pre">cubeprop()</span></code>
+call after the <code class="docutils literal notranslate"><span class="pre">energy('scf')</span></code> command
+executes the cubeprop code.  The array <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_TASKS-GLOBALS"><span class="xref std std-term">CUBEPROP_TASKS</span></a> specifies which
+tasks should be executed.  In this case the task <code class="docutils literal notranslate"><span class="pre">'orbitals'</span></code> generates cube
+files for orbitals.  The <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_ORBITALS-GLOBALS"><span class="xref std std-term">CUBEPROP_ORBITALS</span></a> option specifies that cube files
+should be generated only for alpha orbitals 5 (HOMO) and 6 (LUMO) and
+beta orbitals 5 (indicated as -5) and 6.
+If the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_ORBITALS-GLOBALS"><span class="xref std std-term">CUBEPROP_ORBITALS</span></a> is not provided, then cube files are
+generated for all orbitals.
+After running, the above input will generate four files: <code class="docutils literal notranslate"><span class="pre">Psi_a_5_1-B1.cube</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Psi_a_6_4-A1.cube</span></code>, <code class="docutils literal notranslate"><span class="pre">Psi_a_5_1-B1.cube</span></code>, and <code class="docutils literal notranslate"><span class="pre">Psi_a_6_4-A1.cube</span></code>. The subscript <code class="docutils literal notranslate"><span class="pre">a</span></code> in
+<code class="docutils literal notranslate"><span class="pre">Psi_a_5_1-B1.cube</span></code> indicates an alpha orbital. The first number (<code class="docutils literal notranslate"><span class="pre">5</span></code>) is the index of the
+orbital while <code class="docutils literal notranslate"><span class="pre">1-B1</span></code> indicates that this is the first orbital that belongs to the B1 irrep.
+The file <code class="docutils literal notranslate"><span class="pre">Psi_a_5_1-B1.cube</span></code> begins with two comment lines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Psi4</span> <span class="n">Gaussian</span> <span class="n">Cube</span> <span class="n">File</span><span class="o">.</span>
+<span class="n">Property</span><span class="p">:</span> <span class="n">Psi_a_5_1</span><span class="o">-</span><span class="n">B1</span><span class="o">.</span> <span class="n">Isocontour</span> <span class="nb">range</span> <span class="k">for</span> <span class="mi">85</span><span class="o">%</span> <span class="n">of</span> <span class="n">the</span> <span class="n">density</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0787495</span><span class="p">,</span><span class="o">-</span><span class="mf">0.0787495</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The second line reports the isocontour values that capture 85% of the probability density using
+the least amount of grid points. This quantity is determined for orbitals and densities. The
+fraction of the density captured by the isocontour values is by default 0.85, but can
+be changed via the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_ISOCONTOUR_THRESHOLD-GLOBALS"><span class="xref std std-term">CUBEPROP_ISOCONTOUR_THRESHOLD</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your cube plots are too coarse, try to decrease the grid spacing via
+the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBIC_GRID_SPACING-GLOBALS"><span class="xref std std-term">CUBIC_GRID_SPACING</span></a>.  If the edges of your plot are cut then
+increase the size of the grid via the option <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBIC_GRID_OVERAGE-GLOBALS"><span class="xref std std-term">CUBIC_GRID_OVERAGE</span></a>.</p>
+</div>
+</section>
+<section id="cubeprop-tasks">
+<h2>Cubeprop Tasks<a class="headerlink" href="#cubeprop-tasks" title="Permalink to this headline">¶</a></h2>
+<p>The cubeprop utility can be provided a list of tasks to perform.
+Tasks are specified by the <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_TASKS-GLOBALS"><span class="xref std std-term">CUBEPROP_TASKS</span></a> option, which is a list of strings
+that identify the tasks.  Several tasks are available. These include:</p>
+<dl class="simple">
+<dt>ORBITALS [Default if  <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_TASKS-GLOBALS"><span class="xref std std-term">CUBEPROP_TASKS</span></a> is not specified]</dt><dd><p>Produces cube representations of the molecular orbitals
+<span class="math notranslate nohighlight">\(\psi_q(\mathbf{r})\)</span>.  Orbitals are sorted according to increasing
+orbital energy ignoring symmetry.</p>
+</dd>
+<dt>FRONTIER_ORBITALS</dt><dd><p>Produces cube representations of the frontier molecular orbitals. For closed shell
+species, the highest occupied (HOMO) and the lowest unoccupied (LUMO) alpha orbitals (ie.
+<span class="math notranslate nohighlight">\(\psi_{\alpha}(\mathbf{r})\)</span>) are printed, while for open shell species a total
+of <span class="math notranslate nohighlight">\((4 + M_s)\)</span> orbitals are printed (<span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>
+spin for both lowest virtual (LVMO) and highest doubly occupied
+orbitals (DOMO), along with all <span class="math notranslate nohighlight">\(\alpha\)</span> singly occupied (SOMO) orbitals).</p>
+</dd>
+<dt>DENSITY</dt><dd><p>This task can be used to obtain the alpha and beta electron densities,
+<span class="math notranslate nohighlight">\(\rho_\alpha(\mathbf{r})\)</span> and <span class="math notranslate nohighlight">\(\rho_\beta(\mathbf{r})\)</span>, together
+with the total density
+<span class="math notranslate nohighlight">\(\rho(\mathbf{r}) = \rho_\alpha(\mathbf{r}) + \rho_\beta(\mathbf{r})\)</span>,
+and the spin density
+<span class="math notranslate nohighlight">\(\rho(\mathbf{r}) = \rho_\alpha(\mathbf{r}) - \rho_\beta(\mathbf{r})\)</span>.</p>
+</dd>
+<dt>BASIS_FUNCTIONS</dt><dd><p>This task is useful to produce cube files of the atomic orbital basis
+functions <span class="math notranslate nohighlight">\(\chi_\mu(\mathbf{r})\)</span>.</p>
+</dd>
+<dt>ESP</dt><dd><p>Calculates the total (nuclear + electronic) electrostatic potential
+<span class="math notranslate nohighlight">\(V(\mathbf{r})\)</span>.</p>
+</dd>
+<dt>DUAL_DESCRIPTOR</dt><dd><p>Calculates the dual descriptor from frontier orbitals:
+<span class="math notranslate nohighlight">\(f^2(\mathbf{r})=\rho_{\mathrm{LUMO}}(\mathbf{r})-\rho_{\mathrm{HOMO}}(\mathbf{r})\)</span>.
+The dual descriptor is a good measure of nucleophilicity and electrophilicity,
+containing information essentially equivalent to both Fukui functions combined.
+More details on the dual descriptor itself can be found in <a class="reference internal" href="bibliography.html#morell-2005-205" id="id1"><span>[Morell:2005:205]</span></a>,
+while the current implementation is described in <a class="reference internal" href="bibliography.html#martinez-araya-2015-451" id="id2"><span>[Martinez-Araya:2015:451]</span></a>.
+This feature is currently only supported for closed shell systems.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ESP</span></code> task requires the user to specify a density-fitting basis
+via the <a class="reference internal" href="autodoc_glossary_options_c.html#term-DF_BASIS_SCF-SCF"><span class="xref std std-term">DF_BASIS_SCF</span></a> keyword.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is important to specify the <a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_ORBITALS-GLOBALS"><span class="xref std std-term">CUBEPROP_ORBITALS</span></a> option when
+dealing with large molecules to avoid running out of disk space.
+For example, using the default grid spacing of
+0.2 Ångström, the size of a single cube file for a molecule like water
+is of the order of 1.4 MB.  For a molecule with 200 basis functions, the cube
+files for all the orbitals occupy more than half a GB.</p>
+</div>
+</section>
+<section id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<section id="id3">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_TASKS-GLOBALS"><span class="xref std std-term">CUBEPROP_TASKS</span></a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Properties to compute. Valid tasks include: <code class="docutils literal notranslate"><span class="pre">DENSITY</span></code> - Da, Db, Dt, Ds; <code class="docutils literal notranslate"><span class="pre">ESP</span></code> - Dt, ESP; <code class="docutils literal notranslate"><span class="pre">ORBITALS</span></code> - Psi_a_N, Psi_b_N; <code class="docutils literal notranslate"><span class="pre">BASIS_FUNCTIONS</span></code> - Phi_N; <code class="docutils literal notranslate"><span class="pre">LOL</span></code> - LOLa, LOLb; <code class="docutils literal notranslate"><span class="pre">ELF</span></code> - ELFa, ELFb; <code class="docutils literal notranslate"><span class="pre">FRONTIER_ORBITALS</span></code> - Psi_a_N_HOMO + Psi_a_N_LUMO; <code class="docutils literal notranslate"><span class="pre">DUAL_DESCRIPTOR</span></code> - DUAL_N_HOMO-M_LUMO.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cubeprop-filepath">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_FILEPATH-GLOBALS"><span class="xref std std-term">CUBEPROP_FILEPATH</span></a><a class="headerlink" href="#cubeprop-filepath" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Directory to which to write cube files. Default is the input file directory.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: string</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cubeprop-orbitals">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_ORBITALS-GLOBALS"><span class="xref std std-term">CUBEPROP_ORBITALS</span></a><a class="headerlink" href="#cubeprop-orbitals" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>List of orbital indices for which cube files are generated (1-based, <span class="math notranslate nohighlight">\(+\)</span> for alpha, <span class="math notranslate nohighlight">\(-\)</span> for beta). All orbitals computed if empty.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cubeprop-basis-functions">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBEPROP_BASIS_FUNCTIONS-GLOBALS"><span class="xref std std-term">CUBEPROP_BASIS_FUNCTIONS</span></a><a class="headerlink" href="#cubeprop-basis-functions" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>List of basis function indices for which cube files are generated (1-based). All basis functions computed if empty.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cubic-grid-spacing">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBIC_GRID_SPACING-GLOBALS"><span class="xref std std-term">CUBIC_GRID_SPACING</span></a><a class="headerlink" href="#cubic-grid-spacing" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>CubicScalarGrid grid spacing in bohr [D_X, D_Y, D_Z]. Defaults to 0.2 bohr each.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="cubic-grid-overage">
+<h3><a class="reference internal" href="autodoc_glossary_options_c.html#term-CUBIC_GRID_OVERAGE-GLOBALS"><span class="xref std std-term">CUBIC_GRID_OVERAGE</span></a><a class="headerlink" href="#cubic-grid-overage" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>CubicScalarGrid spatial extent in bohr [O_X, O_Y, O_Z]. Defaults to 4.0 bohr each.</p>
+<ul class="simple">
+<li><p><strong>Type</strong>: array</p></li>
+<li><p><strong>Default</strong>: No Default</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+<section id="orbital-visualization-with-vmd">
+<h1>Orbital Visualization with VMD<a class="headerlink" href="#orbital-visualization-with-vmd" title="Permalink to this headline">¶</a></h1>
+<p>Included in <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> is functionality to automatically render specified surfaces, including molecular orbitals,
+densities, and basis functions, using VMD. The vmd_cube.py script takes the .cube files generated
+in a calculation and generates images aligned with user-input specifications. The script is located
+in <a class="reference external" href="https://github.com/psi4/psi4/blob/master/psi4/share/psi4/scripts/vmd_cube.py">psi4/psi4/share/psi4/scripts/vmd_cube.py</a>.</p>
+<section id="script-prerequisites">
+<h2>Script Prerequisites<a class="headerlink" href="#script-prerequisites" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>VMD must be installed, and it can be downloaded for free at (<a class="reference external" href="http://www.ks.uiuc.edu/Research/vmd/">http://www.ks.uiuc.edu/Research/vmd/</a>). Additionally,
+the script needs to know where to find the VMD executable, and this is defined as <span class="target" id="index-1"></span><a class="reference internal" href="#envvar-VMDPATH"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">VMDPATH</span></code></a>. VMDPATH must be defined as
+an environment variable.</p></li>
+<li><p>To generate images with multiple surfaces, ImageMagick must also be installed. ImageMagick is a free program which
+can be installed using homebrew/pip or from <a class="reference external" href="http://www.imagemagick.org/script/binary-releases.php">http://www.imagemagick.org/script/binary-releases.php</a> .</p></li>
+<li><p>With ImageMagick installed, an environment variable called <span class="target" id="index-2"></span><a class="reference internal" href="#envvar-MONTAGE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">MONTAGE</span></code></a> needs to be created which points to the montage executable.
+This executable can be found in the /bin/ sub-directory wherever ImageMagick was installed.</p></li>
+</ol>
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-VMDPATH">
+<span class="sig-name descname"><span class="pre">VMDPATH</span></span><a class="headerlink" href="#envvar-VMDPATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filesystem path to the VMD executable.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-MONTAGE">
+<span class="sig-name descname"><span class="pre">MONTAGE</span></span><a class="headerlink" href="#envvar-MONTAGE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filesystem path to the Montage executable of ImageMagick</p>
+</dd></dl>
+
+</section>
+<section id="running-the-script">
+<h2>Running the Script<a class="headerlink" href="#running-the-script" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Run a <span style="font-family: Optima, sans-serif; text-transform: none;">P<span style="font-size: 82%;">SI</span>4</span> calculation, generating .cube files as detailed in the above documentation.</p></li>
+<li><p>Add vmd_cube.py to your path. Call vmd_cube.py and pass the directory containing
+the .cube files as an argument:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">vmd_cube</span><span class="o">.</span><span class="n">py</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">cube</span><span class="o">/</span><span class="n">files</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>By default the script will search for cube files in the directory in which it is called.
+In addition to individual image files for each orbital, vmd_cube will also generate an image containing all surfaces in an array
+(very useful for hand-picking orbital spaces)</p>
+</li>
+<li><p>As an example, take the cube files generated from the water calculation from the above input file.
+Using vmd_cube the alpha molecular orbitals can be rendered and output in one image with:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">vmd_cube</span><span class="o">.</span><span class="n">py</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">cube</span><span class="o">/</span><span class="n">files</span><span class="o">/</span> <span class="o">--</span><span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">--</span><span class="n">rx</span><span class="o">=</span><span class="mi">90</span> <span class="o">--</span><span class="n">ry</span><span class="o">=</span><span class="mi">60</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The desired image in this case is called “AlphaMOs.tga”, and looks like this:</p>
+<a class="reference internal image-reference" href="_images/AlphaMOs.png"><img alt="Alpha MOs" class="align-center" src="_images/AlphaMOs.png" style="width: 508.0px; height: 282.0px;" /></a>
+</section>
+<section id="script-options">
+<h2>Script Options<a class="headerlink" href="#script-options" title="Permalink to this headline">¶</a></h2>
+<p>The help for <code class="docutils literal notranslate"><span class="pre">vmd_cube.py</span></code> can be obtained from the console:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">./</span><span class="n">vmd_cube</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">help</span>
+<span class="go">usage: vmd_cube.py [-h] [--color1 [&lt;integer&gt;]] [--color2 [&lt;integer&gt;]]</span>
+<span class="go">                   [--iso [&lt;isovalue&gt;]] [--rx [&lt;angle&gt;]] [--ry [&lt;angle&gt;]]</span>
+<span class="go">                   [--rz [&lt;angle&gt;]] [--tx [&lt;length&gt;]] [--ty [&lt;length&gt;]]</span>
+<span class="go">                   [--tz [&lt;length&gt;]] [--opacity [&lt;opacity&gt;]]</span>
+<span class="go">                   [--scale [&lt;factor&gt;]] [--no-montage] [--no-labels]</span>
+<span class="go">                   [--imagesize [&lt;integer&gt;]] [--imagew [&lt;integer&gt;]]</span>
+<span class="go">                   [--imageh [&lt;integer&gt;]] [--fontsize [&lt;integer&gt;]]</span>
+<span class="go">                   [--interactive] [--gzip] [--national_scheme]</span>
+<span class="go">                   [--silver_scheme] [--bright_scheme] [--electron_scheme]</span>
+<span class="go">                   [&lt;cubefile dir&gt;]</span>
+
+<span class="go">vmd_cube is a script to render cube files with vmd. To generate cube files</span>
+<span class="go">with Psi4 add the command cubeprop() at the end of your input file.</span>
+
+<span class="go">positional arguments:</span>
+<span class="go">  &lt;cubefile dir&gt;        The directory containing the cube files.</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  --color1 [&lt;integer&gt;]  the color ID of surface 1 (integer, default = 3)</span>
+<span class="go">  --color2 [&lt;integer&gt;]  the color ID of surface 2 (integer, default = 23)</span>
+<span class="go">  --iso [&lt;isovalue&gt;]    the isosurface value (float, default = 0.05)</span>
+<span class="go">  --rx [&lt;angle&gt;]        the x-axis rotation angle (float, default = 30.0)</span>
+<span class="go">  --ry [&lt;angle&gt;]        the y-axis rotation angle (float, default = 40.0)</span>
+<span class="go">  --rz [&lt;angle&gt;]        the z-axis rotation angle (float, default = 15.0)</span>
+<span class="go">  --tx [&lt;length&gt;]       the x-axis translation (float, default = 0.0)</span>
+<span class="go">  --ty [&lt;length&gt;]       the y-axis translation (float, default = 0.0)</span>
+<span class="go">  --tz [&lt;length&gt;]       the z-axis translation (float, default = 0.0)</span>
+<span class="go">  --opacity [&lt;opacity&gt;]</span>
+<span class="go">                        opacity of the isosurface (float, default = 1.0)</span>
+<span class="go">  --scale [&lt;factor&gt;]    the scaling factor (float, default = 1.0)</span>
+<span class="go">  --no-montage          call montage to combine images. (string, default =</span>
+<span class="go">                        false)</span>
+<span class="go">  --no-labels           do not add labels to images. (string, default = false)</span>
+<span class="go">  --imagesize [&lt;integer&gt;]</span>
+<span class="go">                        the size of each image (integer, default = 250)</span>
+<span class="go">  --imagew [&lt;integer&gt;]  the width of images (integer, default = 250)</span>
+<span class="go">  --imageh [&lt;integer&gt;]  the height of images (integer, default = 250)</span>
+<span class="go">  --fontsize [&lt;integer&gt;]</span>
+<span class="go">                        the font size (integer, default = 20)</span>
+<span class="go">  --interactive         run in interactive mode (default = false)</span>
+<span class="go">  --gzip                gzip cube files (default = false)</span>
+<span class="go">  --national_scheme     use a red/blue color scheme. (string, default = false)</span>
+<span class="go">  --silver_scheme       use a gray/white color scheme. (string, default =</span>
+<span class="go">                        false)</span>
+<span class="go">  --bright_scheme       use a soft yellow/blue color scheme. (string, default</span>
+<span class="go">                        = false)</span>
+<span class="go">  --electron_scheme     use a purple/green color scheme. (string, default =</span>
+<span class="go">                        false)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/psi4square.png" alt="Logo"/>
+        </a></p><!-- 
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2017 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+# -->
+
+
+<div id="searchbox" style="display: none" role="search">
+  <!--<h3>Quick search</h3>-->
+    <form class="search" action="search.html" method="get">
+      <!--<div><input type="text" name="q" placeholder="search docs" /></div>-->
+      <div><input type="text" name="q" placeholder="&#xF002;" style="font-family:FontAwesome, Ariel" /></div>
+      <!--<div><input type="submit" value="Go" /></div>-->
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">table of contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Generation of Cube Files — <code class="xref py py-func docutils literal notranslate"><span class="pre">cubeprop()</span></code></a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#cubeprop-tasks">Cubeprop Tasks</a></li>
+<li><a class="reference internal" href="#keywords">Keywords</a><ul>
+<li><a class="reference internal" href="#id3"><span class="xref std std-term">CUBEPROP_TASKS</span></a></li>
+<li><a class="reference internal" href="#cubeprop-filepath"><span class="xref std std-term">CUBEPROP_FILEPATH</span></a></li>
+<li><a class="reference internal" href="#cubeprop-orbitals"><span class="xref std std-term">CUBEPROP_ORBITALS</span></a></li>
+<li><a class="reference internal" href="#cubeprop-basis-functions"><span class="xref std std-term">CUBEPROP_BASIS_FUNCTIONS</span></a></li>
+<li><a class="reference internal" href="#cubic-grid-spacing"><span class="xref std std-term">CUBIC_GRID_SPACING</span></a></li>
+<li><a class="reference internal" href="#cubic-grid-overage"><span class="xref std std-term">CUBIC_GRID_OVERAGE</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#orbital-visualization-with-vmd">Orbital Visualization with VMD</a><ul>
+<li><a class="reference internal" href="#script-prerequisites">Script Prerequisites</a></li>
+<li><a class="reference internal" href="#running-the-script">Running the Script</a></li>
+<li><a class="reference internal" href="#script-options">Script Options</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >Index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="customizing.html" title="Customization: Adding Simple Extensions"
+             ><i class="fa fa-long-arrow-right fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="sowreap.html" title="Embarrassing Parallelism"
+             ><i class="fa fa-long-arrow-left fa-lg"></i></a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Table Of Contents"
+             ><i class="fa fa-book fa-lg"></i></a> &nbsp; &nbsp;</li>
+    <li><a href="http://psicode.org/"><i class="fa fa-home fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4"><i class="fa fa-github fa-lg"></i></a></li>
+    <li><a href="http://forum.psicode.org"><i class="fa fa-comments-o fa-lg"></i></a></li>
+    <li><a href="http://github.com/psi4/psi4/edit/master/doc/sphinxman/source/cubeprop.rst"><i class="fa fa-pencil fa-lg"></i></a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li><a href="http://github.com/psi4/psi4/tree/e9f4d6d">1.5</a></li>
+    <li style="color: #1a4162">&nbsp;&middot;&nbsp;</li>
+    <li class="nav-item nav-item-0"><a href="index.html">
+        <span style="font-family: Optima, sans-serif;">P<span style="font-size: 82%;">SI</span>4</span>
+        </a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+
+          <li class="nav-item nav-item-1"><a href="psithonfunc.html" >Psithon Functions: Invoking a Calculation</a><i class="fa fa-angle-double-right" style="color: #a2a7b3; text-shadow: none;"></i></li>
+        <li class="nav-item nav-item-this"><a href="">Generation of Cube Files — <code class="xref py py-func docutils literal notranslate"><span class="pre">cubeprop()</span></code></a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, The Psi4 Project.
+      Last updated on Sunday, 28 November 2021 02:41AM.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
