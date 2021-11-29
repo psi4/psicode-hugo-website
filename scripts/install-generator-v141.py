@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v15"
+edition = "v141"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -56,18 +56,6 @@ cycle_15 = [
     ("windows wsl", "py3.9"),
     ("windows native", "py3.8"),
 ]
-cycle_16 = [
-    ("linux", "py3.8"),
-    ("linux", "py3.9"),
-    ("linux", "py3.10"),
-    ("macos", "py3.8"),
-    ("macos", "py3.9"),
-    ("macos", "py3.10"),
-    ("windows wsl", "py3.8"),
-    ("windows wsl", "py3.9"),
-    ("windows wsl", "py3.10"),
-    ("windows native", "py3.9"),
-]
 
 installers_built = {
     "1.2.1": cycle_12,
@@ -80,9 +68,8 @@ installers_built = {
     "1.4rc3": cycle_14,
     "1.4": cycle_14,
     "1.4.1": cycle_14,
-    "1.5": cycle_15,
     False: [],
-    "1.6dev": cycle_16,
+    "1.5dev": cycle_15,
 }
 
 psi4rt = {
@@ -95,7 +82,6 @@ psi4rt = {
     "1.4rc3": "1.4.dev35",
     "1.4": "1.4",
     "1.4.1": "1.4.1",
-    "1.5": "1.5",
 }
 
 ## Outputs
