@@ -45,7 +45,7 @@ Zoom links will be sent to all registered participants on Thursday, December 2.
 - William & Mary
 - William Paterson University
 
-# PsiCon 2020 Agenda
+# PsiCon 2021 Agenda
 
 ### Friday, December 3
 
