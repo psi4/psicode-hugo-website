@@ -5,6 +5,10 @@ image: images/downloads/psi-downloads-map.png
 draft: false
 ---
 
+### 2022 & v1.5
+![2022 Installer Downloads Pie Chart](/images/downloads/psi-downloads-pie-pyos-2022.png)
+![v1.5 Installer Downloads Pie Chart](/images/downloads/psi-downloads-pie-pyos-v1.5.png)
+
 ### 2021 & v1.4
 ![2021 Installer Downloads Pie Chart](/images/downloads/psi-downloads-pie-pyos-2021.png)
 ![v1.4 Installer Downloads Pie Chart](/images/downloads/psi-downloads-pie-pyos-v1.4.png)
