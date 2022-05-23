@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v16"
+edition = "v15"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -66,10 +66,8 @@ cycle_16 = [
     ("windows wsl", "py3.8"),
     ("windows wsl", "py3.9"),
     ("windows wsl", "py3.10"),
-    ("windows native", "py3.8"),
+    ("windows native", "py3.9"),
 ]
-
-cycle_17 = cycle_16
 
 installers_built = {
     "1.2.1": cycle_12,
@@ -83,9 +81,8 @@ installers_built = {
     "1.4": cycle_14,
     "1.4.1": cycle_14,
     "1.5": cycle_15,
-    "1.6": cycle_16,
     False: [],
-    "1.7dev": cycle_17,
+    "1.6dev": cycle_16,
 }
 
 psi4rt = {
@@ -99,7 +96,6 @@ psi4rt = {
     "1.4": "1.4",
     "1.4.1": "1.4.1",
     "1.5": "1.5",
-    "1.6": "1.6",
 }
 
 ## Outputs
@@ -179,13 +175,6 @@ def compute_command(os, py, pm, br):
             return f"""pprompt + 'conda install psi4 python={pyvv} {brchnls[br]} {oschnls[os]}'"""
         else:
             extras = ""
-            if brvv == "1.5":
-                if os in ['linux', 'windows wsl']:
-                    extras = " libint2=*=hc9558a2_9"
-                elif os == "macos":
-                    extras = " libint2=*=h879752b_3"
-                elif os == "windows native":
-                    extras = " libint2=*=h2e52968_1"
             if os == "windows native" and brvv in ["1.4rc3"]:
                 brvv = "1.4rc4.dev1"
             # if os in ['linux', 'windows wsl'] and brvv == '1.2.1':
