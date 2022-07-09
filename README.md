@@ -29,7 +29,7 @@ This is the home of the new psicode website generated with Hugo. Committers to p
 
 * in another terminal window, `cd psicode-hugo-website`
 * `hugo server -D`
-* if OSX balks on the many static docs with `socket: too many open files in system`, try *http://blog.mact.me/2014/10/22/yosemite-upgrade-changes-open-file-limit, particularly `ulimit -n 65536 65536`
+* if OSX balks on the many static docs with `socket: too many open files in system`, try http://blog.mact.me/2014/10/22/yosemite-upgrade-changes-open-file-limit, particularly `ulimit -n 65536 65536` . Or simply `hugo server --watch=false` and rerun after edit.
 * view in browser at http://localhost:1313/
 * updates automatically when save files (refresh browser if it gets stuck on the little square)
 
