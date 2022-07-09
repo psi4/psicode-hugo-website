@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v161"
+edition = "v16"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -84,7 +84,6 @@ installers_built = {
     "1.4.1": cycle_14,
     "1.5": cycle_15,
     "1.6": cycle_16,
-    "1.6.1": cycle_16,
     False: [],
     "1.7dev": cycle_17,
 }
@@ -101,7 +100,6 @@ psi4rt = {
     "1.4.1": "1.4.1",
     "1.5": "1.5",
     "1.6": "1.6",
-    "1.6.1": "1.6.1",
 }
 
 ## Outputs
@@ -183,7 +181,7 @@ def compute_command(os, py, pm, br):
             extras = ""
             if brvv == "1.5":
                 if os in ['linux', 'windows wsl']:
-                    extras = " libint2=*=hc9558a2_9 pcmsolver=*=py38h6d17ec8_2"
+                    extras = " libint2=*=hc9558a2_9"
                 elif os == "macos":
                     extras = " libint2=*=h879752b_3"
                 elif os == "windows native":
