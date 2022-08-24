@@ -1,6 +1,6 @@
 ---
 title: "Installer Downloads"
-date: 2022-08-23
+date: 2022-08-24
 image: images/downloads/psi-downloads-map.png
 draft: false
 ---
