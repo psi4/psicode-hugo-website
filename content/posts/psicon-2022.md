@@ -2,7 +2,7 @@
 title: "PsiCon 2022 — Virginia Tech"
 date: 2022-12-20
 author: Daniel Crawford
-image: images/blog/psicon-2022.png
+image: images/blog/psicon-2020.png
 description: "annual psi developers meeting 2022"
 categories: ["events"]
 ---
@@ -15,37 +15,6 @@ Optional tutorials and breakout sessions will be held Friday afternoon.
 [Registration](https://forms.gle/Wi2mV3KxzJzLQc619) is free.
 
 Zoom links will be sent to all registered participants on Thursday, December 2.
-
-<!--
-# Participating Institutions
-
-- Auburn University
-- Baylor University
-- Bhabha Atomic Research Centre
-- CNRS / University of Lille
-- Emory University
-- Florida State University
-- Georgia Institute of Technology
-- Heidelberg University
-- Max-Planck-Gesellschaft
-- Indian Institute of Technology
-- Institute for Advanced Studies in Basic Sciences
-- Izmir Insitute of Technology
-- Michigan State University
-- Nicolaus Copernicus University
-- Sandia National Laboratories
-- Sapienza University of Roma
-- University College London
-- Universidad Autonoma de Chihuahua
-- Universidad de Buenos Aires
-- Universidad Nacional Mayor de San Marcos
-- Universidade Federal Fluminense
-- University of California Irvine
-- University of Georgia
-- Virginia Tech
-- William & Mary
-- William Paterson University
--->
 
 # PsiCon 2022 Agenda
 
