@@ -1,5 +1,5 @@
 ---
-title: "PsiCon 2021 — Hybrid"
+title: "PsiCon 2021 — University of Georgia"
 date: 2021-11-29
 author: Justin Turney
 image: images/blog/psicon-2020.png

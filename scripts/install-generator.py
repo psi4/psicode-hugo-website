@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v161"
+edition = "v17"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -68,8 +68,20 @@ cycle_16 = [
     ("windows wsl", "py3.10"),
     ("windows native", "py3.8"),
 ]
+cycle_17 = [
+    ("linux", "py3.8"),
+    ("linux", "py3.9"),
+    ("linux", "py3.10"),
+    #("macos", "py3.8"),
+    #("macos", "py3.9"),
+    #("macos", "py3.10"),
+    ("windows wsl", "py3.8"),
+    ("windows wsl", "py3.9"),
+    ("windows wsl", "py3.10"),
+    ("windows native", "py3.8"),
+]
 
-cycle_17 = cycle_16
+cycle_18 = cycle_16
 
 installers_built = {
     "1.2.1": cycle_12,
@@ -85,8 +97,9 @@ installers_built = {
     "1.5": cycle_15,
     "1.6": cycle_16,
     "1.6.1": cycle_16,
+    "1.7": cycle_17,
     False: [],
-    "1.7dev": cycle_17,
+    "1.8dev": cycle_18,
 }
 
 psi4rt = {
@@ -102,6 +115,7 @@ psi4rt = {
     "1.5": "1.5",
     "1.6": "1.6",
     "1.6.1": "1.6.1",
+    "1.7": "1.7",
 }
 
 ## Outputs
@@ -223,7 +237,7 @@ def compute_download_button(os, py, pm, br):
     vergil, psi4conda = psi4conda_filename(os, py, pm, br)
 
     if pm == "installer" and br != "brn" and ((os, py) in installers_built[brvv]):
-        return rf"""['<i class="fa fa-download" aria-hidden="true"></i> download psi4conda installer',
+        return rf"""['<i class="fa fa-download" aria-hidden="true"></i> download psi4conda installer (alt. curl cmd below)',
                          '{vergil}{psi4conda}',
                          '{psi4conda}',
                          '/images/installs/conda_ovals.{pm}.jpeg']"""
