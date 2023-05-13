@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v18"
+edition = "v17"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -80,30 +80,8 @@ cycle_17 = [
     ("windows wsl", "py3.10"),
     ("windows native", "py3.8"),
 ]
-cycle_18 = [
-    ("linux", "py3.8"),
-    ("linux", "py3.9"),
-    ("linux", "py3.10"),
-    ("linux", "py3.11"),
-    ("macos", "py3.8"),
-    ("macos", "py3.9"),
-    ("macos", "py3.10"),
-    ("macos", "py3.11"),
-    ("macos silicon", "py3.8"),
-    ("macos silicon", "py3.9"),
-    ("macos silicon", "py3.10"),
-    ("macos silicon", "py3.11"),
-    ("windows wsl", "py3.8"),
-    ("windows wsl", "py3.9"),
-    ("windows wsl", "py3.10"),
-    ("windows wsl", "py3.11"),
-    ("windows native", "py3.8"),
-    ("windows native", "py3.9"),
-    ("windows native", "py3.10"),
-    ("windows native", "py3.11"),
-]
 
-cycle_19 = cycle_18
+cycle_18 = cycle_16
 
 installers_built = {
     "1.2.1": cycle_12,
@@ -120,9 +98,8 @@ installers_built = {
     "1.6": cycle_16,
     "1.6.1": cycle_16,
     "1.7": cycle_17,
-    "1.8": cycle_18,
     False: [],
-    "1.9dev": cycle_19,
+    "1.8dev": cycle_18,
 }
 
 psi4rt = {
@@ -139,18 +116,6 @@ psi4rt = {
     "1.6": "1.6",
     "1.6.1": "1.6.1",
     "1.7": "1.7",
-# TODO EDIT DNE
-    "1.8": "1.8",
-}
-
-docker_built = {
-    "1.7": [],
-    "1.8": [("linux", "py3.10")],
-    "1.9dev": [],
-}
-
-docker_tag = {
-    ("linux", "py3.10", "1.8") : "1.8.0",
 }
 
 ## Outputs
@@ -179,7 +144,6 @@ pys = [i["jscode"] for i in pythons]
 
 oss = [i["jscode"] for i in oses]
 osp4cs = {i["jscode"]: i["psi4conda"] for i in oses}
-osars = {i["jscode"]: i["psi4condaarch"] for i in oses}
 osexts = {i["jscode"]: i["psi4condaext"] for i in oses}
 oscplrs = {i["jscode"]: i["condacompiler"] for i in oses}
 osbashs = {i["jscode"]: i["bashrc"] for i in oses}
@@ -192,7 +156,7 @@ pms = [i["jscode"] for i in managers]
 def psi4conda_filename(os, py, pm, br):
     # http: (works for LAB) or https: (works for Kirk Pearce)
     vergil = "http://vergil.chemistry.gatech.edu/psicode-download/"
-    psi4conda = f"Psi4conda-{brvvs[br]}-{py.replace('.', '')}-{osp4cs[os]}-{osars[os]}.{osexts[os]}"
+    psi4conda = f"Psi4conda-{brvvs[br]}-{py.replace('.', '')}-{osp4cs[os]}-x86_64.{osexts[os]}"
     return vergil, psi4conda
 
 
@@ -256,9 +220,6 @@ def compute_command(os, py, pm, br):
         else:
             checkout = f""" && git checkout {brhashs[br]}"""
 
-        if br in ["brs", "brn"]:
-            return """'# check back later for instructions on building from source'"""
-
         if os == "windows native":
             return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
                     '<br /># see https://github.com/psi4/psi4/blob/master/.azure-pipelines/azure-pipelines-windows.yml to set up a build environment'"""
@@ -268,16 +229,6 @@ def compute_command(os, py, pm, br):
                     brprompt + 'conda activate p4dev' +
                     brprompt + '`psi4-path-advisor --{oscplrs[os]}`' +
                     brprompt + 'cd objdir && make -j`getconf _NPROCESSORS_ONLN`'"""
-
-    elif pm == "docker":
-        if (os, py, brvv) in docker_tag:
-            docktag = docker_tag[(os, py, brvv)]
-            return f"""pprompt + 'docker pull psi4/psi4:{docker_tag[(os, py, brvv)]}'"""
-        elif brvv in docker_built and docker_built[brvv]:
-            dockhit = docker_built[brvv][0]  # expand someday if more than one docker img
-            return f"""'# docker image not provided for this OS and python version, but check {dockhit[0]} + {dockhit[1]}'"""
-        else:
-            return f"""'# docker image not provided for this branch'"""
 
 
 def compute_download_button(os, py, pm, br):
