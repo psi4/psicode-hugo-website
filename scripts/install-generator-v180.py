@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v182"
+edition = "v18"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -121,7 +121,6 @@ installers_built = {
     "1.6.1": cycle_16,
     "1.7": cycle_17,
     "1.8": cycle_18,
-    "1.8.2": cycle_18,
     False: [],
     "1.9dev": cycle_19,
 }
@@ -147,13 +146,11 @@ psi4rt = {
 docker_built = {
     "1.7": [],
     "1.8": [("linux", "py3.10")],
-    "1.8.2": [("linux", "py3.10")],
     "1.9dev": [],
 }
 
 docker_tag = {
     ("linux", "py3.10", "1.8") : "1.8.0",
-    ("linux", "py3.10", "1.8.2") : "1.8.2",
 }
 
 ## Outputs
@@ -260,7 +257,7 @@ def compute_command(os, py, pm, br):
             checkout = f""" && git checkout {brhashs[br]}"""
 
         if br in ["brs", "brn"]:
-            return """'# see https://github.com/psi4/psi4/issues/2965 for interim instructions on building from source'"""
+            return """'# check back later for instructions on building from source'"""
 
         if os == "windows native":
             return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
