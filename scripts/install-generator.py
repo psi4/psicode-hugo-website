@@ -257,7 +257,7 @@ def compute_command(os, py, pm, br):
             checkout = f""" && git checkout {brhashs[br]}"""
 
         if br in ["brs", "brn"]:
-            return """'# check back later for instructions on building from source'"""
+			return """'# see https://github.com/psi4/psi4/issues/2965 for interim instructions on building from source'"""
 
         if os == "windows native":
             return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
