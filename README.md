@@ -36,4 +36,5 @@ This is the home of the new psicode website generated with Hugo. Committers to p
 ##### deploy the website
 
 * push to a branch on your fork, submit a PR, and netlify will build a preview. Once merged to `master` of this repo, `https://app.netlify.com/sites/psicode/deploys` will go to work. Should be up in a couple minutes.
+* may need to `git config http.postBuffer 524288000` if `fatal: the remote end hung up unexpectedly`
 * users with write access to this repo are free to merge their own PRs. otherwise, request a review.
