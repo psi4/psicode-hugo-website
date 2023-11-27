@@ -47,7 +47,7 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 
 ### Saturday, December 9
 
-9:00am--12:00pm --- Summary and Lightning Talks, including speakers Harper Grimsley, Konrad Patkowski, Dave
+- 9:00am--12:00pm --- Summary and Lightning Talks, including speakers Harper Grimsley, Konrad Patkowski, Dave
 Brownell, Erica Mitchell, Jay Foley, Nate Kitzmiller
 <!---
 - 9:00am--9:30am --- The MolSSI's QCArchive -- Ben Pritchard, MolSSI
