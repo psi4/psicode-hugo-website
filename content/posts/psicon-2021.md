@@ -2,7 +2,7 @@
 title: "PsiCon 2021 — University of Georgia"
 date: 2021-11-29
 author: Justin Turney
-image: images/blog/psicon-2020.png
+image: images/blog/psicon-2021.png
 description: "annual psi developers meeting 2021"
 categories: ["events"]
 ---
