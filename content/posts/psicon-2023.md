@@ -22,10 +22,11 @@ Zoom links will be sent to all registered participants on Thursday, December 2.
 1. Pre-conference hacking Tuesday through Thursday will be centered at MoSE 4202A
 1. [Some hotels](https://campustravel.com/university/georgia-institute-of-technology/) of which the Georgia Tech
 Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the most convenient
+1. The most convenient parking deck is W23. Enter campus at 10th St. and State St.
 
 # PsiCon 2023 Agenda
 
-### Friday, December 8, MoSE 3202A
+### Friday, December 8
 
 - 8:00am--9:00pm --- Registration
 - 8:50am--9:00am --- Welcome - C. David Sherrill, Georgia Tech
@@ -44,7 +45,7 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 -->
 - 3:00pm --- Break and Breakout Sessions
 
-### Saturday, December 9, MoSE 3202A
+### Saturday, December 9
 
 9:00am--12:00pm --- Summary and Lightning Talks, including speakers Harper Grimsley, Konrad Patkowski, Dave
 Brownell, Erica Mitchell, Jay Foley, Nate Kitzmiller
