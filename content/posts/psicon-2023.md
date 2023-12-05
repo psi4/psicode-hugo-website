@@ -1,6 +1,6 @@
 ---
 title: "PsiCon 2023 — Georgia Tech"
-date: 2023-11-27
+date: 2023-12-5
 author: Lori Burns
 image: images/blog/psicon-2023.png
 description: "annual psi developers meeting 2023"
