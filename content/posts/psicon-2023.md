@@ -26,35 +26,46 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 
 # PsiCon 2023 Agenda
 
-### Friday, December 8
+### Friday, December 8, MoSE 3202A
 
-- 8:00am--9:00pm --- Registration
-- 8:50am--9:00am --- Welcome - C. David Sherrill, Georgia Tech
-- 9:00am--3:00pm --- Talks, including speakers David Sherrill, Francesco Evangelista, Justin Turney, Lori Burns,
-  Bartosz Tyrcha, Josh Kretchmer, David Poole, Stephen Goodlett, Andy Jiang, David Williams-Young
-<!---
-- 9:00am--9:30am --- Psi4's Impact and Future - C. David Sherrill, Georgia Tech
-- 9:30am--10:00am --- Psi4 Development in 2022 - Lori Burns, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2022/LoriBurns-psicon-2022-overview.pdf)
-- 10:00am--10:30am --- Enhancing Psi4's Interoperability Capabilities Through MDI - Taylor Barnes, MolSSI
-- 10:30am--11:00am --- Break
-- 11:00am--11:30am --- Optking: Yearly Update and Future Features - Alexander Heide, University of Georgia
-- 11:30am--12:00am --- 2022 Retrospective: Managing Complexity in Psi - Jonathon Misiewicz, Emory University [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2022/JonathonMisiewicz-Psicon-2022-Retrospective.pdf)
-- 12:00pm--2:00pm --- Lunch on your own
-- 2:00pm--2:30pm --- EinsumsInCpp: Updates and Usage - Justin Turney, University of Georgia [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2022/JustinTurney-EinsumsInCpp.pdf)
-- 2:30pm--3:00pm --- SEAMM, a workflow environment for simulations (including Psi4!) - Paul Saxe, MolSSI
--->
-- 3:00pm --- Break and Breakout Sessions
+- 8:20--9:00 --- registration/breakfast
+- 8:45--9:00 --- meeting open for login (ping @Philip Nelson on Psi4 slack for Zoom trouble)
+- 9:00--9:10 --- opening remarks, David Sherrill
+- 9:10--9:40 --- Lori Burns, Georgia Tech, 2023 Psi4 Ordnance Survey
+- 9:40--9:58 --- Josh Kretchmer, Georgia Tech, Real-Time Electronic Structure Methods for Spin Non-Collinear Systems
+- 9:58--10:27 --- Daniel Nascimento, Univ. of Memphis, Reduced-Cost TDDFT Approaches for Simulating Core-Level Spectra in Transition Metal Complexes
+- 10:27--10:42 --- break
+- 10:42--11:12 --- Francesco Evangelista, Emory, Recent Developments in Forte and Wick&d
+- 11:12--11:30 --- John Pederson, Georgia Tech, Leveraging Psi4 and Modular Software for DFT-based QM/MM Simulations
+- 11:30--12:00 --- David Sherrill, Georgia Tech, Strategic Goals for Psi4
+- 12:00--1:00 --- lunch, provided
+- 1:00--1:30 --- Justin Turney, Univ. of Georgia, Einsums: Updates and Usage
+- 1:30--1:48 --- David Williams-Young (Zoom), LBNL, GauXC: Reusable Software Solutions for High-Performance DFT Simulations
+- 1:48--2:06 --- Pavan Behara (Zoom), Univ. of California, Irvine, Impact of Psi4 and QC* ecosystem on OpenFF
+- 2:06--2:21 --- break
+- 2:21--2:39 --- Andy Jiang, Univ. of Georgia, Implementation of DLPNO-CCSD(T) in Psi4
+- 2:39--2:46 --- Dave Brownell, Georgia Tech, Coding for Prototyping and Production
+- 2:46--3:04 --- Stephen Goodlett, Univ. of Georgia, MolSym: A Python Package for Handling Molecular Symmetry from Point Group Detection to SALCs Including Nonabelian Groups
+- 3:04--3:10 --- organize breakout sessions
+- 3:10--3:20 --- break
+- 3:20--4:10 --- Breakout Session I
+- 4:10--4:20 --- break
+- 4:20--5:10 --- Breakout Session II
 
-### Saturday, December 9
+### Saturday, December 9, MosE 3202A
 
-- 9:00am--12:00pm --- Summary and Lightning Talks, including speakers Harper Grimsley, Konrad Patkowski, Dave
-Brownell, Erica Mitchell, Jay Foley, Nate Kitzmiller
-<!---
-- 9:00am--9:30am --- The MolSSI's QCArchive -- Ben Pritchard, MolSSI
-- 9:30am--10:00am --- State of the JK Address - Coulomb and Exchange Matrix Construction in Psi4 -- David Poole, Georgia Tech
-- 10:00am--12:00pm --- Lightning Talks
-  1. Applications of real-time coupled cluster methods - Zhe Wang, Virginia Tech
-  1. Non-Abelian Point-Group Symmetry - Stephen Goodlett, University of Georgia [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2022/StephenGoodlett_Symmetry_PsiCon2022.pdf)
-  1. Distributed workflows for anharmonic frequency calculations using Psi4 and QCFractal - Philip Nelson, Georgia Tech
-  1. Tensor Hypercontraction Form of (T) Energy in Coupled-Cluster Theory - Andy Jiang, Georgia Tech [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2022/THC_CCSD_T_Presentation_PsiCon_22.pdf)
--->
+- 8:30--9:00 --- registration/breakfast
+- 8:45--9:00 --- meeting open for login (ping @Philip Nelson on Psi4 slack for Zoom trouble)
+- 9:00--9:30 --- David Poole, Georgia Tech, State of the JK Address --- Coulomb and Exchange Matrix Construction in Psi4
+- 9:30--9:37 --- Victor Olet (Zoom), Curtin Univ., Elucidating Esterification Mechanisms with SAPT
+- 9:37--9:44 --- Konrad Patkowski, Auburn Univ, Updates on FISAPT in Psi4
+- 9:44--10:02 --- Bartosz Tyrcha, Nicolaus Copernicus Univ. in Torun, Interaction-Induced Properties of Weakly Bound Systems in the Framework of Symmetry-Adapted Perturbation Theory
+- 10:02--10:09 --- Jay Foley, Univ. of North Carolina, Charlotte, Cavity Quantum Electrodynamics Complete Active Space Configuration Interaction
+- 10:09--10:16 --- Erica Mitchell, Univ. of Georgia, MP2-F12 using Einsums
+- 10:16--10:31 --- break
+- 10:31--11:01 --- Susi Lehtola (Zoom), Univ. of Helsinki, DFT and Libxc
+- 11:01--11:08 --- Philip Nelson, Georgia Tech, Pyvpt2: an Open-Source Package for Anharmonic Vibrational Analysis
+- 11:08--11:15 --- Nate Kitzmiller, Univ. of Georgia, The Concordant Mode Approach for Molecular Vibrations
+- 11:15--11:33 --- TENTATIVE Dom Sirianni (Zoom), Daemen Univ., Updates on the Psi4Education Initiative
+- 11:33--12:00 --- any further Lightning talks & discussion wrap-up
+
