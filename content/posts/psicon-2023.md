@@ -26,7 +26,7 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 
 # PsiCon 2023 Agenda
 
-### Friday, December 8, MoSE 3202A
+### Friday, December 8, MoSE 3202A, [Zoom](https://gatech.zoom.us/j/91096020320?pwd=L3V1MU4ybktuOEkyalpBUFl6dkZNUT09)
 
 - 8:20--9:00 --- registration/breakfast
 - 8:45--9:00 --- meeting open for login (ping @Philip Nelson on Psi4 slack for Zoom trouble)
@@ -52,7 +52,8 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 - 4:10--4:20 --- break
 - 4:20--5:10 --- Breakout Session II
 
-### Saturday, December 9, MosE 3202A
+### Saturday, December 9, MosE 3202A,
+[Zoom](https://gatech.zoom.us/j/94748105096?pwd=bmRUbkJlc0o5d3F1eWFvV0RZOFhyQT09)
 
 - 8:30--9:00 --- registration/breakfast
 - 8:45--9:00 --- meeting open for login (ping @Philip Nelson on Psi4 slack for Zoom trouble)
