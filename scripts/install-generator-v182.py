@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v19"
+edition = "v182"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -102,35 +102,8 @@ cycle_18 = [
     ("windows native", "py3.10"),
     ("windows native", "py3.11"),
 ]
-cycle_19 = [
-    ("linux", "py3.8"),
-    ("linux", "py3.9"),
-    ("linux", "py3.10"),
-    ("linux", "py3.11"),
-    ("linux", "py3.12"),
-    ("macos", "py3.8"),
-    ("macos", "py3.9"),
-    ("macos", "py3.10"),
-    ("macos", "py3.11"),
-    ("macos", "py3.12"),
-    ("macos silicon", "py3.8"),
-    ("macos silicon", "py3.9"),
-    ("macos silicon", "py3.10"),
-    ("macos silicon", "py3.11"),
-    ("macos silicon", "py3.12"),
-    ("windows wsl", "py3.8"),
-    ("windows wsl", "py3.9"),
-    ("windows wsl", "py3.10"),
-    ("windows wsl", "py3.11"),
-    ("windows wsl", "py3.12"),
-    ("windows native", "py3.8"),
-    ("windows native", "py3.9"),
-    ("windows native", "py3.10"),
-    ("windows native", "py3.11"),
-    ("windows native", "py3.12"),
-]
 
-cycle_110 = cycle_19
+cycle_19 = cycle_18
 
 installers_built = {
     "1.2.1": cycle_12,
@@ -149,9 +122,8 @@ installers_built = {
     "1.7": cycle_17,
     "1.8": cycle_18,
     "1.8.2": cycle_18,
-    "1.9": cycle_19,
     False: [],
-    "1.10dev": cycle_110,
+    "1.9dev": cycle_19,
 }
 
 psi4rt = {
@@ -170,30 +142,19 @@ psi4rt = {
     "1.7": "1.7",
 # TODO EDIT DNE
     "1.8": "1.8",
-    "1.9": "1.9",
 }
 
 docker_built = {
     "1.7": [],
     "1.8": [("linux", "py3.10")],
     "1.8.2": [("linux", "py3.10")],
-    "1.9": [("linux", "py3.10")],
-    "1.10dev": [],
+    "1.9dev": [],
 }
 
 docker_tag = {
     ("linux", "py3.10", "1.8") : "1.8.0",
     ("linux", "py3.10", "1.8.2") : "1.8.2",
-    ("linux", "py3.10", "1.9") : "1.9.0",
 }
-
-nightly_tag = [
-    ("linux", "py3.8", "1.10dev"),
-    ("linux", "py3.10", "1.10dev"),
-    ("windows native", "py3.10", "1.10dev"),
-]
-nightlyhit = "py3.10"
-
 
 ## Outputs
 #  * `data/installs/cmd/{edition}.json`
@@ -269,13 +230,8 @@ def compute_command(os, py, pm, br):
     elif pm == "conda":
         if (os, py) not in installers_built[brvv]:
             return """'# conda packages not provided for this python version'"""
-        elif (br == "brs" and "rc" not in edition):
+        elif (br == "brs" and "rc" not in edition) or br == "brn":
             return f"""pprompt + 'conda install psi4 python={pyvv} {brchnls[br]} {oschnls[os]}'"""
-        elif br == "brn":
-            if (os, py, brvv) in nightly_tag:
-                return f"""pprompt + 'conda install psi4 python={pyvv} {brchnls[br]} {oschnls[os]}'"""
-            else:
-                return f"""'# nightly conda packages not provided for this OS and python version, but check {nightlyhit}'"""
         else:
             extras = ""
             if brvv == "1.5":
@@ -301,30 +257,20 @@ def compute_command(os, py, pm, br):
         if br == "brn":
             checkout = ""
         else:
-            checkout = f""" --branch {brvv}"""
+            checkout = f""" && git checkout {brhashs[br]}"""
 
         if br in ["brs", "brn"]:
-            return rf"""pprompt + 'git clone{checkout} https://github.com/psi4/psi4.git && cd psi4' +
-                    brprompt + 'eval $(conda/psi4-path-advisor.py env --python {pyvv} --name p4dev --disable addons docs)' +
-                    brprompt + 'eval $(conda/psi4-path-advisor.py cmake)' +
-                    brprompt + 'eval $(objdir_p4dev/stage/bin/psi4 --psiapi)' +
-                    brprompt + 'psi4 --test' +
-                    brprompt + '# run `conda/psi4-path-advisor.py -h` for guide and options' +
-                    brprompt + '# -or- see top-level CMakeLists.txt for generic (non-conda) guide'"""
+            return """'# see https://github.com/psi4/psi4/issues/2965 for interim instructions on building from source'"""
 
-        if brvv == "1.8.2":
-            return rf"""pprompt + 'git clone{checkout} https://github.com/psi4/psi4.git && cd psi4' +
-                    '<br /># no helper available for building v1.8.x from source'"""
-
-        #if os == "windows native":
-        #    return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
-        #            '<br /># see https://github.com/psi4/psi4/blob/master/.azure-pipelines/azure-pipelines-windows.yml to set up a build environment'"""
-        #else:
-        #    return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
-        #            brprompt + 'conda create -n p4dev psi4-dev python={pyvv} {brchnls[br]} {oschnls[os]}' +
-        #            brprompt + 'conda activate p4dev' +
-        #            brprompt + '`psi4-path-advisor --{oscplrs[os]}`' +
-        #            brprompt + 'cd objdir && make -j`getconf _NPROCESSORS_ONLN`'"""
+        if os == "windows native":
+            return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
+                    '<br /># see https://github.com/psi4/psi4/blob/master/.azure-pipelines/azure-pipelines-windows.yml to set up a build environment'"""
+        else:
+            return rf"""pprompt + 'git clone https://github.com/psi4/psi4.git && cd psi4{checkout}' +
+                    brprompt + 'conda create -n p4dev psi4-dev python={pyvv} {brchnls[br]} {oschnls[os]}' +
+                    brprompt + 'conda activate p4dev' +
+                    brprompt + '`psi4-path-advisor --{oscplrs[os]}`' +
+                    brprompt + 'cd objdir && make -j`getconf _NPROCESSORS_ONLN`'"""
 
     elif pm == "docker":
         if (os, py, brvv) in docker_tag:
