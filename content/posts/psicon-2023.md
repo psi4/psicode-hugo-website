@@ -18,7 +18,7 @@ Optional tutorials and breakout sessions will be held Friday afternoon.
 Zoom links will be sent to all registered participants on Thursday, December 2.
 -->
 #### Logistics
-1. Main conference days Friday and Saturday will be centered at [MoSE 3202A](https://goo.gl/maps/9Cat5Lnw6Kr)
+1. Main conference days Friday and Saturday will be centered at [MoSE 3201A](https://goo.gl/maps/9Cat5Lnw6Kr)
 1. Pre-conference hacking Tuesday through Thursday will be centered at MoSE 4202A
 1. [Some hotels](https://campustravel.com/university/georgia-institute-of-technology/) of which the Georgia Tech
 Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the most convenient
@@ -26,7 +26,7 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 
 # PsiCon 2023 Agenda
 
-### Friday, December 8, MoSE 3202A, [Zoom](https://gatech.zoom.us/j/91096020320?pwd=L3V1MU4ybktuOEkyalpBUFl6dkZNUT09)
+### Friday, December 8, MoSE 3201A, [Zoom](https://gatech.zoom.us/j/91096020320?pwd=L3V1MU4ybktuOEkyalpBUFl6dkZNUT09)
 
 - 8:20--9:00 --- registration/breakfast
 - 8:45--9:00 --- meeting open for login (ping @Philip Nelson on Psi4 slack for Zoom trouble)
@@ -51,8 +51,9 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 - 3:20--4:10 --- Breakout Session I
 - 4:10--4:20 --- break
 - 4:20--5:10 --- Breakout Session II
+- dinner, on your own. suggest [Chattahoochee Food Works](https://chattahoocheefoodworks.com/) at [1235 Chattahoochee Ave NW](https://www.google.com/maps/place/Chattahoochee+Food+Works/@33.8028215,-84.4285915,15z/data=!4m6!3m5!1s0x88f505ea76b23673:0xb88beeb8b09948b8!8m2!3d33.8028215!4d-84.4285915!16s%2Fg%2F11hnqy68c9?entry=ttu)
 
-### Saturday, December 9, MosE 3202A,
+### Saturday, December 9, MosE 3201A,
 [Zoom](https://gatech.zoom.us/j/94748105096?pwd=bmRUbkJlc0o5d3F1eWFvV0RZOFhyQT09)
 
 - 8:30--9:00 --- registration/breakfast
