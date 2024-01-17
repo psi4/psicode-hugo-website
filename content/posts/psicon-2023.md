@@ -24,6 +24,26 @@ Zoom links will be sent to all registered participants on Thursday, December 2.
 Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the most convenient
 1. The most convenient parking deck is W23. Enter campus at 10th St. and State St.
 
+# Participating Institutions
+
+- Auburn University
+- Banras Hindu University
+- Convestro Deutschland AG
+- Curtin University
+- Emory University
+- GT Scientific Software Engineering Center
+- Georgia Institute of Technology
+- IISER Thiruvanathapuran
+- IIT Ropar
+- Lawrence Berkeley National Lab
+- Nicholaus Copernicus University
+- Open Force Field Consortium
+- University of Georgia
+- University of Jordan
+- University of Memphis
+- University of North Carolina, Charlotte
+- Virginia Tech
+
 # PsiCon 2023 Agenda
 
 ### Friday, December 8, MoSE 3201A, [Zoom](https://gatech.zoom.us/j/91096020320?pwd=L3V1MU4ybktuOEkyalpBUFl6dkZNUT09)
@@ -31,7 +51,7 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 - 8:20--9:00 --- registration/breakfast
 - 8:45--9:00 --- meeting open for login (ping @Philip Nelson on Psi4 slack for Zoom trouble)
 - 9:00--9:10 --- opening remarks, David Sherrill
-- 9:10--9:40 --- Lori Burns, Georgia Tech, 2023 Psi4 Ordnance Survey
+- 9:10--9:40 --- Lori Burns, Georgia Tech, 2023 Psi4 Ordnance Survey [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2023/Burns_PsiCon2023.pdf)
 - 9:40--9:58 --- Josh Kretchmer, Georgia Tech, Real-Time Electronic Structure Methods for Spin Non-Collinear Systems
 - 9:58--10:27 --- Daniel Nascimento, Univ. of Memphis, Reduced-Cost TDDFT Approaches for Simulating Core-Level Spectra in Transition Metal Complexes
 - 10:27--10:42 --- break
@@ -41,10 +61,10 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 - 12:00--1:00 --- lunch, provided
 - 1:00--1:30 --- Justin Turney, Univ. of Georgia, Einsums: Updates and Usage
 - 1:30--1:48 --- David Williams-Young (Zoom), LBNL, GauXC: Reusable Software Solutions for High-Performance DFT Simulations
-- 1:48--2:06 --- Pavan Behara (Zoom), Univ. of California, Irvine, Impact of Psi4 and QC* ecosystem on OpenFF
+- 1:48--2:06 --- Pavan Behara (Zoom), Univ. of California, Irvine, Impact of Psi4 and QC* ecosystem on OpenFF [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2023/Behara_PsiCon_12-08-2023.pdf)
 - 2:06--2:21 --- break
-- 2:21--2:39 --- Andy Jiang, Univ. of Georgia, Implementation of DLPNO-CCSD(T) in Psi4
-- 2:39--2:46 --- Dave Brownell, Georgia Tech, Coding for Prototyping and Production
+- 2:21--2:39 --- Andy Jiang, Univ. of Georgia, Implementation of DLPNO-CCSD(T) in Psi4 [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2023/DLPNO-CCSD(T)%20Presentation%20PsiCon%2023%20(1).pdf)
+- 2:39--2:46 --- Dave Brownell, Georgia Tech, Coding for Prototyping and Production [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2023/Prototype%20vs.%20Production%20Software.pdf)
 - 2:46--3:04 --- Stephen Goodlett, Univ. of Georgia, MolSym: A Python Package for Handling Molecular Symmetry from Point Group Detection to SALCs Including Nonabelian Groups
 - 3:04--3:10 --- organize breakout sessions
 - 3:10--3:20 --- break
@@ -62,12 +82,11 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 - 9:30--9:37 --- Victor Olet (Zoom), Curtin Univ., Elucidating Esterification Mechanisms with SAPT
 - 9:37--9:44 --- Konrad Patkowski, Auburn Univ, Updates on FISAPT in Psi4
 - 9:44--10:02 --- Bartosz Tyrcha, Nicolaus Copernicus Univ. in Torun, Interaction-Induced Properties of Weakly Bound Systems in the Framework of Symmetry-Adapted Perturbation Theory
-- 10:02--10:09 --- Jay Foley, Univ. of North Carolina, Charlotte, Cavity Quantum Electrodynamics Complete Active Space Configuration Interaction
+- 10:02--10:09 --- Jay Foley, Univ. of North Carolina, Charlotte, Cavity Quantum Electrodynamics Complete Active Space Configuration Interaction [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2023/Foley_Psicon_2023.pdf)
 - 10:09--10:16 --- Erica Mitchell, Univ. of Georgia, MP2-F12 using Einsums
 - 10:16--10:31 --- break
 - 10:31--11:01 --- Susi Lehtola (Zoom), Univ. of Helsinki, DFT and Libxc
 - 11:01--11:08 --- Philip Nelson, Georgia Tech, Pyvpt2: an Open-Source Package for Anharmonic Vibrational Analysis
 - 11:08--11:15 --- Nate Kitzmiller, Univ. of Georgia, The Concordant Mode Approach for Molecular Vibrations
-- 11:15--11:33 --- TENTATIVE Dom Sirianni (Zoom), Daemen Univ., Updates on the Psi4Education Initiative
 - 11:33--12:00 --- any further Lightning talks & discussion wrap-up
 
