@@ -24,7 +24,8 @@
         </div>
         <div class="row portfolio-items-wrapper">
             {{"<!-- portfolio item -->" | safeHTML}}
-            {{ range .Site.Data.portfolio.portfolioItem }}
+            {{ range $index, $elem := .Site.Data.portfolio.portfolioItem }}
+            {{ if lt $index 6 }}
             <div class="mix col-lg-4 {{ .types }}">
                 <div class="portfolio-block">
                     <img class="img-fluid" src="{{ .image | absURL}}" alt="work-image">
@@ -41,6 +42,10 @@
                 </div>
             </div>
             {{ end }}
+            {{ end }}
+        </div>
+        <div class="all-post text-center col-lg-12">
+            <a class="btn btn-main" href="/posts/">View All Posts</a>
         </div>
     </div>
 </section>
