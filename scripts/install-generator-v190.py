@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v191"
+edition = "v19"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -150,7 +150,6 @@ installers_built = {
     "1.8": cycle_18,
     "1.8.2": cycle_18,
     "1.9": cycle_19,
-    "1.9.1": cycle_19,
     False: [],
     "1.10dev": cycle_110,
 }
@@ -172,7 +171,6 @@ psi4rt = {
 # TODO EDIT DNE
     "1.8": "1.8",
     "1.9": "1.9",
-    "1.9.1": "1.9.1",
 }
 
 docker_built = {
@@ -180,7 +178,6 @@ docker_built = {
     "1.8": [("linux", "py3.10")],
     "1.8.2": [("linux", "py3.10")],
     "1.9": [("linux", "py3.10")],
-    "1.9.1": [("linux", "py3.10")],
     "1.10dev": [],
 }
 
@@ -188,7 +185,6 @@ docker_tag = {
     ("linux", "py3.10", "1.8") : "1.8.0",
     ("linux", "py3.10", "1.8.2") : "1.8.2",
     ("linux", "py3.10", "1.9") : "1.9.0",
-    ("linux", "py3.10", "1.9.1") : "1.9.1",
 }
 
 nightly_tag = [
