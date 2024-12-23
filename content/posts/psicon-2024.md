@@ -1,6 +1,6 @@
 ---
 title: "PsiCon 2024 — Emory"
-date: 2024-12-21
+date: 2024-12-23
 author: Lori Burns
 image: images/blog/psicon-2024.png
 description: "annual psi developers meeting 2024"
@@ -58,7 +58,7 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 
 - 9:30--10:00 --- pre-conference coffee and snacks
 <!--- 8:45--9:00 --- meeting open for login (ping @Philip Nelson on Psi4 slack for Zoom trouble)-->
-- 10:00--10:05 --- opening remarks, Emory, Francesco Evangelista
+- 10:00--10:05 --- Francesco Evangelista, Emory, opening remarks
 - 10:05--10:20 --- David Sherrill, Georgia Tech, Current State of Psi4 and Future Goals
 - 10:20--11:00 --- Lori Burns, Georgia Tech, Compiling Psi4 with Einsums & 2024 Psi4 Ordnance Survey
 <!--[(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2023/Burns_PsiCon2023.pdf)-->
@@ -72,11 +72,11 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 - 11:30--12:00 --- David Sherrill, Georgia Tech, Strategic Goals for Psi4
 -->
 - 12:00--1:30 --- lunch, on your own
-- 1:30--2:00 --- Ed Valeev, Virginia Tech, Update on LibintX, tentative
-- 2:00--4:00 --- Justin Turney, Univ. of Georgia, Einsums Hackathon, potential problems:
+- 1:30--4:00 --- Justin Turney, Univ. of Georgia, Einsums Hackathon, potential problems:
   - implement CCD or CCSD, based on Psi4NumPy template
   - implement some components of SAPT, Psi4Numpy template
   - implement CIS
+- 4:00--4:30 --- Ed Valeev, Virginia Tech, Update on LibintX, tentative
 <!--
 - 1:30--1:48 --- David Williams-Young (Zoom), LBNL, GauXC: Reusable Software Solutions for High-Performance DFT Simulations
 - 1:48--2:06 --- Pavan Behara (Zoom), Univ. of California, Irvine, Impact of Psi4 and QC* ecosystem on OpenFF [(slides)](https://github.com/psi4/PsiCon2020/blob/master/PsiCon2023/Behara_PsiCon_12-08-2023.pdf)
