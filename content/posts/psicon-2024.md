@@ -79,7 +79,7 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
   - Francesco Evangelista, Forte update (15m+5)
   - Joshua Kretchmer, Implementation and Development of Real-Time Electronic Structure Methods (15m+5)
   - break
-  - Andy Jiang, DLPNO update (15m+5?)
+  - Andy Jiang, DLPNO update (15m+5)
   - Nate Kitzmiller, Integrating MolSym into Psi4 (15m+5)
   - Isabel Berry, SparcleQC: a python package that prepares electrostatically embedded quantum chemical calculations of protein-ligand systems (5m+5)
   - Kevin Marin, Emory, forte-lang: Visual Studio Code extension for psi4 and forte (5m+5)-
