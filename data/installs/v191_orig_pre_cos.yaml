@@ -13,18 +13,7 @@ menu:
         bashrc: bashrc
         channel: ''
 
-      - title: Linux ARM
-        icon: icon fa-linux
-        selected: false
-        jscode: linux aarch64
-        psi4conda: Linux
-        psi4condaarch: aarch64
-        psi4condaext: sh
-        condacompiler: gcc
-        bashrc: bashrc
-        channel: ''
-
-      - title: Mac
+      - title: MacOS
         icon: icon fa-apple
         selected: false
         jscode: macos
@@ -35,7 +24,7 @@ menu:
         bashrc: bash_profile
         channel: ''
 
-      - title: Mac Silicon
+      - title: MacOS Silicon
         icon: icon fa-apple
         selected: false
         jscode: macos silicon
@@ -46,16 +35,16 @@ menu:
         bashrc: bash_profile
         channel: ''
 
-      #- title: "WSL"
-      #  icon: bicon fa-windows
-      #  selected: false
-      #  jscode: "windows wsl"
-      #  psi4conda: WindowsWSL
-      #  psi4condaarch: x86_64
-      #  psi4condaext: sh
-      #  condacompiler: gcc
-      #  bashrc: bashrc
-      #  channel: ''
+      - title: "WSL"
+        icon: bicon fa-windows
+        selected: false
+        jscode: "windows wsl"
+        psi4conda: WindowsWSL
+        psi4condaarch: x86_64
+        psi4condaext: sh
+        condacompiler: gcc
+        bashrc: bashrc
+        channel: ''
 
       - title: "Windows"
         icon: bicon fa-windows
@@ -99,6 +88,11 @@ menu:
 
     - datakey: python
       cells:
+      - title: 3.8
+        icon: bicon fa-python
+        selected: false
+        jscode: "py3.8"
+
       - title: 3.9
         icon: bicon fa-python
         selected: false
@@ -106,7 +100,7 @@ menu:
 
       - title: "3.10"
         icon: bicon fa-python
-        selected: false
+        selected: true
         jscode: "py3.10"
 
       - title: "3.11"
@@ -116,26 +110,19 @@ menu:
 
       - title: "3.12"
         icon: bicon fa-python
-        selected: true 
-        jscode: "py3.12"
-
-      - title: 3.13
-        icon: bicon fa-python
         selected: false
-        jscode: "py3.13"
+        jscode: "py3.12"
 
     # must not change first letters of title: p, s, n
     - datakey: branch
       cells:
-      # TEMP until get older installers transfered to COS
-      #- title: 'prev release, <span style="text-transform: lowercase;">v1.8.2</span>'
-      #  icon: icon fa-cube
-      #  selected: false
-      #  jscode: brp
-      #  channel: '-c conda-forge/label/libint_dev -c conda-forge'
-      #  tag: '1.8.2'
-      #  hash: 'e441187'
-      #  branch: '1.8.x'
+      - title: 'prev release, <span style="text-transform: lowercase;">v1.8.2</span>'
+        icon: icon fa-cube
+        selected: false
+        jscode: brp
+        channel: '-c conda-forge/label/libint_dev -c conda-forge'
+        tag: '1.8.2'
+        hash: 'e441187'
 
       - title: 'stable release, <span style="text-transform: lowercase;">v1.9.1</span>'
         icon: icon fa-cube
@@ -144,7 +131,6 @@ menu:
         channel: '-c conda-forge'  # remember this one switches btwn rc and final
         tag: '1.9.1'
         hash: 'f53cdd7'
-        branch: '1.9.x'
 
       - title: nightly build
         icon: icon fa-code-branch
@@ -154,15 +140,14 @@ menu:
         #tag: false
         tag: '1.10dev'
         hash: master
-        branch: master
 
 notes:
     - icon: fab fa-linux
-      title: 64-bit; glibc 2.17 or higher; select between Intel and ARM (new with v1.10).
+      title: 64-bit; glibc 2.17 or higher.
     - icon: fab fa-apple
-      title: 64-bit; OS X 10.13 or higher; select between Apple Intel and Apple Silicon.
+      title: 64-bit; OS X 10.10 or higher; select between Apple Intel and Apple Silicon (new with v1.8!).
     - icon: fab fa-windows
-      title: 64-bit; select between native Windows or select Linux installer for [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about).
+      title: 64-bit; select between [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about) and native Windows (new with v1.4!).
     - icon: fa fa-download
       title: Download standalone command-line installer.
     - icon: fa fa-circle
@@ -177,7 +162,7 @@ optsHandler: |
         var opts = {
                     os: 'linux',
                     pm: 'installer',
-                    python: '3.12',
+                    python: '3.10',
                     branch: 's'
                 };
 
