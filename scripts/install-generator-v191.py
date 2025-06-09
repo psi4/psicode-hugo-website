@@ -130,35 +130,7 @@ cycle_19 = [
     ("windows native", "py3.12"),
 ]
 
-cycle_19_final = [
-    ("linux", "py3.9"),
-    ("linux", "py3.10"),
-    ("linux", "py3.11"),
-    ("linux", "py3.12"),
-    ("linux", "py3.13"),
-    ("linux aarch64", "py3.9"),
-    ("linux aarch64", "py3.10"),
-    ("linux aarch64", "py3.11"),
-    ("linux aarch64", "py3.12"),
-    ("linux aarch64", "py3.13"),
-    ("macos", "py3.9"),
-    ("macos", "py3.10"),
-    ("macos", "py3.11"),
-    ("macos", "py3.12"),
-    ("macos", "py3.13"),
-    ("macos silicon", "py3.9"),
-    ("macos silicon", "py3.10"),
-    ("macos silicon", "py3.11"),
-    ("macos silicon", "py3.12"),
-    ("macos silicon", "py3.13"),
-    ("windows native", "py3.9"),
-    ("windows native", "py3.10"),
-    ("windows native", "py3.11"),
-    ("windows native", "py3.12"),
-    ("windows native", "py3.13"),
-]
-
-cycle_110 = cycle_19_final
+cycle_110 = cycle_19
 
 installers_built = {
     "1.2.1": cycle_12,
@@ -178,8 +150,7 @@ installers_built = {
     "1.8": cycle_18,
     "1.8.2": cycle_18,
     "1.9": cycle_19,
-    # "1.9.1": cycle_19,  # original Feb 2024 build
-    "1.9.1": cycle_19_final,
+    "1.9.1": cycle_19,
     False: [],
     "1.10dev": cycle_110,
 }
@@ -218,16 +189,14 @@ docker_tag = {
     ("linux", "py3.10", "1.8.2") : "1.8.2",
     ("linux", "py3.10", "1.9") : "1.9.0",
     ("linux", "py3.10", "1.9.1") : "1.9.1",
-    # FUTURE ("linux", "py3.12", "1.10.0") : "1.10.0",
 }
 
-# ?
 nightly_tag = [
     ("linux", "py3.8", "1.10dev"),
     ("linux", "py3.10", "1.10dev"),
     ("windows native", "py3.10", "1.10dev"),
 ]
-nightlyhit = None  #"py3.12"
+nightlyhit = "py3.10"
 
 
 ## Outputs
@@ -251,7 +220,6 @@ brs = [i["jscode"] for i in branches]
 brchnls = {i["jscode"]: i["channel"] for i in branches}
 brhashs = {i["jscode"]: i["hash"] for i in branches}
 brvvs = {i["jscode"]: i["tag"] for i in branches}
-brclones = {i["jscode"]: i["branch"] for i in branches}
 
 pys = [i["jscode"] for i in pythons]
 
@@ -270,15 +238,13 @@ pms = [i["jscode"] for i in managers]
 def psi4conda_filename(os, py, pm, br):
     # http: (works for LAB) or https: (works for Kirk Pearce)
     vergil = "http://vergil.chemistry.gatech.edu/psicode-download/"
-    vergil_cos = "https://vergil.chemistry.gatech.edu/psicode-download/"  # finally https with COS
     psi4conda = f"Psi4conda-{brvvs[br]}-{py.replace('.', '')}-{osp4cs[os]}-{osars[os]}.{osexts[os]}"
-    return vergil_cos, psi4conda
+    return vergil, psi4conda
 
 
 def compute_command(os, py, pm, br):
     pyvv = py.replace("py", "")
     brvv = brvvs[br]
-    brclone = brclones[br]
 
     vergil, psi4conda = psi4conda_filename(os, py, pm, br)
 
@@ -308,14 +274,10 @@ def compute_command(os, py, pm, br):
         if (os, py) not in installers_built[brvv]:
             return """'# conda packages not provided for this python version'"""
         elif (br == "brs" and "rc" not in edition):
-            return f"""pprompt + 'conda install psi4 python={pyvv} {brchnls[br]} {oschnls[os]}' +
-                    '<br /># -OR- create environment ("p4dev" name is arbitrary)' +
-                    brprompt + 'conda create -n p4dev psi4 python={pyvv} {brchnls[br]} {oschnls[os]} && conda activate p4dev'"""
+            return f"""pprompt + 'conda install psi4 python={pyvv} {brchnls[br]} {oschnls[os]}'"""
         elif br == "brn":
             if (os, py, brvv) in nightly_tag:
                 return f"""pprompt + 'conda install psi4 python={pyvv} {brchnls[br]} {oschnls[os]}'"""
-            elif nightlyhit is None:
-                return f"""'# nightly conda packages not provided'"""
             else:
                 return f"""'# nightly conda packages not provided for this OS and python version, but check {nightlyhit}'"""
         else:
@@ -343,19 +305,16 @@ def compute_command(os, py, pm, br):
         if br == "brn":
             checkout = ""
         else:
-            checkout = f""" --branch {brclone} --single-branch"""
+            checkout = f""" --branch {brvv}"""
 
         if br in ["brs", "brn"]:
-            ans = rf"""pprompt + 'git clone{checkout} https://github.com/psi4/psi4.git && cd psi4' +
+            return rf"""pprompt + 'git clone{checkout} https://github.com/psi4/psi4.git && cd psi4' +
                     brprompt + 'eval $(conda/psi4-path-advisor.py env --python {pyvv} --name p4dev --disable addons docs)' +
                     brprompt + 'eval $(conda/psi4-path-advisor.py cmake)' +
                     brprompt + 'eval $(objdir_p4dev/stage/bin/psi4 --psiapi)' +
                     brprompt + 'psi4 --test' +
                     brprompt + '# run `conda/psi4-path-advisor.py -h` for guide and options' +
                     brprompt + '# -or- see top-level CMakeLists.txt for generic (non-conda) guide'"""
-            if os in ["linux aarch64"]:
-                ans += """+ brprompt + '# psi4-path-advisor.py not tested for this architecture, but all necessary conda packages are available'"""
-            return ans
 
         if brvv == "1.8.2":
             return rf"""pprompt + 'git clone{checkout} https://github.com/psi4/psi4.git && cd psi4' +
