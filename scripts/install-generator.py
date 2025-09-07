@@ -158,7 +158,28 @@ cycle_19_final = [
     ("windows native", "py3.13"),
 ]
 
-cycle_110 = cycle_19_final
+cycle_110 = [
+    ("linux", "py3.10"),
+    ("linux", "py3.11"),
+    ("linux", "py3.12"),
+    ("linux", "py3.13"),
+    ("linux aarch64", "py3.10"),
+    ("linux aarch64", "py3.11"),
+    ("linux aarch64", "py3.12"),
+    ("linux aarch64", "py3.13"),
+    ("macos", "py3.10"),
+    ("macos", "py3.11"),
+    ("macos", "py3.12"),
+    ("macos", "py3.13"),
+    ("macos silicon", "py3.10"),
+    ("macos silicon", "py3.11"),
+    ("macos silicon", "py3.12"),
+    ("macos silicon", "py3.13"),
+    ("windows native", "py3.10"),
+    ("windows native", "py3.11"),
+    ("windows native", "py3.12"),
+    ("windows native", "py3.13"),
+]
 
 installers_built = {
     "1.2.1": cycle_12,
