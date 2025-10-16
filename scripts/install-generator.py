@@ -321,9 +321,12 @@ def compute_command(os, py, pm, br):
                     return rf"""'# download via button above  -OR-  following line' +
                              brprompt + 'curl "{vergil}{psi4conda}" -o {psi4conda} --keepalive-time 2' +
                              brprompt + 'bash {psi4conda} -b -p $HOME/psi4conda' +
+                             '<br /># Add conda to your shell PATH. **Zsh is the default on modern macOS.** Choose one:' +
                              bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbashs[os]}' +
+                             zsh  + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.zshrc' +
                              tcsh + 'echo "source $HOME/psi4conda/etc/profile.d/conda.csh\\nconda activate" >> ~/.tcshrc' +
                              '<br /># log out, log back in so conda and psi4 in path' +
+                             brprompt + 'source ~/.zshrc' + ' #For zsh' +
                              brprompt + 'psi4 --test'"""
             else:
                 return """'# installers not provided for this python version'"""
