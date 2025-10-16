@@ -323,7 +323,7 @@ def compute_command(os, py, pm, br):
                              brprompt + 'bash {psi4conda} -b -p $HOME/psi4conda' +
                              '<br /># Add conda to your shell PATH. **Zsh is the default on modern macOS.** Choose one:' +
                              bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbashs[os]}' +
-                             zsh  + 'echo $'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate' >> ~/.zshrc' +
+                             zsh  + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.zshrc' +
                              tcsh + 'echo "source $HOME/psi4conda/etc/profile.d/conda.csh\\nconda activate" >> ~/.tcshrc' +
                              brprompt + 'source ~/.zshrc' + ' # Only for zsh' +
                              '<br /># log out, log back in so conda and psi4 in path' +
