@@ -325,7 +325,7 @@ def compute_command(os, py, pm, br):
                              bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbashs[os]}' +
                              tcsh + 'echo "source $HOME/psi4conda/etc/profile.d/conda.csh\\nconda activate" >> ~/.tcshrc' +
                              brprompt + 'source ~/.zshrc' + ' # this is only for zsh' +
-                             '<br /># log out, log back in so conda and psi4 in path' +
+                             '<br /># log out, log back in so conda and psi4 in path' + ' ' +
                              brprompt + 'psi4 --test'"""
             else:
                 return """'# installers not provided for this python version'"""
