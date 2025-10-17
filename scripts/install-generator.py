@@ -322,7 +322,7 @@ def compute_command(os, py, pm, br):
                              brprompt + 'curl "{vergil}{psi4conda}" -o {psi4conda} --keepalive-time 2' +
                              brprompt + 'bash {psi4conda} -b -p $HOME/psi4conda' +
                              '<br /># run `echo $SHELL` to choose among the below' +
-                             zsh + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbashs[os]}' +
+                             bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbashs[os]}' +
                              tcsh + 'echo "source $HOME/psi4conda/etc/profile.d/conda.csh\\nconda activate" >> ~/.tcshrc' +
                              brprompt + 'source ~/.zshrc' + ' # this is only for zsh' +
                              '<br /># log out, log back in so conda and psi4 in path' +
