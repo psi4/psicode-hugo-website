@@ -93,7 +93,6 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 #### start time TBD
 
 - 9:30--10:00 --- registration/breakfast
-- 9:45--10:00 --- meeting open for login (ping @Philip Nelson on Psi4 slack for Zoom trouble)
 - 10:00--10:15 --- organize breakout/hacking sessions
 - 10:15--12:00 --- Breakout Session II
 - 12:00--1:00 --- lunch, on your own
