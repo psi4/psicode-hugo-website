@@ -54,16 +54,14 @@ Hotel and Conference Center and the Hilton Garden Inn Atlanta Midtown are the mo
 - (15)  11:25--11:45 11:25--11:45 --- Zhe Wang, Georgia Tech
 - (5)   11:45--11:52 11:45--11:52 --- Humahuti Dihingia, Nicolaus Copernicus Univ., Intermolecular Interaction via Variational Approach
 
-### Friday, December 5, MoSE 3201A, [Zoom](https://gatech.zoom.us/j/93554917911?pwd=NtXSanfoGNzOiJ9abMLYaa9eQjRFMN.1)
+
 -->
 
 # PsiCon 2025 Agenda
 
-### Friday, December 5, MoSE 3201A
+### Friday, December 5, MoSE 3201A, [Zoom](https://gatech.zoom.us/j/93554917911?pwd=NtXSanfoGNzOiJ9abMLYaa9eQjRFMN.1)
 
-#### We might start talks at 9:30 -- check back later in the week
-
-- 9:20--10:00 --- registration/breakfast
+- 9:30--10:00 --- registration/breakfast
 - 9:45--10:00 --- meeting open for login (ping on Psi4 slack for Zoom trouble)
 - 10:00--10:10 --- opening remarks, David Sherrill
 - 10:10--10:45 --- Lori Burns, Georgia Tech, 2025 Psi4 Ordnance Survey
