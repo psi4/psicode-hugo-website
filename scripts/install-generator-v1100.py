@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v1102"
+edition = "v110"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -204,7 +204,6 @@ installers_built = {
     "1.10": cycle_110,
     False: [],
     "1.11dev": cycle_110,
-    "1.10.2": cycle_110,
 }
 
 psi4rt = {
@@ -226,7 +225,6 @@ psi4rt = {
     "1.9": "1.9",
     "1.9.1": "1.9.1",
     "1.10": "1.10",
-    "1.10.2": "1.10.2",
 }
 
 docker_built = {
@@ -236,7 +234,6 @@ docker_built = {
     "1.9": [("linux", "py3.10")],
     "1.9.1": [("linux", "py3.10")],
     "1.10": [("linux", "py3.12")],
-    "1.10.2": [("linux", "py3.12")],
     "1.11dev": [],
 }
 
@@ -246,7 +243,6 @@ docker_tag = {
     ("linux", "py3.10", "1.9") : "1.9.0",
     ("linux", "py3.10", "1.9.1") : "1.9.1",
     ("linux", "py3.12", "1.10") : "1.10.0",
-    ("linux", "py3.12", "1.10.2") : "1.10.2",
 }
 
 # ?
@@ -326,7 +322,6 @@ def compute_command(os, py, pm, br):
                              brprompt + 'curl "{vergil}{psi4conda}" -o {psi4conda} --keepalive-time 2' +
                              brprompt + 'bash {psi4conda} -b -p $HOME/psi4conda' +
                              bash + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.{osbashs[os]}' +
-                             zsh + 'echo $\'. $HOME/psi4conda/etc/profile.d/conda.sh\\nconda activate\' >> ~/.zshrc' +
                              tcsh + 'echo "source $HOME/psi4conda/etc/profile.d/conda.csh\\nconda activate" >> ~/.tcshrc' +
                              '<br /># log out, log back in so conda and psi4 in path' +
                              brprompt + 'psi4 --test'"""
@@ -382,9 +377,6 @@ def compute_command(os, py, pm, br):
                     brprompt + 'psi4 --test' +
                     brprompt + '# run `conda/psi4-path-advisor.py -h` for guide and options' +
                     brprompt + '# -or- see top-level CMakeLists.txt for generic (non-conda) guide'"""
-            if os == "windows native":
-                ans += rf"""+ brprompt + '# above assumes a bash shell (tested). For cmd or powershell, a key change (untested) is below' +
-                              brprompt + 'python conda\\psi4-path-advisor.py env --python {pyvv} --name p4dev --disable addons docs'"""
             if os in ["linux aarch64"]:
                 ans += """+ brprompt + '# psi4-path-advisor.py not tested for this architecture, but all necessary conda packages are available'"""
             return ans

@@ -4,7 +4,5 @@ date: 2025-09-05
 draft: false
 edition: v110
 layout: installs
-aliases:
-    - /installs/latest/
 ---
 
