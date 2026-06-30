@@ -7,7 +7,7 @@ import yaml
 #  * `psi4rt` dict below
 #  * customize further restrictions on py versions wrt manager/os/branch in logic below
 
-edition = "v111"
+edition = "v1102"
 
 # remember, WSL = Linux
 cycle_12 = [
@@ -181,34 +181,6 @@ cycle_110 = [
     ("windows native", "py3.13"),
 ]
 
-cycle_111 = [
-    ("linux", "py3.10"),
-    ("linux", "py3.11"),
-    ("linux", "py3.12"),
-    ("linux", "py3.13"),
-    ("linux", "py3.14"),
-    ("linux aarch64", "py3.10"),
-    ("linux aarch64", "py3.11"),
-    ("linux aarch64", "py3.12"),
-    ("linux aarch64", "py3.13"),
-    ("linux aarch64", "py3.14"),
-    ("macos", "py3.10"),
-    ("macos", "py3.11"),
-    ("macos", "py3.12"),
-    ("macos", "py3.13"),
-    ("macos", "py3.14"),
-    ("macos silicon", "py3.10"),
-    ("macos silicon", "py3.11"),
-    ("macos silicon", "py3.12"),
-    ("macos silicon", "py3.13"),
-    ("macos silicon", "py3.14"),
-    ("windows native", "py3.10"),
-    ("windows native", "py3.11"),
-    ("windows native", "py3.12"),
-    ("windows native", "py3.13"),
-    ("windows native", "py3.14"),
-]
-
 installers_built = {
     "1.2.1": cycle_12,
     "1.3rc2": cycle_13,
@@ -233,8 +205,6 @@ installers_built = {
     False: [],
     "1.11dev": cycle_110,
     "1.10.2": cycle_110,
-    "1.11": cycle_111,
-    "1.12dev": cycle_111,
 }
 
 psi4rt = {
@@ -257,7 +227,6 @@ psi4rt = {
     "1.9.1": "1.9.1",
     "1.10": "1.10",
     "1.10.2": "1.10.2",
-    "1.11": "1.11",
 }
 
 docker_built = {
@@ -269,7 +238,6 @@ docker_built = {
     "1.10": [("linux", "py3.12")],
     "1.10.2": [("linux", "py3.12")],
     "1.11dev": [],
-    "1.11": [("linux", "py3.12")],
 }
 
 docker_tag = {
@@ -279,7 +247,6 @@ docker_tag = {
     ("linux", "py3.10", "1.9.1") : "1.9.1",
     ("linux", "py3.12", "1.10") : "1.10.0",
     ("linux", "py3.12", "1.10.2") : "1.10.2",
-    ("linux", "py3.12", "1.11") : "1.11.0",
 }
 
 # ?
